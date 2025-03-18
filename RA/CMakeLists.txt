@@ -2,7 +2,7 @@ add_library(jshell STATIC
 	rotbmp.cpp
 	sprite.cpp
 )
-target_link_libraries(jshell sdllib port)
+target_link_libraries(jshell port)
 
 add_library(tech STATIC
     lzo1x_c.cpp
@@ -58,10 +58,10 @@ add_library(tech STATIC
 	sendfile.cpp
 	lcwuncmp.cpp
 )
-target_link_libraries(tech sdllib port vqa32)
+target_link_libraries(tech port vqa32)
 target_compile_definitions(tech PUBLIC WINSOCK_IPX=1)
 
-add_executable(rasdl WIN32
+set(RA_SOURCES
 	aadata.cpp
 	abstract.cpp
 	adata.cpp
@@ -265,28 +265,39 @@ add_executable(rasdl WIN32
 	winasm.cpp
 )
 
-if(WIN32)
-	target_sources(rasdl PRIVATE
-		dde.cpp
-		ccdde.cpp
-		cc_icon.rc
-	)
-	target_link_libraries(rasdl PRIVATE wsock32)
-endif()
+if(PICO_SDK_PATH)
+	target_link_libraries(jshell picolib)
+	target_link_libraries(tech picolib)
+else()
+	target_link_libraries(jshell sdllib)
+	target_link_libraries(tech sdllib)
 
-target_compile_definitions(rasdl PRIVATE
-	ENGLISH=1  # TODO: also french/german
-	PORTABLE=1 # to indicate not windows or dos sometimes
-)
-target_link_libraries(rasdl PRIVATE tech jshell port sdllib vqa32) # mpgdll wwipx32
+	add_executable(rasdl WIN32 ${RA_SOURCES})
 
-if(EMSCRIPTEN)
-	set_target_properties(rasdl PROPERTIES
-		SUFFIX ".html"
-		LINK_FLAGS "-sENVIRONMENT=web -sASYNCIFY -sASYNCIFY_STACK_SIZE=8192 -sFORCE_FILESYSTEM -sINITIAL_MEMORY=32mb"
+	if(WIN32)
+		target_sources(rasdl PRIVATE
+			dde.cpp
+			ccdde.cpp
+			cc_icon.rc
+		)
+		target_link_libraries(rasdl PRIVATE wsock32)
+	endif()
+
+	target_compile_definitions(rasdl PRIVATE
+		ENGLISH=1  # TODO: also french/german
+		PORTABLE=1 # to indicate not windows or dos sometimes
+		WINSOCK_IPX=1
 	)
-	# this does not include the files, that would require something like
-	# file_packager files.data --js-output=files.js --preload *.mix REDALERT.INI
-	# (which is huge if you include the movies)
-	# and adding files.js to the shell html
+	target_link_libraries(rasdl PRIVATE tech jshell port sdllib vqa32) # mpgdll wwipx32
+
+	if(EMSCRIPTEN)
+		set_target_properties(rasdl PROPERTIES
+			SUFFIX ".html"
+			LINK_FLAGS "-sENVIRONMENT=web -sASYNCIFY -sASYNCIFY_STACK_SIZE=8192 -sFORCE_FILESYSTEM -sINITIAL_MEMORY=32mb"
+		)
+		# this does not include the files, that would require something like
+		# file_packager files.data --js-output=files.js --preload *.mix REDALERT.INI
+		# (which is huge if you include the movies)
+		# and adding files.js to the shell html
+	endif()
 endif()

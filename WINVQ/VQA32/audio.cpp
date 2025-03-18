@@ -97,6 +97,7 @@
 #if VQASDL_SOUND
 #undef WIN32
 #include "SDL.h"
+#elif VQAPICO_SOUND
 #elif(VQADIRECT_SOUND)
 void CALLBACK TimerCallback ( UINT event_id, UINT res1 , DWORD user, DWORD  res2, DWORD  res3 );
 BOOL Move_HMI_Audio_Block_To_Direct_Sound_Buffer (void);
@@ -704,7 +705,7 @@ void VQA_ResumeAudio(void)
 }
 
 
-
+#elif VQAPICO_SOUND
 #elif(!VQADIRECT_SOUND)
 
 /* This is a dummy function that is used to mark the start of the module.
@@ -2718,6 +2719,8 @@ unsigned long VQA_GetTime(VQAHandleP *vqap)
 
 			samples = totalbytes/audio->Channels;
 			samples = samples/(audio->BitsPerSample >> 3);
+
+			#elif VQAPICO_SOUND
 
 			#elif (VQADIRECT_SOUND)
 

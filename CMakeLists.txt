@@ -1,5 +1,14 @@
 cmake_minimum_required(VERSION 3.12)
+
+if(PICO_SDK_PATH)
+    include(PICOLIB/pico_sdk_import.cmake)
+endif()
+
 project(CnCRedAlert)
+
+if(PICO_SDK_PATH)
+    pico_sdk_init()
+endif()
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_EXTENSIONS OFF)
@@ -21,8 +30,17 @@ add_compile_definitions(-DWIN32) # hopefully easier than DOS
 
 
 add_subdirectory(port)
-add_subdirectory(SDLLIB)
+
+if(PICO_SDK_PATH)
+    add_subdirectory(PICOLIB)
+else()
+    add_subdirectory(SDLLIB)
+endif()
+
 add_subdirectory(WINVQ)
 
 add_subdirectory(RA)
-add_subdirectory(TD)
+
+if(NOT PICO_SDK_PATH)
+    add_subdirectory(TD)
+endif()
