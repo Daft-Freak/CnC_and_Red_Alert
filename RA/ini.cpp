@@ -76,6 +76,10 @@
 #include	"xstraw.h"
 #include	"b64straw.h"
 
+#ifdef PORTABLE
+#include "ex_string.h"
+#endif
+
 
 #ifdef FIXIT_FAST_LOAD
 #include	"cstraw.h"

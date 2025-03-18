@@ -51,7 +51,7 @@
 #include "caption.h"
 
 #if(VQAAUDIO_ON)
-#if VQASDL_SOUND
+#if VQASDL_SOUND || VQAPICO_SOUND
 extern void *MainWindow;
 #ifndef __cdecl
 #define __cdecl
@@ -364,6 +364,7 @@ typedef struct _VQAAudio {
 	_SOS_COMPRESS_INFO ADPCM_Info;
 #if VQASDL_SOUND
 	unsigned					ChunksMovedToAudioBuffer;
+#elif VQAPICO_SOUND
 #elif (!VQADIRECT_SOUND)
 	WORD               DigiHandle;
 	WORD               SampleHandle;
@@ -533,7 +534,7 @@ long VQA_TimerMethod(void);
 
 /* Audio system. */
 #if(VQAAUDIO_ON)
-#if VQASDL_SOUND
+#if VQASDL_SOUND || VQAPICO_SOUND
 long VQA_OpenAudio(VQAHandleP *vqap , void *window);
 #else
 long VQA_OpenAudio(VQAHandleP *vqap , HWND window);

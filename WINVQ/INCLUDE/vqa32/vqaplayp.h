@@ -358,6 +358,7 @@ typedef struct _VQAAudio {
 	_SOS_COMPRESS_INFO ADPCM_Info;
 #if VQASDL_SOUND
 	unsigned					ChunksMovedToAudioBuffer;
+#elif VQAPICO_SOUND
 #elif (!VQADIRECT_SOUND)
 	WORD               DigiHandle;
 	WORD               SampleHandle;

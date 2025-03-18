@@ -70,7 +70,11 @@ extern void Debug_Printf( char *format_string, ... );
 #if PORTABLE
 #define	VQAMONO_ON    0
 #define VQADIRECT_SOUND 0
+#ifdef PICO_BUILD
+#define VQAPICO_SOUND 1
+#else
 #define VQASDL_SOUND 1
+#endif
 #else
 #define	VQAMONO_ON    1  /* Mono display output enable/disable */
 #define VQADIRECT_SOUND 1	/* Use windows direct sound system */
