@@ -18,3 +18,7 @@ int memicmp(const void *buffer1, const void *buffer2, size_t count);
 char *strupr(char *str);
 char *strlwr(char *str);
 char *strrev(char *str);
+
+#ifdef PICO_BUILD
+char *strdup(const char *);
+#endif

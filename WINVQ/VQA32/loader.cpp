@@ -524,7 +524,7 @@ long VQA_Open(VQAHandle *vqa, char const *filename, VQAConfig *config)
 	}
 
 	/* Turn off audio if the HMI DigiHandle is invalid. */
-#if (!VQADIRECT_SOUND) && !VQASDL_SOUND
+#if (!VQADIRECT_SOUND) && !VQASDL_SOUND && !VQA_PICOSOUND
 	if (config->DigiHandle == -1) {
 		config->OptionFlags &= ~VQAOPTF_AUDIO;
 	}
