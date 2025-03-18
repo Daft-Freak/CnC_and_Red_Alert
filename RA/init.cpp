@@ -1635,7 +1635,7 @@ static void Play_Intro(bool sequenced)
 		Hide_Mouse();
 		VisiblePage.Clear();
 		Show_Mouse();
-#ifdef WIN32
+#if RESFACTOR == 2
 		Play_Movie(VQ_REDINTRO, THEME_NONE, false);
 #else
 		Play_Movie(VQ_TITLE, THEME_NONE, false);
@@ -2537,17 +2537,15 @@ void Init_Random(void)
  *=============================================================================================*/
 void Load_Title_Page(bool visible)
 {
-#ifdef WIN32
+#if RESFACTOR == 2
 	Load_Title_Screen("TITLE.PCX", &HidPage, CCPalette);
-	if (visible) {
-		HidPage.Blit(SeenPage);
-	}
 #else
-	Load_Picture("TITLE.CPS", HidPage, HidPage, CCPalette, BM_DEFAULT);
+	Load_Picture("TITLE.CPS", *HidPage.Get_Graphic_Buffer(), *HidPage.Get_Graphic_Buffer(), CCPalette, BM_DEFAULT);
+#endif
+
 	if (visible) {
 		HidPage.Blit(SeenPage);
 	}
-#endif
 }
 
 
@@ -2984,7 +2982,7 @@ static void Init_Bootstrap_Mixfiles(void)
 		bool ok = MFCD::Cache("EXPAND2.MIX");
 		assert(ok);
 
- #ifdef WIN32
+ #if RESFACTOR == 2
 		new MFCD("HIRES1.MIX", &FastKey);
 		ok = MFCD::Cache("HIRES1.MIX");
 		assert(ok);
@@ -3015,7 +3013,7 @@ static void Init_Bootstrap_Mixfiles(void)
 	bool ok = MFCD::Cache("LOCAL.MIX");
 	assert(ok);
 
-#ifdef WIN32
+#if RESFACTOR == 2
 	new MFCD("HIRES.MIX", &FastKey);
 	ok = MFCD::Cache("HIRES.MIX");
 	assert(ok);

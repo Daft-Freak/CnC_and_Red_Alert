@@ -103,7 +103,7 @@ void const * Beepy6;
 int ControlQ;	// cheat key to skip past score/mapsel screens
 bool StillUpdating;
 
-#ifdef WIN32
+#if RESFACTOR == 2
 char *ScreenNames[2]={"ALIBACKH.PCX", "SOVBACKH.PCX"};
 #else
 char *ScreenNames[2]={"ALI-TRAN.WSA", "SOV-TRAN.WSA"};
@@ -392,7 +392,7 @@ void ScoreClass::Presentation(void)
 	void *oldfont;
 	int oldfontxspacing = FontXSpacing;
 	int house = (PlayerPtr->Class->House == HOUSE_USSR || PlayerPtr->Class->House == HOUSE_UKRAINE);		// 0 or 1
-#ifdef WIN32
+#if RESFACTOR == 2
 	char inter_pal[15];
 	sprintf(inter_pal, "SCORPAL1.PAL");
 #endif
@@ -423,14 +423,14 @@ void ScoreClass::Presentation(void)
 	/*
 	** Load the background for the score screen
 	*/
-#ifndef WIN32
+#if RESFACTOR == 1
 	void *anim = Open_Animation(ScreenNames[house], NULL, 0L, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), ScorePalette);
 #endif
 
 	unsigned minutes = (unsigned)((ElapsedTime / (long)TIMER_MINUTE))+1;
 
 // Load up the shapes for the Nod score screen
-#ifdef WIN32
+#if RESFACTOR == 2
 	yellowptr = MFCD::Retrieve("BAR3BHR.SHP");
 	redptr = MFCD::Retrieve("BAR3RHR.SHP");
 #else
@@ -446,7 +446,7 @@ void ScoreClass::Presentation(void)
 
 /* --- Now display the background animation --- */
 	Hide_Mouse();
-#ifdef WIN32
+#if RESFACTOR == 2
 	Load_Title_Screen(ScreenNames[house], &HidPage, ScorePalette);
 	Increase_Palette_Luminance (ScorePalette , 30, 30, 30, 63);
 	HidPage.Blit(SeenPage);
@@ -462,7 +462,7 @@ void ScoreClass::Presentation(void)
 	Play_Sample(country4, 255, Options.Normalize_Volume(60));
 #endif
 
-#ifndef WIN32
+#if RESFACTOR == 1
 	int frame = 1;
 	StreamLowImpact = true;
 	while (frame < Get_Animation_Frame_Count(anim)) {
@@ -477,7 +477,7 @@ void ScoreClass::Presentation(void)
 	/*
 	** Background's up, so now load various shapes and animations
 	*/
-#ifdef WIN32
+#if RESFACTOR == 2
 	void const * timeshape = 	  MFCD::Retrieve("TIMEHR.SHP");
 	void const * hiscore1shape = MFCD::Retrieve("HISC1-HR.SHP");
 	void const * hiscore2shape = MFCD::Retrieve("HISC2-HR.SHP");
@@ -652,7 +652,7 @@ Keyboard->Clear();
 	Call_Back_Delay(6);
 
 	Set_Font_Palette(_redpal);
-#ifdef WIN32
+#if RESFACTOR == 2
 		Do_GDI_Graph(yellowptr, redptr, GKilled + CKilled, NKilled, 89);
 #else
 	if (house) {
@@ -672,7 +672,7 @@ Keyboard->Clear();
 #else
 	Play_Sample(sfx4, 255, Options.Normalize_Volume(60));
 #endif
-#ifdef WIN32
+#if RESFACTOR == 2
 		Alloc_Object(new ScorePrintClass(TXT_SCORE_BUIL, 144, 126, _greenpal));
 		Call_Back_Delay(9);
 #else
@@ -693,7 +693,7 @@ Keyboard->Clear();
 		Alloc_Object(new ScorePrintClass(TXT_SOVIET, _gditxx[indx], _bldgny[indx], _redpal));
 	}
 	Call_Back_Delay(7);
-#ifdef WIN32
+#if RESFACTOR == 2
 		Do_GDI_Graph(yellowptr, redptr, GBKilled + CBKilled, NBKilled, 137);
 #else
 	if (house) {
@@ -959,7 +959,9 @@ void ScoreClass::Do_Nod_Buildings_Graph(void)
 		if (i >= 60) {
 			shapenum = Extract_Shape_Count(factptr) - 2;	// some damage
 			if (i == 60) {
+#ifndef PORTABLE // would blit SeenPage to HidPage, causing the "factory" to persist
 				Shake_The_Screen(6);
+#endif
 				Sound_Effect(VOC_CRUMBLE);
 			}
 			if (i > 65) {
@@ -1283,7 +1285,7 @@ void ScoreClass::Show_Credits(int house, unsigned char const pal[])
 	int credobj,i;
 	int minval,add;
 
-#ifdef WIN32
+#if RESFACTOR == 2
 	void const * credshape = MFCD::Retrieve(house ? "CREDSUHR.SHP" : "CREDSAHR.SHP");
 #else
 	void const * credshape = MFCD::Retrieve(house ? "CREDSU.SHP" : "CREDSA.SHP");
