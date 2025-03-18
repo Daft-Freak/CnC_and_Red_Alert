@@ -147,7 +147,7 @@ char const * Map_Selection(void)
 	void const * scold1 =   MFCD::Retrieve("TONEY4.AUD");
 	void const * country1 = MFCD::Retrieve("TONEY10.AUD");
 
-#ifdef WIN32
+#if RESFACTOR == 2
 	GraphicBufferClass *pseudoseenbuff = new GraphicBufferClass(320, 200, (void*)NULL);
 #endif
 
@@ -161,7 +161,7 @@ char const * Map_Selection(void)
 	SeenPage.Clear();
 	mappalette.Set(FADE_PALETTE_FAST, Call_Back);
 
-#ifdef WIN32
+#if RESFACTOR == 2
 	pseudoseenbuff->Clear();
 	Animate_Frame(anim, *pseudoseenbuff, 1);
 	for(int x=0; x<256; x++) memset(&PaletteInterpolationTable[x][0],x,256);
@@ -182,7 +182,7 @@ char const * Map_Selection(void)
 	Play_Sample(appear1, 255, Options.Normalize_Volume(55));
 #endif
 	while (frame < Get_Animation_Frame_Count(anim)) {
-#ifdef WIN32
+#if RESFACTOR == 2
 		CopyType = 1;
 		Animate_Frame(anim, *pseudoseenbuff, frame++);
 		Interpolate_2X_Scale(pseudoseenbuff , &SeenBuff , NULL);
@@ -239,7 +239,9 @@ char const * Map_Selection(void)
 		if (AllSurfaces.SurfacesRestored) {
 			AllSurfaces.SurfacesRestored=FALSE;
 			CopyType = 1;
+#if RESFACTOR == 2
 			Interpolate_2X_Scale(pseudoseenbuff , &SeenBuff , NULL);
+#endif
 			CopyType = 0;
 		}
 #endif

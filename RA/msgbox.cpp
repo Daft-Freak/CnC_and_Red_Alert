@@ -145,6 +145,10 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 	width += 40 * RESFACTOR;
 	height += (numbuttons == 0) ? (40 * RESFACTOR) : (60 * RESFACTOR);
 
+	// make sure dialog is wide enough for the buttons
+	if(bwidth * numbuttons + 40 * RESFACTOR > width)
+		width = bwidth * numbuttons + 40 * RESFACTOR;
+
 	int x = (SeenBuff.Get_Width() - width) / 2;
 	int y = (SeenBuff.Get_Height() - height) / 2;
 	int printx = x + (20 * RESFACTOR);
