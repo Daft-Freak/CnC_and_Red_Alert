@@ -1783,7 +1783,7 @@ extern int CopyType;
 void Multi_Score_Presentation(void)
 {
 	char remap[16];
-#ifdef WIN32
+#if RESFACTOR == 2
 	GraphicBufferClass *pseudoseenbuff = new GraphicBufferClass(320, 200, (void*)NULL);
 	PseudoSeenBuff = new GraphicBufferClass(SeenBuff.Get_Width(),SeenBuff.Get_Height(),(void*)NULL);
 #endif
@@ -1804,7 +1804,7 @@ void Multi_Score_Presentation(void)
 	/*
 	** Display the background animation
 	*/
-#ifdef WIN32
+#if RESFACTOR == 2
 	pseudoseenbuff->Clear();
 	Animate_Frame(anim, *pseudoseenbuff, 1);
 for(int x=0; x<256; x++) memset(&PaletteInterpolationTable[x][0],x,256);
@@ -1818,7 +1818,7 @@ CopyType = 1;
 
 	int frame = 1;
 	while (frame < Get_Animation_Frame_Count(anim)) {
-#ifdef WIN32
+#if RESFACTOR == 2
 		Animate_Frame(anim, *pseudoseenbuff, frame++);
 		CopyType = 1;
 		Interpolate_2X_Scale(pseudoseenbuff , &SeenBuff , NULL);
@@ -1830,7 +1830,7 @@ CopyType = 1;
 	}
 	Close_Animation(anim);
 
-#ifdef WIN32
+#if RESFACTOR == 2
 	CopyType = 1;
 	Interpolate_2X_Scale(pseudoseenbuff , PseudoSeenBuff , NULL);
 	CopyType = 0;
@@ -1919,7 +1919,7 @@ CopyType = 1;
 	BlackPalette.Set(FADE_PALETTE_FAST, NULL);
 	SeenPage.Clear();
 	GamePalette.Set();
-#ifdef WIN32
+#if RESFACTOR == 2
 	delete PseudoSeenBuff;
 #endif
 	Set_Font(oldfont);
