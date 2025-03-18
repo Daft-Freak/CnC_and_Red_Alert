@@ -787,9 +787,13 @@ unsigned long ConnectionClass::Time (void)
 	Otherwise, use the DOS timer
 	------------------------------------------------------------------------*/
 	else {
+#ifdef PICO_BUILD
+		return 0;
+#else
 		ftime(&mytime);
 		msec = (unsigned long)mytime.time * 1000L + (unsigned long)mytime.millitm;
 		return((msec / 100) * 6);
+#endif
 	}
 
 #else
