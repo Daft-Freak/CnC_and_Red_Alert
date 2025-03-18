@@ -833,7 +833,7 @@ void Do_Win(void)
 		Set_Logic_Page(SeenBuff);
 		Map.Flag_To_Redraw (true);
 		Map.Render();
-#ifdef WIN32
+#if RESFACTOR == 2
 		Fancy_Text_Print(TXT_SCENARIO_WON, x, 90*RESFACTOR, &ColorRemaps[PCOLOR_RED], TBLACK, TPF_CENTER|TPF_VCR|TPF_USE_GRAD_PAL|TPF_DROPSHADOW);
 #else
 		Fancy_Text_Print(TXT_MISSION, x, 90*RESFACTOR, &ColorRemaps[PCOLOR_RED], TBLACK, TPF_CENTER|TPF_VCR|TPF_USE_GRAD_PAL|TPF_DROPSHADOW);

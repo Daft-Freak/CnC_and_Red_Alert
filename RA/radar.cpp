@@ -156,16 +156,16 @@ void RadarClass::One_Time(void)
 	RadY 			= 7 * RESFACTOR;
 	RadPWidth 	= 64 * RESFACTOR;
 	RadPHeight 	= 64 * RESFACTOR;
-	#ifdef WIN32
+	#if RESFACTOR == 2
 		RadOffX 		= 6;
 		RadOffY 		= 7;
 		RadIWidth 	= 128+18;//************
 		RadIHeight	= 128+2;//************
 	#else
 		RadOffX 		= 4;
-		RadOffY 		= 1;
+		RadOffY 		= 4;
 		RadIWidth 	= 72;
-		RadIHeight	= 69;
+		RadIHeight	= 65;
 	#endif
 
 	DisplayClass::One_Time();
@@ -1589,7 +1589,7 @@ void RadarClass::Radar_Anim(void)
 												RadIHeight-2);
 #endif
 //Mono_Set_Cursor(0,0);
-#ifdef WIN32
+#if RESFACTOR == 2
 	Draw_Box(RadX+RadOffX-1, RadY+RadOffY-1, RadIWidth+2, RadIHeight+2, BOXSTYLE_RAISED, true);
 #endif
 	draw_window.Clear();

@@ -471,13 +471,17 @@ void GScreenClass::Blit_Display(void)
 {
 	BStart(BENCH_BLIT_DISPLAY);
 	#ifdef WIN32
-		if (SeenBuff.Get_Width()!=320) {
+	#ifndef PORTABLE
+		if (SeenBuff.Get_Width()!=320){
+	#endif
 			WWMouse->Draw_Mouse(&HidPage);
 			HidPage.Blit(SeenBuff , 0 , 0 , 0 , 0 , HidPage.Get_Width() , HidPage.Get_Height() , false );
 			WWMouse->Erase_Mouse(&HidPage, false);
+	#ifndef PORTABLE
 		} else {
 			ModeX_Blit(&HiddenPage);
 		}
+	#endif
 	#else
 		Shadow_Blit(0, 0, 320, 200, HidPage, SeenPage, ShadowPage->Get_Buffer());
 	#endif

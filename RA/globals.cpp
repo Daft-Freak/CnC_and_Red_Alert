@@ -183,8 +183,13 @@ unsigned short			Hard_Error_Occured = 0;
 WWMouseClass *			WWMouse = NULL;
 GraphicBufferClass	SysMemPage(DEFAULT_SCREEN_WIDTH, 200, (void*)NULL);
 WinTimerClass *		WindowsTimer=NULL;
+#ifdef LORES
+int						ScreenWidth=320;
+int						ScreenHeight=200;
+#else
 int						ScreenWidth=640;
 int						ScreenHeight=400;
+#endif
 GraphicBufferClass	ModeXBuff;
 bool						InMovie = FALSE;	//Are we currently playing a VQ movie?
 #ifndef PORTABLE

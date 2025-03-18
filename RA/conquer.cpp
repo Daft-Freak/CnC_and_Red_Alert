@@ -3753,7 +3753,10 @@ long VQ_Call_Back(unsigned char *, long )
 		Keyboard->Clear();
 	}
 	Check_VQ_Palette_Set();
-#ifdef MOVIE640
+#ifdef LORES
+	if(!IsVQ640) // we can't scale down
+		SysMemPage.Blit(SeenBuff);
+#elif defined(MOVIE640)
 	if(IsVQ640) {
 		VQ640.Blit(SeenBuff);
 	} else {
