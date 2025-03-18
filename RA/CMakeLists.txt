@@ -260,7 +260,6 @@ set(RA_SOURCES
 
 	# new
 	nondosstub.cpp
-	sdlstub.cpp
 	2keyfbuf.cpp
 	winasm.cpp
 )
@@ -268,11 +267,20 @@ set(RA_SOURCES
 if(PICO_SDK_PATH)
 	target_link_libraries(jshell picolib)
 	target_link_libraries(tech picolib)
+
+	add_executable(raspberry-alert ${RA_SOURCES} picostub.cpp)
+
+	target_compile_definitions(raspberry-alert PRIVATE
+		ENGLISH=1
+		PORTABLE=1 # to indicate not windows or dos sometimes
+		LORES=1
+	)
+	target_link_libraries(raspberry-alert PRIVATE tech jshell port picolib vqa32)
 else()
 	target_link_libraries(jshell sdllib)
 	target_link_libraries(tech sdllib)
 
-	add_executable(rasdl WIN32 ${RA_SOURCES})
+	add_executable(rasdl WIN32 ${RA_SOURCES} sdlstub.cpp)
 
 	if(WIN32)
 		target_sources(rasdl PRIVATE

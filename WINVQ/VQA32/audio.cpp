@@ -706,6 +706,265 @@ void VQA_ResumeAudio(void)
 
 
 #elif VQAPICO_SOUND
+
+extern int VQAMovieDone;
+static bool VQAAudioPaused = false;
+
+long VQA_StartTimerInt(VQAHandleP *vqap, long init)
+{
+	return 0;
+}
+
+void VQA_StopTimerInt(VQAHandleP *vqap)
+{
+}
+
+static int OpenCount = 0;
+
+long VQA_OpenAudio(VQAHandleP *vqap, void *window)
+{
+	VQAData       *vqabuf;
+	VQAAudio      *audio;
+	VQAConfig     *config;
+	VQAHeader     *header;
+
+	/* Dereference data memebers for quicker access. */
+	config = &vqap->Config;
+	header = &vqap->Header;
+	vqabuf = vqap->VQABuf;
+	audio = &vqabuf->Audio;
+
+	/* Reset the buffer position to the beginning. */
+	audio->CurBlock = 0;
+
+	if(OpenCount)
+	{
+		// if we've already initialised make sure we're not in the callback
+		// (by unsetting it)
+		//SDL_LockAudioDevice(config->AudioDeviceID);
+		//*config->AudioCallback = NULL;
+		//SDL_UnlockAudioDevice(config->AudioDeviceID);
+	}
+
+	// register our audio callback
+	//*config->AudioCallback = VQA_Audio_Callback;
+
+	audio->Flags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
+	AudioFlags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
+
+	OpenCount++;
+
+	return (0);
+}
+
+void VQA_CloseAudio(VQAHandleP *vqap)
+{
+	VQAAudio		*audio;
+	VQAConfig	*config;
+
+	/* Dereference for quick access. */
+	audio	 = &vqap->VQABuf->Audio;
+	config = &vqap->Config;
+
+	/*
+	** If the audio is still playing then stop it
+	*/
+	VQA_StopAudio(vqap);
+
+	audio->Flags &= ~VQAAUDF_TIMERINIT;
+	AudioFlags &= ~VQAAUDF_TIMERINIT;
+
+	// don't remove the callback if open was called multiple times
+	OpenCount--;
+	if(OpenCount)
+		return;
+
+	// unregister our audio callback
+	// and make sure we're not in it
+	//SDL_LockAudioDevice(config->AudioDeviceID);
+	//*config->AudioCallback = NULL;
+	//SDL_UnlockAudioDevice(config->AudioDeviceID);
+
+	audio->Flags &= ~VQAAUDF_DIGIINIT;
+	AudioFlags &= ~VQAAUDF_DIGIINIT;
+	AudioFlags &= ~VQAAUDF_ISPLAYING;
+
+}
+
+long VQA_StartAudio(VQAHandleP *vqap)
+{
+	VQAConfig *config;
+	VQAAudio  *audio;
+
+	/* Save buffers for the callback routine */
+	VQAP = vqap;
+
+	/* Dereference commonly used data members for quicker access. */
+	config = &vqap->Config;
+	audio = &vqap->VQABuf->Audio;
+
+	/* Return if already playing */
+	if (AudioFlags & VQAAUDF_ISPLAYING) {
+		return (-1);
+	}
+
+	//SDL_LockAudioDevice(config->AudioDeviceID);
+	// setup playback
+	//audio->ChunksMovedToAudioBuffer = 0;
+
+	/*
+	** Set the volume
+	*/
+	long volume = config->Volume << 7;
+	//audio->SecondaryBufferPtr->SetVolume(- ( ( (32768 - volume)*1000) >>15 ) );
+
+	audio->Flags |= VQAAUDF_ISPLAYING;
+	AudioFlags |= VQAAUDF_ISPLAYING;
+
+	//SDL_UnlockAudioDevice(config->AudioDeviceID);
+
+	return (0);
+}
+
+void VQA_StopAudio(VQAHandleP *vqap)
+{
+	VQAAudio *audio;
+	VQAConfig *config;
+
+	/* Dereference commonly used data members for quicker access. */
+	config = &vqap->Config;
+	audio = &vqap->VQABuf->Audio;
+
+	/* Just return if not playing */
+	if (AudioFlags & VQAAUDF_ISPLAYING) {
+
+
+		//audio->TimerHandle = NULL;
+
+		audio->Flags &= ~VQAAUDF_ISPLAYING;
+		AudioFlags &= ~VQAAUDF_ISPLAYING;
+	}
+
+	VQAP = NULL;
+}
+
+long CopyAudio(VQAHandleP *vqap)
+{
+	VQAAudio  *audio;
+	VQAConfig *config;
+	long      startblock;
+	long      endblock;
+	long      len1,len2;
+	long      i;
+
+	/* Dereference commonly used data members for quicker access. */
+	audio = &vqap->VQABuf->Audio;
+	config = &vqap->Config;
+
+	/* If audio is disabled, or if we're playing from a VOC file, or if
+	 * there's no Audio Buffer, or if there's no data to copy, just return 0
+	 */
+	#if(VQAVOC_ON && VQAAUDIO_ON)
+	if (((config->OptionFlags & VQAOPTF_AUDIO) == 0) || (vqap->vocfh != -1)
+			|| (audio->Buffer == NULL) || (audio->TempBufLen == 0)) {
+	#else  /* VQAVOC_ON */
+	if (((config->OptionFlags & VQAOPTF_AUDIO) == 0) || (audio->Buffer == NULL)
+			|| (audio->TempBufLen == 0)) {
+	#endif /* VQAVOC_ON */
+
+		return (0);
+	}
+
+	/* Compute start & end blocks to copy into */
+	startblock = (audio->AudBufPos / config->HMIBufSize);
+	endblock = (audio->AudBufPos + audio->TempBufLen) / config->HMIBufSize;
+
+	if (endblock >= audio->NumAudBlocks) {
+		endblock -= audio->NumAudBlocks;
+	}
+
+	/* If 'endblock' hasn't played yet, return VQAERR_SLEEPING */
+	if (audio->IsLoaded[endblock] == 1) {
+		return (VQAERR_SLEEPING);
+	}
+	
+	//SDL_LockAudioDevice(config->AudioDeviceID);
+
+	/* Copy the data:
+	 *
+	 *  - If 'startblock' < 'endblock', copy the entire buffer
+	 *  - Otherwise, fill to the end of the buffer with part of the data, then
+	 *    copy the rest to the beginning of the buffer
+	 */
+	if (startblock <= endblock) {
+
+		
+		/* Copy data */
+		memcpy((audio->Buffer + audio->AudBufPos), audio->TempBuf,
+				audio->TempBufLen);
+
+		/* Adjust current load position */
+		audio->AudBufPos += audio->TempBufLen;
+
+		/* Mark buffer as empty */
+		audio->TempBufLen = 0;
+
+		/* Set all blocks to loaded */
+		for (i = startblock; i < endblock; i++) {
+			audio->IsLoaded[i] = 1;
+		}
+
+		//SDL_UnlockAudioDevice(config->AudioDeviceID);
+		return (0);
+	} else {
+
+		/* Compute length of each piece */
+		len1 = config->AudioBufSize - audio->AudBufPos;
+		len2 = audio->TempBufLen - len1;
+
+		/* Copy 1st piece into end of Audio Buffer */
+		memcpy((audio->Buffer + audio->AudBufPos), audio->TempBuf, len1);
+
+		/* Copy 2nd piece into start of Audio Buffer */
+		memcpy(audio->Buffer, audio->TempBuf + len1, len2);
+
+		/* Adjust load position */
+		audio->AudBufPos = len2;
+
+		/* Mark buffer as empty */
+		audio->TempBufLen = 0;
+
+		/* Set blocks to loaded */
+		for (i = startblock; i < audio->NumAudBlocks; i++) {
+			audio->IsLoaded[i] = 1;
+		}
+
+		for (i = 0; i < endblock; i++) {
+			audio->IsLoaded[i] = 1;
+		}
+
+		//SDL_UnlockAudioDevice(config->AudioDeviceID);
+		return (0);
+	}
+}
+
+void VQA_PauseAudio(void)
+{
+	if (VQAP && VQAP->VQABuf){
+		if (AudioFlags & VQAAUDF_ISPLAYING && !VQAAudioPaused)
+			VQAAudioPaused = true;
+	}
+}
+
+void VQA_ResumeAudio(void)
+{
+	if (VQAP && VQAP->VQABuf){
+		if (AudioFlags & VQAAUDF_ISPLAYING && VQAAudioPaused)
+			VQAAudioPaused = false;
+	}
+}
+
+
 #elif(!VQADIRECT_SOUND)
 
 /* This is a dummy function that is used to mark the start of the module.
@@ -2802,11 +3061,12 @@ unsigned long VQA_GetTime(VQAHandleP *vqap)
 		case VQA_TMETHOD_DOS:
 			{
 			struct timeb mytime;
-
+#ifndef PICO_BUILD
 			ftime(&mytime);
  			ticks = (unsigned long)mytime.time*1000L+(unsigned long)mytime.millitm;
 			ticks = ((ticks * VQA_TIMETICKS) / 1000L);
 			ticks += TickOffset;
+#endif
 			}
 			break;
 	}

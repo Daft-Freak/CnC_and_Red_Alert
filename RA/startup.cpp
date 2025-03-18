@@ -255,6 +255,7 @@ int main(int argc, char * argv[])
 
 #endif	//WIN32
 
+#ifndef PICO_BUILD
 	/*
 	**	Change directory to the where the executable is located. Handle the
 	**	case where there is no path attached to argv[0].
@@ -281,6 +282,7 @@ int main(int argc, char * argv[])
 		path[strlen(path)-1] = '\0';
 	}
 	chdir(path);
+#endif
 
 #ifdef WOLAPI_INTEGRATION
 	//	Look for special wolapi install program, used after the patch to version 3, to install "Shared Internet Components".

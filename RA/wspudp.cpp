@@ -62,6 +62,10 @@ typedef int socklen_t;
 #include <arpa/inet.h>
 #include <netinet/in.h>
 
+#ifdef PICO_BUILD
+#define gethostname(name, size) name[0] = 0;
+#endif
+
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
 

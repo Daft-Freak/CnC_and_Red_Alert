@@ -20,5 +20,11 @@ char *strlwr(char *str);
 char *strrev(char *str);
 
 #ifdef PICO_BUILD
-char *strdup(const char *);
+inline char *strdup(const char *str)
+{
+    char *ret = (char *)malloc(strlen(str));
+    strcpy(ret, str);
+
+    return ret;
+}
 #endif
