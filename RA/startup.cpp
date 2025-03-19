@@ -58,6 +58,10 @@
 #include	"ipx95.h"
 #endif	//WIN32
 
+#ifdef PICO_BUILD
+void Pico_Init();
+#endif
+
 #ifdef MCIMPEG // Denzil 6/15/98
 #include "mcimovie.h"
 #endif
@@ -153,6 +157,11 @@ int main(int argc, char * argv[])
 
 
 #endif
+
+#ifdef PICO_BUILD
+	Pico_Init();
+#endif
+
 //printf("in program.\n");getch();
 //printf("ram free = %ld\n",Ram_Free(MEM_NORMAL));getch();
 #ifdef WIN32
