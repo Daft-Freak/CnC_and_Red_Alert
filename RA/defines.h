@@ -69,8 +69,9 @@
 
 
 // Enable 640x400 VQ movie capability in WIN32 mode
+#ifndef LORES
 #define MOVIE640
-
+#endif
 
 //#if (GERMAN | FRENCH)
 //#define	BOGUSCD
@@ -287,7 +288,7 @@
 /**********************************************************************
 **	This is the complete list of VQs allowed to be played in the game.
 */
-typedef enum VQType {
+typedef enum VQType : int8_t {
 	VQ_NONE=-1,
 	VQ_AAGUN,
 	VQ_MIG,
@@ -442,7 +443,7 @@ typedef enum RTTIType : uint8_t {
 /**********************************************************************
 **	These are the difficulty settings of the game.
 */
-typedef enum DiffType {
+typedef enum DiffType : int8_t {
 	DIFF_EASY,
 	DIFF_NORMAL,
 	DIFF_HARD,
@@ -841,7 +842,7 @@ typedef enum MoveType {
 **	same order as specified in the CONQUER.TXT file as well as the filename
 **	list located in the ThemeClass.
 */
-typedef enum ThemeType {
+typedef enum ThemeType : int8_t {
 	THEME_QUIET=-3,
 	THEME_PICK_ANOTHER=-2,
 	THEME_NONE=-1,
@@ -2857,7 +2858,7 @@ typedef enum LandType : int8_t {
 /**********************************************************************
 **	The theaters of operation are as follows.
 */
-typedef enum TheaterType {
+typedef enum TheaterType : int8_t {
 	THEATER_NONE=-1,
 	THEATER_TEMPERATE,
 	THEATER_SNOW,
