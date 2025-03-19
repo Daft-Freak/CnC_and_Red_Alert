@@ -76,414 +76,6 @@ static short const _List1111[] = {0, 1, MAP_CELL_W, MAP_CELL_W+1, REFRESH_EOL};
 static short const _List111000010110[] = {0, 1, 2, MAP_CELL_W+3, MAP_CELL_W*2+1, MAP_CELL_W*2+2, REFRESH_EOL};
 
 
-static TerrainTypeClass const Mine(
-	TERRAIN_MINE,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"MINE",
-	TXT_ORE_MINE,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes01(
-	TERRAIN_BOXES01,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES01",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes02(
-	TERRAIN_BOXES02,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES02",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes03(
-	TERRAIN_BOXES03,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES03",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes04(
-	TERRAIN_BOXES04,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES04",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes05(
-	TERRAIN_BOXES05,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES05",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes06(
-	TERRAIN_BOXES06,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES06",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes07(
-	TERRAIN_BOXES07,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES07",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes08(
-	TERRAIN_BOXES08,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES08",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Boxes09(
-	TERRAIN_BOXES09,
-	THEATERF_INTERIOR,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"BOXES09",
-	TXT_CRATES,
-	(short const *)_List10,
-	NULL
-);
-
-static TerrainTypeClass const Ice01(
-	TERRAIN_ICE01,
-	THEATERF_SNOW,
-	XYP_COORD(24,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		true,					// Is based on the water?
-	"ICE01",
-	TXT_ICE,
-	(short const *)_List1111,
-	NULL
-);
-static TerrainTypeClass const Ice02(
-	TERRAIN_ICE02,
-	THEATERF_SNOW,
-	XYP_COORD(12,24),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		true,					// Is based on the water?
-	"ICE02",
-	TXT_ICE,
-	(short const *)_List1010,
-	NULL
-);
-static TerrainTypeClass const Ice03(
-	TERRAIN_ICE03,
-	THEATERF_SNOW,
-	XYP_COORD(24,12),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		true,					// Is based on the water?
-	"ICE03",
-	TXT_ICE,
-	(short const *)_List11,
-	NULL
-);
-static TerrainTypeClass const Ice04(
-	TERRAIN_ICE04,
-	THEATERF_SNOW,
-	XYP_COORD(12,12),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		true,					// Is based on the water?
-	"ICE04",
-	TXT_ICE,
-	(short const *)_List10,
-	NULL
-);
-static TerrainTypeClass const Ice05(
-	TERRAIN_ICE05,
-	THEATERF_SNOW,
-	XYP_COORD(12,12),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		true,					// Is based on the water?
-	"ICE05",
-	TXT_ICE,
-	(short const *)_List10,
-	NULL
-);
-
-static TerrainTypeClass const Tree1Class(
-	TERRAIN_TREE1,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(11,41),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T01",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Tree2Class(
-	TERRAIN_TREE2,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(11,44),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T02",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Tree3Class(
-	TERRAIN_TREE3,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(12,45),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T03",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Tree5Class(
-	TERRAIN_TREE5,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(15,41),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T05",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Tree6Class(
-	TERRAIN_TREE6,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(16,37),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T06",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Tree7Class(
-	TERRAIN_TREE7,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(15,41),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T07",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Tree8Class(
-	TERRAIN_TREE8,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(14,22),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T08",
-	TXT_TREE,
-	(short const *)_List10,
-	(short const *)_List01
-);
-
-static TerrainTypeClass const Tree10Class(
-	TERRAIN_TREE10,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(25,43),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T10",
-	TXT_TREE,
-	(short const *)_List0011,
-	(short const *)_List1100
-);
-
-static TerrainTypeClass const Tree11Class(
-	TERRAIN_TREE11,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(23,44),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T11",
-	TXT_TREE,
-	(short const *)_List0011,
-	(short const *)_List1100
-);
-
-static TerrainTypeClass const Tree12Class(
-	TERRAIN_TREE12,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(14,36),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T12",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Tree13Class(
-	TERRAIN_TREE13,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(19,40),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T13",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1101
-);
-
-static TerrainTypeClass const Tree14Class(
-	TERRAIN_TREE14,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(19,40),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T14",
-	TXT_TREE,
-	(short const *)_List0011,
-	(short const *)_List1100
-);
-
-static TerrainTypeClass const Tree15Class(
-	TERRAIN_TREE15,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(19,40),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T15",
-	TXT_TREE,
-	(short const *)_List0011,
-	(short const *)_List1100
-);
-
-static TerrainTypeClass const Tree16Class(
-	TERRAIN_TREE16,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(13,36),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T16",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Tree17Class(
-	TERRAIN_TREE17,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(18,44),		// Center base coordinate offset.
-		false,				// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"T17",
-	TXT_TREE,
-	(short const *)_List0010,
-	(short const *)_List1001
-);
-
-static TerrainTypeClass const Clump1Class(
-	TERRAIN_CLUMP1,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(28,41),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"TC01",
-	TXT_TREE,
-	(short const *)_List000110,
-	(short const *)_List110001
-);
-
-static TerrainTypeClass const Clump2Class(
-	TERRAIN_CLUMP2,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(38,41),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"TC02",
-	TXT_TREE,
-	(short const *)_List010110,
-	(short const *)_List101001
-);
-
-static TerrainTypeClass const Clump3Class(
-	TERRAIN_CLUMP3,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(33,35),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"TC03",
-	TXT_TREE,
-	(short const *)_List110110,
-	(short const *)_List001
-);
-
-static TerrainTypeClass const Clump4Class(
-	TERRAIN_CLUMP4,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(44,49),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"TC04",
-	TXT_TREE,
-	(short const *)_List000011101000,
-	(short const *)_List111000010110
-);
-
-static TerrainTypeClass const Clump5Class(
-	TERRAIN_CLUMP5,
-	THEATERF_TEMPERATE|THEATERF_SNOW,
-	XYP_COORD(49,58),		// Center base coordinate offset.
-		true,					// Is it immune to normal combat damage?
-		false,				// Is based on the water?
-	"TC05",
-	TXT_TREE,
-	(short const *)_List001011100110,
-	(short const *)_List110000011001
-);
-
-
 /***********************************************************************************************
  * TerrainTypeClass::TerrainTypeClass -- The general constructor for the terrain type objects. *
  *                                                                                             *
@@ -597,41 +189,395 @@ void TerrainTypeClass::Init_Heap(void)
 	**	are specified in the TerrainType enumeration. This is necessary because the heap
 	**	allocation block index serves double duty as the type number index.
 	*/
-	new TerrainTypeClass(Tree1Class);		//	TERRAIN_TREE1
-	new TerrainTypeClass(Tree2Class);		//	TERRAIN_TREE2
-	new TerrainTypeClass(Tree3Class);		//	TERRAIN_TREE3
-	new TerrainTypeClass(Tree5Class);		//	TERRAIN_TREE5
-	new TerrainTypeClass(Tree6Class);		//	TERRAIN_TREE6
-	new TerrainTypeClass(Tree7Class);		//	TERRAIN_TREE7
-	new TerrainTypeClass(Tree8Class);		//	TERRAIN_TREE8
-	new TerrainTypeClass(Tree10Class);		//	TERRAIN_TREE10
-	new TerrainTypeClass(Tree11Class);		//	TERRAIN_TREE11
-	new TerrainTypeClass(Tree12Class);		//	TERRAIN_TREE12
-	new TerrainTypeClass(Tree13Class);		//	TERRAIN_TREE13
-	new TerrainTypeClass(Tree14Class);		//	TERRAIN_TREE14
-	new TerrainTypeClass(Tree15Class);		//	TERRAIN_TREE15
-	new TerrainTypeClass(Tree16Class);		//	TERRAIN_TREE16
-	new TerrainTypeClass(Tree17Class);		//	TERRAIN_TREE17
-	new TerrainTypeClass(Clump1Class);		//	TERRAIN_CLUMP1
-	new TerrainTypeClass(Clump2Class);		//	TERRAIN_CLUMP2
-	new TerrainTypeClass(Clump3Class);		//	TERRAIN_CLUMP3
-	new TerrainTypeClass(Clump4Class);		//	TERRAIN_CLUMP4
-	new TerrainTypeClass(Clump5Class);		//	TERRAIN_CLUMP5
-	new TerrainTypeClass(Ice01);				//	TERRAIN_ICE01
-	new TerrainTypeClass(Ice02);				//	TERRAIN_ICE02
-	new TerrainTypeClass(Ice03);				//	TERRAIN_ICE03
-	new TerrainTypeClass(Ice04);				//	TERRAIN_ICE04
-	new TerrainTypeClass(Ice05);				//	TERRAIN_ICE05
-	new TerrainTypeClass(Boxes01);			//	TERRAIN_BOXES01
-	new TerrainTypeClass(Boxes02);			//	TERRAIN_BOXES02
-	new TerrainTypeClass(Boxes03);			//	TERRAIN_BOXES03
-	new TerrainTypeClass(Boxes04);			//	TERRAIN_BOXES04
-	new TerrainTypeClass(Boxes05);			//	TERRAIN_BOXES05
-	new TerrainTypeClass(Boxes06);			//	TERRAIN_BOXES06
-	new TerrainTypeClass(Boxes07);			//	TERRAIN_BOXES07
-	new TerrainTypeClass(Boxes08);			//	TERRAIN_BOXES08
-	new TerrainTypeClass(Boxes09);			//	TERRAIN_BOXES09
-	new TerrainTypeClass(Mine);				// TERRAIN_MINE
+	new TerrainTypeClass(				// TERRAIN_TREE1
+		TERRAIN_TREE1,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(11,41),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T01",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE2
+		TERRAIN_TREE2,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(11,44),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T02",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE3
+		TERRAIN_TREE3,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(12,45),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T03",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE5
+		TERRAIN_TREE5,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(15,41),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T05",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE6
+		TERRAIN_TREE6,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(16,37),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T06",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE7
+		TERRAIN_TREE7,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(15,41),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T07",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE8
+		TERRAIN_TREE8,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(14,22),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T08",
+		TXT_TREE,
+		(short const *)_List10,
+		(short const *)_List01
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE10
+		TERRAIN_TREE10,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(25,43),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T10",
+		TXT_TREE,
+		(short const *)_List0011,
+		(short const *)_List1100
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE11
+		TERRAIN_TREE11,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(23,44),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T11",
+		TXT_TREE,
+		(short const *)_List0011,
+		(short const *)_List1100
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE12
+		TERRAIN_TREE12,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(14,36),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T12",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE13
+		TERRAIN_TREE13,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(19,40),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T13",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1101
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE14
+		TERRAIN_TREE14,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(19,40),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T14",
+		TXT_TREE,
+		(short const *)_List0011,
+		(short const *)_List1100
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE15
+		TERRAIN_TREE15,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(19,40),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T15",
+		TXT_TREE,
+		(short const *)_List0011,
+		(short const *)_List1100
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE16
+		TERRAIN_TREE16,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(13,36),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T16",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_TREE17
+		TERRAIN_TREE17,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(18,44),		// Center base coordinate offset.
+			false,				// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"T17",
+		TXT_TREE,
+		(short const *)_List0010,
+		(short const *)_List1001
+	);
+	new TerrainTypeClass(				// TERRAIN_CLUMP1
+		TERRAIN_CLUMP1,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(28,41),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"TC01",
+		TXT_TREE,
+		(short const *)_List000110,
+		(short const *)_List110001
+	);
+	
+	new TerrainTypeClass(				// TERRAIN_CLUMP2
+		TERRAIN_CLUMP2,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(38,41),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"TC02",
+		TXT_TREE,
+		(short const *)_List010110,
+		(short const *)_List101001
+	);
+	
+	new TerrainTypeClass(				// TERRAIN_CLUMP3
+		TERRAIN_CLUMP3,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(33,35),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"TC03",
+		TXT_TREE,
+		(short const *)_List110110,
+		(short const *)_List001
+	);
+	
+	new TerrainTypeClass(				// TERRAIN_CLUMP4
+		TERRAIN_CLUMP4,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(44,49),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"TC04",
+		TXT_TREE,
+		(short const *)_List000011101000,
+		(short const *)_List111000010110
+	);
+	
+	new TerrainTypeClass(				// TERRAIN_CLUMP5
+		TERRAIN_CLUMP5,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(49,58),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"TC05",
+		TXT_TREE,
+		(short const *)_List001011100110,
+		(short const *)_List110000011001
+	);
+	new TerrainTypeClass(				// TERRAIN_ICE01
+		TERRAIN_ICE01,
+		THEATERF_SNOW,
+		XYP_COORD(24,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			true,					// Is based on the water?
+		"ICE01",
+		TXT_ICE,
+		(short const *)_List1111,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_ICE02
+		TERRAIN_ICE02,
+		THEATERF_SNOW,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			true,					// Is based on the water?
+		"ICE02",
+		TXT_ICE,
+		(short const *)_List1010,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_ICE03
+		TERRAIN_ICE03,
+		THEATERF_SNOW,
+		XYP_COORD(24,12),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			true,					// Is based on the water?
+		"ICE03",
+		TXT_ICE,
+		(short const *)_List11,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_ICE04
+		TERRAIN_ICE04,
+		THEATERF_SNOW,
+		XYP_COORD(12,12),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			true,					// Is based on the water?
+		"ICE04",
+		TXT_ICE,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_ICE05
+		TERRAIN_ICE05,
+		THEATERF_SNOW,
+		XYP_COORD(12,12),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			true,					// Is based on the water?
+		"ICE05",
+		TXT_ICE,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES01
+		TERRAIN_BOXES01,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES01",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES02
+		TERRAIN_BOXES02,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES02",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES03
+		TERRAIN_BOXES03,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES03",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES04
+		TERRAIN_BOXES04,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES04",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES05
+		TERRAIN_BOXES05,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES05",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES06
+		TERRAIN_BOXES06,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES06",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES07
+		TERRAIN_BOXES07,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES07",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES08
+		TERRAIN_BOXES08,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES08",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_BOXES09
+		TERRAIN_BOXES09,
+		THEATERF_INTERIOR,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"BOXES09",
+		TXT_CRATES,
+		(short const *)_List10,
+		NULL
+	);
+	new TerrainTypeClass(				// TERRAIN_MINE
+		TERRAIN_MINE,
+		THEATERF_TEMPERATE|THEATERF_SNOW,
+		XYP_COORD(12,24),		// Center base coordinate offset.
+			true,					// Is it immune to normal combat damage?
+			false,				// Is based on the water?
+		"MINE",
+		TXT_ORE_MINE,
+		(short const *)_List10,
+		NULL
+	);
 }
 
 
