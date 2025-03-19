@@ -3325,9 +3325,9 @@ ObjectClass * BuildingTypeClass::Create_One_Of(HouseClass * house) const
  *=============================================================================================*/
 void BuildingTypeClass::Init_Anim(BStateType state, int start, int count, int rate) const
 {
-	((int &)Anims[state].Start) = start;
-	((int &)Anims[state].Count) = count;
-	((int &)Anims[state].Rate) = rate;
+	((int8_t &)Anims[state].Start) = start;
+	((int8_t &)Anims[state].Count) = count;
+	((int8_t &)Anims[state].Rate) = rate;
 }
 
 
