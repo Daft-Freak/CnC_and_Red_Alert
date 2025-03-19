@@ -276,6 +276,13 @@ if(PICO_SDK_PATH)
 		LORES=1
 	)
 	target_link_libraries(raspberry-alert PRIVATE tech jshell port picolib vqa32)
+
+	pico_enable_stdio_uart(raspberry-alert 1)
+	pico_add_extra_outputs(raspberry-alert)
+
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/raspberry-alert.uf2
+		DESTINATION bin
+	)
 else()
 	target_link_libraries(jshell sdllib)
 	target_link_libraries(tech sdllib)
