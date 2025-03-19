@@ -273,7 +273,6 @@ if(PICO_SDK_PATH)
 	target_compile_definitions(raspberry-alert PRIVATE
 		ENGLISH=1
 		PORTABLE=1 # to indicate not windows or dos sometimes
-		WINSOCK_IPX=1
 		LORES=1
 	)
 	target_link_libraries(raspberry-alert PRIVATE tech jshell port picolib vqa32)
@@ -295,7 +294,6 @@ else()
 	target_compile_definitions(rasdl PRIVATE
 		ENGLISH=1  # TODO: also french/german
 		PORTABLE=1 # to indicate not windows or dos sometimes
-		WINSOCK_IPX=1
 	)
 	target_link_libraries(rasdl PRIVATE tech jshell port sdllib vqa32) # mpgdll wwipx32
 
