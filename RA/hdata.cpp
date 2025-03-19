@@ -46,206 +46,6 @@
 
 #include	"function.h"
 
-static HouseTypeClass const HouseEngland(
-	HOUSE_ENGLAND,
-	"England",					//	NAME:			House name.
-	TXT_ENGLAND,				// FULLNAME:	Translated house name.
-	"ENG",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_GREEN,				// Remap color ID number.
-	'E'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseGermany(
-	HOUSE_GERMANY,
-	"Germany",					//	NAME:			House name.
-	TXT_GERMANY,				// FULLNAME:	Translated house name.
-	"GER",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_GREY,				// Remap color ID number.
-	'G'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseFrance(
-	HOUSE_FRANCE,
-	"France",					//	NAME:			House name.
-	TXT_FRANCE,					// FULLNAME:	Translated house name.
-	"FRA",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_BLUE,				// Remap color ID number.
-	'F'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseUkraine(
-	HOUSE_UKRAINE,
-	"Ukraine",					//	NAME:			House name.
-	TXT_UKRAINE,				// FULLNAME:	Translated house name.
-	"UKA",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_ORANGE,				// Remap color ID number.
-	'K'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseUSSR(
-	HOUSE_USSR,
-	"USSR",						//	NAME:			House name.
-	TXT_USSR,					// FULLNAME:	Translated house name.
-	"RED",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_RED,					// Remap color ID number.
-	'U'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseGreece(
-	HOUSE_GREECE,
-	"Greece",					//	NAME:			House name.
-	TXT_GREECE,					// FULLNAME:	Translated house name.
-	"GRE",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_LTBLUE,				// Remap color ID number.
-	'G'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseTurkey(
-	HOUSE_TURKEY,
-	"Turkey",					//	NAME:			House name.
-	TXT_TURKEY,					// FULLNAME:	Translated house name.
-	"TRK",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_BROWN,				// Remap color ID number.
-	'T'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseSpain(
-	HOUSE_SPAIN,
-	"Spain",						//	NAME:			House name.
-	TXT_SPAIN,					// FULLNAME:	Translated house name.
-	"SPN",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_GOLD,				// Remap color ID number.
-	'S'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseGood(
-	HOUSE_GOOD,
-	"GoodGuy",					//	NAME:			House name.
-	TXT_GOODGUY,				// FULLNAME:	Translated house name.
-	"GDI",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_LTBLUE,				// Remap color ID number.
-	'G'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseBad(
-	HOUSE_BAD,
-	"BadGuy",					//	NAME:			House name.
-	TXT_BADGUY,					// FULLNAME:	Translated house name.
-	"NOD",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_RED,					// Remap color ID number.
-	'B'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseCivilian(
-	HOUSE_NEUTRAL,
-	"Neutral",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"CIV",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_GOLD,				// Remap color ID number.
-	'C'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseJP(
-	HOUSE_JP,
-	"Special",					//	NAME:			House name.
-	TXT_JP,						// FULLNAME:	Translated house name.
-	"JP",							// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_GOLD,				// Remap color ID number.
-	'J'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseMulti1(
-	HOUSE_MULTI1,
-	"Multi1",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"MP1",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_GOLD,				// Remap color ID number.
-	'M'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseMulti2(
-	HOUSE_MULTI2,
-	"Multi2",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"MP2",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_LTBLUE,				// Remap color ID number.
-	'M'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseMulti3(
-	HOUSE_MULTI3,
-	"Multi3",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"MP3",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_RED,					// Remap color ID number.
-	'M'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseMulti4(
-	HOUSE_MULTI4,
-	"Multi4",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"MP4",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_GREEN,				// Remap color ID number.
-	'M'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseMulti5(
-	HOUSE_MULTI5,
-	"Multi5",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"MP5",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_ORANGE,				// Remap color ID number.
-	'M'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseMulti6(
-	HOUSE_MULTI6,
-	"Multi6",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"MP6",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_GREY,				// Remap color ID number.
-	'M'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseMulti7(
-	HOUSE_MULTI7,
-	"Multi7",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"MP7",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_BLUE,				// Remap color ID number.
-	'M'							// VOICE:		Voice prefix character.
-);
-
-static HouseTypeClass const HouseMulti8(
-	HOUSE_MULTI8,
-	"Multi8",					//	NAME:			House name.
-	TXT_CIVILIAN,				// FULLNAME:	Translated house name.
-	"MP8",						// SUFFIX:		House file suffix.
-	0,								// LEMON:		Lemon vehicle frequency.
-	PCOLOR_BROWN,				// Remap color ID number.
-	'M'							// VOICE:		Voice prefix character.
-);
-
 #ifdef OBSOLETE
 HouseTypeClass const * const HouseTypeClass::Pointers[HOUSE_COUNT] = {
 	&HouseSpain,
@@ -380,26 +180,186 @@ void HouseTypeClass::Init_Heap(void)
 	**	are specified in the HousesType enumeration. This is necessary because the heap
 	**	allocation block index serves double duty as the type number index.
 	*/
-	new HouseTypeClass(HouseSpain);
-	new HouseTypeClass(HouseGreece);
-	new HouseTypeClass(HouseUSSR);
-	new HouseTypeClass(HouseEngland);
-	new HouseTypeClass(HouseUkraine);
-	new HouseTypeClass(HouseGermany);
-	new HouseTypeClass(HouseFrance);
-	new HouseTypeClass(HouseTurkey);
-	new HouseTypeClass(HouseGood);
-	new HouseTypeClass(HouseBad);
-	new HouseTypeClass(HouseCivilian);
-	new HouseTypeClass(HouseJP);
-	new HouseTypeClass(HouseMulti1);
-	new HouseTypeClass(HouseMulti2);
-	new HouseTypeClass(HouseMulti3);
-	new HouseTypeClass(HouseMulti4);
-	new HouseTypeClass(HouseMulti5);
-	new HouseTypeClass(HouseMulti6);
-	new HouseTypeClass(HouseMulti7);
-	new HouseTypeClass(HouseMulti8);
+	new HouseTypeClass(
+		HOUSE_SPAIN,
+		"Spain",						//	NAME:			House name.
+		TXT_SPAIN,					// FULLNAME:	Translated house name.
+		"SPN",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_GOLD,				// Remap color ID number.
+		'S'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_GREECE,
+		"Greece",					//	NAME:			House name.
+		TXT_GREECE,					// FULLNAME:	Translated house name.
+		"GRE",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_LTBLUE,				// Remap color ID number.
+		'G'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_USSR,
+		"USSR",						//	NAME:			House name.
+		TXT_USSR,					// FULLNAME:	Translated house name.
+		"RED",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_RED,					// Remap color ID number.
+		'U'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_ENGLAND,
+		"England",					//	NAME:			House name.
+		TXT_ENGLAND,				// FULLNAME:	Translated house name.
+		"ENG",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_GREEN,				// Remap color ID number.
+		'E'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_UKRAINE,
+		"Ukraine",					//	NAME:			House name.
+		TXT_UKRAINE,				// FULLNAME:	Translated house name.
+		"UKA",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_ORANGE,				// Remap color ID number.
+		'K'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_GERMANY,
+		"Germany",					//	NAME:			House name.
+		TXT_GERMANY,				// FULLNAME:	Translated house name.
+		"GER",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_GREY,				// Remap color ID number.
+		'G'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_FRANCE,
+		"France",					//	NAME:			House name.
+		TXT_FRANCE,					// FULLNAME:	Translated house name.
+		"FRA",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_BLUE,				// Remap color ID number.
+		'F'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_TURKEY,
+		"Turkey",					//	NAME:			House name.
+		TXT_TURKEY,					// FULLNAME:	Translated house name.
+		"TRK",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_BROWN,				// Remap color ID number.
+		'T'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_GOOD,
+		"GoodGuy",					//	NAME:			House name.
+		TXT_GOODGUY,				// FULLNAME:	Translated house name.
+		"GDI",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_LTBLUE,				// Remap color ID number.
+		'G'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_BAD,
+		"BadGuy",					//	NAME:			House name.
+		TXT_BADGUY,					// FULLNAME:	Translated house name.
+		"NOD",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_RED,					// Remap color ID number.
+		'B'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_NEUTRAL,
+		"Neutral",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"CIV",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_GOLD,				// Remap color ID number.
+		'C'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_JP,
+		"Special",					//	NAME:			House name.
+		TXT_JP,						// FULLNAME:	Translated house name.
+		"JP",							// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_GOLD,				// Remap color ID number.
+		'J'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_MULTI1,
+		"Multi1",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"MP1",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_GOLD,				// Remap color ID number.
+		'M'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_MULTI2,
+		"Multi2",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"MP2",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_LTBLUE,				// Remap color ID number.
+		'M'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_MULTI3,
+		"Multi3",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"MP3",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_RED,					// Remap color ID number.
+		'M'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_MULTI4,
+		"Multi4",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"MP4",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_GREEN,				// Remap color ID number.
+		'M'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_MULTI5,
+		"Multi5",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"MP5",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_ORANGE,				// Remap color ID number.
+		'M'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_MULTI6,
+		"Multi6",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"MP6",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_GREY,				// Remap color ID number.
+		'M'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_MULTI7,
+		"Multi7",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"MP7",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_BLUE,				// Remap color ID number.
+		'M'							// VOICE:		Voice prefix character.
+	);
+	new HouseTypeClass(
+		HOUSE_MULTI8,
+		"Multi8",					//	NAME:			House name.
+		TXT_CIVILIAN,				// FULLNAME:	Translated house name.
+		"MP8",						// SUFFIX:		House file suffix.
+		0,								// LEMON:		Lemon vehicle frequency.
+		PCOLOR_BROWN,				// Remap color ID number.
+		'M'							// VOICE:		Voice prefix character.
+	);
 }
 
 

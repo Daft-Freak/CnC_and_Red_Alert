@@ -366,516 +366,6 @@ static DoInfoStruct EinsteinDoControls[DO_COUNT] = {
 	{0,	0, 0},					//	DO_DOG_MAUL			// N/A
 };
 
-// Attack dogs
-static InfantryTypeClass const Dog(
-	INFANTRY_DOG,				// Infantry type number.
-	TXT_GUARD_DOG,				// Translate name number for infantry type.
-	"DOG",						// INI name for infantry.
-	0x0015,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_FULL,					// Transport pip shape/color to use.
-	DogDoControls,
-	1,								// Frame of projectile launch.
-	1,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Minigunners
-static InfantryTypeClass const E1(
-	INFANTRY_E1,				// Infantry type number.
-	TXT_E1,						// Translate name number for infantry type.
-	"E1",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_FULL,					// Transport pip shape/color to use.
-	E1DoControls,
-	2,								// Frame of projectile launch.
-	2,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Grenadiers
-static InfantryTypeClass const E2(
-	INFANTRY_E2,				// Infantry type number.
-	TXT_E2,						// Translate name number for infantry type.
-	"E2",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_FULL,					// Transport pip shape/color to use.
-	E2DoControls,
-	14,							// Frame of projectile launch.
-	6,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Bazooka
-static InfantryTypeClass const E3(
-	INFANTRY_E3,				// Infantry type number.
-	TXT_E3,						// Translate name number for infantry type.
-	"E3",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_FULL,					// Transport pip shape/color to use.
-	E3DoControls,
-	3,								// Frame of projectile launch.
-	3,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Flamethrower
-static InfantryTypeClass const E4(
-	INFANTRY_E4,				// Infantry type number.
-	TXT_E4,						// Translate name number for infantry type.
-	"E4",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_FULL,					// Transport pip shape/color to use.
-	E4DoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Renovator
-static InfantryTypeClass const E6(
-	INFANTRY_RENOVATOR,				// Infantry type number.
-	TXT_E6,						// Translate name number for infantry type.
-	"E6",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	E6DoControls,
-	3,								// Frame of projectile launch.
-	3,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Spy
-static InfantryTypeClass const E8(
-	INFANTRY_SPY,				// Infantry type number.
-	TXT_E8,						// Translate name number for infantry type.
-	"SPY",						// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	SpyDoControls,
-	3,								// Frame of projectile launch.
-	3,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Thief
-static InfantryTypeClass const E9(
-	INFANTRY_THIEF,				// Infantry type number.
-	TXT_THIEF,					// Translate name number for infantry type.
-	"THF",						// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	E9DoControls,
-	3,								// Frame of projectile launch.
-	3,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Tanya
-static InfantryTypeClass const E7(
-	INFANTRY_TANYA,			// Infantry type number.
-	TXT_E7,						// Translate name number for infantry type.
-	"E7",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_COMMANDO,				// Transport pip shape/color to use.
-	E7DoControls,
-	2,								// Frame of projectile launch.
-	2,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-static InfantryTypeClass const Medic(
-	INFANTRY_MEDIC,			// Infantry type number.
-	TXT_MEDIC,					// Translate name number for infantry type.
-	"MEDI",						// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	MedicDoControls,
-	25,							// Frame of projectile launch.
-	25,							// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-static InfantryTypeClass const General(
-	INFANTRY_GENERAL,			// Infantry type number.
-	TXT_GENERAL,				// Translate name number for infantry type.
-	"GNRL",						// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	GeneralDoControls,
-	2,								// Frame of projectile launch.
-	2,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-// Civilians
-static InfantryTypeClass const C1(
-	INFANTRY_C1,				// Infantry type number.
-	TXT_C1,						// Translate name number for infantry type.
-	"C1",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-static InfantryTypeClass const C2(
-	INFANTRY_C2,				// Infantry type number.
-	TXT_C2,						// Translate name number for infantry type.
-	"C2",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	true,							// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	RemapCiv2						// pointer to override remap table
-);
-
-static InfantryTypeClass const C3(
-	INFANTRY_C3,				// Infantry type number.
-	TXT_C3,						// Translate name number for infantry type.
-	"C3",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	true,							// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-static InfantryTypeClass const C4(
-	INFANTRY_C4,				// Infantry type number.
-	TXT_C4,						// Translate name number for infantry type.
-	"C4",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	true,							// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	true,							// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	RemapCiv4						// pointer to override remap table
-);
-
-static InfantryTypeClass const C5(
-	INFANTRY_C5,				// Infantry type number.
-	TXT_C5,						// Translate name number for infantry type.
-	"C5",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	true,							// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	RemapCiv5						// pointer to override remap table
-);
-
-static InfantryTypeClass const C6(
-	INFANTRY_C6,				// Infantry type number.
-	TXT_C6,						// Translate name number for infantry type.
-	"C6",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	true,							// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	RemapCiv6						// pointer to override remap table
-);
-
-static InfantryTypeClass const C7(
-	INFANTRY_C7,				// Infantry type number.
-	TXT_C7,						// Translate name number for infantry type.
-	"C7",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	true,							// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	RemapCiv7						// pointer to override remap table
-);
-
-static InfantryTypeClass const C8(
-	INFANTRY_C8,				// Infantry type number.
-	TXT_C8,						// Translate name number for infantry type.
-	"C8",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	true,							// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	RemapCiv8						// pointer to override remap table
-);
-
-static InfantryTypeClass const C9(
-	INFANTRY_C9,				// Infantry type number.
-	TXT_C9,						// Translate name number for infantry type.
-	"C9",							// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	true,							// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_CIVILIAN,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	RemapCiv9						// pointer to override remap table
-);
-
-// Nikoomba
-static InfantryTypeClass const C10(
-	INFANTRY_C10,				// Infantry type number.
-	TXT_C10,						// Translate name number for infantry type.
-	"C10",						// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	true,							// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	RemapCiv10						// pointer to override remap table
-);
-
-static InfantryTypeClass const Einstein(
-	INFANTRY_EINSTEIN,		// Infantry type number.
-	TXT_EINSTEIN,				// Translate name number for infantry type.
-	"EINSTEIN",					// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	EinsteinDoControls,
-	0,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-static InfantryTypeClass const Delphi(
-	INFANTRY_DELPHI,			// Infantry type number.
-	TXT_DELPHI,					// Translate name number for infantry type.
-	"DELPHI",					// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	CivilianDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-static InfantryTypeClass const DrChan(
-	INFANTRY_CHAN,				// Infantry type number.
-	TXT_CHAN,					// Translate name number for infantry type.
-	"CHAN",						// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	false,						// Has crawling animation frames?
-	true,							// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	true,							// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	EinsteinDoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-#ifdef FIXIT_CSII	//	checked - ajw 9/28/98
-
-// Shock Trooper
-static InfantryTypeClass const ShockTrooper(
-	INFANTRY_SHOCK,			// Infantry type number.
-	TXT_SHOCKTROOPER,			// Translate name number for infantry type.
-	"SHOK",						// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_FULL,					// Transport pip shape/color to use.
-	E4DoControls,
-	2,								// Frame of projectile launch.
-	0,								// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-
-
-static InfantryTypeClass const Mechanic(
-	INFANTRY_MECHANIC,		// Infantry type number.
-	TXT_MECHANIC,					// Translate name number for infantry type.
-	"MECH",						// INI name for infantry.
-	0x0035,						//	Vertical offset.
-	0x0010,						// Primary weapon offset along turret centerline.
-	false,						// Is this a female type?
-	true,							// Has crawling animation frames?
-	false,						// Is this a civilian?
-	false,						// Does this unit use the override remap table?
-	false,						// Always use the given name for the infantry?
-	false,						// Theater specific graphic image?
-	PIP_ENGINEER,				// Transport pip shape/color to use.
-	MedicDoControls,
-	25,							// Frame of projectile launch.
-	25,							// Frame of projectile launch while prone.
-	0								// pointer to override remap table
-);
-#endif
-
 /***********************************************************************************************
  * InfantryTypeClass::InfantryTypeClass -- Constructor for infantry type class objects.        *
  *                                                                                             *
@@ -1021,33 +511,487 @@ void InfantryTypeClass::Init_Heap(void)
 	**	are specified in the InfantryType enumeration. This is necessary because the heap
 	**	allocation block index serves double duty as the type number index.
 	*/
-	new InfantryTypeClass(E1);
-	new InfantryTypeClass(E2);
-	new InfantryTypeClass(E3);
-	new InfantryTypeClass(E4);
-	new InfantryTypeClass(E6);
-	new InfantryTypeClass(E7);
-	new InfantryTypeClass(E8);
-	new InfantryTypeClass(E9);
-	new InfantryTypeClass(Medic);
-	new InfantryTypeClass(General);
-	new InfantryTypeClass(Dog);
-	new InfantryTypeClass(C1);
-	new InfantryTypeClass(C2);
-	new InfantryTypeClass(C3);
-	new InfantryTypeClass(C4);
-	new InfantryTypeClass(C5);
-	new InfantryTypeClass(C6);
-	new InfantryTypeClass(C7);
-	new InfantryTypeClass(C8);
-	new InfantryTypeClass(C9);
-	new InfantryTypeClass(C10);
-	new InfantryTypeClass(Einstein);
-	new InfantryTypeClass(Delphi);
-	new InfantryTypeClass(DrChan);
+	// Minigunners
+	new InfantryTypeClass(
+		INFANTRY_E1,				// Infantry type number.
+		TXT_E1,						// Translate name number for infantry type.
+		"E1",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_FULL,					// Transport pip shape/color to use.
+		E1DoControls,
+		2,								// Frame of projectile launch.
+		2,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Grenadiers
+	new InfantryTypeClass(
+		INFANTRY_E2,				// Infantry type number.
+		TXT_E2,						// Translate name number for infantry type.
+		"E2",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_FULL,					// Transport pip shape/color to use.
+		E2DoControls,
+		14,							// Frame of projectile launch.
+		6,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Bazooka
+	new InfantryTypeClass(
+		INFANTRY_E3,				// Infantry type number.
+		TXT_E3,						// Translate name number for infantry type.
+		"E3",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_FULL,					// Transport pip shape/color to use.
+		E3DoControls,
+		3,								// Frame of projectile launch.
+		3,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Flamethrower
+	new InfantryTypeClass(
+		INFANTRY_E4,				// Infantry type number.
+		TXT_E4,						// Translate name number for infantry type.
+		"E4",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_FULL,					// Transport pip shape/color to use.
+		E4DoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Renovator
+	new InfantryTypeClass(
+		INFANTRY_RENOVATOR,				// Infantry type number.
+		TXT_E6,						// Translate name number for infantry type.
+		"E6",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		E6DoControls,
+		3,								// Frame of projectile launch.
+		3,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Tanya
+	new InfantryTypeClass(
+		INFANTRY_TANYA,			// Infantry type number.
+		TXT_E7,						// Translate name number for infantry type.
+		"E7",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_COMMANDO,				// Transport pip shape/color to use.
+		E7DoControls,
+		2,								// Frame of projectile launch.
+		2,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Spy
+	new InfantryTypeClass(
+		INFANTRY_SPY,				// Infantry type number.
+		TXT_E8,						// Translate name number for infantry type.
+		"SPY",						// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		SpyDoControls,
+		3,								// Frame of projectile launch.
+		3,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Thief
+	new InfantryTypeClass(
+		INFANTRY_THIEF,				// Infantry type number.
+		TXT_THIEF,					// Translate name number for infantry type.
+		"THF",						// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		E9DoControls,
+		3,								// Frame of projectile launch.
+		3,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_MEDIC,			// Infantry type number.
+		TXT_MEDIC,					// Translate name number for infantry type.
+		"MEDI",						// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		MedicDoControls,
+		25,							// Frame of projectile launch.
+		25,							// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_GENERAL,			// Infantry type number.
+		TXT_GENERAL,				// Translate name number for infantry type.
+		"GNRL",						// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		GeneralDoControls,
+		2,								// Frame of projectile launch.
+		2,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Attack dogs
+	new InfantryTypeClass(
+		INFANTRY_DOG,				// Infantry type number.
+		TXT_GUARD_DOG,				// Translate name number for infantry type.
+		"DOG",						// INI name for infantry.
+		0x0015,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_FULL,					// Transport pip shape/color to use.
+		DogDoControls,
+		1,								// Frame of projectile launch.
+		1,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	// Civilians
+	new InfantryTypeClass(
+		INFANTRY_C1,				// Infantry type number.
+		TXT_C1,						// Translate name number for infantry type.
+		"C1",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_C2,				// Infantry type number.
+		TXT_C2,						// Translate name number for infantry type.
+		"C2",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		true,							// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		RemapCiv2						// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_C3,				// Infantry type number.
+		TXT_C3,						// Translate name number for infantry type.
+		"C3",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		true,							// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_C4,				// Infantry type number.
+		TXT_C4,						// Translate name number for infantry type.
+		"C4",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		true,							// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		true,							// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		RemapCiv4						// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_C5,				// Infantry type number.
+		TXT_C5,						// Translate name number for infantry type.
+		"C5",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		true,							// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		RemapCiv5						// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_C6,				// Infantry type number.
+		TXT_C6,						// Translate name number for infantry type.
+		"C6",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		true,							// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		RemapCiv6						// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_C7,				// Infantry type number.
+		TXT_C7,						// Translate name number for infantry type.
+		"C7",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		true,							// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		RemapCiv7						// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_C8,				// Infantry type number.
+		TXT_C8,						// Translate name number for infantry type.
+		"C8",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		true,							// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		RemapCiv8						// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_C9,				// Infantry type number.
+		TXT_C9,						// Translate name number for infantry type.
+		"C9",							// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		true,							// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_CIVILIAN,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		RemapCiv9						// pointer to override remap table
+	);
+	// Nikoomba
+	new InfantryTypeClass(
+		INFANTRY_C10,				// Infantry type number.
+		TXT_C10,						// Translate name number for infantry type.
+		"C10",						// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		true,							// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		RemapCiv10						// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_EINSTEIN,		// Infantry type number.
+		TXT_EINSTEIN,				// Translate name number for infantry type.
+		"EINSTEIN",					// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		EinsteinDoControls,
+		0,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_DELPHI,			// Infantry type number.
+		TXT_DELPHI,					// Translate name number for infantry type.
+		"DELPHI",					// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		CivilianDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_CHAN,				// Infantry type number.
+		TXT_CHAN,					// Translate name number for infantry type.
+		"CHAN",						// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		false,						// Has crawling animation frames?
+		true,							// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		true,							// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		EinsteinDoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
 #ifdef FIXIT_CSII	//	checked - ajw 9/28/98
-	new InfantryTypeClass(ShockTrooper);
-	new InfantryTypeClass(Mechanic);
+	// Shock Trooper
+	new InfantryTypeClass(
+		INFANTRY_SHOCK,			// Infantry type number.
+		TXT_SHOCKTROOPER,			// Translate name number for infantry type.
+		"SHOK",						// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_FULL,					// Transport pip shape/color to use.
+		E4DoControls,
+		2,								// Frame of projectile launch.
+		0,								// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
+	new InfantryTypeClass(
+		INFANTRY_MECHANIC,		// Infantry type number.
+		TXT_MECHANIC,					// Translate name number for infantry type.
+		"MECH",						// INI name for infantry.
+		0x0035,						//	Vertical offset.
+		0x0010,						// Primary weapon offset along turret centerline.
+		false,						// Is this a female type?
+		true,							// Has crawling animation frames?
+		false,						// Is this a civilian?
+		false,						// Does this unit use the override remap table?
+		false,						// Always use the given name for the infantry?
+		false,						// Theater specific graphic image?
+		PIP_ENGINEER,				// Transport pip shape/color to use.
+		MedicDoControls,
+		25,							// Frame of projectile launch.
+		25,							// Frame of projectile launch while prone.
+		0								// pointer to override remap table
+	);
 #endif
 }
 
