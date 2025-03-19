@@ -30,6 +30,7 @@ add_library(picolib STATIC
     driver/storage.cpp
 
     driver/fatfs/ff.c
+    driver/fatfs/ffunicode.c
 )
 
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/spi.pio)
