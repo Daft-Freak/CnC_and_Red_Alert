@@ -102,14 +102,14 @@ LayerClass DisplayClass::Layer[LAYER_COUNT];
 */
 unsigned char DisplayClass::FadingBrighten[256];
 unsigned char DisplayClass::FadingShade[256];
-unsigned char DisplayClass::FadingWayDark[256];
 unsigned char DisplayClass::FadingLight[256];
+#ifdef SCENARIO_EDITOR
 unsigned char DisplayClass::FadingGreen[256];
+#endif
 unsigned char DisplayClass::FadingYellow[256];
 unsigned char DisplayClass::FadingRed[256];
 unsigned char DisplayClass::TranslucentTable[(MAGIC_COL_COUNT+1)*256];
 unsigned char DisplayClass::WhiteTranslucentTable[(1+1)*256];
-unsigned char DisplayClass::MouseTranslucentTable[(4+1)*256];
 void const * DisplayClass::TransIconset;
 unsigned char DisplayClass::UnitShadow[(USHADOW_COL_COUNT+1)*256];
 unsigned char DisplayClass::UnitShadowAir[(USHADOW_COL_COUNT+1)*256];
@@ -405,13 +405,13 @@ LastTheater = THEATER_NONE;
 
 	OriginalPalette = GamePalette;
 
+#ifdef SCENARIO_EDITOR
 	Build_Fading_Table(GamePalette, FadingGreen, GREEN, 110);
+#endif
 
 	Build_Fading_Table(GamePalette, FadingYellow, YELLOW, 140);
 
 	Build_Fading_Table(GamePalette, FadingRed, RED, 140);
-
-	Build_Translucent_Table(GamePalette, &MouseCols[0], 4, MouseTranslucentTable);
 
 	Build_Translucent_Table(GamePalette, &MagicCols[0], MAGIC_COL_COUNT, TranslucentTable);
 
@@ -444,8 +444,6 @@ LastTheater = THEATER_NONE;
 	}
 
 	Make_Fading_Table(GamePalette, FadingBrighten, WHITE, 25);
-
-	Make_Fading_Table(GamePalette, FadingWayDark, DKGRAY, 192);
 
 	/*
 	**	Adjust the palette according to the visual control option settings.
