@@ -509,12 +509,12 @@ AnimClass::AnimClass(AnimType animnum, COORDINATE coord, unsigned char timedelay
 #ifdef VIC
 	if (Class->Stages == -1) {
 IsTheaterShape = Class->IsTheater;
-		((int&)Class->Stages) = Get_Build_Frame_Count(Class->Get_Image_Data());
+		((int8_t&)Class->Stages) = Get_Build_Frame_Count(Class->Get_Image_Data());
 IsTheaterShape = false;
 
 	}
 	if (Class->LoopEnd == -1) {
-		((int&)Class->LoopEnd) = Class->Stages;
+		((int16_t&)Class->LoopEnd) = Class->Stages;
 	}
 	if (Class->IsNormalized) {
 		Set_Rate(Options.Normalize_Delay(Class->Delay));
@@ -682,11 +682,11 @@ void AnimClass::AI(void)
 #ifdef FIXIT_MULTI_SAVE
 	if (Class->Stages == -1) {
 		IsTheaterShape = Class->IsTheater;
-		((int&)Class->Stages) = Get_Build_Frame_Count(Class->Get_Image_Data());
+		((int8_t&)Class->Stages) = Get_Build_Frame_Count(Class->Get_Image_Data());
 		IsTheaterShape = false;
 	}
 	if (Class->LoopEnd == -1) {
-		((int&)Class->LoopEnd) = Class->Stages;
+		((int16_t&)Class->LoopEnd) = Class->Stages;
 	}
 #endif
 
@@ -700,11 +700,11 @@ void AnimClass::AI(void)
 #ifdef FIXIT_MULTI_SAVE
 		if (Class->Stages == -1) {
 			IsTheaterShape = Class->IsTheater;
-			((int&)Class->Stages) = Get_Build_Frame_Count(Class->Get_Image_Data());
+			((int8_t&)Class->Stages) = Get_Build_Frame_Count(Class->Get_Image_Data());
 			IsTheaterShape = false;
 		}
 		if (Class->LoopEnd == -1) {
-			((int&)Class->LoopEnd) = Class->Stages;
+			((int16_t&)Class->LoopEnd) = Class->Stages;
 		}
 #endif
 
@@ -778,11 +778,11 @@ void AnimClass::AI(void)
 
 						if (Class->Stages == -1) {
 IsTheaterShape = Class->IsTheater;
-							((int&)Class->Stages) = Get_Build_Frame_Count(Class->Get_Image_Data());
+							((int8_t&)Class->Stages) = Get_Build_Frame_Count(Class->Get_Image_Data());
 IsTheaterShape = false;
 						}
 						if (Class->LoopEnd == -1) {
-							((int&)Class->LoopEnd) = Class->Stages;
+							((int16_t&)Class->LoopEnd) = Class->Stages;
 						}
 
 						IsToDelete = false;

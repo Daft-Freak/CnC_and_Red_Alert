@@ -59,7 +59,7 @@ class AbstractTypeClass
 		**	variation number (e.g., UNIT_TANK1, UNIT_TANK2, etc.).
 		*/
 		RTTIType RTTI;
-		int ID;
+		uint16_t ID;
 
 		/*
 		**	This is the internal control name of the object. This name does
@@ -67,7 +67,7 @@ class AbstractTypeClass
 		**	used in scenario control files and for other text based unique
 		**	identification purposes.
 		*/
-		char IniName[24];
+		char IniName[14];
 
 		/*
 		**	The translated (language specific) text name number of this object.
@@ -75,7 +75,7 @@ class AbstractTypeClass
 		**	text file. Whenever the name of the object needs to be displayed,
 		**	this is used to determine the text string.
 		*/
-		int FullName;
+		uint16_t FullName;
 
 		AbstractTypeClass(RTTIType rtti, int id, int name, char const * ini);
 		AbstractTypeClass(NoInitClass const & ) {};
@@ -115,7 +115,7 @@ class HouseTypeClass : public AbstractTypeClass
 		**	This is the filename suffix to use when creating a house specific
 		**	file name. It is three characters long.
 		*/
-		char Suffix[_MAX_EXT];
+		char Suffix[4];
 
 		/*
 		**	This is the "lemon percentage" to use when determining if a particular
@@ -123,7 +123,7 @@ class HouseTypeClass : public AbstractTypeClass
 		**	flagged have a greater break-down chance. The percentage is expressed
 		**	as a fixed point number with 0x000 meaning 0% and 0x100 meaning 100%.
 		*/
-		unsigned Lemon;
+		uint16_t Lemon;
 
 		/*
 		**	This points to the default remap table for this house.
@@ -188,7 +188,7 @@ class ObjectTypeClass : public AbstractTypeClass
 		**	type. If the graphic name is a null string, then there is no graphic
 		**	associated with this object type.
 		*/
-		char GraphicName[_MAX_FNAME];
+		char GraphicName[9];
 
 		/*
 		**	Is this object squashable by heavy vehicles?  If it is, then the vehicle
@@ -432,7 +432,7 @@ class TechnoTypeClass : public ObjectTypeClass
 		**	If this is a transporter object (e.g., hovercraft, chinook, APC), then this
 		**	value specifies the maximum number of passengers it may carry.
 		*/
-		int MaxPassengers;
+		int8_t MaxPassengers;
 
 		/*
 		**	Most objects have the ability to reveal the terrain around themselves.
@@ -440,24 +440,30 @@ class TechnoTypeClass : public ObjectTypeClass
 		**	this value is 0, then this unit never reveals terrain. Bullets are
 		**	typically of this nature.
 		*/
-		int SightRange;
+		int8_t SightRange;
 
 		/*
 		**	This is the credit cost to produce this object (presuming production is
 		**	allowed).
 		*/
-		int Cost;
+		int16_t Cost;
 
 		/*
 		**	The tech level that this object can be produced at.
 		*/
-		unsigned Level;
+		int8_t Level;
+
+		/*
+		**	This is the maximum number of ammo shots this object can hold. If
+		**	this number is -1, then this indicates unlimited ammo.
+		*/
+		int8_t MaxAmmo;
 
 		/*
 		**	This specifies the building prerequisites required before an object
 		**	of this type can be produced.
 		*/
-		long Prerequisite;
+		uint32_t Prerequisite;
 
 		/*
 		**	The risk and reward values are used to determine targets and paths
@@ -466,7 +472,7 @@ class TechnoTypeClass : public ObjectTypeClass
 		**	greatest reward will be selected. The values assigned are
 		** arbitrary.
 		*/
-		int Risk,Reward;
+		int8_t Risk,Reward;
 
 		/*
 		**	This value indicates the maximum speed that this object can achieve.
@@ -480,25 +486,13 @@ class TechnoTypeClass : public ObjectTypeClass
 		SpeedType Speed;
 
 		/*
-		**	This is the maximum number of ammo shots this object can hold. If
-		**	this number is -1, then this indicates unlimited ammo.
-		*/
-		int MaxAmmo;
-
-		/*
 		**	This is a bit field representing the houses that are allowed to
 		**	own (by normal means) this particular object type. This value is
 		**	typically used in production contexts. It is possible for a side
 		**	to take possession of an object type otherwise not normally allowed.
 		**	This event usually occurs as a result of capture.
 		*/
-		long Ownable;
-
-		/*
-		**	This is the small icon image that is used to display the object in
-		**	the sidebar for construction selection purposes.
-		*/
-		void const * CameoData;
+		uint16_t Ownable;
 
 		/*
 		**	The number of animation frames allotted to rotation is specified here.
@@ -506,14 +500,20 @@ class TechnoTypeClass : public ObjectTypeClass
 		**	vehicles this value will be 32. There are some special case units that
 		**	have intermediate rotation frames.
 		*/
-		int Rotation;
+		int8_t Rotation;
 
 		/*
 		**	This is the rotational speed of the object. This value represents the
 		**	turret or body rotation speed expresses as 360/256ths rotation steps per
 		**	game tick.
 		*/
-		int ROT;
+		int8_t ROT;
+
+		/*
+		**	This is the small icon image that is used to display the object in
+		**	the sidebar for construction selection purposes.
+		*/
+		void const * CameoData;
 
 		/*
 		**	These are the weapons that this techno object is armed with.
@@ -526,17 +526,17 @@ class TechnoTypeClass : public ObjectTypeClass
 		**	'tip of the barrel' for the weapon. This is used for generating the bullet
 		**	at the proper location.
 		*/
-		int VerticalOffset;			// Distance to move north (compensates for perspective).
-		int PrimaryOffset;			// Offset along turret centerline and facing.
-		int PrimaryLateral;			// Sideways offset from turret centerline and facing.
-		int SecondaryOffset;
-		int SecondaryLateral;
+		uint8_t VerticalOffset;			// Distance to move north (compensates for perspective).
+		uint8_t PrimaryOffset;			// Offset along turret centerline and facing.
+		uint8_t PrimaryLateral;			// Sideways offset from turret centerline and facing.
+		uint8_t SecondaryOffset;
+		uint8_t SecondaryLateral;
 
 		/*
 		** Points you're awarded for destroying an object of this type, and
 		** points you lose if you lose an object of this type.
 		*/
-		int Points;
+		uint8_t Points;
 
 		//--------------------------------------------------------------------
 		TechnoTypeClass(NoInitClass const & x) : ObjectTypeClass(x) {}
@@ -666,7 +666,7 @@ class BuildingTypeClass : public TechnoTypeClass {
 		/*
 		**	Adjacent distance for building next to.
 		*/
-		int Adjacent;
+		int8_t Adjacent;
 
 		/*
 		**	This flag specifies the type of object this factory building can "produce". For non
@@ -708,14 +708,14 @@ class BuildingTypeClass : public TechnoTypeClass {
 		**	building's storage capacity is used to determine how much Tiberium can
 		**	be accumulated.
 		*/
-		int Capacity;
+		uint16_t Capacity;
 
 		/*
 		**	Each building type produces and consumes power. These values tell how
 		**	much.
 		*/
-		int Power;
-		int Drain;
+		int16_t Power;
+		int16_t Drain;
 
 		/*
 		**	This is the size of the building. This size value is a rough indication
@@ -732,9 +732,9 @@ class BuildingTypeClass : public TechnoTypeClass {
 		**	an exception since their animation is not merely cosmetic.
 		*/
 		typedef struct {
-			int	Start;			// Starting frame of animation.
-			int	Count;			// Number of frames in this animation.
-			int	Rate;				// Number of ticks to delay between each frame.
+			int8_t	Start;			// Starting frame of animation.
+			int8_t	Count;			// Number of frames in this animation.
+			int8_t	Rate;				// Number of ticks to delay between each frame.
 		} AnimControlType;
 		AnimControlType Anims[BSTATE_COUNT];
 
@@ -941,7 +941,7 @@ class UnitTypeClass : public TechnoTypeClass
 		/*
 		**	The width or height of the largest dimension for this unit.
 		*/
-		int MaxSize;
+		uint8_t MaxSize;
 
 		/*
 		**	This is the explicit unit class constructor.
@@ -1058,7 +1058,7 @@ class VesselTypeClass : public TechnoTypeClass
 		/*
 		**	The width or height of the largest dimension for this unit.
 		*/
-		int MaxSize;
+		uint8_t MaxSize;
 
 		/*
 		**	This is the explicit unit class constructor.
@@ -1183,17 +1183,17 @@ class InfantryTypeClass : public TechnoTypeClass
 		PipEnum Pip;
 
 		/*
-		**	This is an array of the various animation frame data for the actions that
-		**	the infantry may perform.
-		*/
-		DoInfoStruct const * DoControls;
-
-		/*
 		**	There are certain units with special animation sequences built into the
 		**	shape file. These values tell how many frames are used for the firing animation.
 		*/
 		char FireLaunch;
 		char ProneLaunch;
+
+		/*
+		**	This is an array of the various animation frame data for the actions that
+		**	the infantry may perform.
+		*/
+		DoInfoStruct const * DoControls;
 
 		/*
 		** This is a pointer to the special override remap table, which is
@@ -1300,7 +1300,7 @@ class AircraftTypeClass : public TechnoTypeClass
 		** an example of a plane that needs a slower approach speed to hit the
 		** airfield.
 		*/
-		int LandingSpeed;
+		uint8_t LandingSpeed;
 
 		AircraftTypeClass(NoInitClass const & x) : TechnoTypeClass(x) {}
 		AircraftTypeClass(
@@ -1491,14 +1491,14 @@ class BulletTypeClass : public ObjectTypeClass
 		**	projectile may explode. If this value is non-zero, then this override is
 		**	applied.
 		*/
-		int Arming;
+		uint8_t Arming;
 
 		/*
 		**	If this bullet is of the tumbling type, then this is the modulo to factor
 		**	into the game frame when determining what shape number to use for the
 		**	imagery.
 		*/
-		int Tumble;
+		uint8_t Tumble;
 
 		//---------------------------------------------------------------------
 		BulletTypeClass(NoInitClass const & x) : ObjectTypeClass(x) {}
@@ -1532,23 +1532,23 @@ class TerrainTypeClass : public ObjectTypeClass
 		TerrainType Type;
 
 		/*
-		**	This is the coordinate offset (from upper left) of where the center base
-		**	position of the terrain object lies. For trees, this would be the base of
-		**	the trunk. This is used for sorting purposes.
-		*/
-		COORDINATE CenterBase;
-
-		/*
 		**	This is the bitfield control that tells which theater this terrain object is
 		**	valid for. If the bit (1 << TheaterType) is true, then this terrain object
 		**	is allowed.
 		*/
-		int Theater;
+		uint8_t Theater;
 
 		/*
 		**	Does this terrain object get placed on the water instead of the ground?
 		*/
 		unsigned IsWaterBased:1;
+
+		/*
+		**	This is the coordinate offset (from upper left) of where the center base
+		**	position of the terrain object lies. For trees, this would be the base of
+		**	the trunk. This is used for sorting purposes.
+		*/
+		COORDINATE CenterBase;
 
 		//----------------------------------------------------------------
 		TerrainTypeClass(NoInitClass const & x) : ObjectTypeClass(x) {}
@@ -1725,7 +1725,7 @@ class AnimTypeClass : public ObjectTypeClass
 		**	as possible to ensure maximum performance. This is especially critical, since
 		**	animations always cause the cells under them to be redrawn every frame.
 		*/
-		int Size;
+		uint8_t Size;
 
 		/*
 		**	This is the frame that the animation is biggest. The biggest frame of animation
@@ -1733,7 +1733,7 @@ class AnimTypeClass : public ObjectTypeClass
 		**	causes, so these effects are delayed until this frame is reached. The end result
 		**	is to prevent the player from seeing craters "pop" into existence.
 		*/
-		int Biggest;
+		uint8_t Biggest;
 
 		/*
 		**	Some animations (when attached to another object) damage the object it
@@ -1748,40 +1748,40 @@ class AnimTypeClass : public ObjectTypeClass
 		**	Simple animation delay value between advancing of frames. This can
 		**	be overridden by the control list.
 		*/
-		int Delay;
+		uint8_t Delay;
 
 		/*
 		**	The starting frame number for each animation sequence. Usually this is
 		**	zero, but can sometimes be different if this animation is a sub sequence
 		**	of a larger animation file.
 		*/
-		int Start;
+		int16_t Start;
 
 		/*
 		**	Looping animations might start at a different frame than the initial one.
 		**	This is true for smoke effects that have a startup sequence followed by a
 		**	continuous looping sequence.
 		*/
-		int LoopStart;
+		int16_t LoopStart;
 
 		/*
 		**	For looping animations, this is the frame that will end all the middle loops
 		**	of the animation. The last loop of the animation will proceed until the Stages
 		**	has been fully completed.
 		*/
-		int LoopEnd;
+		int16_t LoopEnd;
 
 		/*
 		**	The number of stages that this animation sequence will progress through
 		**	before it loops or ends.
 		*/
-		int Stages;
+		int8_t Stages;
 
 		/*
 		**	This is the normal loop count for this animation. Usually this is one, but
 		**	for some animations, it may be larger.
 		*/
-		unsigned Loops;
+		uint16_t Loops;
 
 		/*
 		**	This is the sound effect to play when this animation starts. Usually, this
@@ -1859,13 +1859,13 @@ class OverlayTypeClass: public ObjectTypeClass
 		** If this overlay is a wall, how many stages of destruction are there
 		** for this wall type? i.e. sandbags = 2, concrete = 4, etc.
 		*/
-		int DamageLevels;
+		uint8_t DamageLevels;
 
 		/*
 		** If this overlay is a wall, what amount of damage is necessary
 		** before the wall takes damage?
 		*/
-		int DamagePoints;
+		uint8_t DamagePoints;
 
 		/*
 		**	Is this overlay graphic theater specific. This means that if there is
@@ -1972,8 +1972,8 @@ class SmudgeTypeClass : public ObjectTypeClass
 		**	these dimensions specify the number of cells wide and tall the
 		**	smudge is.
 		*/
-		int Width;
-		int Height;
+		int8_t Width;
+		int8_t Height;
 
 		/*
 		**	Is this smudge a crater type? If so, then a second crater can be added to

@@ -1683,7 +1683,7 @@ int CellClass::Reduce_Wall(int damage)
 			if (damage == -1 || damage >= wall.DamagePoints) {
 				destroyed = true;
 			} else {
-				destroyed = Random_Pick(0, wall.DamagePoints) < damage;
+				destroyed = Random_Pick(0, int(wall.DamagePoints)) < damage;
 			}
 
 			/*

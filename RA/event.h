@@ -175,6 +175,7 @@ class EventClass
 			} Specific;
 			struct {
 				RTTIType		Type;
+				short			Pad; // Cell needs to be aligned with ID in Specific
 				CELL			Cell;
 			} Place;
 			struct {
