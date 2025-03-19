@@ -106,14 +106,15 @@ class DisplayClass: public MapClass
 
 		static unsigned char FadingBrighten[256];
 		static unsigned char FadingShade[256];
-		static unsigned char FadingWayDark[256];
+
 		static unsigned char FadingLight[256];
+#ifdef SCENARIO_EDITOR
 		static unsigned char FadingGreen[256];
+#endif
 		static unsigned char FadingYellow[256];
 		static unsigned char FadingRed[256];
 		static unsigned char TranslucentTable[(MAGIC_COL_COUNT+1)*256];
 		static unsigned char WhiteTranslucentTable[(1+1)*256];
-		static unsigned char MouseTranslucentTable[(4+1)*256];
 		static void const *TransIconset;
 		static unsigned char UnitShadow[(USHADOW_COL_COUNT+1)*256];
 		static unsigned char UnitShadowAir[(USHADOW_COL_COUNT+1)*256];
