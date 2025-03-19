@@ -45,1981 +45,6 @@
 
 #include	"function.h"
 
-static AnimTypeClass const AtomBomb(
-	ANIM_ATOM_BLAST,						// Animation number.
-	"ATOMSFX",								// Data name of animation.
-	72,										// Maximum dimension of animation.
-	19,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	true,										// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const SputDoor(
-	ANIM_SPUTDOOR,							// Animation number.
-	"SPUTDOOR",								// Data name of animation.
-	42,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-// Electrocution death anim from Tesla coil
-static AnimTypeClass const ElectricDie(
-	ANIM_ELECT_DIE,						// Animation number.
-	"ELECTRO",									// Data name of animation.
-	16,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	true,										// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	3,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	5,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_FIRE_MED
-);
-
-// Electrocution death anim from Tesla coil for dog
-static AnimTypeClass const DogElectricDie(
-	ANIM_DOG_ELECT_DIE,					// Animation number.
-	"ELECTDOG",								// Data name of animation.
-	17,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	3,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	5,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_FIRE_MED
-);
-
-static AnimTypeClass const SAMN(
-	ANIM_SAM_N,								// Animation number.
-	"SAMFIRE",								// Data name of animation.
-	55,										// Maximum dimension of animation.
-	4,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18*0,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	18,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const SAMNW(
-	ANIM_SAM_NW,							// Animation number.
-	"SAMFIRE",								// Data name of animation.
-	55,										// Maximum dimension of animation.
-	22,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18*1,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	18,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const SAMW(
-	ANIM_SAM_W,								// Animation number.
-	"SAMFIRE",								// Data name of animation.
-	55,										// Maximum dimension of animation.
-	40,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18*2,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	18,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const SAMSW(
-	ANIM_SAM_SW,							// Animation number.
-	"SAMFIRE",								// Data name of animation.
-	55,										// Maximum dimension of animation.
-	58,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18*3,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	18,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const SAMS(
-	ANIM_SAM_S,								// Animation number.
-	"SAMFIRE",								// Data name of animation.
-	55,										// Maximum dimension of animation.
-	76,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18*4,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	18,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const SAMSE(
-	ANIM_SAM_SE,							// Animation number.
-	"SAMFIRE",								// Data name of animation.
-	55,										// Maximum dimension of animation.
-	94,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18*5,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	18,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const SAME(
-	ANIM_SAM_E,								// Animation number.
-	"SAMFIRE",								// Data name of animation.
-	55,										// Maximum dimension of animation.
-	112,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18*6,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	18,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const SAMNE(
-	ANIM_SAM_NE,							// Animation number.
-	"SAMFIRE",								// Data name of animation.
-	55,										// Maximum dimension of animation.
-	130,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18*7,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	18,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const LZSmoke(
-	ANIM_LZ_SMOKE,						// Animation number.
-	"SMOKLAND",								// Data name of animation.
-	32,										// Maximum dimension of animation.
-	72,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	72,										// Loop start frame number.
-	91,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	255,										// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-/*
-**	Flammable object burning animations. Primarily used on trees and buildings.
-*/
-static AnimTypeClass const BurnSmall(
-	ANIM_BURN_SMALL,						// Animation number.
-	"BURN-S",								// Data name of animation.
-	11,										// Maximum dimension of animation.
-	13,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 32),							// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	30,										// Loop start frame number.
-	62,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	4,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const BurnMed(
-	ANIM_BURN_MED,							// Animation number.
-	"BURN-M",								// Data name of animation.
-	14,										// Maximum dimension of animation.
-	13,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 16),							// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	30,										// Loop start frame number.
-	62,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	4,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const BurnBig(
-	ANIM_BURN_BIG,							// Animation number.
-	"BURN-L",								// Data name of animation.
-	23,										// Maximum dimension of animation.
-	13,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 10),							// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	30,										// Loop start frame number.
-	62,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	4,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-/*
-**	Flammable object burning animations that trail into smoke. Used for
-**	buildings and the gunboat.
-*/
-static AnimTypeClass const OnFireSmall(
-	ANIM_ON_FIRE_SMALL,					// Animation number.
-	"BURN-S",								// Data name of animation.
-	11,										// Maximum dimension of animation.
-	13,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 32),							// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	30,										// Loop start frame number.
-	62,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	4,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_SMOKE_M
-);
-static AnimTypeClass const OnFireMed(
-	ANIM_ON_FIRE_MED,						// Animation number.
-	"BURN-M",								// Data name of animation.
-	14,										// Maximum dimension of animation.
-	13,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 16),							// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	30,										// Loop start frame number.
-	62,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	4,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_ON_FIRE_SMALL
-);
-static AnimTypeClass const OnFireBig(
-	ANIM_ON_FIRE_BIG,						// Animation number.
-	"BURN-L",								// Data name of animation.
-	23,										// Maximum dimension of animation.
-	13,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 10),							// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	30,										// Loop start frame number.
-	62,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	4,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_ON_FIRE_MED
-);
-static AnimTypeClass const Parachute(
-	ANIM_PARACHUTE,						// Animation number.
-	"PARACH",								// Data name of animation.
-	32,										// Maximum dimension of animation.
-	15,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	4,											// Delay between frames.
-	0,											// Starting frame number.
-	7,											// Loop start frame number.
-	-1,										// Loopback frame number.
-	-1,										// Number of animation stages.
-	15,										// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const ParaBomb(
-	ANIM_PARA_BOMB,						// Animation number.
-	"PARABOMB",								// Data name of animation.
-	32,										// Maximum dimension of animation.
-	8,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	4,											// Delay between frames.
-	0,											// Starting frame number.
-	7,											// Loop start frame number.
-	-1,										// Loopback frame number.
-	-1,										// Number of animation stages.
-	15,										// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const FBall1(
-	ANIM_FBALL1,							// Animation number.
-	"FBALL1",								// Data name of animation.
-	67,										// Maximum dimension of animation.
-	6,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	true,										// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_KABOOM25,							// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Frag1(
-	ANIM_FRAG1,								// Animation number.
-	"FRAG1",									// Data name of animation.
-	45,										// Maximum dimension of animation.
-	3,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	true,										// Forms a crater?
-	true,										// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_KABOOM30,							// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const VehHit1(
-	ANIM_VEH_HIT1,							// Animation number.
-	"VEH-HIT1",								// Data name of animation.
-	30,										// Maximum dimension of animation.
-	4,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	true,										// Forms a crater?
-	true,										// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_KABOOM25,							// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const VehHit2(
-	ANIM_VEH_HIT2,							// Animation number.
-	"VEH-HIT2",								// Data name of animation.
-	21,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	true,										// Forms a crater?
-	true,										// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_KABOOM12,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const VehHit3(
-	ANIM_VEH_HIT3,							// Animation number.
-	"VEH-HIT3",								// Data name of animation.
-	19,										// Maximum dimension of animation.
-	3,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	true,										// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_KABOOM12,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const ArtExp1(
-	ANIM_ART_EXP1,							// Animation number.
-	"ART-EXP1",								// Data name of animation.
-	41,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	true,										// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_KABOOM22,							// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Napalm1(
-	ANIM_NAPALM1,							// Animation number.
-	"NAPALM1",								// Data name of animation.
-	21,										// Maximum dimension of animation.
-	5,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_FIRE_EXPLODE,						// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Napalm2(
-	ANIM_NAPALM2,							// Animation number.
-	"NAPALM2",								// Data name of animation.
-	41,										// Maximum dimension of animation.
-	5,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_FIRE_EXPLODE,						// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Napalm3(
-	ANIM_NAPALM3,							// Animation number.
-	"NAPALM3",								// Data name of animation.
-	78,										// Maximum dimension of animation.
-	5,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_FIRE_LAUNCH,							// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const SmokePuff(
-	ANIM_SMOKE_PUFF,						// Animation number.
-	"SMOKEY",								// Data name of animation.
-	24,										// Maximum dimension of animation.
-	2,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	true,										// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const FireBallFade(
-	ANIM_FBALL_FADE,						// Animation number.
-	"FB2",									// Data name of animation.
-	24,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Piff(
-	ANIM_PIFF,								// Animation number.
-	"PIFF",									// Data name of animation.
-	13,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const PiffPiff(
-	ANIM_PIFFPIFF,							// Animation number.
-	"PIFFPIFF",								// Data name of animation.
-	20,										// Maximum dimension of animation.
-	2,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Fire3(
-	ANIM_FIRE_SMALL,						// Animation number.
-	"FIRE3",									// Data name of animation.
-	23,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 32),							// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	2,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Fire1(
-	ANIM_FIRE_MED2,		 				// Animation number.
-	"FIRE1",									// Data name of animation.
-	23,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 16),							// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	3,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Fire4(
-	ANIM_FIRE_TINY,		 				// Animation number.
-	"FIRE4",									// Data name of animation.
-	7,											// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 32),							// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	3,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Fire2(
-	ANIM_FIRE_MED,							// Animation number.
-	"FIRE2",									// Data name of animation.
-	23,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	true,										// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	fixed(1, 16),							// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	3,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const OilFieldBurn(
-	ANIM_OILFIELD_BURN,					// Animation number.
-	"FLMSPT",								// Data name of animation.
-	42,										// Maximum dimension of animation.
-	58,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	33,										// Loop start frame number.
-	99,										// Ending frame of loop back.
-	66,										// Number of animation stages.
-	65535,									// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Gunfire(
-	ANIM_MUZZLE_FLASH,					// Animation number.
-	"GUNFIRE",								// Data name of animation.
-	16,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	true,										// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	1,											// Number of animation stages.
-	1,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const SmokeM(
-	ANIM_SMOKE_M,							// Animation number.
-	"SMOKE_M",								// Data name of animation.
-	28,										// Maximum dimension of animation.
-	30,										// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	67,										// Loop start frame number.
-	-1,										// Loopback frame number.
-	-1,										// Number of animation stages.
-	6,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-/*
-**	Mini-gun fire effect -- used by guard towers.
-*/
-static AnimTypeClass const GUNN(
-	ANIM_GUN_N,								// Animation number.
-	"MINIGUN",								// Data name of animation.
-	18,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	6,											// Number of animation stages.
-	0,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const GUNNW(
-	ANIM_GUN_NW,							// Animation number.
-	"MINIGUN",								// Data name of animation.
-	18,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	6,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	6,											// Number of animation stages.
-	0,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const GUNW(
-	ANIM_GUN_W,								// Animation number.
-	"MINIGUN",								// Data name of animation.
-	18,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	12,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	6,											// Number of animation stages.
-	0,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const GUNSW(
-	ANIM_GUN_SW,							// Animation number.
-	"MINIGUN",								// Data name of animation.
-	18,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	18,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	6,											// Number of animation stages.
-	0,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const GUNS(
-	ANIM_GUN_S,								// Animation number.
-	"MINIGUN",								// Data name of animation.
-	18,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	24,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	6,											// Number of animation stages.
-	0,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const GUNSE(
-	ANIM_GUN_SE,							// Animation number.
-	"MINIGUN",								// Data name of animation.
-	18,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	30,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	6,											// Number of animation stages.
-	0,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const GUNE(
-	ANIM_GUN_E,								// Animation number.
-	"MINIGUN",								// Data name of animation.
-	18,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	36,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	6,											// Number of animation stages.
-	0,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const GUNNE(
-	ANIM_GUN_NE,							// Animation number.
-	"MINIGUN",								// Data name of animation.
-	18,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	false,									// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	42,										// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Number of times the animation loops.
-	6,											// Number of animation stages.
-	0,											// Ending frame of loop back.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const CDeviator(
-	ANIM_CRATE_DEVIATOR,					// Animation number.
-	"DEVIATOR",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-
-static AnimTypeClass const CrateArmor(
-	ANIM_CRATE_ARMOR,						// Animation number.
-	"ARMOR",									// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const CrateSpeed(
-	ANIM_CRATE_SPEED,						// Animation number.
-	"SPEED",									// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-
-static AnimTypeClass const CrateFPower(
-	ANIM_CRATE_FPOWER,					// Animation number.
-	"FPOWER",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const CrateTQuake(
-	ANIM_CRATE_TQUAKE,					// Animation number.
-	"TQUAKE",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-
-static AnimTypeClass const CDollar(
-	ANIM_CRATE_DOLLAR,					// Animation number.
-	"DOLLAR",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const CEarth(
-	ANIM_CRATE_EARTH,						// Animation number.
-	"EARTH",									// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const CEmpulse(
-	ANIM_CRATE_EMPULSE,					// Animation number.
-	"EMPULSE",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const CInvun(
-	ANIM_CRATE_INVUN,						// Animation number.
-	"INVUN",									// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const CMine(
-	ANIM_CRATE_MINE,						// Animation number.
-	"MINE",									// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const CRapid(
-	ANIM_CRATE_RAPID,						// Animation number.
-	"RAPID",									// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const CStealth(
-	ANIM_CRATE_STEALTH,					// Animation number.
-	"STEALTH2",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const ChronoBox(
-	ANIM_CHRONO_BOX,						// Animation number.
-	"CHRONBOX",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const GPSBox(
-	ANIM_GPS_BOX,							// Animation number.
-	"GPSBOX",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const InvulBox(
-	ANIM_INVUL_BOX,						// Animation number.
-	"INVULBOX",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const ParaBox(
-	ANIM_PARA_BOX,							// Animation number.
-	"PARABOX",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-static AnimTypeClass const SonarBox(
-	ANIM_SONAR_BOX,						// Animation number.
-	"SONARBOX",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-
-static AnimTypeClass const CMissile(
-	ANIM_CRATE_MISSILE,					// Animation number.
-	"MISSILE2",								// Data name of animation.
-	48,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	2,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-
-static AnimTypeClass const MoveFlash(
-	ANIM_MOVE_FLASH,							// Animation number.
-	"MOVEFLSH",								// Data name of animation.
-	24,										// Maximum dimension of animation.
-	0,											// Biggest animation stage.
-	true,										// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	true,										// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE								// Follow up animation.
-);
-
-static AnimTypeClass const Corpse1(
-	ANIM_CORPSE1,							// Animation number.
-	"CORPSE1",								// Data name of animation.
-	24,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	true,										// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	true,										// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	15,										// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Corpse2(
-	ANIM_CORPSE2,							// Animation number.
-	"CORPSE2",								// Data name of animation.
-	24,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	true,										// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	true,										// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	15,										// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Corpse3(
-	ANIM_CORPSE3,							// Animation number.
-	"CORPSE3",								// Data name of animation.
-	24,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	true,										// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	true,										// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	15,										// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	0,											// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	0,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-
-static AnimTypeClass const Twinkle1(
-	ANIM_TWINKLE1,							// Animation number.
-	"TWINKLE1",								// Data name of animation.
-	8,											// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const Twinkle2(
-	ANIM_TWINKLE2,							// Animation number.
-	"TWINKLE2",								// Data name of animation.
-	8,											// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const Twinkle3(
-	ANIM_TWINKLE3,							// Animation number.
-	"TWINKLE3",								// Data name of animation.
-	8,											// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const Flak(
-	ANIM_FLAK,								// Animation number.
-	"FLAK",									// Data name of animation.
-	8,											// Maximum dimension of animation.
-	7,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_NONE,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const WaterExp1(
-	ANIM_WATER_EXP1,						// Animation number.
-	"H2O_EXP1",								// Data name of animation.
-	64,										// Maximum dimension of animation.
-	3,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_SPLASH,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const WaterExp2(
-	ANIM_WATER_EXP2,						// Animation number.
-	"H2O_EXP2",								// Data name of animation.
-	40,										// Maximum dimension of animation.
-	3,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_SPLASH,								// Sound effect to play.
-	ANIM_NONE
-);
-static AnimTypeClass const WaterExp3(
-	ANIM_WATER_EXP3,						// Animation number.
-	"H2O_EXP3",								// Data name of animation.
-	32,										// Maximum dimension of animation.
-	3,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_SPLASH,								// Sound effect to play.
-	ANIM_NONE
-);
-
-
-static AnimTypeClass const MineExp1(
-	ANIM_MINE_EXP1,						// Animation number.
-	"VEH-HIT2",								// Data name of animation.
-	21,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	true,										// Forms a crater?
-	false,									// Sticks to unit in square?
-	false,									// Ground level animation?
-	false,									// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	1,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_MINEBLOW,							// Sound effect to play.
-	ANIM_NONE
-);
-
-#ifdef FIXIT_ANTS
-static AnimTypeClass const AntDeath(
-	ANIM_ANT_DEATH,						// Animation number.
-	"ANTDIE",								// Data name of animation.
-	28,										// Maximum dimension of animation.
-	1,											// Biggest animation stage.
-	false,									// Theater specific art imagery?
-	true,										// Normalized animation rate?
-	false,									// Uses white translucent table?
-	false,									// Scorches the ground?
-	false,									// Forms a crater?
-	false,									// Sticks to unit in square?
-	true,										// Ground level animation?
-	true,										// Translucent colors in this animation?
-	false,									// Is this a flame thrower animation?
-	0,											// Damage to apply per tick (fixed point).
-	4,											// Delay between frames.
-	0,											// Starting frame number.
-	0,											// Loop start frame number.
-	-1,										// Ending frame of loop back.
-	-1,										// Number of animation stages.
-	1,											// Number of times the animation loops.
-	VOC_ANTDIE,								// Sound effect to play.
-	ANIM_NONE
-);
-#endif
-
 /***********************************************************************************************
  * AnimTypeClass::AnimTypeClass -- Constructor for animation types.                            *
  *                                                                                             *
@@ -2159,87 +184,1940 @@ void AnimTypeClass::Init_Heap(void)
 	**	are specified in the AnimType enumeration. This is necessary because the heap
 	**	allocation block index serves double duty as the type number index.
 	*/
-	new AnimTypeClass(FBall1);
-	new AnimTypeClass(FireBallFade);
-	new AnimTypeClass(Frag1);
-	new AnimTypeClass(VehHit1);
-	new AnimTypeClass(VehHit2);
-	new AnimTypeClass(VehHit3);
-	new AnimTypeClass(ArtExp1);
-	new AnimTypeClass(Napalm1);
-	new AnimTypeClass(Napalm2);
-	new AnimTypeClass(Napalm3);
-	new AnimTypeClass(SmokePuff);
-	new AnimTypeClass(Piff);
-	new AnimTypeClass(PiffPiff);
-	new AnimTypeClass(Fire3);
-	new AnimTypeClass(Fire2);
-	new AnimTypeClass(Fire1);
-	new AnimTypeClass(Fire4);
-	new AnimTypeClass(Gunfire);
-	new AnimTypeClass(SmokeM);
-	new AnimTypeClass(BurnSmall);
-	new AnimTypeClass(BurnMed);
-	new AnimTypeClass(BurnBig);
-	new AnimTypeClass(OnFireSmall);
-	new AnimTypeClass(OnFireMed);
-	new AnimTypeClass(OnFireBig);
-	new AnimTypeClass(SAMN);
-	new AnimTypeClass(SAMNE);
-	new AnimTypeClass(SAME);
-	new AnimTypeClass(SAMSE);
-	new AnimTypeClass(SAMS);
-	new AnimTypeClass(SAMSW);
-	new AnimTypeClass(SAMW);
-	new AnimTypeClass(SAMNW);
-	new AnimTypeClass(GUNN);
-	new AnimTypeClass(GUNNE);
-	new AnimTypeClass(GUNE);
-	new AnimTypeClass(GUNSE);
-	new AnimTypeClass(GUNS);
-	new AnimTypeClass(GUNSW);
-	new AnimTypeClass(GUNW);
-	new AnimTypeClass(GUNNW);
-	new AnimTypeClass(LZSmoke);
-	new AnimTypeClass(CDeviator);
-	new AnimTypeClass(CDollar);
-	new AnimTypeClass(CEarth);
-	new AnimTypeClass(CEmpulse);
-	new AnimTypeClass(CInvun);
-	new AnimTypeClass(CMine);
-	new AnimTypeClass(CRapid);
-	new AnimTypeClass(CStealth);
-	new AnimTypeClass(CMissile);
-	new AnimTypeClass(MoveFlash);
-	new AnimTypeClass(OilFieldBurn);
-	new AnimTypeClass(ElectricDie);
-	new AnimTypeClass(Parachute);
-	new AnimTypeClass(DogElectricDie);
-	new AnimTypeClass(Corpse1);
-	new AnimTypeClass(Corpse2);
-	new AnimTypeClass(Corpse3);
-	new AnimTypeClass(SputDoor);
-	new AnimTypeClass(AtomBomb);
-	new AnimTypeClass(ChronoBox);
-	new AnimTypeClass(GPSBox);
-	new AnimTypeClass(InvulBox);
-	new AnimTypeClass(ParaBox);
-	new AnimTypeClass(SonarBox);
-	new AnimTypeClass(Twinkle1);
-	new AnimTypeClass(Twinkle2);
-	new AnimTypeClass(Twinkle3);
-	new AnimTypeClass(Flak);
-	new AnimTypeClass(WaterExp1);
-	new AnimTypeClass(WaterExp2);
-	new AnimTypeClass(WaterExp3);
-	new AnimTypeClass(CrateArmor);
-	new AnimTypeClass(CrateSpeed);
-	new AnimTypeClass(CrateFPower);
-	new AnimTypeClass(CrateTQuake);
-	new AnimTypeClass(ParaBomb);
-	new AnimTypeClass(MineExp1);
+	new AnimTypeClass( // FBall1
+		ANIM_FBALL1,							// Animation number.
+		"FBALL1",								// Data name of animation.
+		67,										// Maximum dimension of animation.
+		6,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		true,										// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_KABOOM25,							// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // FireBallFade
+		ANIM_FBALL_FADE,						// Animation number.
+		"FB2",									// Data name of animation.
+		24,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Frag1
+		ANIM_FRAG1,								// Animation number.
+		"FRAG1",									// Data name of animation.
+		45,										// Maximum dimension of animation.
+		3,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		true,										// Forms a crater?
+		true,										// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_KABOOM30,							// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // VehHit1
+		ANIM_VEH_HIT1,							// Animation number.
+		"VEH-HIT1",								// Data name of animation.
+		30,										// Maximum dimension of animation.
+		4,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		true,										// Forms a crater?
+		true,										// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_KABOOM25,							// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // VehHit2
+		ANIM_VEH_HIT2,							// Animation number.
+		"VEH-HIT2",								// Data name of animation.
+		21,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		true,										// Forms a crater?
+		true,										// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_KABOOM12,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // VehHit3
+		ANIM_VEH_HIT3,							// Animation number.
+		"VEH-HIT3",								// Data name of animation.
+		19,										// Maximum dimension of animation.
+		3,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		true,										// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_KABOOM12,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // ArtExp1
+		ANIM_ART_EXP1,							// Animation number.
+		"ART-EXP1",								// Data name of animation.
+		41,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		true,										// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_KABOOM22,							// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Napalm1
+		ANIM_NAPALM1,							// Animation number.
+		"NAPALM1",								// Data name of animation.
+		21,										// Maximum dimension of animation.
+		5,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_FIRE_EXPLODE,						// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Napalm2
+		ANIM_NAPALM2,							// Animation number.
+		"NAPALM2",								// Data name of animation.
+		41,										// Maximum dimension of animation.
+		5,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_FIRE_EXPLODE,						// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Napalm3
+		ANIM_NAPALM3,							// Animation number.
+		"NAPALM3",								// Data name of animation.
+		78,										// Maximum dimension of animation.
+		5,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_FIRE_LAUNCH,							// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SmokePuff
+		ANIM_SMOKE_PUFF,						// Animation number.
+		"SMOKEY",								// Data name of animation.
+		24,										// Maximum dimension of animation.
+		2,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		true,										// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Piff
+		ANIM_PIFF,								// Animation number.
+		"PIFF",									// Data name of animation.
+		13,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // PiffPiff
+		ANIM_PIFFPIFF,							// Animation number.
+		"PIFFPIFF",								// Data name of animation.
+		20,										// Maximum dimension of animation.
+		2,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Fire3
+		ANIM_FIRE_SMALL,						// Animation number.
+		"FIRE3",									// Data name of animation.
+		23,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 32),							// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		2,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Fire2
+		ANIM_FIRE_MED,							// Animation number.
+		"FIRE2",									// Data name of animation.
+		23,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 16),							// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		3,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Fire1
+		ANIM_FIRE_MED2,		 				// Animation number.
+		"FIRE1",									// Data name of animation.
+		23,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 16),							// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		3,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Fire4
+		ANIM_FIRE_TINY,		 				// Animation number.
+		"FIRE4",									// Data name of animation.
+		7,											// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 32),							// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		3,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);	
+	new AnimTypeClass( // Gunfire
+		ANIM_MUZZLE_FLASH,					// Animation number.
+		"GUNFIRE",								// Data name of animation.
+		16,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		true,										// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		1,											// Number of animation stages.
+		1,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SmokeM
+		ANIM_SMOKE_M,							// Animation number.
+		"SMOKE_M",								// Data name of animation.
+		28,										// Maximum dimension of animation.
+		30,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		67,										// Loop start frame number.
+		-1,										// Loopback frame number.
+		-1,										// Number of animation stages.
+		6,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+
+	/*
+	**	Flammable object burning animations. Primarily used on trees and buildings.
+	*/
+	new AnimTypeClass( // BurnSmall
+		ANIM_BURN_SMALL,						// Animation number.
+		"BURN-S",								// Data name of animation.
+		11,										// Maximum dimension of animation.
+		13,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 32),							// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		30,										// Loop start frame number.
+		62,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		4,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // BurnMed
+		ANIM_BURN_MED,							// Animation number.
+		"BURN-M",								// Data name of animation.
+		14,										// Maximum dimension of animation.
+		13,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 16),							// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		30,										// Loop start frame number.
+		62,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		4,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // BurnBig
+		ANIM_BURN_BIG,							// Animation number.
+		"BURN-L",								// Data name of animation.
+		23,										// Maximum dimension of animation.
+		13,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 10),							// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		30,										// Loop start frame number.
+		62,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		4,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	/*
+	**	Flammable object burning animations that trail into smoke. Used for
+	**	buildings and the gunboat.
+	*/
+	new AnimTypeClass( // OnFireSmall
+		ANIM_ON_FIRE_SMALL,					// Animation number.
+		"BURN-S",								// Data name of animation.
+		11,										// Maximum dimension of animation.
+		13,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 32),							// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		30,										// Loop start frame number.
+		62,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		4,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_SMOKE_M
+	);
+	new AnimTypeClass( // OnFireMed
+		ANIM_ON_FIRE_MED,						// Animation number.
+		"BURN-M",								// Data name of animation.
+		14,										// Maximum dimension of animation.
+		13,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 16),							// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		30,										// Loop start frame number.
+		62,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		4,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_ON_FIRE_SMALL
+	);
+	new AnimTypeClass( // OnFireBig
+		ANIM_ON_FIRE_BIG,						// Animation number.
+		"BURN-L",								// Data name of animation.
+		23,										// Maximum dimension of animation.
+		13,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		fixed(1, 10),							// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		30,										// Loop start frame number.
+		62,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		4,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_ON_FIRE_MED
+	);
+	new AnimTypeClass( // SAMN
+		ANIM_SAM_N,								// Animation number.
+		"SAMFIRE",								// Data name of animation.
+		55,										// Maximum dimension of animation.
+		4,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18*0,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		18,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SAMNE
+		ANIM_SAM_NE,							// Animation number.
+		"SAMFIRE",								// Data name of animation.
+		55,										// Maximum dimension of animation.
+		130,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18*7,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		18,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SAME
+		ANIM_SAM_E,								// Animation number.
+		"SAMFIRE",								// Data name of animation.
+		55,										// Maximum dimension of animation.
+		112,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18*6,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		18,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SAMSE
+		ANIM_SAM_SE,							// Animation number.
+		"SAMFIRE",								// Data name of animation.
+		55,										// Maximum dimension of animation.
+		94,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18*5,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		18,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SAMS
+		ANIM_SAM_S,								// Animation number.
+		"SAMFIRE",								// Data name of animation.
+		55,										// Maximum dimension of animation.
+		76,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18*4,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		18,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SAMSW
+		ANIM_SAM_SW,							// Animation number.
+		"SAMFIRE",								// Data name of animation.
+		55,										// Maximum dimension of animation.
+		58,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18*3,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		18,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SAMW
+		ANIM_SAM_W,								// Animation number.
+		"SAMFIRE",								// Data name of animation.
+		55,										// Maximum dimension of animation.
+		40,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18*2,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		18,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SAMNW
+		ANIM_SAM_NW,							// Animation number.
+		"SAMFIRE",								// Data name of animation.
+		55,										// Maximum dimension of animation.
+		22,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18*1,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		18,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	/*
+	**	Mini-gun fire effect -- used by guard towers.
+	*/
+	new AnimTypeClass( // GUNN
+		ANIM_GUN_N,								// Animation number.
+		"MINIGUN",								// Data name of animation.
+		18,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		6,											// Number of animation stages.
+		0,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // GUNNE
+		ANIM_GUN_NE,							// Animation number.
+		"MINIGUN",								// Data name of animation.
+		18,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		42,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		6,											// Number of animation stages.
+		0,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // GUNE
+		ANIM_GUN_E,								// Animation number.
+		"MINIGUN",								// Data name of animation.
+		18,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		36,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		6,											// Number of animation stages.
+		0,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // GUNSE
+		ANIM_GUN_SE,							// Animation number.
+		"MINIGUN",								// Data name of animation.
+		18,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		30,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		6,											// Number of animation stages.
+		0,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // GUNS
+		ANIM_GUN_S,								// Animation number.
+		"MINIGUN",								// Data name of animation.
+		18,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		24,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		6,											// Number of animation stages.
+		0,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // GUNSW
+		ANIM_GUN_SW,							// Animation number.
+		"MINIGUN",								// Data name of animation.
+		18,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		18,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		6,											// Number of animation stages.
+		0,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // GUNW
+		ANIM_GUN_W,								// Animation number.
+		"MINIGUN",								// Data name of animation.
+		18,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		12,										// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		6,											// Number of animation stages.
+		0,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // GUNNW
+		ANIM_GUN_NW,							// Animation number.
+		"MINIGUN",								// Data name of animation.
+		18,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		6,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Number of times the animation loops.
+		6,											// Number of animation stages.
+		0,											// Ending frame of loop back.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // LZSmoke
+		ANIM_LZ_SMOKE,						// Animation number.
+		"SMOKLAND",								// Data name of animation.
+		32,										// Maximum dimension of animation.
+		72,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		72,										// Loop start frame number.
+		91,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		255,										// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // CDeviator
+		ANIM_CRATE_DEVIATOR,					// Animation number.
+		"DEVIATOR",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CDollar
+		ANIM_CRATE_DOLLAR,					// Animation number.
+		"DOLLAR",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CEarth
+		ANIM_CRATE_EARTH,						// Animation number.
+		"EARTH",									// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CEmpulse
+		ANIM_CRATE_EMPULSE,					// Animation number.
+		"EMPULSE",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CInvun
+		ANIM_CRATE_INVUN,						// Animation number.
+		"INVUN",									// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CMine
+		ANIM_CRATE_MINE,						// Animation number.
+		"MINE",									// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CRapid
+		ANIM_CRATE_RAPID,						// Animation number.
+		"RAPID",									// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CStealth
+		ANIM_CRATE_STEALTH,					// Animation number.
+		"STEALTH2",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CMissile
+		ANIM_CRATE_MISSILE,					// Animation number.
+		"MISSILE2",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // MoveFlash
+		ANIM_MOVE_FLASH,							// Animation number.
+		"MOVEFLSH",								// Data name of animation.
+		24,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		true,										// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		true,										// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // OilFieldBurn
+		ANIM_OILFIELD_BURN,					// Animation number.
+		"FLMSPT",								// Data name of animation.
+		42,										// Maximum dimension of animation.
+		58,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		33,										// Loop start frame number.
+		99,										// Ending frame of loop back.
+		66,										// Number of animation stages.
+		65535,									// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	// Electrocution death anim from Tesla coil
+	new AnimTypeClass( // ElectricDie
+		ANIM_ELECT_DIE,						// Animation number.
+		"ELECTRO",									// Data name of animation.
+		16,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		true,										// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		3,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		5,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_FIRE_MED
+	);
+	new AnimTypeClass( // Parachute
+		ANIM_PARACHUTE,						// Animation number.
+		"PARACH",								// Data name of animation.
+		32,										// Maximum dimension of animation.
+		15,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		4,											// Delay between frames.
+		0,											// Starting frame number.
+		7,											// Loop start frame number.
+		-1,										// Loopback frame number.
+		-1,										// Number of animation stages.
+		15,										// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	// Electrocution death anim from Tesla coil for dog
+	new AnimTypeClass( // DogElectricDie
+		ANIM_DOG_ELECT_DIE,					// Animation number.
+		"ELECTDOG",								// Data name of animation.
+		17,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		3,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		5,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_FIRE_MED
+	);
+	new AnimTypeClass( // Corpse1
+		ANIM_CORPSE1,							// Animation number.
+		"CORPSE1",								// Data name of animation.
+		24,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		true,										// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		true,										// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		15,										// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Corpse2
+		ANIM_CORPSE2,							// Animation number.
+		"CORPSE2",								// Data name of animation.
+		24,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		true,										// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		true,										// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		15,										// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Corpse3
+		ANIM_CORPSE3,							// Animation number.
+		"CORPSE3",								// Data name of animation.
+		24,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		true,										// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		true,										// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		15,										// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // SputDoor
+		ANIM_SPUTDOOR,							// Animation number.
+		"SPUTDOOR",								// Data name of animation.
+		42,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // AtomBomb
+		ANIM_ATOM_BLAST,						// Animation number.
+		"ATOMSFX",								// Data name of animation.
+		72,										// Maximum dimension of animation.
+		19,										// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		true,										// Scorches the ground?
+		true,										// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // ChronoBox
+		ANIM_CHRONO_BOX,						// Animation number.
+		"CHRONBOX",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // GPSBox
+		ANIM_GPS_BOX,							// Animation number.
+		"GPSBOX",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // InvulBox
+		ANIM_INVUL_BOX,						// Animation number.
+		"INVULBOX",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // ParaBox
+		ANIM_PARA_BOX,							// Animation number.
+		"PARABOX",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // SonarBox
+		ANIM_SONAR_BOX,						// Animation number.
+		"SONARBOX",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // Twinkle1
+		ANIM_TWINKLE1,							// Animation number.
+		"TWINKLE1",								// Data name of animation.
+		8,											// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Twinkle2
+		ANIM_TWINKLE2,							// Animation number.
+		"TWINKLE2",								// Data name of animation.
+		8,											// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Twinkle3
+		ANIM_TWINKLE3,							// Animation number.
+		"TWINKLE3",								// Data name of animation.
+		8,											// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // Flak
+		ANIM_FLAK,								// Animation number.
+		"FLAK",									// Data name of animation.
+		8,											// Maximum dimension of animation.
+		7,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // WaterExp1
+		ANIM_WATER_EXP1,						// Animation number.
+		"H2O_EXP1",								// Data name of animation.
+		64,										// Maximum dimension of animation.
+		3,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_SPLASH,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // WaterExp2
+		ANIM_WATER_EXP2,						// Animation number.
+		"H2O_EXP2",								// Data name of animation.
+		40,										// Maximum dimension of animation.
+		3,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_SPLASH,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // WaterExp3
+		ANIM_WATER_EXP3,						// Animation number.
+		"H2O_EXP3",								// Data name of animation.
+		32,										// Maximum dimension of animation.
+		3,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_SPLASH,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // CrateArmor
+		ANIM_CRATE_ARMOR,						// Animation number.
+		"ARMOR",									// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CrateSpeed
+		ANIM_CRATE_SPEED,						// Animation number.
+		"SPEED",									// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CrateFPower
+		ANIM_CRATE_FPOWER,					// Animation number.
+		"FPOWER",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // CrateTQuake
+		ANIM_CRATE_TQUAKE,					// Animation number.
+		"TQUAKE",								// Data name of animation.
+		48,										// Maximum dimension of animation.
+		0,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		2,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		0,											// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		0,											// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE								// Follow up animation.
+	);
+	new AnimTypeClass( // ParaBomb
+		ANIM_PARA_BOMB,						// Animation number.
+		"PARABOMB",								// Data name of animation.
+		32,										// Maximum dimension of animation.
+		8,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		false,									// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		4,											// Delay between frames.
+		0,											// Starting frame number.
+		7,											// Loop start frame number.
+		-1,										// Loopback frame number.
+		-1,										// Number of animation stages.
+		15,										// Number of times the animation loops.
+		VOC_NONE,								// Sound effect to play.
+		ANIM_NONE
+	);
+	new AnimTypeClass( // MineExp1
+		ANIM_MINE_EXP1,						// Animation number.
+		"VEH-HIT2",								// Data name of animation.
+		21,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		true,										// Forms a crater?
+		false,									// Sticks to unit in square?
+		false,									// Ground level animation?
+		false,									// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		1,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_MINEBLOW,							// Sound effect to play.
+		ANIM_NONE
+	);
 #ifdef FIXIT_ANTS
-	new AnimTypeClass(AntDeath);
+	new AnimTypeClass( // AntDeath
+		ANIM_ANT_DEATH,						// Animation number.
+		"ANTDIE",								// Data name of animation.
+		28,										// Maximum dimension of animation.
+		1,											// Biggest animation stage.
+		false,									// Theater specific art imagery?
+		true,										// Normalized animation rate?
+		false,									// Uses white translucent table?
+		false,									// Scorches the ground?
+		false,									// Forms a crater?
+		false,									// Sticks to unit in square?
+		true,										// Ground level animation?
+		true,										// Translucent colors in this animation?
+		false,									// Is this a flame thrower animation?
+		0,											// Damage to apply per tick (fixed point).
+		4,											// Delay between frames.
+		0,											// Starting frame number.
+		0,											// Loop start frame number.
+		-1,										// Ending frame of loop back.
+		-1,										// Number of animation stages.
+		1,											// Number of times the animation loops.
+		VOC_ANTDIE,								// Sound effect to play.
+		ANIM_NONE
+	);
 #endif
 }
 

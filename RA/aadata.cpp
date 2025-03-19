@@ -56,168 +56,6 @@
 void const * AircraftTypeClass::LRotorData = NULL;
 void const * AircraftTypeClass::RRotorData = NULL;
 
-// Badger bomber
-static AircraftTypeClass const BadgerPlane(
-	AIRCRAFT_BADGER,		// What kind of aircraft is this.
-	TXT_BADGER,				// Translated text number for aircraft.
-	"BADR",					// INI name of aircraft.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-		true,					// Fixed wing aircraft?
-		false,				// Equipped with a rotor?
-		false,				// Custom rotor sets for each facing?
-		false,				// Can this aircraft land on clear terrain?
-		true,					// Is it invisible on radar?
-		false,				// Can the player select it so as to give it orders?
-		true,					// Can it be assigned as a target for attack.
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it immune to normal combat damage?
-	STRUCT_NONE,			// Preferred landing building.
-	0xFF,						// Landing speed
-	16,						// Number of rotation stages.
-	MISSION_HUNT			// Default mission for aircraft.
-);
-
-// Photo recon plane.
-static AircraftTypeClass const U2Plane(
-	AIRCRAFT_U2,			// What kind of aircraft is this.
-	TXT_U2,					// Translated text number for aircraft.
-	"U2",						// INI name of aircraft.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-		true,					// Fixed wing aircraft?
-		false,				// Equipped with a rotor?
-		false,				// Custom rotor sets for each facing?
-		false,				// Can this aircraft land on clear terrain?
-		true,					// Is it invisible on radar?
-		false,				// Can the player select it so as to give it orders?
-		true,					// Can it be assigned as a target for attack.
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it immune to normal combat damage?
-	STRUCT_NONE,			// Preferred landing building.
-	0xFF,						// Landing speed
-	16,						// Number of rotation stages.
-	MISSION_HUNT			// Default mission for aircraft.
-);
-
-// Mig attack aircraft.
-static AircraftTypeClass const MigPlane(
-	AIRCRAFT_MIG,			// What kind of aircraft is this.
-	TXT_MIG,					// Translated text number for aircraft.
-	"MIG",					// INI name of aircraft.
-	0x0000,					//	Vertical offset.
-	0x0020,					// Primary weapon offset along turret centerline.
-	0x0020,					// Primary weapon lateral offset along turret centerline.
-		true,					// Fixed wing aircraft?
-		false,				// Equipped with a rotor?
-		false,				// Custom rotor sets for each facing?
-		false,				// Can this aircraft land on clear terrain?
-		true,					// Is it invisible on radar?
-		true,					// Can the player select it so as to give it orders?
-		true,					// Can it be assigned as a target for attack.
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it immune to normal combat damage?
-	STRUCT_AIRSTRIP,		// Preferred landing building.
-	0xC0,						// Landing speed
-	16,						// Number of rotation stages.
-	MISSION_HUNT			// Default mission for aircraft.
-);
-
-// Yak attack aircraft.
-static AircraftTypeClass const YakPlane(
-	AIRCRAFT_YAK,			// What kind of aircraft is this.
-	TXT_YAK,					// Translated text number for aircraft.
-	"YAK",					// INI name of aircraft.
-	0x0000,					//	Vertical offset.
-	0x0020,					// Primary weapon offset along turret centerline.
-	0x0020,					// Primary weapon lateral offset along turret centerline.
-		true,					// Fixed wing aircraft?
-		false,				// Equipped with a rotor?
-		false,				// Custom rotor sets for each facing?
-		false,				// Can this aircraft land on clear terrain?
-		true,					// Is it invisible on radar?
-		true,					// Can the player select it so as to give it orders?
-		true,					// Can it be assigned as a target for attack.
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it immune to normal combat damage?
-	STRUCT_AIRSTRIP,		// Preferred landing building.
-	0xFF,						// Landing speed
-	16,						// Number of rotation stages.
-	MISSION_HUNT			// Default mission for aircraft.
-);
-
-// Transport helicopter.
-static AircraftTypeClass const TransportHeli(
-	AIRCRAFT_TRANSPORT,	// What kind of aircraft is this.
-	TXT_TRANS,				// Translated text number for aircraft.
-	"TRAN",					// INI name of aircraft.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-		false,				// Fixed wing aircraft?
-		true,					// Equipped with a rotor?
-		true,					// Custom rotor sets for each facing?
-		true,					// Can this aircraft land on clear terrain?
-		true,					// Is it invisible on radar?
-		true,					// Can the player select it so as to give it orders?
-		true,					// Can it be assigned as a target for attack.
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it immune to normal combat damage?
-	STRUCT_NONE,			// Preferred landing building.
-	0xFF,						// Landing speed
-	32,						// Number of rotation stages.
-	MISSION_HUNT			// Default mission for aircraft.
-);
-
-// Longbow attack helicopter
-static AircraftTypeClass const AttackHeli(
-	AIRCRAFT_LONGBOW,		// What kind of aircraft is this.
-	TXT_HELI,				// Translated text number for aircraft.
-	"HELI",					// INI name of aircraft.
-	0x0000,					//	Vertical offset.
-	0x0040,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-		false,				// Fixed wing aircraft?
-		true,					// Equipped with a rotor?
-		false,				// Custom rotor sets for each facing?
-		false,				// Can this aircraft land on clear terrain?
-		true,					// Is it invisible on radar?
-		true,					// Can the player select it so as to give it orders?
-		true,					// Can it be assigned as a target for attack.
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it immune to normal combat damage?
-	STRUCT_HELIPAD,		// Preferred landing building.
-	0xFF,						// Landing speed
-	32,						// Number of rotation stages.
-	MISSION_HUNT			// Default mission for aircraft.
-);
-
-
-// Hind
-static AircraftTypeClass const OrcaHeli(
-	AIRCRAFT_HIND,			// What kind of aircraft is this.
-	TXT_ORCA,				// Translated text number for aircraft.
-	"HIND",					// INI name of aircraft.
-	0x0000,					//	Vertical offset.
-	0x0040,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-		false,				// Fixed wing aircraft?
-		true,					// Equipped with a rotor?
-		false,				// Custom rotor sets for each facing?
-		false,				// Can this aircraft land on clear terrain?
-		true,					// Is it invisible on radar?
-		true,					// Can the player select it so as to give it orders?
-		true,					// Can it be assigned as a target for attack.
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it immune to normal combat damage?
-	STRUCT_HELIPAD,		// Preferred landing building.
-	0xFF,						// Landing speed
-	32,						// Number of rotation stages.
-	MISSION_HUNT			// Default mission for aircraft.
-);
-
 
 /***********************************************************************************************
  * AircraftTypeClass::AircraftTypeClass -- Constructor for aircraft objects.                   *
@@ -356,13 +194,160 @@ void AircraftTypeClass::Init_Heap(void)
 	**	are specified in the AircraftSmen enumeration. This is necessary because the heap
 	**	allocation block index serves double duty as the type number index.
 	*/
-	new AircraftTypeClass(TransportHeli);
-	new AircraftTypeClass(BadgerPlane);
-	new AircraftTypeClass(U2Plane);
-	new AircraftTypeClass(MigPlane);
-	new AircraftTypeClass(YakPlane);
-	new AircraftTypeClass(AttackHeli);
-	new AircraftTypeClass(OrcaHeli);
+	// Transport helicopter
+	new AircraftTypeClass(
+		AIRCRAFT_TRANSPORT,	// What kind of aircraft is this.
+		TXT_TRANS,				// Translated text number for aircraft.
+		"TRAN",					// INI name of aircraft.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+			false,				// Fixed wing aircraft?
+			true,					// Equipped with a rotor?
+			true,					// Custom rotor sets for each facing?
+			true,					// Can this aircraft land on clear terrain?
+			true,					// Is it invisible on radar?
+			true,					// Can the player select it so as to give it orders?
+			true,					// Can it be assigned as a target for attack.
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it immune to normal combat damage?
+		STRUCT_NONE,			// Preferred landing building.
+		0xFF,						// Landing speed
+		32,						// Number of rotation stages.
+		MISSION_HUNT			// Default mission for aircraft.
+	);
+	// Badger bomber
+	new AircraftTypeClass(
+		AIRCRAFT_BADGER,		// What kind of aircraft is this.
+		TXT_BADGER,				// Translated text number for aircraft.
+		"BADR",					// INI name of aircraft.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+			true,					// Fixed wing aircraft?
+			false,				// Equipped with a rotor?
+			false,				// Custom rotor sets for each facing?
+			false,				// Can this aircraft land on clear terrain?
+			true,					// Is it invisible on radar?
+			false,				// Can the player select it so as to give it orders?
+			true,					// Can it be assigned as a target for attack.
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it immune to normal combat damage?
+		STRUCT_NONE,			// Preferred landing building.
+		0xFF,						// Landing speed
+		16,						// Number of rotation stages.
+		MISSION_HUNT			// Default mission for aircraft.
+	);
+	// Photo recon plane
+	new AircraftTypeClass(
+		AIRCRAFT_U2,			// What kind of aircraft is this.
+		TXT_U2,					// Translated text number for aircraft.
+		"U2",						// INI name of aircraft.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+			true,					// Fixed wing aircraft?
+			false,				// Equipped with a rotor?
+			false,				// Custom rotor sets for each facing?
+			false,				// Can this aircraft land on clear terrain?
+			true,					// Is it invisible on radar?
+			false,				// Can the player select it so as to give it orders?
+			true,					// Can it be assigned as a target for attack.
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it immune to normal combat damage?
+		STRUCT_NONE,			// Preferred landing building.
+		0xFF,						// Landing speed
+		16,						// Number of rotation stages.
+		MISSION_HUNT			// Default mission for aircraft.
+	);
+	// Mig attack aircraft
+	new AircraftTypeClass(
+		AIRCRAFT_MIG,			// What kind of aircraft is this.
+		TXT_MIG,					// Translated text number for aircraft.
+		"MIG",					// INI name of aircraft.
+		0x0000,					//	Vertical offset.
+		0x0020,					// Primary weapon offset along turret centerline.
+		0x0020,					// Primary weapon lateral offset along turret centerline.
+			true,					// Fixed wing aircraft?
+			false,				// Equipped with a rotor?
+			false,				// Custom rotor sets for each facing?
+			false,				// Can this aircraft land on clear terrain?
+			true,					// Is it invisible on radar?
+			true,					// Can the player select it so as to give it orders?
+			true,					// Can it be assigned as a target for attack.
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it immune to normal combat damage?
+		STRUCT_AIRSTRIP,		// Preferred landing building.
+		0xC0,						// Landing speed
+		16,						// Number of rotation stages.
+		MISSION_HUNT			// Default mission for aircraft.
+	);
+	// Yak attack aircraft
+	new AircraftTypeClass(
+		AIRCRAFT_YAK,			// What kind of aircraft is this.
+		TXT_YAK,					// Translated text number for aircraft.
+		"YAK",					// INI name of aircraft.
+		0x0000,					//	Vertical offset.
+		0x0020,					// Primary weapon offset along turret centerline.
+		0x0020,					// Primary weapon lateral offset along turret centerline.
+			true,					// Fixed wing aircraft?
+			false,				// Equipped with a rotor?
+			false,				// Custom rotor sets for each facing?
+			false,				// Can this aircraft land on clear terrain?
+			true,					// Is it invisible on radar?
+			true,					// Can the player select it so as to give it orders?
+			true,					// Can it be assigned as a target for attack.
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it immune to normal combat damage?
+		STRUCT_AIRSTRIP,		// Preferred landing building.
+		0xFF,						// Landing speed
+		16,						// Number of rotation stages.
+		MISSION_HUNT			// Default mission for aircraft.
+	);
+	// Longbow attack helicopter
+	new AircraftTypeClass(
+		AIRCRAFT_LONGBOW,		// What kind of aircraft is this.
+		TXT_HELI,				// Translated text number for aircraft.
+		"HELI",					// INI name of aircraft.
+		0x0000,					//	Vertical offset.
+		0x0040,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+			false,				// Fixed wing aircraft?
+			true,					// Equipped with a rotor?
+			false,				// Custom rotor sets for each facing?
+			false,				// Can this aircraft land on clear terrain?
+			true,					// Is it invisible on radar?
+			true,					// Can the player select it so as to give it orders?
+			true,					// Can it be assigned as a target for attack.
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it immune to normal combat damage?
+		STRUCT_HELIPAD,		// Preferred landing building.
+		0xFF,						// Landing speed
+		32,						// Number of rotation stages.
+		MISSION_HUNT			// Default mission for aircraft.
+	);
+	// Hind
+	new AircraftTypeClass(
+		AIRCRAFT_HIND,			// What kind of aircraft is this.
+		TXT_ORCA,				// Translated text number for aircraft.
+		"HIND",					// INI name of aircraft.
+		0x0000,					//	Vertical offset.
+		0x0040,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+			false,				// Fixed wing aircraft?
+			true,					// Equipped with a rotor?
+			false,				// Custom rotor sets for each facing?
+			false,				// Can this aircraft land on clear terrain?
+			true,					// Is it invisible on radar?
+			true,					// Can the player select it so as to give it orders?
+			true,					// Can it be assigned as a target for attack.
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it immune to normal combat damage?
+		STRUCT_HELIPAD,		// Preferred landing building.
+		0xFF,						// Landing speed
+		32,						// Number of rotation stages.
+		MISSION_HUNT			// Default mission for aircraft.
+	);
 }
 
 
