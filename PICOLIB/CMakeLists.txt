@@ -24,13 +24,26 @@ add_library(picolib STATIC
     ../SDLLIB/shape.cpp
     ../SDLLIB/wincomm.cpp
     ../SDLLIB/wsa.cpp
+
+    # driver code borrows a lot from the 32blit-sdk
+    driver/filesystem.cpp
+    driver/storage.cpp
+
+    driver/fatfs/ff.c
 )
+
+pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/spi.pio)
 
 target_include_directories(picolib PUBLIC ../SDLLIB/include) # hax
 target_include_directories(picolib PUBLIC ${CMAKE_CURRENT_LIST_DIR})
+target_include_directories(picolib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/driver)
 
-# lwip usage is mostly so socket code compiles
-target_link_libraries(picolib PUBLIC pico_stdlib pico_lwip pico_lwip_arch)
+target_link_libraries(picolib PUBLIC
+    hardware_pio
+    pico_stdlib
+    # lwip usage is mostly so socket code compiles
+    pico_lwip pico_lwip_arch
+)
 target_include_directories(picolib PUBLIC ${PICO_LWIP_PATH}/src/include/compat/posix)
 
 target_compile_definitions(picolib PUBLIC
