@@ -62,719 +62,6 @@ const int UnitTypeClass::Harvester_Load_List[9] = {0, 1, 2, 3, 4, 5, 6, 7, 0};
 const int UnitTypeClass::Harvester_Load_Count = 8;
 
 
-// V2 rocket launcher
-static UnitTypeClass const UnitV2Launcher(
-	UNIT_V2_LAUNCHER,
-	TXT_V2_LAUNCHER,		// NAME:			Text name of this unit type.
-	"V2RL",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Light tank
-static UnitTypeClass const UnitLTank(
-	UNIT_LTANK,
-	TXT_LTANK,				// NAME:			Text name of this unit type.
-	"1TNK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0020,					//	Vertical offset.
-	0x00C0,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		true,					// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Heavy tank
-static UnitTypeClass const UnitMTank(
-	UNIT_MTANK,
-	TXT_MTANK,				// NAME:			Text name of this unit type.
-	"3TNK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0040,					//	Vertical offset.
-	0x0080,					// Primary weapon offset along turret centerline.
-	0x0018,					// Primary weapon lateral offset along turret centerline.
-	0x0080,					// Secondary weapon offset along turret centerline.
-	0x0018,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		true,					// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Medium tank
-static UnitTypeClass const UnitMTank2(
-	UNIT_MTANK2,
-	TXT_MTANK2,				// NAME:			Text name of this unit type.
-	"2TNK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0030,					//	Vertical offset.
-	0x00C0,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x00C0,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		true,					// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Mastadon tank
-static UnitTypeClass const UnitHTank(
-	UNIT_HTANK,
-	TXT_HTANK,				// NAME:			Text name of this unit type.
-	"4TNK",					// NAME:			Text name of this unit type.
-	ANIM_ART_EXP1,			// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0020,					//	Vertical offset.
-	0x00C0,					// Primary weapon offset along turret centerline.
-	0x0028,					// Primary weapon lateral offset along turret centerline.
-	0x0008,					// Secondary weapon offset along turret centerline.
-	0x0040,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		true,					// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Mobile Radar Jammer
-static UnitTypeClass const UnitMRJammer(
-	UNIT_MRJ,
-	TXT_MRJ,					// NAME:			Text name of this unit type.
-	"MRJ",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		true,					// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		true,					// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		true,					// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Mobile Gap Generator
-static UnitTypeClass const UnitMGG(
-	UNIT_MGG,
-	TXT_MGG,					// NAME:			Text name of this unit type.
-	"MGG",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		true,					// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		true,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Artillery
-static UnitTypeClass const UnitArty(
-	UNIT_ARTY,
-	TXT_ARTY,				// NAME:			Text name of this unit type.
-	"ARTY",					// NAME:			Text name of this unit type.
-	ANIM_ART_EXP1,			// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0040,					//	Vertical offset.
-	0x0060,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		false,				// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Harvester
-static UnitTypeClass const UnitHarvester(
-	UNIT_HARVESTER,
-	TXT_HARVESTER,			// NAME:			Text name of this unit type.
-	"HARV",					// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_ALTERNATE,		// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		true,					// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		true,					// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HARVEST		// ORDERS:		Default order to give new unit.
-);
-
-// Mobile construction vehicle
-static UnitTypeClass const UnitMCV(
-	UNIT_MCV,
-	TXT_MCV,					// NAME:			Text name of this unit type.
-	"MCV",					// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_ALTERNATE,		// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Jeep (hummer)
-static UnitTypeClass const UnitJeep(
-	UNIT_JEEP,
-	TXT_JEEP,				// NAME:			Text name of this unit type.
-	"JEEP",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0030,					//	Vertical offset.
-	0x0030,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0030,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		false,				// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		true,					// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Armored personnel carrier
-static UnitTypeClass const UnitAPC(
-	UNIT_APC,
-	TXT_APC,					// NAME:			Text name of this unit type.
-	"APC",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0030,					//	Vertical offset.
-	0x0030,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0030,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Mine laying truck
-static UnitTypeClass const UnitMineLayer(
-	UNIT_MINELAYER,
-	TXT_MINE_LAYER,		// NAME:			Text name of this unit type.
-	"MNLY",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		true,					// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Convoy Truck
-static UnitTypeClass const UnitConvoyTruck(
-	UNIT_TRUCK,
-	TXT_TRUCK,				// NAME:			Text name of this unit type.
-	"TRUK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		false,				// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_GUARD			// ORDERS:		Default order to give new unit.
-);
-
-#ifdef FIXIT_ANTS
-/*
-[ANT]
-Name=Warrior Ant
-Primary=Mandible
-Strength=150
-Armor=light
-TechLevel=-1
-Sight=2
-Speed=5
-Cost=700
-Points=40
-ROT=5
-Tracked=yes
-Crewed=no
-NoMovingFire=yes
-
-; Ant mandible
-[Mandible]
-Damage=50
-ROF=5
-Range=1.5
-Projectile=Invisible
-Speed=100
-Warhead=HollowPoint
-Report=none
-
-
-*/
-
-// Warrior ant
-static UnitTypeClass const UnitAnt1(
-	UNIT_ANT1,
-	TXT_NONE,				// NAME:			Text name of this unit type.
-	"ANT1",					// NAME:			Text name of this unit type.
-	ANIM_ANT_DEATH,		// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		true,					// Always use the given name for the vehicle?
-		false,				// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		true,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	8,							// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-static UnitTypeClass const UnitAnt2(
-	UNIT_ANT2,
-	TXT_NONE,				// NAME:			Text name of this unit type.
-	"ANT2",					// NAME:			Text name of this unit type.
-	ANIM_ANT_DEATH,		// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		true,					// Always use the given name for the vehicle?
-		false,				// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		true,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	8,							// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-static UnitTypeClass const UnitAnt3(
-	UNIT_ANT3,
-	TXT_NONE,				// NAME:			Text name of this unit type.
-	"ANT3",					// NAME:			Text name of this unit type.
-	ANIM_ANT_DEATH,		// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		true,					// Always use the given name for the vehicle?
-		false,				// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		true,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	8,							// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-#endif
-
-#ifdef FIXIT_CSII	//	checked - ajw 9/28/98
-// Chrono Tank
-static UnitTypeClass const UnitChrono(
-	UNIT_CHRONOTANK,
-	TXT_CHRONOTANK,		// NAME:			Text name of this unit type.
-	"CTNK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// Tesla Tank
-static UnitTypeClass const UnitTesla(
-	UNIT_TESLATANK,
-	TXT_TESLATANK,			// NAME:			Text name of this unit type.
-	"TTNK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		true,					// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		true,					// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		true,					// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-// M.A.D. Tank
-static UnitTypeClass const UnitMAD(
-	UNIT_MAD,
-	TXT_MAD,					// NAME:			Text name of this unit type.
-	"QTNK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		true,					// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-
-// Demolition Truck
-static UnitTypeClass const UnitDemoTruck(
-	UNIT_DEMOTRUCK,
-	TXT_DEMOTRUCK,			// NAME:			Text name of this unit type.
-	"DTRK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		false,				// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		false,				// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_GUARD			// ORDERS:		Default order to give new unit.
-);
-#ifdef FIXIT_PHASETRANSPORT	//	checked - ajw 9/28/98
-static UnitTypeClass const UnitPhase(
-	UNIT_PHASE,
-	TXT_PHASETRANSPORT,	// NAME:			Text name of this unit type.
-	"STNK",					// NAME:			Text name of this unit type.
-	ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
-	REMAP_NORMAL,			// Sidebar remap logic.
-	0x0030,					//	Vertical offset.
-	0x0030,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0030,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Can this be a goodie surprise from a crate?
-		false,				// Always use the given name for the vehicle?
-		true,					// Can this unit squash infantry?
-		false,				// Does this unit harvest Tiberium?
-		false,				// Is invisible to radar?
-		false,				// Is it insignificant (won't be announced)?
-		true,					// Is it equipped with a combat turret?
-		false,				// Does it have a rotating radar dish?
-		false,				// Is there an associated firing animation?
-		false,				// Must the turret be in a locked down position while moving?
-true,//		false,				// Is this a gigundo-rotund-enormous unit?
-		false,				// Does the unit have a constant animation?
-		false,				// Is the unit capable of jamming radar?
-		false,				// Is the unit a mobile gap generator?
-	32,						// Rotation stages.
-	0,							// Turret center offset along body centerline.
-	MISSION_HUNT			// ORDERS:		Default order to give new unit.
-);
-
-#endif
-#endif
-
 /***********************************************************************************************
  * UnitTypeClass::UnitTypeClass -- Constructor for unit types.                                 *
  *                                                                                             *
@@ -930,33 +217,696 @@ void UnitTypeClass::Init_Heap(void)
 	**	are specified in the UnitType enumeration. This is necessary because the heap
 	**	allocation block index serves double duty as the type number index.
 	*/
-	new UnitTypeClass(UnitHTank);			//	UNIT_HTANK
-	new UnitTypeClass(UnitMTank);			//	UNIT_MTANK
-	new UnitTypeClass(UnitMTank2);		//	UNIT_MTANK2
-	new UnitTypeClass(UnitLTank);			//	UNIT_LTANK
-	new UnitTypeClass(UnitAPC);			//	UNIT_APC
-	new UnitTypeClass(UnitMineLayer);	// UNIT_MINELAYER
-	new UnitTypeClass(UnitJeep);			//	UNIT_JEEP
-	new UnitTypeClass(UnitHarvester);	//	UNIT_HARVESTER
-	new UnitTypeClass(UnitArty);			//	UNIT_ARTY
-	new UnitTypeClass(UnitMRJammer);		//	UNIT_MRJ
-	new UnitTypeClass(UnitMGG);			//	UNIT_MGG
-	new UnitTypeClass(UnitMCV);			// UNIT_MCV
-	new UnitTypeClass(UnitV2Launcher);	//	UNIT_V2_LAUNCHER
-	new UnitTypeClass(UnitConvoyTruck);	// UNIT_TRUCK
+	// Mastadon tank
+	new UnitTypeClass(				// UNIT_HTANK
+		UNIT_HTANK,
+		TXT_HTANK,				// NAME:			Text name of this unit type.
+		"4TNK",					// NAME:			Text name of this unit type.
+		ANIM_ART_EXP1,			// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0020,					//	Vertical offset.
+		0x00C0,					// Primary weapon offset along turret centerline.
+		0x0028,					// Primary weapon lateral offset along turret centerline.
+		0x0008,					// Secondary weapon offset along turret centerline.
+		0x0040,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			true,					// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Heavy tank
+	new UnitTypeClass(				// UNIT_MTANK
+		UNIT_MTANK,
+		TXT_MTANK,				// NAME:			Text name of this unit type.
+		"3TNK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0040,					//	Vertical offset.
+		0x0080,					// Primary weapon offset along turret centerline.
+		0x0018,					// Primary weapon lateral offset along turret centerline.
+		0x0080,					// Secondary weapon offset along turret centerline.
+		0x0018,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			true,					// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Medium tank
+	new UnitTypeClass(				// UNIT_MTANK2
+		UNIT_MTANK2,
+		TXT_MTANK2,				// NAME:			Text name of this unit type.
+		"2TNK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0030,					//	Vertical offset.
+		0x00C0,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x00C0,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			true,					// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Light tank
+	new UnitTypeClass(				// UNIT_LTANK
+		UNIT_LTANK,
+		TXT_LTANK,				// NAME:			Text name of this unit type.
+		"1TNK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0020,					//	Vertical offset.
+		0x00C0,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			true,					// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Armored personnel carrier
+	new UnitTypeClass(				// UNIT_APC
+		UNIT_APC,
+		TXT_APC,					// NAME:			Text name of this unit type.
+		"APC",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0030,					//	Vertical offset.
+		0x0030,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0030,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Mine laying truck
+	new UnitTypeClass(				// UNIT_MINELAYER
+		UNIT_MINELAYER,
+		TXT_MINE_LAYER,		// NAME:			Text name of this unit type.
+		"MNLY",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Jeep (hummer)
+	new UnitTypeClass(				// UNIT_JEEP
+		UNIT_JEEP,
+		TXT_JEEP,				// NAME:			Text name of this unit type.
+		"JEEP",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0030,					//	Vertical offset.
+		0x0030,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0030,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			false,				// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			true,					// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Harvester
+	new UnitTypeClass(				// UNIT_HARVESTER
+		UNIT_HARVESTER,
+		TXT_HARVESTER,			// NAME:			Text name of this unit type.
+		"HARV",					// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_ALTERNATE,		// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			true,					// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			true,					// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HARVEST		// ORDERS:		Default order to give new unit.
+	);
+	// Artillery
+	new UnitTypeClass(				// UNIT_ARTY
+		UNIT_ARTY,
+		TXT_ARTY,				// NAME:			Text name of this unit type.
+		"ARTY",					// NAME:			Text name of this unit type.
+		ANIM_ART_EXP1,			// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0040,					//	Vertical offset.
+		0x0060,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			false,				// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Mobile Radar Jammer
+	new UnitTypeClass(				// UNIT_MRJ
+		UNIT_MRJ,
+		TXT_MRJ,					// NAME:			Text name of this unit type.
+		"MRJ",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			true,					// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			true,					// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			true,					// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Mobile Gap Generator
+	new UnitTypeClass(				// UNIT_MGG
+		UNIT_MGG,
+		TXT_MGG,					// NAME:			Text name of this unit type.
+		"MGG",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			true,					// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			true,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Mobile construction vehicle
+	new UnitTypeClass(				// UNIT_MCV
+		UNIT_MCV,
+		TXT_MCV,					// NAME:			Text name of this unit type.
+		"MCV",					// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_ALTERNATE,		// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// V2 rocket launcher
+	new UnitTypeClass(				// UNIT_V2_LAUNCHER
+		UNIT_V2_LAUNCHER,
+		TXT_V2_LAUNCHER,		// NAME:			Text name of this unit type.
+		"V2RL",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			true,					// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Convoy Truck
+	new UnitTypeClass(				// UNIT_TRUCK
+		UNIT_TRUCK,
+		TXT_TRUCK,				// NAME:			Text name of this unit type.
+		"TRUK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			false,				// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_GUARD			// ORDERS:		Default order to give new unit.
+	);
 #ifdef FIXIT_ANTS
-	new UnitTypeClass(UnitAnt1);			// UNIT_ANT1
-	new UnitTypeClass(UnitAnt2);			// UNIT_ANT2
-	new UnitTypeClass(UnitAnt3);			// UNIT_ANT3
+	/*
+	[ANT]
+	Name=Warrior Ant
+	Primary=Mandible
+	Strength=150
+	Armor=light
+	TechLevel=-1
+	Sight=2
+	Speed=5
+	Cost=700
+	Points=40
+	ROT=5
+	Tracked=yes
+	Crewed=no
+	NoMovingFire=yes
+
+	; Ant mandible
+	[Mandible]
+	Damage=50
+	ROF=5
+	Range=1.5
+	Projectile=Invisible
+	Speed=100
+	Warhead=HollowPoint
+	Report=none
+
+
+	*/
+	// Warrior ant
+	new UnitTypeClass(				// UNIT_ANT1
+		UNIT_ANT1,
+		TXT_NONE,				// NAME:			Text name of this unit type.
+		"ANT1",					// NAME:			Text name of this unit type.
+		ANIM_ANT_DEATH,		// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			true,					// Always use the given name for the vehicle?
+			false,				// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			true,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		8,							// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	new UnitTypeClass(				// UNIT_ANT2
+		UNIT_ANT2,
+		TXT_NONE,				// NAME:			Text name of this unit type.
+		"ANT2",					// NAME:			Text name of this unit type.
+		ANIM_ANT_DEATH,		// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			true,					// Always use the given name for the vehicle?
+			false,				// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			true,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		8,							// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	new UnitTypeClass(				// UNIT_ANT3
+		UNIT_ANT3,
+		TXT_NONE,				// NAME:			Text name of this unit type.
+		"ANT3",					// NAME:			Text name of this unit type.
+		ANIM_ANT_DEATH,		// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			true,					// Always use the given name for the vehicle?
+			false,				// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			true,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		8,							// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
 #endif
 
 #ifdef FIXIT_CSII	//	checked - ajw 9/28/98
-	new UnitTypeClass(UnitChrono);		// UNIT_CHRONOTANK
-	new UnitTypeClass(UnitTesla);			// UNIT_TESLATANK
-	new UnitTypeClass(UnitMAD);			// UNIT_MAD
-	new UnitTypeClass(UnitDemoTruck);	// UNIT_DEMOTRUCK
+	// Chrono Tank
+	new UnitTypeClass(				// UNIT_CHRONOTANK
+		UNIT_CHRONOTANK,
+		TXT_CHRONOTANK,		// NAME:			Text name of this unit type.
+		"CTNK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Tesla Tank
+	new UnitTypeClass(				// UNIT_TESLATANK
+		UNIT_TESLATANK,
+		TXT_TESLATANK,			// NAME:			Text name of this unit type.
+		"TTNK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			true,					// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			true,					// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			true,					// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// M.A.D. Tank
+	new UnitTypeClass(				// UNIT_MAD
+		UNIT_MAD,
+		TXT_MAD,					// NAME:			Text name of this unit type.
+		"QTNK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			true,					// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
+	// Demolition Truck
+	new UnitTypeClass(				// UNIT_DEMOTRUCK
+		UNIT_DEMOTRUCK,
+		TXT_DEMOTRUCK,			// NAME:			Text name of this unit type.
+		"DTRK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			false,				// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			false,				// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+			false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_GUARD			// ORDERS:		Default order to give new unit.
+	);
 #ifdef FIXIT_PHASETRANSPORT	//	checked - ajw 9/28/98
-	new UnitTypeClass(UnitPhase);			//	UNIT_PHASETRANSPORT
+	new UnitTypeClass(				// UNIT_PHASE
+		UNIT_PHASE,
+		TXT_PHASETRANSPORT,	// NAME:			Text name of this unit type.
+		"STNK",					// NAME:			Text name of this unit type.
+		ANIM_FRAG1,				// EXPLOSION:	Type of explosion when destroyed.
+		REMAP_NORMAL,			// Sidebar remap logic.
+		0x0030,					//	Vertical offset.
+		0x0030,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0030,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Can this be a goodie surprise from a crate?
+			false,				// Always use the given name for the vehicle?
+			true,					// Can this unit squash infantry?
+			false,				// Does this unit harvest Tiberium?
+			false,				// Is invisible to radar?
+			false,				// Is it insignificant (won't be announced)?
+			true,					// Is it equipped with a combat turret?
+			false,				// Does it have a rotating radar dish?
+			false,				// Is there an associated firing animation?
+			false,				// Must the turret be in a locked down position while moving?
+	true,//		false,				// Is this a gigundo-rotund-enormous unit?
+			false,				// Does the unit have a constant animation?
+			false,				// Is the unit capable of jamming radar?
+			false,				// Is the unit a mobile gap generator?
+		32,						// Rotation stages.
+		0,							// Turret center offset along body centerline.
+		MISSION_HUNT			// ORDERS:		Default order to give new unit.
+	);
 #endif
 #endif
 

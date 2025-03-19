@@ -53,129 +53,6 @@
 #include	"type.h"
 
 
-static SmudgeTypeClass const Crater1 (
-	SMUDGE_CRATER1,
-	"CR1",
-	TXT_CRATER,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	true							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Crater2 (
-	SMUDGE_CRATER2,
-	"CR2",
-	TXT_CRATER,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	true							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Crater3 (
-	SMUDGE_CRATER3,
-	"CR3",
-	TXT_CRATER,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	true							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Crater4 (
-	SMUDGE_CRATER4,
-	"CR4",
-	TXT_CRATER,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	true							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Crater5 (
-	SMUDGE_CRATER5,
-	"CR5",
-	TXT_CRATER,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	true							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Crater6 (
-	SMUDGE_CRATER6,
-	"CR6",
-	TXT_CRATER,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	true							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Scorch1 (
-	SMUDGE_SCORCH1,
-	"SC1",
-	TXT_SCORCH,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Scorch2 (
-	SMUDGE_SCORCH2,
-	"SC2",
-	TXT_SCORCH,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Scorch3 (
-	SMUDGE_SCORCH3,
-	"SC3",
-	TXT_SCORCH,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Scorch4 (
-	SMUDGE_SCORCH4,
-	"SC4",
-	TXT_SCORCH,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Scorch5 (
-	SMUDGE_SCORCH5,
-	"SC5",
-	TXT_SCORCH,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Scorch6 (
-	SMUDGE_SCORCH6,
-	"SC6",
-	TXT_SCORCH,
-	1,1,							// Width and height of smudge (in icons).
-	false,						// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-
-static SmudgeTypeClass const Bibx1 (
-	SMUDGE_BIB1,
-	"BIB1",
-	TXT_BIB,
-	4,2,							// Width and height of smudge (in icons).
-	true,							// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Bibx2 (
-	SMUDGE_BIB2,
-	"BIB2",
-	TXT_BIB,
-	3,2,							// Width and height of smudge (in icons).
-	true,							// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-static SmudgeTypeClass const Bibx3 (
-	SMUDGE_BIB3,
-	"BIB3",
-	TXT_BIB,
-	2,2,							// Width and height of smudge (in icons).
-	true,							// Is this a building bib?
-	false							// Is this a crater smudge?
-);
-
-
 /***********************************************************************************************
  * SmudgeTypeClass::SmudgeTypeClass -- Constructor for smudge type objects.                    *
  *                                                                                             *
@@ -285,21 +162,126 @@ void SmudgeTypeClass::Init_Heap(void)
 	**	are specified in the SmudgeType enumeration. This is necessary because the heap
 	**	allocation block index serves double duty as the type number index.
 	*/
-	new SmudgeTypeClass(Crater1);			// SMUDGE_CRATER1
-	new SmudgeTypeClass(Crater2);			// SMUDGE_CRATER2
-	new SmudgeTypeClass(Crater3);			// SMUDGE_CRATER3
-	new SmudgeTypeClass(Crater4);			// SMUDGE_CRATER4
-	new SmudgeTypeClass(Crater5);			// SMUDGE_CRATER5
-	new SmudgeTypeClass(Crater6);			// SMUDGE_CRATER6
-	new SmudgeTypeClass(Scorch1);			// SMUDGE_SCORCH1
-	new SmudgeTypeClass(Scorch2);			// SMUDGE_SCORCH2
-	new SmudgeTypeClass(Scorch3);			// SMUDGE_SCORCH3
-	new SmudgeTypeClass(Scorch4);			// SMUDGE_SCORCH4
-	new SmudgeTypeClass(Scorch5);			// SMUDGE_SCORCH5
-	new SmudgeTypeClass(Scorch6);			// SMUDGE_SCORCH6
-	new SmudgeTypeClass(Bibx1);			// SMUDGE_BIB1
-	new SmudgeTypeClass(Bibx2);			//	SMUDGE_BIB2
-	new SmudgeTypeClass(Bibx3);			// SMUDGE_BIB3
+	new SmudgeTypeClass(				// SMUDGE_CRATER1
+		SMUDGE_CRATER1,
+		"CR1",
+		TXT_CRATER,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		true							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_CRATER2
+		SMUDGE_CRATER2,
+		"CR2",
+		TXT_CRATER,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		true							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_CRATER3
+		SMUDGE_CRATER3,
+		"CR3",
+		TXT_CRATER,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		true							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_CRATER4
+		SMUDGE_CRATER4,
+		"CR4",
+		TXT_CRATER,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		true							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_CRATER5
+		SMUDGE_CRATER5,
+		"CR5",
+		TXT_CRATER,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		true							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_CRATER6
+		SMUDGE_CRATER6,
+		"CR6",
+		TXT_CRATER,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		true							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_SCORCH1
+		SMUDGE_SCORCH1,
+		"SC1",
+		TXT_SCORCH,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_SCORCH2
+		SMUDGE_SCORCH2,
+		"SC2",
+		TXT_SCORCH,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_SCORCH3
+		SMUDGE_SCORCH3,
+		"SC3",
+		TXT_SCORCH,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_SCORCH4
+		SMUDGE_SCORCH4,
+		"SC4",
+		TXT_SCORCH,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_SCORCH5
+		SMUDGE_SCORCH5,
+		"SC5",
+		TXT_SCORCH,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_SCORCH6
+		SMUDGE_SCORCH6,
+		"SC6",
+		TXT_SCORCH,
+		1,1,							// Width and height of smudge (in icons).
+		false,						// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_BIB1
+		SMUDGE_BIB1,
+		"BIB1",
+		TXT_BIB,
+		4,2,							// Width and height of smudge (in icons).
+		true,							// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_BIB2
+		SMUDGE_BIB2,
+		"BIB2",
+		TXT_BIB,
+		3,2,							// Width and height of smudge (in icons).
+		true,							// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
+	new SmudgeTypeClass(				// SMUDGE_BIB3
+		SMUDGE_BIB3,
+		"BIB3",
+		TXT_BIB,
+		2,2,							// Width and height of smudge (in icons).
+		true,							// Is this a building bib?
+		false							// Is this a crater smudge?
+	);
 }
 
 

@@ -53,138 +53,6 @@
 
 #include "function.h"
 
-
-// Submarine
-static VesselTypeClass const VesselSubmarine(
-	VESSEL_SS,
-	TXT_SS,					// NAME:			Text name of this unit type.
-	"SS",						// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Only has eight facings?
-		true,					// Always use the given name for the vehicle?
-		false,				// Is it equipped with a combat turret?
-	8,							// Rotation stages.
-	14							// Turret center offset along body centerline.
-);
-
-// Destroyer
-static VesselTypeClass const VesselDestroyer(
-	VESSEL_DD,
-	TXT_DD,					// NAME:			Text name of this unit type.
-	"DD",						// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Only has eight facings?
-		true,					// Always use the given name for the vehicle?
-		true,					// Is it equipped with a combat turret?
-	8,							// Rotation stages.
-	14							// Turret center offset along body centerline.
-);
-
-// Cruiser
-static VesselTypeClass const VesselCruiser(
-	VESSEL_CA,
-	TXT_CA,					// NAME:			Text name of this unit type.
-	"CA",						// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Only has eight facings?
-		true,					// Always use the given name for the vehicle?
-		true,					// Is it equipped with a combat turret?
-	8,							// Rotation stages.
-	14							// Turret center offset along body centerline.
-);
-
-// Transport
-static VesselTypeClass const VesselTransport(
-	VESSEL_TRANSPORT,
-	TXT_TRANSPORT,			// NAME:			Text name of this unit type.
-	"LST",					// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Only has eight facings?
-		true,					// Always use the given name for the vehicle?
-		false,				// Is it equipped with a combat turret?
-	0,							// Rotation stages.
-	0							// Turret center offset along body centerline.
-);
-
-// Gun Boat
-static VesselTypeClass const VesselPTBoat(
-	VESSEL_PT,
-	TXT_PT,					// NAME:			Text name of this unit type.
-	"PT",						// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Only has eight facings?
-		true,					// Always use the given name for the vehicle?
-		true,					// Is it equipped with a combat turret?
-	8,							// Rotation stages.
-	14							// Turret center offset along body centerline.
-);
-
-
-#ifdef FIXIT_CSII	//	checked - ajw 9/28/98
-// Missile Submarine
-static VesselTypeClass const VesselMissileSubmarine(
-	VESSEL_MISSILESUB,
-	TXT_MISSILESUB,		// NAME:			Text name of this unit type.
-	"MSUB",					// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Only has eight facings?
-		true,					// Always use the given name for the vehicle?
-		false,				// Is it equipped with a combat turret?
-	8,							// Rotation stages.
-	14							// Turret center offset along body centerline.
-);
-#endif
-
-#ifdef FIXIT_CARRIER	//	checked - ajw 9/28/98
-// Transport
-static VesselTypeClass const VesselCarrier(
-	VESSEL_CARRIER,
-	TXT_CARRIER,			// NAME:			Text name of this unit type.
-	"CARR",					// NAME:			Text name of this unit type.
-	ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
-	0x0000,					//	Vertical offset.
-	0x0000,					// Primary weapon offset along turret centerline.
-	0x0000,					// Primary weapon lateral offset along turret centerline.
-	0x0000,					// Secondary weapon offset along turret centerline.
-	0x0000,					// Secondary weapon lateral offset along turret centerling.
-		false,				// Only has eight facings?
-		true,					// Always use the given name for the vehicle?
-		false,				// Is it equipped with a combat turret?
-	0,							// Rotation stages.
-	0							// Turret center offset along body centerline.
-);
-#endif
-
 /***********************************************************************************************
  * VesselTypeClass::VesselTypeClass -- Constructor for unit types.                             *
  *                                                                                             *
@@ -319,16 +187,129 @@ void VesselTypeClass::Init_Heap(void)
 	**	are specified in the VesselType enumeration. This is necessary because the heap
 	**	allocation block index serves double duty as the type number index.
 	*/
-	new VesselTypeClass(VesselSubmarine);				//	VESSEL_SS
-	new VesselTypeClass(VesselDestroyer);				//	VESSEL_DD
-	new VesselTypeClass(VesselCruiser);					// VESSEL_CA
-	new VesselTypeClass(VesselTransport);				// VESSEL_TRANSPORT
-	new VesselTypeClass(VesselPTBoat);					// VESSEL_PT
+	// Submarine
+	new VesselTypeClass(				// VESSEL_SS
+		VESSEL_SS,
+		TXT_SS,					// NAME:			Text name of this unit type.
+		"SS",						// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Only has eight facings?
+			true,					// Always use the given name for the vehicle?
+			false,				// Is it equipped with a combat turret?
+		8,							// Rotation stages.
+		14							// Turret center offset along body centerline.
+	);
+	// Destroyer
+	new VesselTypeClass(				// VESSEL_DD
+		VESSEL_DD,
+		TXT_DD,					// NAME:			Text name of this unit type.
+		"DD",						// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Only has eight facings?
+			true,					// Always use the given name for the vehicle?
+			true,					// Is it equipped with a combat turret?
+		8,							// Rotation stages.
+		14							// Turret center offset along body centerline.
+	);
+	// Cruiser
+	new VesselTypeClass(				// VESSEL_CA
+		VESSEL_CA,
+		TXT_CA,					// NAME:			Text name of this unit type.
+		"CA",						// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Only has eight facings?
+			true,					// Always use the given name for the vehicle?
+			true,					// Is it equipped with a combat turret?
+		8,							// Rotation stages.
+		14							// Turret center offset along body centerline.
+	);
+	// Transport
+	new VesselTypeClass(				// VESSEL_TRANSPORT
+		VESSEL_TRANSPORT,
+		TXT_TRANSPORT,			// NAME:			Text name of this unit type.
+		"LST",					// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Only has eight facings?
+			true,					// Always use the given name for the vehicle?
+			false,				// Is it equipped with a combat turret?
+		0,							// Rotation stages.
+		0							// Turret center offset along body centerline.
+	);
+	// Gun Boat
+	new VesselTypeClass(				// VESSEL_PT
+		VESSEL_PT,
+		TXT_PT,					// NAME:			Text name of this unit type.
+		"PT",						// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Only has eight facings?
+			true,					// Always use the given name for the vehicle?
+			true,					// Is it equipped with a combat turret?
+		8,							// Rotation stages.
+		14							// Turret center offset along body centerline.
+	);
+
 #ifdef FIXIT_CSII	//	checked - ajw 9/28/98
-	new VesselTypeClass(VesselMissileSubmarine);		// VESSEL_MISSILESUB
+	// Missile Submarine
+	new VesselTypeClass(				// VESSEL_MISSILESUB
+		VESSEL_MISSILESUB,
+		TXT_MISSILESUB,		// NAME:			Text name of this unit type.
+		"MSUB",					// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Only has eight facings?
+			true,					// Always use the given name for the vehicle?
+			false,				// Is it equipped with a combat turret?
+		8,							// Rotation stages.
+		14							// Turret center offset along body centerline.
+	);
 #endif
 #ifdef FIXIT_CARRIER	//	checked - ajw 9/28/98
-	new VesselTypeClass(VesselCarrier);					// VESSEL_CARRIER
+	// Transport
+	new VesselTypeClass(				// VESSEL_CARRIER
+		VESSEL_CARRIER,
+		TXT_CARRIER,			// NAME:			Text name of this unit type.
+		"CARR",					// NAME:			Text name of this unit type.
+		ANIM_FBALL1,			// EXPLOSION:	Type of explosion when destroyed.
+		0x0000,					//	Vertical offset.
+		0x0000,					// Primary weapon offset along turret centerline.
+		0x0000,					// Primary weapon lateral offset along turret centerline.
+		0x0000,					// Secondary weapon offset along turret centerline.
+		0x0000,					// Secondary weapon lateral offset along turret centerling.
+			false,				// Only has eight facings?
+			true,					// Always use the given name for the vehicle?
+			false,				// Is it equipped with a combat turret?
+		0,							// Rotation stages.
+		0							// Turret center offset along body centerline.
+	);
 #endif
 }
 
