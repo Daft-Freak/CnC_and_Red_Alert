@@ -4,8 +4,6 @@
 #include "iconcach.h"
 #include "gbuffer.h"
 
-static IconSetType IconSetList[MAX_ICON_SETS];
-
 static void const *LastIconset = NULL;
 static uint8_t *StampPtr = NULL;
 
@@ -218,23 +216,4 @@ void Restore_Cached_Icons(void)
 
 void Register_Icon_Set(void *icon_data, bool pre_cache)
 {
-	for (int i=0 ; i<MAX_ICON_SETS ; i++)
-    {
-		if (!IconSetList[i].IconSetPtr)
-        {
-			IconSetList[i].IconSetPtr = (IControl_Type*)icon_data;
-
-			if (i)
-            {
-				IControl_Type *previous_set = IconSetList[i-1].IconSetPtr;
-				IconSetList[i].IconListOffset = IconSetList[i-1].IconListOffset + ((int)previous_set->Count)*2;
-				if (IconSetList[i].IconListOffset > MAX_LOOKUP_ENTRIES*2)
-					IconSetList[i].IconSetPtr = NULL;
-			}
-            else
-				IconSetList[i].IconListOffset = 0;
-
-			return;
-		}
-	}
 }
