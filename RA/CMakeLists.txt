@@ -273,7 +273,6 @@ if(PICO_SDK_PATH)
 	target_compile_definitions(raspberry-alert PRIVATE
 		ENGLISH=1
 		PORTABLE=1 # to indicate not windows or dos sometimes
-		WINSOCK_IPX=1
 		LORES=1
 	)
 	target_link_libraries(raspberry-alert PRIVATE tech jshell port picolib vqa32)
