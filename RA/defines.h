@@ -401,7 +401,7 @@ typedef enum VQType {
 **	uses these and thus there can be no more RTTI types than can fit
 **	in the exponent of a target value.
 */
-typedef enum RTTIType {
+typedef enum RTTIType : uint8_t {
 	RTTI_NONE=0,
 	RTTI_AIRCRAFT,
 	RTTI_AIRCRAFTTYPE,
@@ -658,7 +658,7 @@ typedef enum ZoneType {
 **	movement characteristics. This enum specifies those characteristics
 **	and movement zones kept track of.
 */
-typedef enum MZoneType {
+typedef enum MZoneType : int8_t {
 	MZONE_NORMAL,				// Normal terrestrial objects (can't crush walls).
 	MZONE_CRUSHER,				// Can crush crushable wall types.
 	MZONE_DESTROYER,			// Can destroy walls.
@@ -975,7 +975,7 @@ typedef enum VisualType {
 **	a game object. Only one of these state machines is active at any one
 **	time.
 */
-typedef enum MissionType {
+typedef enum MissionType : int8_t {
 	MISSION_NONE=-1,
 
 	MISSION_SLEEP,				// Do nothing whatsoever.
@@ -1114,7 +1114,7 @@ enum ConcreteEnum {
 **	Units that move can move at different speeds. These enumerate the
 **	different speeds that a unit can move.
 */
-typedef enum MPHType{
+typedef enum MPHType : uint8_t{
 	MPH_IMMOBILE=0,
 	MPH_VERY_SLOW=5,				//	2
 	MPH_KINDA_SLOW=6,				//	3
@@ -1188,7 +1188,7 @@ typedef enum HousesType : int8_t {
 #define	HOUSEF_MULTI7	(1L<<HOUSE_MULTI7)
 #define	HOUSEF_MULTI8	(1L<<HOUSE_MULTI8)
 
-typedef enum PlayerColorType {
+typedef enum PlayerColorType : int8_t {
 	PCOLOR_NONE = -1,
 	PCOLOR_GOLD,
 	PCOLOR_LTBLUE,
@@ -1212,7 +1212,7 @@ typedef enum PlayerColorType {
 **	This enumerates the remap logic to be applied to an object type when
 **	it appears in the construction sidebar.
 */
-typedef enum RemapType {
+typedef enum RemapType : int8_t {
 	REMAP_NONE,
 	REMAP_NORMAL,
 	REMAP_ALTERNATE
@@ -1294,7 +1294,7 @@ typedef enum LayerType {
 **	This enumerates the various bullet types. These types specify bullet's
 **	visual and explosive characteristics.
 */
-typedef enum BulletType {
+typedef enum BulletType : int8_t {
 	BULLET_NONE=-1,
 
 	BULLET_INVISIBLE,
@@ -1326,7 +1326,7 @@ typedef enum BulletType {
 **	All game buildings (structures) are enumerated here. This includes
 **	civilian structures as well.
 */
-typedef enum StructType {
+typedef enum StructType : int8_t {
 	STRUCT_NONE=-1,
 	STRUCT_ADVANCED_TECH,
 	STRUCT_IRON_CURTAIN,
@@ -1514,7 +1514,7 @@ typedef enum OverlayType : int8_t {
 **	This specifies the infantry in the game. The "E" designation is
 **	similar to the army classification of enlisted soldiers.
 */
-typedef enum InfantryType{
+typedef enum InfantryType : int8_t {
 	INFANTRY_NONE=-1,
 	INFANTRY_E1,				// Mini-gun armed.
 	INFANTRY_E2,				// Grenade thrower.
@@ -1564,7 +1564,7 @@ typedef enum InfantryType{
 **	The game units are enumerated here. These include not only traditional
 **	vehicles, but also hovercraft and gunboats.
 */
-typedef enum UnitType{
+typedef enum UnitType : int8_t {
 	UNIT_NONE=-1,
 	UNIT_HTANK,					// Mammoth tank.
 	UNIT_MTANK,					// Heavy tank.
@@ -1623,7 +1623,7 @@ typedef enum UnitType{
 /**********************************************************************
 **	The naval vessels are enumerated below.
 */
-typedef enum VesselType{
+typedef enum VesselType : int8_t {
 	VESSEL_NONE=-1,
 
 	VESSEL_SS,						// Submarine
@@ -1659,7 +1659,7 @@ typedef enum VesselType{
 **	The various aircraft types are enumerated here. These include helicopters
 **	as well as traditional aircraft.
 */
-typedef enum AircraftType {
+typedef enum AircraftType : int8_t {
 	AIRCRAFT_TRANSPORT,			// Transport helicopter.
 	AIRCRAFT_BADGER,				// Badger bomber.
 	AIRCRAFT_U2,					// Photo recon plane.
@@ -2111,7 +2111,7 @@ typedef enum TemplateType : uint16_t {
 **	objects function similar to buildings in that they can be driven
 **	behind and can take damage on an individual basis.
 */
-typedef enum TerrainType {
+typedef enum TerrainType : int8_t {
 	TERRAIN_NONE=-1,
 	TERRAIN_TREE1,
 	TERRAIN_TREE2,
@@ -2163,7 +2163,7 @@ typedef enum TerrainType {
 **	drawn over the underlying terrain in order to give the effect of
 **	alterations to the terrain. Craters are a good example of this.
 */
-typedef enum SmudgeType {
+typedef enum SmudgeType : int8_t {
 	SMUDGE_NONE=-1,
 	SMUDGE_CRATER1,
 	SMUDGE_CRATER2,
@@ -2191,7 +2191,7 @@ typedef enum SmudgeType {
 **	Animations are enumerated here. Animations are the high speed and
 **	short lived effects that occur with explosions and fire.
 */
-typedef enum AnimType {
+typedef enum AnimType : int8_t {
 	ANIM_NONE=-1,
 	ANIM_FBALL1,					// Large fireball explosion (bulges rightward).
 	ANIM_FBALL_FADE,				// Fading fireball puff.
@@ -2481,7 +2481,7 @@ typedef enum SelectEnum {
 **	type. These special shapes are drawn over special objects or in other places
 **	where shape technology is needed.
 */
-typedef enum PipEnum
+typedef enum PipEnum : int8_t
 {
 	PIP_EMPTY,			// Empty pip spot.
 	PIP_FULL,			// Full pip spot.
@@ -2682,7 +2682,7 @@ typedef enum WeaponType {
 **	combination of armor and weaponry. Each vehicle or building has armor
 **	rated according to one of the following types.
 */
-typedef enum ArmorType {
+typedef enum ArmorType : int8_t {
 	ARMOR_NONE,			// Vulnerable to SA and HE.
 	ARMOR_WOOD,			// Vulnerable to HE and Fire.
 	ARMOR_ALUMINUM,	// Vulnerable to AP and SA.
@@ -2837,7 +2837,7 @@ typedef enum TextPrintType {
 **	a particular piece of ground must fall under one of these classifications.
 **	This is true, even if it is undergoing a temporary transition.
 */
-typedef enum LandType {
+typedef enum LandType : int8_t {
 	LAND_CLEAR,		// "Clear" terrain.
 	LAND_ROAD,		// Road terrain.
 	LAND_WATER,		// Water.
@@ -2884,7 +2884,7 @@ typedef struct {
 **	The trailing number is this define is the width and height (respectively)
 **	of the building in cells.
 */
-typedef enum BSizeType {
+typedef enum BSizeType : int8_t {
 	BSIZE_NONE=-1,
 	BSIZE_11=0,
 	BSIZE_21,
@@ -3039,7 +3039,7 @@ inline DirType operator + (DirType f1, int f2)
 **	its physical speed, but the means by which it travels (wheels, tracks,
 **	wings, etc). This is used to determine the movement table.
 */
-typedef enum SpeedType {
+typedef enum SpeedType : int8_t {
 	SPEED_NONE=-1,
 
 	SPEED_FOOT,					// Bipedal.
@@ -3056,7 +3056,7 @@ typedef enum SpeedType {
 /**********************************************************************
 **	These are the sound effect digitized sample file names.
 */
-typedef enum VocType{
+typedef enum VocType : int16_t {
 	VOC_NONE=-1,
 
 	VOC_GIRL_OKAY,			// "okay"
