@@ -530,7 +530,7 @@ int LoadOptionsClass::Process(void)
 						if (game_descr[0] == '(') {
 							char * ptr = strchr(game_descr, ')');
 							if (ptr != NULL) {
-								strcpy(game_descr, ptr+1);
+								memmove(game_descr, ptr + 1, strlen(ptr + 1) + 1);
 								strtrim(game_descr);
 							}
 						}
