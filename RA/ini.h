@@ -121,7 +121,7 @@ class INIClass {
 		*/
 		struct INIEntry : Node<INIEntry> {
 			INIEntry(char * entry = 0, char * value = 0) : Entry(entry), Value(value) {}
-			~INIEntry(void) {free(Entry);Entry = 0;free(Value);Value = 0;}
+			~INIEntry(void) {Entry = 0;Value = 0;}
 			int Index_ID(void) const {return(CRCEngine()(Entry, strlen(Entry)));};
 
 			char * Entry;
@@ -134,13 +134,18 @@ class INIClass {
 		*/
 		struct INISection : Node<INISection> {
 			INISection(char * section) : Section(section) {}
-			~INISection(void) {free(Section);Section = 0;EntryList.Delete();}
+			~INISection(void) {Section = 0;EntryList.Delete();}
 			INIEntry * Find_Entry(char const * entry) const;
 			int Index_ID(void) const {return(CRCEngine()(Section, strlen(Section)));};
 
 			char * Section;
 			List<INIEntry> EntryList;
 			IndexClass<INIEntry *>EntryIndex;
+		};
+
+		struct StringPoolChunk {
+			char Data[512];
+			StringPoolChunk *Next;
 		};
 
 		/*
@@ -150,12 +155,16 @@ class INIClass {
 		INIEntry * Find_Entry(char const * section, char const * entry) const;
 		static void Strip_Comments(char * buffer);
 
+		char *Get_Pool_String(const char * str);
+
 		/*
 		**	This is the list of all sections within this INI file.
 		*/
 		List<INISection> SectionList;
 
 		IndexClass<INISection *> SectionIndex;
+
+		StringPoolChunk *StringPool = NULL;
 };
 
 

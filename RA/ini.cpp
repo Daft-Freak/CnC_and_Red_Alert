@@ -139,6 +139,13 @@ bool INIClass::Clear(char const * section, char const * entry)
 	if (section == NULL) {
 		SectionList.Delete();
 		SectionIndex.Clear();
+
+		while(StringPool) {
+			StringPoolChunk *next = StringPool->Next;
+			delete StringPool;
+			StringPool = next;
+		}
+
 	} else {
 		INISection * secptr = Find_Section(section);
 		if (secptr != NULL) {
@@ -233,7 +240,7 @@ bool INIClass::Load(Straw & file)
 		char * ptr = strchr(buffer, ']');
 		if (ptr) *ptr = '\0';
 		strtrim(buffer);
-		INISection * secptr = new INISection(strdup(buffer));
+		INISection * secptr = new INISection(Get_Pool_String(buffer));
 		if (secptr == NULL) {
 			Clear();
 			return(false);
@@ -276,7 +283,7 @@ bool INIClass::Load(Straw & file)
 			strtrim(divider);
 			if (!strlen(divider)) continue;
 
-			INIEntry * entryptr = new INIEntry(strdup(buffer), strdup(divider));
+			INIEntry * entryptr = new INIEntry(Get_Pool_String(buffer), Get_Pool_String(divider));
 			if (entryptr == NULL) {
 				delete secptr;
 				Clear();
@@ -930,7 +937,7 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 	INISection * secptr = Find_Section(section);
 
 	if (secptr == NULL) {
-		secptr = new INISection(strdup(section));
+		secptr = new INISection(Get_Pool_String(section));
 		if (secptr == NULL) return(false);
 		SectionList.Add_Tail(secptr);
 		SectionIndex.Add_Index(secptr->Index_ID(), secptr);
@@ -949,7 +956,7 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 	**	Create and add the new entry.
 	*/
 	if (string != NULL && strlen(string) > 0) {
-		entryptr = new INIEntry(strdup(entry), strdup(string));
+		entryptr = new INIEntry(Get_Pool_String(entry), Get_Pool_String(string));
 
 		if (entryptr == NULL) {
 			return(false);
@@ -1288,4 +1295,40 @@ void INIClass::Strip_Comments(char * buffer)
 			strtrim(buffer);
 		}
 	}
+}
+
+char *INIClass::Get_Pool_String(const char *str)
+{
+	char *space = NULL;
+
+	for(StringPoolChunk *pool = StringPool; pool; pool = pool->Next) {
+		char *p = pool->Data;
+		char *end = p + sizeof(pool->Data);
+
+		while(p < end && *p) {
+			// found string in pool
+			if(strcmp(p, str) == 0)
+				return p;
+
+			p += strlen(p) + 1;
+		}
+
+		// found room for string in pool
+		if(p + strlen(str) + 1 < end)
+			space = p;
+		// keep going in case we find the string
+	}
+
+	// out of space, allocate new chunk
+	if(!space) {
+		StringPoolChunk *newpool = new StringPoolChunk;
+		memset(newpool->Data, 0, sizeof(newpool->Data));
+		newpool->Next = StringPool;
+		StringPool = newpool;
+		space = newpool->Data;
+	}
+
+	strcpy(space, str);
+
+	return space;
 }
