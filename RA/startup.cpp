@@ -590,7 +590,7 @@ int main(int argc, char * argv[])
 			WindowList[WINDOW_EDITOR][WINDOWWIDTH] = SeenBuff.Get_Width();
 			WindowList[WINDOW_EDITOR][WINDOWHEIGHT]= SeenBuff.Get_Height();
 
-			WWMouse = new WWMouseClass(&SeenBuff, 48, 48);
+			WWMouse = new WWMouseClass(&SeenBuff, 30, 24);
 			MouseInstalled = TRUE;
 
 			CDFileClass::Set_CD_Drive (CDList.Get_First_CD_Drive());
