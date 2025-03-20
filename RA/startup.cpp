@@ -58,10 +58,6 @@
 #include	"ipx95.h"
 #endif	//WIN32
 
-#ifdef PICO_BUILD
-void Pico_Init();
-#endif
-
 #ifdef MCIMPEG // Denzil 6/15/98
 #include "mcimovie.h"
 #endif
