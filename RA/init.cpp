@@ -1683,7 +1683,11 @@ void Anim_Init(void)
 	AnimControl.EventHandler = VQ_Event_Handler;
 	AnimControl.ImageWidth = 320;
 	AnimControl.ImageHeight = 200;
+#ifdef LORES
+	AnimControl.ImageBuf = (unsigned char *)HidPage.Get_Offset();
+#else
 	AnimControl.ImageBuf = (unsigned char *)SysMemPage.Get_Offset();
+#endif
 #ifdef MOVIE640
 	if(IsVQ640) {
 		AnimControl.ImageWidth = 640;
@@ -2576,10 +2580,13 @@ static void Init_Color_Remaps(void)
 	*/
 
 #ifdef WIN32
-
+#if RESFACTOR == 2
 	SysMemPage.Clear();
 	Load_Picture("PALETTE.CPS", SysMemPage, SysMemPage, NULL, BM_DEFAULT);
 	SysMemPage.Blit(HidPage);
+#else
+	Load_Picture("PALETTE.CPS", HiddenPage, HiddenPage, NULL, BM_DEFAULT);
+#endif
 #else
 	Load_Picture("PALETTE.CPS", HidPage, HidPage, NULL, BM_DEFAULT);
 #endif
