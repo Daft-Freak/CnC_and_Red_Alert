@@ -536,9 +536,21 @@ assert(filename != NULL);//BG
 	/*
 	**	Create the key block that will be used to binary search for the file.
 	*/
-	char *upperFilename = strupr(strdup(filename));
-	long crc = Calculate_CRC(upperFilename, strlen(filename));
-	free(upperFilename);
+	long crc;
+	bool isupper = true;
+	for(int i = 0; i < strlen(filename) && isupper; i++) {
+		if(filename[i] != toupper(filename[i]))
+			isupper = false;
+	}
+
+	if(isupper)
+		crc = Calculate_CRC((void *)filename, strlen(filename));
+	else {
+		char *upperFilename = strupr(strdup(filename));
+		crc = Calculate_CRC(upperFilename, strlen(filename));
+		free(upperFilename);
+	}
+
 	SubBlock key;
 	key.CRC = crc;
 
