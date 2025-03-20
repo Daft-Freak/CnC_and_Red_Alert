@@ -391,10 +391,12 @@ int RawFileClass::Is_Available(int forced)
 
 			if(Handle) {
 				// if successful, replace the filename with the working one
-				if(Allocated)
-					free((char *)Filename);
-
-				((char *&)Filename) = lower_name;
+				if(Allocated) {
+					strcpy((char *)Filename, lower_name);
+					free(lower_name);
+				} else
+					((char *&)Filename) = lower_name;
+				Allocated = true;
 			} else
 				free(lower_name);
 		}
