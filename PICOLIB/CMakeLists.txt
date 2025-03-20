@@ -28,6 +28,7 @@ add_library(picolib STATIC
 
     # driver code borrows a lot from the 32blit-sdk
     driver/filesystem.cpp
+    driver/psram.c
     driver/storage.cpp
 
     driver/fatfs/ff.c
