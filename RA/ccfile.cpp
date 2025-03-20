@@ -557,8 +557,11 @@ bool CCFileClass::Set_Date_Time( unsigned long datetime )
 */
 //extern "C" {
 
-
+#ifdef PORTABLE
+static CCFileClass Handles[2]; // one score + one wsa
+#else
 static CCFileClass Handles[10];
+#endif
 
 int __cdecl Open_File(char const * file_name, int mode)
 {
