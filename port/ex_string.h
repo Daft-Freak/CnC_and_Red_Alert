@@ -23,7 +23,7 @@ char *strrev(char *str);
 #ifdef PICO_BUILD
 inline char *strdup(const char *str)
 {
-    char *ret = (char *)malloc(strlen(str));
+    char *ret = (char *)malloc(strlen(str) + 1);
     strcpy(ret, str);
 
     return ret;
