@@ -375,6 +375,11 @@ bool MixFileClass<T>::Cache(Buffer const * buffer)
 	*/
 	if (Data != NULL) return(true);
 
+#ifdef PICO_BUILD
+	Data = (void *)Pico_Flash_Cache(Filename, DataStart, DataSize);
+	return Data != NULL;
+#endif
+
 	/*
 	**	If a buffer was supplied (and it is big enough), then use it as the data block
 	**	pointer. Otherwise, the data block must be allocated.
