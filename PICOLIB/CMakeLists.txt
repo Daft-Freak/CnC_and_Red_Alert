@@ -2,6 +2,7 @@ add_library(picolib STATIC
     audio.cpp
     drawbuff_pico.cpp
     file.cpp
+    flash_cache.cpp
     init.cpp
     keyboard.cpp
     lwip.c
