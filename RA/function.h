@@ -135,6 +135,10 @@ UnitTypeClass      │   BuildingTypeClass      │  VesselTypeClass
 #define RAWFILE_H
 #define MONOC_H
 
+#ifdef PICO_BUILD
+#include "picolib.h"
+#endif
+
 #define	_MAX_NAME	_MAX_FNAME
 
 #endif
