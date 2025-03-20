@@ -84,12 +84,12 @@ GraphicBufferClass *PseudoSeenBuff;
 #endif
 
 struct InfantryAnim {
-	int xpos;
-	int ypos;
+	int8_t xpos;
+	int8_t ypos;
 	void const *shapefile;
 	void const *remap;
-	int anim;
-	int stage;
+	int8_t anim;
+	int8_t stage;
 	char delay;
 	InfantryTypeClass const *Class;
 } InfantryMan[NUMINFANTRYMEN];
