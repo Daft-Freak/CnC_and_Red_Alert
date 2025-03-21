@@ -52,8 +52,12 @@
 #include	"options.h"
 #include	"infantry.h"
 
-
+#ifdef PICO_BUILD
+extern char *_staging_buffer;
+#else
 extern char _staging_buffer[32000];
+#endif
+
 extern "C" {
 void _PRO(void);
 }

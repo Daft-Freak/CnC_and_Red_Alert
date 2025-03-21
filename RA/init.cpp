@@ -2732,7 +2732,11 @@ static void Init_Heaps(void)
 	**	be played.
 	*/
 	for (int index = 0; index < ARRAY_SIZE(SpeechBuffer); index++) {
+#ifdef PICO_BUILD
+		SpeechBuffer[index] = new(MEM_FIXED_HEAP) char [SPEECH_BUFFER_SIZE];
+#else
 		SpeechBuffer[index] = new char [SPEECH_BUFFER_SIZE];
+#endif
 		SpeechRecord[index] = VOX_NONE;
 		assert(SpeechBuffer[index] != NULL);
 	}
@@ -2740,8 +2744,16 @@ static void Init_Heaps(void)
 	/*
 	**	Allocate the theater buffer block.
 	*/
+#ifdef PICO_BUILD
+	TheaterBuffer = new Buffer(new(MEM_FIXED_HEAP) char[THEATER_BUFFER_SIZE], THEATER_BUFFER_SIZE);
+#else
 	TheaterBuffer = new Buffer(THEATER_BUFFER_SIZE);
+#endif
 	assert(TheaterBuffer != NULL);
+
+#ifdef PICO_BUILD
+	_staging_buffer = new(MEM_FIXED_HEAP) char[32000];
+#endif
 }
 
 
