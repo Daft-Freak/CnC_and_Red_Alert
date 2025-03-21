@@ -50,6 +50,7 @@ typedef enum {
 	MEM_REAL   = 0x0004,		// Clear memory before returning.
 	MEM_TEMP   = 0x0008,		// Clear memory before returning.
 	MEM_LOCK   = 0x0010,		// Lock the memory that we allocated
+	MEM_FIXED_HEAP = 0x20, // allocation is for a fixed heap
 } MemoryFlagType;
 
 
