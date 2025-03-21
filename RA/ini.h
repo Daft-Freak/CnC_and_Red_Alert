@@ -48,6 +48,11 @@
 #include	"crc.h"
 #include	"search.h"
 
+#ifdef PICO_BUILD
+// big RAM usage
+#define INI_NO_INDEX
+#endif
+
 /*
 **	This is an INI database handler class. It handles a database with a disk format identical
 **	to the INI files commonly used by Windows.
@@ -140,7 +145,11 @@ class INIClass {
 
 			char * Section;
 			List<INIEntry> EntryList;
+#ifdef INI_NO_INDEX
+			int EntryCount = 0;
+#else
 			IndexClass<INIEntry *>EntryIndex;
+#endif
 		};
 
 		struct StringPoolChunk {
@@ -161,9 +170,11 @@ class INIClass {
 		**	This is the list of all sections within this INI file.
 		*/
 		List<INISection> SectionList;
-
+#ifdef INI_NO_INDEX
+		int SectionCount;
+#else
 		IndexClass<INISection *> SectionIndex;
-
+#endif
 		StringPoolChunk *StringPool = NULL;
 };
 
