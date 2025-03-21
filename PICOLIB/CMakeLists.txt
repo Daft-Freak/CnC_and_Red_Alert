@@ -27,6 +27,7 @@ add_library(picolib STATIC
     ../SDLLIB/wsa.cpp
 
     # driver code borrows a lot from the 32blit-sdk
+    driver/display_dbi.cpp
     driver/filesystem.cpp
     driver/psram.c
     driver/storage.cpp
@@ -36,13 +37,15 @@ add_library(picolib STATIC
 )
 
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/spi.pio)
+pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dbi-spi.pio)
+pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dbi-8bit.pio)
 
 target_include_directories(picolib PUBLIC ../SDLLIB/include) # hax
 target_include_directories(picolib PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_include_directories(picolib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/driver)
 
 target_link_libraries(picolib PUBLIC
-    hardware_pio
+    hardware_dma hardware_pio hardware_pwm
     pico_stdlib
     # lwip usage is mostly so socket code compiles
     pico_lwip pico_lwip_arch

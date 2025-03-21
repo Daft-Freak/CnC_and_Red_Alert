@@ -1,0 +1,8 @@
+.program dbi_raw
+.side_set 1 opt
+
+; raw serial, nothing special
+.wrap_target
+    out pins, 1 side 0
+    nop         side 1
+.wrap
