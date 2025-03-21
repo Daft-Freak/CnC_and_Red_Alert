@@ -125,12 +125,11 @@ class INIClass {
 		**	The entry identifier and value string are combined into this object.
 		*/
 		struct INIEntry : Node<INIEntry> {
-			INIEntry(char * entry = 0, char * value = 0) : Entry(entry), Value(value) {}
-			~INIEntry(void) {Entry = 0;Value = 0;}
-			int Index_ID(void) const {return(CRCEngine()(Entry, strlen(Entry)));};
+			INIEntry(uint16_t entry = ~0, uint16_t value = ~0) : Entry(entry), Value(value) {}
+			~INIEntry(void) {}
 
-			char * Entry;
-			char * Value;
+			uint16_t Entry;
+			uint16_t Value;
 		};
 
 		/*
@@ -138,15 +137,14 @@ class INIClass {
 		**	subordinate to this section are attached.
 		*/
 		struct INISection : Node<INISection> {
-			INISection(char * section) : Section(section) {}
-			~INISection(void) {Section = 0;EntryList.Delete();}
-			INIEntry * Find_Entry(char const * entry) const;
-			int Index_ID(void) const {return(CRCEngine()(Section, strlen(Section)));};
+			INISection(uint16_t section) : Section(section) {}
+			~INISection(void) {EntryList.Delete();}
+			INIEntry * Find_Entry(char const * entry, const INIClass *ini) const;
 
-			char * Section;
 			List<INIEntry> EntryList;
+			uint16_t Section;
 #ifdef INI_NO_INDEX
-			int EntryCount = 0;
+			uint16_t EntryCount = 0;
 #else
 			IndexClass<INIEntry *>EntryIndex;
 #endif
@@ -164,7 +162,12 @@ class INIClass {
 		INIEntry * Find_Entry(char const * section, char const * entry) const;
 		static void Strip_Comments(char * buffer);
 
-		char *Get_Pool_String(const char * str);
+		int Index_ID(INISection const * section);
+		int Index_ID(INIEntry const * entry);
+
+		uint16_t Lookup_Pool_String_Index(const char * str) const;
+		uint16_t Make_Pool_String_Index(const char * str);
+		const char *Lookup_Pool_String(uint16_t index) const;
 
 		/*
 		**	This is the list of all sections within this INI file.
