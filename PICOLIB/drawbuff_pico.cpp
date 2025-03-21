@@ -1,5 +1,7 @@
 #include "gbuffer.h"
+#include "timer.h"
 
+#include "display.h"
 
 bool GraphicBufferClass::Lock(void)
 {
@@ -32,10 +34,14 @@ bool GraphicBufferClass::Unlock(void)
 
 void GraphicBufferClass::Update_Window_Surface(bool end_frame)
 {
+    if(end_frame)
+        update_display(Get_Time_Ms());
+    // wait for sync?
 }
 
 void GraphicBufferClass::Update_Palette(uint8_t *palette)
 {
+    set_screen_palette(palette, 256);
     Update_Window_Surface(false);
 }
 
@@ -46,4 +52,5 @@ const void *GraphicBufferClass::Get_Palette() const
 
 void GraphicBufferClass::Init_Display_Surface()
 {
+    Offset = get_framebuffer();
 }
