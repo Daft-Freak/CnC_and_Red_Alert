@@ -1071,7 +1071,7 @@ void UnitTypeClass::One_Time(void)
 			largest = max(largest, (int)Get_Build_Frame_Height(ptr));
 		}
 
-		((int &)uclass.MaxSize) = max(largest, 8);
+		((uint8_t &)uclass.MaxSize) = max(largest, 8);
 	}
 
 	/*
