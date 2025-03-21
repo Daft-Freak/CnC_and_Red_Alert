@@ -1713,6 +1713,11 @@ void Anim_Init(void)
 		AnimControl.OptionFlags |= VQAOPTF_MONO;
 	}
 
+#ifdef PICO_BUILD
+	AnimControl.NumCBBufs = 2; // 1 blows up in LCW
+	AnimControl.NumFrameBufs = 1;
+#endif
+
 #else	//WIN32
 	/* Configure player with INI file */
 	VQA_DefaultConfig(&AnimControl);
