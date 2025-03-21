@@ -2,8 +2,18 @@
 
 #include "timer.h"
 
+#include "pico/stdlib.h"
+
 bool TimerSystemOn = false;
 
+static repeating_timer_t PicoTimer;
+
+static bool TimerCallback(repeating_timer_t *timer)
+{
+    ((WinTimerClass *)timer->user_data)->Update_Tick_Count();
+
+    return true;
+}
 
 // TimerClass/CountDownTimerClass are mostly used by TD
 // (RA has it's own impl)
@@ -79,12 +89,12 @@ long CountDownTimerClass::Time(void)
 
 WinTimerClass::WinTimerClass(unsigned freq, bool partial) : SysTicks(0), UserTicks(0)
 {
-	// create timer
+	add_repeating_timer_ms(1000 / freq, TimerCallback, this, &PicoTimer);
 }
 
 WinTimerClass::~WinTimerClass()
 {
-	//remove timer
+	cancel_repeating_timer(&PicoTimer);
 }
 
 void WinTimerClass::Update_Tick_Count(void)
@@ -100,5 +110,5 @@ unsigned WinTimerClass::Get_System_Tick_Count(void)
 
 uint32_t Get_Time_Ms()
 {
-    return 0;
+    return to_ms_since_boot(get_absolute_time());
 }
