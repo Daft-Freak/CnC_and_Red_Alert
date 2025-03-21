@@ -98,6 +98,7 @@
 #undef WIN32
 #include "SDL.h"
 #elif VQAPICO_SOUND
+#include "pico/stdlib.h"
 #elif(VQADIRECT_SOUND)
 void CALLBACK TimerCallback ( UINT event_id, UINT res1 , DWORD user, DWORD  res2, DWORD  res3 );
 BOOL Move_HMI_Audio_Block_To_Direct_Sound_Buffer (void);
@@ -3060,13 +3061,15 @@ unsigned long VQA_GetTime(VQAHandleP *vqap)
 		default:
 		case VQA_TMETHOD_DOS:
 			{
+#ifdef PICO_BUILD
+			ticks = to_ms_since_boot(get_absolute_time());
+#else
 			struct timeb mytime;
-#ifndef PICO_BUILD
 			ftime(&mytime);
  			ticks = (unsigned long)mytime.time*1000L+(unsigned long)mytime.millitm;
+#endif
 			ticks = ((ticks * VQA_TIMETICKS) / 1000L);
 			ticks += TickOffset;
-#endif
 			}
 			break;
 	}
