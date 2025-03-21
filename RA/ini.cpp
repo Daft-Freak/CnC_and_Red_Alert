@@ -154,7 +154,7 @@ bool INIClass::Clear(char const * section, char const * entry)
 		INISection * secptr = Find_Section(section);
 		if (secptr != NULL) {
 			if (entry != NULL) {
-				INIEntry * entptr = secptr->Find_Entry(entry);
+				INIEntry * entptr = secptr->Find_Entry(entry, this);
 				if (entptr != NULL) {
 #ifdef INI_NO_INDEX
 					secptr->EntryCount--;
@@ -162,7 +162,7 @@ bool INIClass::Clear(char const * section, char const * entry)
 					/*
 					**	Remove the entry from the entry index list.
 					*/
-					secptr->EntryIndex.Remove_Index(entptr->Index_ID());
+					secptr->EntryIndex.Remove_Index(Index_ID(entptr));
 #endif
 					delete entptr;
 				}
@@ -173,7 +173,7 @@ bool INIClass::Clear(char const * section, char const * entry)
 				/*
 				**	Remove this section index from the section index list.
 				*/
-				SectionIndex.Remove_Index(secptr->Index_ID());
+				SectionIndex.Remove_Index(Index_ID(secptr));
 #endif
 				delete secptr;
 			}
@@ -254,7 +254,7 @@ bool INIClass::Load(Straw & file)
 		char * ptr = strchr(buffer, ']');
 		if (ptr) *ptr = '\0';
 		strtrim(buffer);
-		INISection * secptr = new INISection(Get_Pool_String(buffer));
+		INISection * secptr = new INISection(Make_Pool_String_Index(buffer));
 		if (secptr == NULL) {
 			Clear();
 			return(false);
@@ -297,7 +297,7 @@ bool INIClass::Load(Straw & file)
 			strtrim(divider);
 			if (!strlen(divider)) continue;
 
-			INIEntry * entryptr = new INIEntry(Get_Pool_String(buffer), Get_Pool_String(divider));
+			INIEntry * entryptr = new INIEntry(Make_Pool_String_Index(buffer), Make_Pool_String_Index(divider));
 			if (entryptr == NULL) {
 				delete secptr;
 				Clear();
@@ -307,7 +307,7 @@ bool INIClass::Load(Straw & file)
 #ifdef INI_NO_INDEX
 			secptr->EntryCount++;
 #else
-			secptr->EntryIndex.Add_Index(entryptr->Index_ID(), entryptr);
+			secptr->EntryIndex.Add_Index(Index_ID(entryptr), entryptr);
 #endif
 			secptr->EntryList.Add_Tail(entryptr);
 		}
@@ -322,7 +322,7 @@ bool INIClass::Load(Straw & file)
 #ifdef INI_NO_INDEX
 			SectionCount++;
 #else
-			SectionIndex.Add_Index(secptr->Index_ID(), secptr);
+			SectionIndex.Add_Index(Index_ID(secptr), secptr);
 #endif
 			SectionList.Add_Tail(secptr);
 		}
@@ -378,7 +378,8 @@ int INIClass::Save(Pipe & pipe) const
 		**	Output the section identifier.
 		*/
 		total += pipe.Put("[", 1);
-		total += pipe.Put(secptr->Section, strlen(secptr->Section));
+		const char *str = Lookup_Pool_String(secptr->Section);
+		total += pipe.Put(str, strlen(str));
 		total += pipe.Put("]", 1);
 		total += pipe.Put("\r\n", strlen("\r\n"));
 
@@ -387,9 +388,11 @@ int INIClass::Save(Pipe & pipe) const
 		*/
 		INIEntry * entryptr = secptr->EntryList.First();
 		while (entryptr && entryptr->Is_Valid()) {
-			total += pipe.Put(entryptr->Entry, strlen(entryptr->Entry));
+			str = Lookup_Pool_String(entryptr->Entry);
+			total += pipe.Put(str, strlen(str));
 			total += pipe.Put("=", 1);
-			total += pipe.Put(entryptr->Value, strlen(entryptr->Value));
+			str = Lookup_Pool_String(entryptr->Value);
+			total += pipe.Put(str, strlen(str));
 			total += pipe.Put("\r\n", strlen("\r\n"));
 
 			entryptr = entryptr->Next();
@@ -432,8 +435,12 @@ INIClass::INISection * INIClass::Find_Section(char const * section) const
 	if (section != NULL) {
 #ifdef INI_NO_INDEX
 		// slow search
+		uint16_t secindex = Lookup_Pool_String_Index(section);
+		if(secindex == 0xFFFF)
+			return NULL;
+
 		for(INISection *sec = SectionList.First(); sec && sec->Is_Valid(); sec = sec->Next()) {
-			if(strcmp(sec->Section, section) == 0)
+			if(sec->Section == secindex)
 				return sec;
 		}
 #else
@@ -526,7 +533,7 @@ INIClass::INIEntry * INIClass::Find_Entry(char const * section, char const * ent
 {
 	INISection * secptr = Find_Section(section);
 	if (secptr != NULL) {
-		return(secptr->Find_Entry(entry));
+		return(secptr->Find_Entry(entry, this));
 	}
 	return(NULL);
 }
@@ -564,7 +571,7 @@ char const * INIClass::Get_Entry(char const * section, int index) const
 		INIEntry * entryptr = secptr->EntryList.First();
 
 		while (entryptr != NULL && entryptr->Is_Valid()) {
-			if (index == 0) return(entryptr->Entry);
+			if (index == 0) return(Lookup_Pool_String(entryptr->Entry));
 			index--;
 			entryptr = entryptr->Next();
 		}
@@ -872,15 +879,19 @@ int INIClass::Get_Int(char const * section, char const * entry, int defvalue) co
 	if (section == NULL || entry == NULL) return(defvalue);
 
 	INIEntry * entryptr = Find_Entry(section, entry);
-	if (entryptr && entryptr->Value != NULL) {
+	if (entryptr) {
 
-		if (*entryptr->Value == '$') {
-			sscanf(entryptr->Value, "$%x", &defvalue);
+		const char *str = Lookup_Pool_String(entryptr->Value);
+		if(!str)
+			return defvalue;
+
+		if (*str == '$') {
+			sscanf(str, "$%x", &defvalue);
 		} else {
-			if (tolower(entryptr->Value[strlen(entryptr->Value)-1]) == 'h') {
-				sscanf(entryptr->Value, "%xh", &defvalue);
+			if (tolower(str[strlen(str)-1]) == 'h') {
+				sscanf(str, "%xh", &defvalue);
 			} else {
-				defvalue = atoi(entryptr->Value);
+				defvalue = atoi(str);
 			}
 		}
 	}
@@ -946,8 +957,10 @@ int INIClass::Get_Hex(char const * section, char const * entry, int defvalue) co
 	if (section == NULL || entry == NULL) return(defvalue);
 
 	INIEntry * entryptr = Find_Entry(section, entry);
-	if (entryptr && entryptr->Value != NULL) {
-		sscanf(entryptr->Value, "%x", &defvalue);
+	if (entryptr) {
+		const char *str = Lookup_Pool_String(entryptr->Value);
+		if(str)
+			sscanf(str, "%x", &defvalue);
 	}
 	return(defvalue);
 }
@@ -980,25 +993,25 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 	INISection * secptr = Find_Section(section);
 
 	if (secptr == NULL) {
-		secptr = new INISection(Get_Pool_String(section));
+		secptr = new INISection(Make_Pool_String_Index(section));
 		if (secptr == NULL) return(false);
 		SectionList.Add_Tail(secptr);
 #ifdef INI_NO_INDEX
 		SectionCount++;
 #else
-		SectionIndex.Add_Index(secptr->Index_ID(), secptr);
+		SectionIndex.Add_Index(Index_ID(secptr), secptr);
 #endif
 	}
 
 	/*
 	**	Remove the old entry if found.
 	*/
-	INIEntry * entryptr = secptr->Find_Entry(entry);
+	INIEntry * entryptr = secptr->Find_Entry(entry, this);
 	if (entryptr != NULL) {
 #ifdef INI_NO_INDEX
 		secptr->EntryCount--;
 #else
-		secptr->EntryIndex.Remove_Index(entryptr->Index_ID());
+		secptr->EntryIndex.Remove_Index(Index_ID(entryptr));
 #endif
 		delete entryptr;
 	}
@@ -1007,7 +1020,7 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 	**	Create and add the new entry.
 	*/
 	if (string != NULL && strlen(string) > 0) {
-		entryptr = new INIEntry(Get_Pool_String(entry), Get_Pool_String(string));
+		entryptr = new INIEntry(Make_Pool_String_Index(entry), Make_Pool_String_Index(string));
 
 		if (entryptr == NULL) {
 			return(false);
@@ -1016,7 +1029,7 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 #ifdef INI_NO_INDEX
 		secptr->EntryCount++;
 #else
-		secptr->EntryIndex.Add_Index(entryptr->Index_ID(), entryptr);
+		secptr->EntryIndex.Add_Index(Index_ID(entryptr), entryptr);
 #endif
 	}
 	return(true);
@@ -1065,8 +1078,9 @@ int INIClass::Get_String(char const * section, char const * entry, char const * 
 	*/
 	INIEntry * entryptr = Find_Entry(section, entry);
 	if (entryptr) {
-		if (entryptr->Value) {
-			defvalue = entryptr->Value;
+		const char *str = Lookup_Pool_String(entryptr->Value);
+		if (str) {
+			defvalue = str;
 		}
 	}
 
@@ -1146,8 +1160,12 @@ bool INIClass::Get_Bool(char const * section, char const * entry, bool defvalue)
 	if (section == NULL || entry == NULL) return(defvalue);
 
 	INIEntry * entryptr = Find_Entry(section, entry);
-	if (entryptr && entryptr->Value != NULL) {
-		switch (toupper(*entryptr->Value)) {
+	if (entryptr) {
+		const char *str = Lookup_Pool_String(entryptr->Value);
+		if(!str)
+			return defvalue;
+
+		switch (toupper(*str)) {
 			case 'Y':
 			case 'T':
 			case '1':
@@ -1180,13 +1198,17 @@ bool INIClass::Get_Bool(char const * section, char const * entry, bool defvalue)
  *   07/03/1996 JLB : Created.                                                                 *
  *   11/02/1996 JLB : Uses index handler.                                                      *
  *=============================================================================================*/
-INIClass::INIEntry * INIClass::INISection::Find_Entry(char const * entry) const
+INIClass::INIEntry * INIClass::INISection::Find_Entry(char const * entry, const INIClass *ini) const
 {
 	if (entry != NULL) {
 #ifdef INI_NO_INDEX
 		// slow search
+		uint16_t entindex = ini->Lookup_Pool_String_Index(entry);
+		if(entindex == 0xFFFF)
+			return NULL;
+
 		for(INIEntry *ent = EntryList.First(); ent && ent->Is_Valid(); ent = ent->Next()) {
-			if(strcmp(ent->Entry, entry) == 0)
+			if(ent->Entry == entindex)
 				return ent;
 		}
 #else
@@ -1360,38 +1382,101 @@ void INIClass::Strip_Comments(char * buffer)
 	}
 }
 
-char *INIClass::Get_Pool_String(const char *str)
+int INIClass::Index_ID(INISection const * section)
 {
-	char *space = NULL;
+	const char *str = Lookup_Pool_String(section->Section);
+	return(CRCEngine()(str, strlen(str)));
+}
 
-	for(StringPoolChunk *pool = StringPool; pool; pool = pool->Next) {
+int INIClass::Index_ID(INIEntry const * entry)
+{
+	const char *str = Lookup_Pool_String(entry->Entry);
+	return(CRCEngine()(str, strlen(str)));
+}
+
+uint16_t INIClass::Lookup_Pool_String_Index(const char *str) const
+{
+	int pooloffset = 0;
+
+	for(StringPoolChunk *pool = StringPool; pool; pool = pool->Next, pooloffset += sizeof(pool->Data)) {
 		char *p = pool->Data;
 		char *end = p + sizeof(pool->Data);
 
 		while(p < end && *p) {
 			// found string in pool
 			if(strcmp(p, str) == 0)
-				return p;
+				return pooloffset + (p - pool->Data);
+
+			p += strlen(p) + 1;
+		}
+	}
+
+	return 0xFFFF;
+}
+
+uint16_t INIClass::Make_Pool_String_Index(const char *str)
+{
+	char *space = NULL;
+	StringPoolChunk *lastpool = NULL, *spacepool;
+	int pooloffset = 0, spacepooloffset;
+
+	for(StringPoolChunk *pool = StringPool; pool; pool = pool->Next, pooloffset += sizeof(pool->Data)) {
+		char *p = pool->Data;
+		char *end = p + sizeof(pool->Data);
+
+		while(p < end && *p) {
+			// found string in pool
+			if(strcmp(p, str) == 0)
+				return pooloffset + (p - pool->Data);
 
 			p += strlen(p) + 1;
 		}
 
 		// found room for string in pool
-		if(p + strlen(str) + 1 < end)
+		if(p + strlen(str) + 1 < end && !space) {
 			space = p;
+			spacepool = pool;
+			spacepooloffset = pooloffset;
+		}
 		// keep going in case we find the string
+
+		lastpool = pool;
 	}
 
 	// out of space, allocate new chunk
 	if(!space) {
+		assert(pooloffset < 0x10000);
+
 		StringPoolChunk *newpool = new StringPoolChunk;
 		memset(newpool->Data, 0, sizeof(newpool->Data));
-		newpool->Next = StringPool;
-		StringPool = newpool;
+		newpool->Next = NULL;
+
+		if(lastpool)
+			lastpool->Next = newpool;
+		else
+			StringPool = newpool;
+
 		space = newpool->Data;
+		spacepool = newpool;
+		spacepooloffset = pooloffset;
 	}
 
+	// add string
 	strcpy(space, str);
 
-	return space;
+	return spacepooloffset + (space - spacepool->Data);
+}
+
+const char *INIClass::Lookup_Pool_String(uint16_t index) const
+{
+	StringPoolChunk *p = StringPool;
+	while(index >= sizeof(StringPoolChunk::Data) && p) {
+		index -= sizeof(StringPoolChunk::Data);
+		p = p->Next;
+	}
+
+	if(!p)
+		return NULL;
+
+	return p->Data + index;
 }
