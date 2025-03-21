@@ -2,6 +2,7 @@
 
 #include "pico/stdlib.h"
 
+#include "display.h"
 #include "psram.h"
 #include "fatfs/ff.h"
 
@@ -19,7 +20,6 @@ static FATFS fs;
 
 void Pico_Init()
 {
-
     stdio_init_all();
 
     size_t psramSize = psram_init(PSRAM_CS_PIN);
@@ -30,4 +30,6 @@ void Pico_Init()
     f_chdir("/CnC/");
 
     Pico_Flash_Cache_Init();
+
+    init_display();
 }
