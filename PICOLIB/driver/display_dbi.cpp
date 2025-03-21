@@ -458,9 +458,9 @@ bool display_render_needed() {
 
 void set_screen_palette(const uint8_t *colours, int num_cols) {
   for(int i = 0; i < num_cols; i++) {
-    int r = colours[i * 3 + 0];
-    int g = colours[i * 3 + 1];
-    int b = colours[i * 3 + 2];
+    int r = colours[i * 3 + 0] << 2;
+    int g = colours[i * 3 + 1] << 2;
+    int b = colours[i * 3 + 2] << 2;
     screen_palette565[i] = (r >> 3) | ((g >> 2) << 5) | ((b >> 3) << 11);
   }
 }
