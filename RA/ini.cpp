@@ -164,6 +164,7 @@ bool INIClass::Clear(char const * section, char const * entry)
 					*/
 					secptr->EntryIndex.Remove_Index(Index_ID(entptr));
 #endif
+					secptr->Remove_Entry(entptr);
 					delete entptr;
 				}
 			} else {
@@ -263,6 +264,8 @@ bool INIClass::Load(Straw & file)
 		/*
 		**	Read in the entries of this section.
 		*/
+
+		INIEntry *tail = NULL;
 		while (!end_of_file) {
 
 			/*
@@ -309,14 +312,19 @@ bool INIClass::Load(Straw & file)
 #else
 			secptr->EntryIndex.Add_Index(Index_ID(entryptr), entryptr);
 #endif
-			secptr->EntryList.Add_Tail(entryptr);
+			if(!tail)
+				secptr->EntryList = entryptr;
+			else
+				tail->Next = entryptr;
+
+			tail = entryptr;
 		}
 
 		/*
 		**	All the entries for this section have been parsed. If this section is blank, then
 		**	don't bother storing it.
 		*/
-		if (secptr->EntryList.Is_Empty()) {
+		if (!secptr->EntryList) {
 			delete secptr;
 		} else {
 #ifdef INI_NO_INDEX
@@ -386,8 +394,8 @@ int INIClass::Save(Pipe & pipe) const
 		/*
 		**	Output all the entries and values in this section.
 		*/
-		INIEntry * entryptr = secptr->EntryList.First();
-		while (entryptr && entryptr->Is_Valid()) {
+		INIEntry * entryptr = secptr->EntryList;
+		while (entryptr) {
 			str = Lookup_Pool_String(entryptr->Entry);
 			total += pipe.Put(str, strlen(str));
 			total += pipe.Put("=", 1);
@@ -395,7 +403,7 @@ int INIClass::Save(Pipe & pipe) const
 			total += pipe.Put(str, strlen(str));
 			total += pipe.Put("\r\n", strlen("\r\n"));
 
-			entryptr = entryptr->Next();
+			entryptr = entryptr->Next;
 		}
 
 		/*
@@ -568,12 +576,12 @@ char const * INIClass::Get_Entry(char const * section, int index) const
 #endif
 
 	if (secptr != NULL && index < count) {
-		INIEntry * entryptr = secptr->EntryList.First();
+		INIEntry * entryptr = secptr->EntryList;
 
-		while (entryptr != NULL && entryptr->Is_Valid()) {
+		while (entryptr != NULL) {
 			if (index == 0) return(Lookup_Pool_String(entryptr->Entry));
 			index--;
-			entryptr = entryptr->Next();
+			entryptr = entryptr->Next;
 		}
 	}
 	return(NULL);
@@ -1013,6 +1021,9 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 #else
 		secptr->EntryIndex.Remove_Index(Index_ID(entryptr));
 #endif
+
+		secptr->Remove_Entry(entryptr);
+	
 		delete entryptr;
 	}
 
@@ -1025,7 +1036,17 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 		if (entryptr == NULL) {
 			return(false);
 		}
-		secptr->EntryList.Add_Tail(entryptr);
+
+		// find tail entry
+		INIEntry *tail = secptr->EntryList;
+		while(tail && tail->Next)
+			tail = tail->Next;
+
+		if(!tail)
+			secptr->EntryList = entryptr;
+		else
+			tail->Next = entryptr;
+
 #ifdef INI_NO_INDEX
 		secptr->EntryCount++;
 #else
@@ -1207,7 +1228,7 @@ INIClass::INIEntry * INIClass::INISection::Find_Entry(char const * entry, const 
 		if(entindex == 0xFFFF)
 			return NULL;
 
-		for(INIEntry *ent = EntryList.First(); ent && ent->Is_Valid(); ent = ent->Next()) {
+		for(INIEntry *ent = EntryList; ent; ent = ent->Next) {
 			if(ent->Entry == entindex)
 				return ent;
 		}
@@ -1221,6 +1242,18 @@ INIClass::INIEntry * INIClass::INISection::Find_Entry(char const * entry, const 
 	return(NULL);
 }
 
+void INIClass::INISection::Remove_Entry(INIEntry *entry)
+{
+	if(entry == EntryList)
+		EntryList = EntryList->Next;
+	else {
+		INIEntry *prev = EntryList;
+		while(prev->Next != entry)
+			prev = prev->Next;
+
+		prev->Next = entry->Next;
+	}
+}
 
 /***********************************************************************************************
  * INIClass::Put_PKey -- Stores the key to the INI database.                                   *

@@ -124,12 +124,12 @@ class INIClass {
 		**	The value entries for the INI file are stored as objects of this type.
 		**	The entry identifier and value string are combined into this object.
 		*/
-		struct INIEntry : Node<INIEntry> {
-			INIEntry(uint16_t entry = ~0, uint16_t value = ~0) : Entry(entry), Value(value) {}
-			~INIEntry(void) {}
+		struct INIEntry {
+			INIEntry(uint16_t entry = ~0, uint16_t value = ~0) : Entry(entry), Value(value), Next(NULL) {}
 
 			uint16_t Entry;
 			uint16_t Value;
+			INIEntry *Next;
 		};
 
 		/*
@@ -137,11 +137,12 @@ class INIClass {
 		**	subordinate to this section are attached.
 		*/
 		struct INISection : Node<INISection> {
-			INISection(uint16_t section) : Section(section) {}
-			~INISection(void) {EntryList.Delete();}
+			INISection(uint16_t section) : Section(section), EntryList(NULL) {}
+			~INISection(void) {while(EntryList){INIEntry *next = EntryList->Next; delete EntryList; EntryList = next;}}
 			INIEntry * Find_Entry(char const * entry, const INIClass *ini) const;
+			void Remove_Entry(INIEntry *entry);
 
-			List<INIEntry> EntryList;
+			INIEntry *EntryList;
 			uint16_t Section;
 #ifdef INI_NO_INDEX
 			uint16_t EntryCount = 0;
