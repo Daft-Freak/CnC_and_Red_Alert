@@ -4454,6 +4454,11 @@ bool Force_CD_Available( int cd_desired )				//	ajw
 			** The required CD is still in the CD drive we used last time
 			*/
 			new_cd_drive = current_drive;
+#ifdef PORTABLE
+			// we have a CD, nothing else to do
+			// (can't see that the below code does anything other than refresh the search path in this case)
+			return true;
+#endif
 		}
 	}
 
