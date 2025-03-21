@@ -138,7 +138,11 @@ bool INIClass::Clear(char const * section, char const * entry)
 {
 	if (section == NULL) {
 		SectionList.Delete();
+#ifdef INI_NO_INDEX
+		SectionCount = 0;
+#else
 		SectionIndex.Clear();
+#endif
 
 		while(StringPool) {
 			StringPoolChunk *next = StringPool->Next;
@@ -152,19 +156,25 @@ bool INIClass::Clear(char const * section, char const * entry)
 			if (entry != NULL) {
 				INIEntry * entptr = secptr->Find_Entry(entry);
 				if (entptr != NULL) {
+#ifdef INI_NO_INDEX
+					secptr->EntryCount--;
+#else
 					/*
 					**	Remove the entry from the entry index list.
 					*/
 					secptr->EntryIndex.Remove_Index(entptr->Index_ID());
-
+#endif
 					delete entptr;
 				}
 			} else {
+#ifdef INI_NO_INDEX
+				SectionCount--;
+#else
 				/*
 				**	Remove this section index from the section index list.
 				*/
 				SectionIndex.Remove_Index(secptr->Index_ID());
-
+#endif
 				delete secptr;
 			}
 		}
@@ -220,6 +230,10 @@ bool INIClass::Load(Straw & file)
 #ifdef FIXIT_FAST_LOAD
 	CacheStraw file;
 	file.Get_From(ffile);
+#endif
+
+#ifdef INI_NO_INDEX
+	SectionCount = 0;
 #endif
 
 	/*
@@ -290,7 +304,11 @@ bool INIClass::Load(Straw & file)
 				return(false);
 			}
 
+#ifdef INI_NO_INDEX
+			secptr->EntryCount++;
+#else
 			secptr->EntryIndex.Add_Index(entryptr->Index_ID(), entryptr);
+#endif
 			secptr->EntryList.Add_Tail(entryptr);
 		}
 
@@ -301,7 +319,11 @@ bool INIClass::Load(Straw & file)
 		if (secptr->EntryList.Is_Empty()) {
 			delete secptr;
 		} else {
+#ifdef INI_NO_INDEX
+			SectionCount++;
+#else
 			SectionIndex.Add_Index(secptr->Index_ID(), secptr);
+#endif
 			SectionList.Add_Tail(secptr);
 		}
 	}
@@ -408,12 +430,19 @@ int INIClass::Save(Pipe & pipe) const
 INIClass::INISection * INIClass::Find_Section(char const * section) const
 {
 	if (section != NULL) {
-
+#ifdef INI_NO_INDEX
+		// slow search
+		for(INISection *sec = SectionList.First(); sec && sec->Is_Valid(); sec = sec->Next()) {
+			if(strcmp(sec->Section, section) == 0)
+				return sec;
+		}
+#else
 		long crc = CRCEngine()(section, strlen(section));
 
 		if (SectionIndex.Is_Present(crc)) {
 			return(SectionIndex.Fetch_Index(crc));
 		}
+#endif
 	}
 	return(NULL);
 }
@@ -437,7 +466,11 @@ INIClass::INISection * INIClass::Find_Section(char const * section) const
  *=============================================================================================*/
 int INIClass::Section_Count(void) const
 {
+#ifdef INI_NO_INDEX
+	return SectionCount;
+#else
 	return(SectionIndex.Count());
+#endif
 }
 
 
@@ -461,7 +494,11 @@ int INIClass::Entry_Count(char const * section) const
 {
 	INISection * secptr = Find_Section(section);
 	if (secptr != NULL) {
+#ifdef INI_NO_INDEX
+		return(secptr->EntryCount);
+#else
 		return(secptr->EntryIndex.Count());
+#endif
 	}
 	return(0);
 }
@@ -517,7 +554,13 @@ char const * INIClass::Get_Entry(char const * section, int index) const
 {
 	INISection * secptr = Find_Section(section);
 
-	if (secptr != NULL && index < secptr->EntryIndex.Count()) {
+#ifdef INI_NO_INDEX
+	int count = secptr->EntryCount;
+#else
+	int count = secptr->EntryIndex.Count();
+#endif
+
+	if (secptr != NULL && index < count) {
 		INIEntry * entryptr = secptr->EntryList.First();
 
 		while (entryptr != NULL && entryptr->Is_Valid()) {
@@ -940,7 +983,11 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 		secptr = new INISection(Get_Pool_String(section));
 		if (secptr == NULL) return(false);
 		SectionList.Add_Tail(secptr);
+#ifdef INI_NO_INDEX
+		SectionCount++;
+#else
 		SectionIndex.Add_Index(secptr->Index_ID(), secptr);
+#endif
 	}
 
 	/*
@@ -948,7 +995,11 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 	*/
 	INIEntry * entryptr = secptr->Find_Entry(entry);
 	if (entryptr != NULL) {
+#ifdef INI_NO_INDEX
+		secptr->EntryCount--;
+#else
 		secptr->EntryIndex.Remove_Index(entryptr->Index_ID());
+#endif
 		delete entryptr;
 	}
 
@@ -962,7 +1013,11 @@ bool INIClass::Put_String(char const * section, char const * entry, char const *
 			return(false);
 		}
 		secptr->EntryList.Add_Tail(entryptr);
+#ifdef INI_NO_INDEX
+		secptr->EntryCount++;
+#else
 		secptr->EntryIndex.Add_Index(entryptr->Index_ID(), entryptr);
+#endif
 	}
 	return(true);
 }
@@ -1128,10 +1183,18 @@ bool INIClass::Get_Bool(char const * section, char const * entry, bool defvalue)
 INIClass::INIEntry * INIClass::INISection::Find_Entry(char const * entry) const
 {
 	if (entry != NULL) {
+#ifdef INI_NO_INDEX
+		// slow search
+		for(INIEntry *ent = EntryList.First(); ent && ent->Is_Valid(); ent = ent->Next()) {
+			if(strcmp(ent->Entry, entry) == 0)
+				return ent;
+		}
+#else
 		int crc = CRCEngine()(entry, strlen(entry));
 		if (EntryIndex.Is_Present(crc)) {
 			return(EntryIndex.Fetch_Index(crc));
 		}
+#endif
 	}
 	return(NULL);
 }
