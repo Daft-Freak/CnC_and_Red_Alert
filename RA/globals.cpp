@@ -137,8 +137,11 @@ bool FormMove;
 SpeedType FormSpeed;
 MPHType FormMaxSpeed;
 
-
+#ifdef PICO_BUILD
+char *_staging_buffer;
+#else
 char _staging_buffer[32000];
+#endif
 
 /*
 ** Global flag for the life of Tanya.  If this flag is set, she is
