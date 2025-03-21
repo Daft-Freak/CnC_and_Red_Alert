@@ -108,11 +108,13 @@ void GScreenClass::One_Time(void)
 	**	actual screen memory. It contains a duplicate of what the SEENPAGE is.
 	*/
 	Buttons = 0;
+#ifndef WIN32
 	ShadowPage = new GraphicBufferClass(320, 200);
 	if (ShadowPage) {
 		ShadowPage->Clear();
 		HidPage.Clear();
 	}
+#endif
 }
 
 
@@ -167,10 +169,10 @@ void GScreenClass::Init_Clear(void)
 	/*
 	** Clear the ShadowPage & HidPage to force a complete shadow blit.
 	*/
-	if (ShadowPage) {
+	if (ShadowPage)
 		ShadowPage->Clear();
-		HidPage.Clear();
-	}
+
+	HidPage.Clear();
 
 	IsToRedraw = true;
 }
