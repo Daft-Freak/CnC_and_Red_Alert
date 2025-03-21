@@ -155,7 +155,11 @@ int FixedHeapClass::Set_Heap(int count, void * buffer)
 	*/
 	if (FreeFlag.Resize(count)) {
 		if (!buffer) {
+#ifdef PICO_BUILD
+			buffer = new(MEM_FIXED_HEAP) char[count * Size];
+#else
 			buffer = new char[count * Size];
+#endif
 			if (!buffer) {
 				FreeFlag.Clear();
 				return(false);
