@@ -24,6 +24,7 @@ void Pico_Init()
 
     size_t psramSize = psram_init(PSRAM_CS_PIN);
     printf("detected %i bytes PSRAM\n", psramSize);
+    *(uint32_t *)PSRAM_LOCATION = psramSize;
 
     f_mount(&fs, "", 0);
     f_chdir("/CnC/");
