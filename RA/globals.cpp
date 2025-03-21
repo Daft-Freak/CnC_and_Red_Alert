@@ -569,7 +569,12 @@ PaletteClass ScorePalette;
 **	that need to be executed when the correct frame has been reached.
 */
 QueueClass<EventClass, MAX_EVENTS> OutList;
+#ifdef PICO_BUILD
+// this thing is huge
+QueueClass<EventClass, (MAX_EVENTS * 8)> DoList;
+#else
 QueueClass<EventClass, (MAX_EVENTS * 64)> DoList;
+#endif
 
 #ifdef MIRROR_QUEUE
 QueueClass<EventClass, (MAX_EVENTS * 64)> MirrorList;

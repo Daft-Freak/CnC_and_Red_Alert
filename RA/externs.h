@@ -247,7 +247,11 @@ extern TFixedIHeapClass<WeaponTypeClass>					Weapons;
 extern TFixedIHeapClass<WarheadTypeClass>					Warheads;
 
 extern QueueClass<EventClass, MAX_EVENTS>					OutList;
+#ifdef PICO_BUILD
+extern QueueClass<EventClass, (MAX_EVENTS * 8)>		DoList;
+#else
 extern QueueClass<EventClass, (MAX_EVENTS * 64)>		DoList;
+#endif
 
 #ifdef MIRROR_QUEUE
 extern QueueClass<EventClass, (MAX_EVENTS * 64)>		MirrorList;
