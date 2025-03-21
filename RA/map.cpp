@@ -172,7 +172,15 @@ void MapClass::Alloc_Cells(void)
 	**	(it may have been loaded from a save-game file), so zero it out first.
 	*/
 	new (&Array) VectorClass<CellClass>;
+
+#ifdef PICO_BUILD
+	static CellClass *cellbuf = NULL;
+	if(!cellbuf)
+		cellbuf = new(MEM_FIXED_HEAP) CellClass[MAP_CELL_TOTAL];
+	Array.Resize(Size, cellbuf);
+#else
 	Array.Resize(Size);
+#endif
 }
 
 
