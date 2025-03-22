@@ -20,7 +20,7 @@ static void Draw_Mouse(uint8_t *cursor_buf, uint8_t *erase_buf, int x, int y, in
     if(dx < 0)
     {
         sx = -dx;
-        w -= dx;
+        w += dx;
         dx = 0;
     }
     else if(dx + w > scr->Get_Width())
@@ -29,7 +29,7 @@ static void Draw_Mouse(uint8_t *cursor_buf, uint8_t *erase_buf, int x, int y, in
     if(dy < 0)
     {
         sy = -dy;
-        h -= dy;
+        h += dy;
         dy = 0;
     }
     else if(dy + h > scr->Get_Height())
@@ -75,7 +75,7 @@ static void Erase_Mouse(uint8_t *erase_buf, int x, int y, int width, int height,
     if(dx < 0)
     {
         sx = -dx;
-        w -= dx;
+        w += dx;
         dx = 0;
     }
     else if(dx + w > scr->Get_Width())
@@ -84,7 +84,7 @@ static void Erase_Mouse(uint8_t *erase_buf, int x, int y, int width, int height,
     if(dy < 0)
     {
         sy = -dy;
-        h -= dy;
+        h += dy;
         dy = 0;
     }
     else if(dy + h > scr->Get_Height())
