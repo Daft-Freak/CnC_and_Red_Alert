@@ -376,8 +376,10 @@ bool MixFileClass<T>::Cache(Buffer const * buffer)
 	if (Data != NULL) return(true);
 
 #ifdef PICO_BUILD
-	Data = (void *)Pico_Flash_Cache(Filename, DataStart, DataSize);
-	return Data != NULL;
+	if(!buffer) {
+		Data = (void *)Pico_Flash_Cache(Filename, DataStart, DataSize);
+		return Data != NULL;
+	}
 #endif
 
 	/*
