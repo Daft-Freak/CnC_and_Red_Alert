@@ -101,12 +101,15 @@ static int Length;
 
 void *Get_Shape_Header_Data(void *ptr)
 {
+#ifndef PICO_BUILD
 	if (UseBigShapeBuffer) {
 
 		ShapeHeaderType *header = (ShapeHeaderType*) ptr;
 		return ((void*)  (header->shape_data + (long)(header->shape_buffer ? TheaterShapeBufferStart : BigShapeBufferStart) ) );
 
-	} else {
+	} else
+#endif
+	{
 		return (ptr);
 	}
 }
@@ -119,12 +122,14 @@ int Get_Last_Frame_Length(void)
 
 void Reset_Theater_Shapes (void)
 {
+#ifndef PICO_BUILD
 	/*
 	** Delete any previously allocated slots
 	*/
 	for (int i=THEATER_SLOT_START ; i<TheaterSlotsUsed ; i++) {
 		delete [] KeyFrameSlots [i];
 	}
+#endif
 
 	TheaterShapeBufferPtr = TheaterShapeBufferStart;
 	TotalTheaterShapes = 0;
@@ -134,6 +139,7 @@ void Reset_Theater_Shapes (void)
 
 void Reallocate_Big_Shape_Buffer(void)
 {
+#ifndef PICO_BUILD
 	if (ReallocShapeBufferFlag) {
 		BigShapeBufferLength += 2000000;							//Extra 2 Mb of uncompressed shape space
 		BigShapeBufferPtr -= (uintptr_t)BigShapeBufferStart;
@@ -151,6 +157,7 @@ void Reallocate_Big_Shape_Buffer(void)
 		BigShapeBufferPtr += (uintptr_t)BigShapeBufferStart;
 		ReallocShapeBufferFlag = FALSE;
 	}
+#endif
 }
 
 
@@ -256,7 +263,7 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 		return(0);
 	}
 
-
+#ifndef PICO_BUILD
 	if (UseBigShapeBuffer) {
 		/*
 		** If we havnt yet allocated memory for uncompressed shapes then do so now.
@@ -314,7 +321,7 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 			}
 		}
 	}
-
+#endif
 	// calc buff size
 	buffsize = keyfr->width * keyfr->height;
 
@@ -415,7 +422,7 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 		}
 	}
 
-
+#ifndef PICO_BUILD
 	if (UseBigShapeBuffer) {
 		/*
 		** Save the uncompressed shape data so we dont have to uncompress it
@@ -477,7 +484,9 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 			return (return_value);
 		}
 
-	} else {
+	} else
+#endif
+	{
 		return (buffptr);
 	}
 }
