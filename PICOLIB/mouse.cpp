@@ -6,6 +6,109 @@ extern void *MainWindow;
 
 static WWMouseClass *_Mouse = NULL;
 
+static void Draw_Mouse(uint8_t *cursor_buf, uint8_t *erase_buf, int x, int y, int width, int height, GraphicViewPortClass *scr)
+{
+    // clipping
+    int dx = x;
+    int dy = y;
+    int sx = 0, sy = 0;
+    int w = width;
+    int h = height;
+
+    if(dx < 0)
+    {
+        sx = -dx;
+        w -= dx;
+        dx = 0;
+    }
+    else if(dx + w > scr->Get_Width())
+        w = scr->Get_Width() - dx;
+
+    if(dy < 0)
+    {
+        sy = -dy;
+        h -= dy;
+        dy = 0;
+    }
+    else if(dy + h > scr->Get_Height())
+        h = scr->Get_Height() - dy;
+
+    // draw and save existing for erase
+    auto in_ptr = cursor_buf + sx + sy * width;
+    auto out_save = erase_buf + sx + sy * width;
+
+    if(!scr->Lock())
+        return;
+
+    int out_line = scr->Get_Width() + scr->Get_XAdd() + scr->Get_Pitch();
+    auto out_ptr = scr->Get_Offset() + dx + dy * out_line;
+
+    for(int y = 0; y < h; y++)
+    {
+        for(int x = 0; x < w; x++)
+        {
+            out_save[x] = out_ptr[x];
+
+            if(in_ptr[x])
+                out_ptr[x] = in_ptr[x];
+        }
+
+        in_ptr += width;
+        out_save += width;
+        out_ptr += out_line;
+    }
+
+    scr->Unlock();
+}
+
+static void Erase_Mouse(uint8_t *erase_buf, int x, int y, int width, int height, GraphicViewPortClass *scr)
+{
+    // clipping
+    int dx = x;
+    int dy = y;
+    int sx = 0, sy = 0;
+    int w = width;
+    int h = height;
+
+    if(dx < 0)
+    {
+        sx = -dx;
+        w -= dx;
+        dx = 0;
+    }
+    else if(dx + w > scr->Get_Width())
+        w = scr->Get_Width() - dx;
+
+    if(dy < 0)
+    {
+        sy = -dy;
+        h -= dy;
+        dy = 0;
+    }
+    else if(dy + h > scr->Get_Height())
+        h = scr->Get_Height() - dy;
+
+    // restore saved
+    auto in_save = erase_buf + sx + sy * width;
+
+    if(!scr->Lock())
+        return;
+
+    int out_line = scr->Get_Width() + scr->Get_XAdd() + scr->Get_Pitch();
+    auto out_ptr = scr->Get_Offset() + dx + dy * out_line;
+
+    for(int y = 0; y < h; y++)
+    {
+        for(int x = 0; x < w; x++)
+            out_ptr[x] = in_save[x];
+
+        in_save += width;
+        out_ptr += out_line;
+    }
+
+    scr->Unlock();
+}
+
 WWMouseClass::WWMouseClass(GraphicViewPortClass *scr, int mouse_max_width, int mouse_max_height) : MaxWidth(mouse_max_width), MaxHeight(mouse_max_width),
     MCFlags(0), MCCount(0), EraseBuffX(-100), EraseBuffY(-100), Screen(scr), State(0)
 {
@@ -77,7 +180,8 @@ void *WWMouseClass::Set_Cursor(int xhotspot, int yhotspot, void *cursor)
 
     // set it and clean up
     auto old_cursor = PrevCursor;
-    
+
+    Hide_Mouse();
 
     PrevCursor = (char *)cursor;
 
@@ -85,6 +189,9 @@ void *WWMouseClass::Set_Cursor(int xhotspot, int yhotspot, void *cursor)
     CursorHeight = cursor_shape->OriginalHeight;
     MouseXHot = xhotspot;
     MouseYHot = yhotspot;
+
+    Show_Mouse();
+
     return old_cursor;
 }
 
@@ -93,7 +200,8 @@ void WWMouseClass::Hide_Mouse(void)
     if(!State++)
     {
         // erase mouse
-        Erase_Mouse(Screen, true);
+        auto erase_buf = MouseCursor + MaxWidth * MaxHeight; // should use another buf!
+        ::Erase_Mouse(erase_buf, LastX - MouseXHot, LastY - MouseYHot, CursorWidth, CursorHeight, Screen);
     }
 }
 
@@ -104,7 +212,9 @@ void WWMouseClass::Show_Mouse(void)
     if(--State == 0)
     {
         // draw it if not hidden
-        Draw_Mouse(Screen);
+        auto cursor_buf = MouseCursor;
+        auto erase_buf = MouseCursor + MaxWidth * MaxHeight;
+        ::Draw_Mouse(cursor_buf, erase_buf, LastX - MouseXHot, LastY - MouseYHot, CursorWidth, CursorHeight, Screen);
     }
 }
 
@@ -211,58 +321,7 @@ void WWMouseClass::Draw_Mouse(GraphicViewPortClass *scr)
 
     auto cursor_buf = MouseCursor;
     auto erase_buf = MouseCursor + MaxWidth * MaxHeight;
-
-    // clipping
-    int dx = LastX - MouseXHot;
-    int dy = LastY - MouseYHot;
-    int sx = 0, sy = 0;
-    int w = CursorWidth;
-    int h = CursorHeight;
-
-    if(dx < 0)
-    {
-        sx = -dx;
-        w -= dx;
-        dx = 0;
-    }
-    else if(dx + w > scr->Get_Width())
-        w = scr->Get_Width() - dx;
-
-    if(dy < 0)
-    {
-        sy = -dy;
-        h -= dy;
-        dy = 0;
-    }
-    else if(dy + h > scr->Get_Height())
-        h = scr->Get_Height() - dy;
-
-    // draw and save existing for erase
-    auto in_ptr = cursor_buf + sx + sy * CursorWidth;
-    auto out_save = erase_buf + sx + sy * CursorWidth;
-
-    if(!scr->Lock())
-        return;
-
-    int out_line = scr->Get_Width() + scr->Get_XAdd() + scr->Get_Pitch();
-    auto out_ptr = scr->Get_Offset() + dx + dy * out_line;
-
-    for(int y = 0; y < h; y++)
-    {
-        for(int x = 0; x < w; x++)
-        {
-            out_save[x] = out_ptr[x];
-
-            if(in_ptr[x])
-                out_ptr[x] = in_ptr[x];
-        }
-
-        in_ptr += CursorWidth;
-        out_save += CursorWidth;
-        out_ptr += out_line;
-    }
-
-    scr->Unlock();
+    ::Draw_Mouse(cursor_buf, erase_buf, LastX - MouseXHot, LastY - MouseYHot, CursorWidth, CursorHeight, scr);
 
     EraseBuffX = LastX - MouseXHot;
     EraseBuffY = LastY - MouseYHot;
@@ -273,54 +332,11 @@ void WWMouseClass::Erase_Mouse(GraphicViewPortClass *scr, bool forced)
     if(!forced)
         return;
 
-    if(EraseBuffX != -100 || EraseBuffY != -100)
+    if(EraseBuffX != -100 && EraseBuffY != -100)
     {
         auto erase_buf = MouseCursor + MaxWidth * MaxHeight;
 
-        // clipping
-        int dx = EraseBuffX;
-        int dy = EraseBuffY;
-        int sx = 0, sy = 0;
-        int w = CursorWidth;
-        int h = CursorHeight;
-    
-        if(dx < 0)
-        {
-            sx = -dx;
-            w -= dx;
-            dx = 0;
-        }
-        else if(dx + w > scr->Get_Width())
-            w = scr->Get_Width() - dx;
-    
-        if(dy < 0)
-        {
-            sy = -dy;
-            h -= dy;
-            dy = 0;
-        }
-        else if(dy + h > scr->Get_Height())
-            h = scr->Get_Height() - dy;
-    
-        // restore saved
-        auto in_save = erase_buf + sx + sy * CursorWidth;
-    
-        if(!scr->Lock())
-            return;
-    
-        int out_line = scr->Get_Width() + scr->Get_XAdd() + scr->Get_Pitch();
-        auto out_ptr = scr->Get_Offset() + dx + dy * out_line;
-    
-        for(int y = 0; y < h; y++)
-        {
-            for(int x = 0; x < w; x++)
-                out_ptr[x] = in_save[x];
-    
-            in_save += CursorWidth;
-            out_ptr += out_line;
-        }
-    
-        scr->Unlock();
+        ::Erase_Mouse(erase_buf, EraseBuffX, EraseBuffY, CursorWidth, CursorHeight, scr);
     
         EraseBuffX = -100;
         EraseBuffY = -100;
@@ -344,15 +360,20 @@ void WWMouseClass::Update_Pos(int x, int y)
     if(LastX == x && LastY == y)
         return;
 
-    LastX = x;
-    LastY = y;
-
     // cursor hidden, don't need to update
     if(State)
+    {
+        LastX = x;
+        LastY = y;
+    
         return;
+    }
 
     // erase old mouse
     Hide_Mouse();
+
+    LastX = x;
+    LastY = y;
 
     // check if it entered the hidden area
     if((MCFlags & CONDHIDE) && LastX >= MouseCXLeft && LastX <= MouseCXRight && LastY >= MouseCYUpper && LastY <= MouseCYLower)
