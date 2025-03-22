@@ -92,7 +92,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 	int	preservex,preservey,preservew,preserveh;
 #endif
 
-	#ifdef WIN32
+	#if defined(WIN32) && !defined(PORTABLE)
 	GraphicBufferClass seen_buff_save(VisiblePage.Get_Width(), VisiblePage.Get_Height(), (void*)NULL);
 	#endif
 
@@ -165,7 +165,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 	**	Other inits.
 	*/
 	Set_Logic_Page(SeenBuff);
-	#ifdef WIN32
+	#if defined(WIN32) && !defined(PORTABLE)
 	VisiblePage.Blit(seen_buff_save);
 	#endif
 
@@ -259,7 +259,7 @@ int WWMessageBox::Process(const char * msg, const char * b1txt, const char * b2t
 		pressed = false;
 		while (process) {
 
-			#ifdef WIN32
+			#if defined(WIN32) && !defined(PORTABLE)
 			/*
 			** If we have just received input focus again after running in the background then
 			** we need to redraw.
