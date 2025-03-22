@@ -75,22 +75,27 @@ class WWMouseClass {
 		uint8_t	*				MouseCursor = NULL;	// pointer to the mouse cursor in memory
 		void *					SDLCursor = NULL;
 		void *					SDLSurface = NULL;
-		int						MouseXHot;		// X hot spot of the current mouse cursor
-		int						MouseYHot;		// Y hot spot of the current mouse cursor
+		uint8_t					MouseXHot;		// X hot spot of the current mouse cursor
+		uint8_t					MouseYHot;		// Y hot spot of the current mouse cursor
 
-		int						MaxWidth;		// maximum width of mouse background buffer
-		int						MaxHeight;		// maximum height of mouse background buffer
+		uint8_t					MaxWidth;		// maximum width of mouse background buffer
+		uint8_t					MaxHeight;		// maximum height of mouse background buffer
 
-		int						MouseCXLeft;	// left x pos if conditional hide mouse in effect
-		int						MouseCYUpper;	// upper y pos if conditional hide mouse in effect
-		int						MouseCXRight;	// right x pos if conditional hide mouse in effect
-		int						MouseCYLower;	// lower y pos if conditional hide mouse in effect
+		uint8_t					CursorWidth;
+		uint8_t					CursorHeight;
+
+		uint16_t				MouseCXLeft;	// left x pos if conditional hide mouse in effect
+		uint16_t				MouseCYUpper;	// upper y pos if conditional hide mouse in effect
+		uint16_t				MouseCXRight;	// right x pos if conditional hide mouse in effect
+		uint16_t				MouseCYLower;	// lower y pos if conditional hide mouse in effect
 		char						MCFlags;			// conditional hide mouse flags
 		char						MCCount;			// nesting count for conditional hide mouse
 
+		int16_t					EraseBuffX;
+		int16_t					EraseBuffY;
+
 		GraphicViewPortClass	*Screen;			// pointer to the surface mouse was init'd with
 		char *					PrevCursor;		// pointer to previous cursor shape
-		int						MouseUpdate;
 		int						State;
 
 		int LastX = 0, LastY = 0;
