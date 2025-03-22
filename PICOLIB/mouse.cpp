@@ -6,6 +6,8 @@ extern void *MainWindow;
 
 static WWMouseClass *_Mouse = NULL;
 
+static uint8_t CursorDecompressBuffer[24 * 30]; // generally smaller
+
 static void Draw_Mouse(uint8_t *cursor_buf, uint8_t *erase_buf, int x, int y, int width, int height, GraphicViewPortClass *scr)
 {
     // clipping
@@ -146,7 +148,7 @@ void *WWMouseClass::Set_Cursor(int xhotspot, int yhotspot, void *cursor)
     }
 
     // decompress it
-    auto decompressed_data = new uint8_t[cursor_shape->DataLength];
+    auto decompressed_data = CursorDecompressBuffer;
     LCW_Uncompress((uint8_t *)cursor + 10, decompressed_data, cursor_shape->DataLength);
 
     // now we have an uncmpressed, but still encoded shape
@@ -175,8 +177,6 @@ void *WWMouseClass::Set_Cursor(int xhotspot, int yhotspot, void *cursor)
         }
     }
     while(remaining);
-
-    delete[] decompressed_data;
 
     // set it and clean up
     auto old_cursor = PrevCursor;
