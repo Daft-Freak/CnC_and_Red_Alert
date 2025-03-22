@@ -543,7 +543,7 @@ bool Load_Game(int id)
 	SHAStraw sha;
 	sha.Get_From(fstraw);
 	for (;;) {
-		if (sha.Get(_staging_buffer, sizeof(_staging_buffer)) != sizeof(_staging_buffer)) break;
+		if (sha.Get(_staging_buffer, STAGING_BUFFER_SIZE) != STAGING_BUFFER_SIZE) break;
 	}
 	char actual[20];
 	sha.Result(actual);
