@@ -179,10 +179,11 @@ void WWMouseClass::Conditional_Show_Mouse(void)
 		// hidden before then display it.
 		//
 		if (!MCCount) {
-			if (MCFlags & CONDHIDDEN)
-				Show_Mouse();
+            bool was_hidden = MCFlags & CONDHIDDEN;
+            MCFlags = 0;
 
-			MCFlags = 0;
+			if(was_hidden)
+				Show_Mouse();
 		}
 	}
 }
