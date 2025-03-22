@@ -384,6 +384,8 @@ int RawFileClass::Is_Available(int forced)
 
 #ifdef PORTABLE
 		Handle = IO_Open_File(Filename, READ);
+
+#ifndef PICO_BUILD // fatfs is not case-sensitive
 		if (!Handle) {
 			// retry with lowercase name for case-sensitive fs
 			char *lower_name = strlwr(strdup(Filename));
@@ -400,6 +402,7 @@ int RawFileClass::Is_Available(int forced)
 			} else
 				free(lower_name);
 		}
+#endif
 
 		if(!Handle)
 			return false;
