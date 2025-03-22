@@ -4,10 +4,14 @@
 #include "mouse.h"
 #include "ww_win.h"
 
+WWKeyboardClass *TheKeyboard = NULL;
+
 WWKeyboardClass::WWKeyboardClass() : MouseQX(0), MouseQY(0), Head(0), Tail(0)
 {
     // clear buffer
     memset(Buffer, 0, 256);
+
+	TheKeyboard = this;
 }
 
 bool WWKeyboardClass::Check(void)
