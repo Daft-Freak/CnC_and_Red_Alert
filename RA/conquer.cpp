@@ -3443,7 +3443,11 @@ void CC_Draw_Shape(void const * shapefile, int shapenum, int x, int y, WindowNum
 	static unsigned char * _xbuffer = 0;
 
 	if (!_xbuffer) {
+#ifdef PICO_BUILD
+		_xbuffer = new(MEM_FIXED_HEAP) unsigned char[SHAPE_BUFFER_SIZE];
+#else
 		_xbuffer = new unsigned char[SHAPE_BUFFER_SIZE];
+#endif
 	}
 
 	if (shapefile != NULL && shapenum != -1) {
