@@ -266,7 +266,7 @@ bool OverlayClass::Mark(MarkType mark)
 void OverlayClass::Read_INI(CCINIClass & ini)
 {
 	if (NewINIFormat > 1) {
-		int len = ini.Get_UUBlock("OverlayPack", _staging_buffer, sizeof(_staging_buffer));
+		int len = ini.Get_UUBlock("OverlayPack", _staging_buffer, STAGING_BUFFER_SIZE);
 
 		if (len > 0) {
 			BufferStraw bpipe(_staging_buffer, len);
@@ -358,7 +358,7 @@ void OverlayClass::Write_INI(CCINIClass & ini)
 	ini.Clear(INI_Name());
 	ini.Clear("OverlayPack");
 
-	BufferPipe bpipe(_staging_buffer, sizeof(_staging_buffer));
+	BufferPipe bpipe(_staging_buffer, STAGING_BUFFER_SIZE);
 	LCWPipe comppipe(LCWPipe::COMPRESS);
 
 	comppipe.Put_To(&bpipe);

@@ -140,7 +140,7 @@ MPHType FormMaxSpeed;
 #ifdef PICO_BUILD
 char *_staging_buffer;
 #else
-char _staging_buffer[32000];
+char _staging_buffer[STAGING_BUFFER_SIZE];
 #endif
 
 /*
