@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+#include "tusb.h"
+
 #include "ww_win.h"
 #include "net_select.h"
 #include "gbuffer.h"
@@ -23,7 +25,9 @@ void SDL_Event_Loop()
 {
 
     // this is replacing WSAAsyncSelect, which would send through the windows event loop
-    Socket_Select();
+    //Socket_Select();
+
+    tuh_task();
 }
 
 void SDL_Send_Quit()

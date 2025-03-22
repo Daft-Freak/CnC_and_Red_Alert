@@ -31,6 +31,7 @@ add_library(picolib STATIC
     driver/filesystem.cpp
     driver/psram.c
     driver/storage.cpp
+    driver/usb_hid.cpp
 
     driver/fatfs/ff.c
     driver/fatfs/ffunicode.c
@@ -47,6 +48,7 @@ target_include_directories(picolib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/driver)
 target_link_libraries(picolib PUBLIC
     hardware_dma hardware_pio hardware_pwm
     pico_stdlib
+    tinyusb_host
     # lwip usage is mostly so socket code compiles
     pico_lwip pico_lwip_arch
 )

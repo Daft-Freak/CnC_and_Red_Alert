@@ -1,11 +1,13 @@
 #include <stdio.h>
 
 #include "pico/stdlib.h"
+#include "tusb.h"
 
 #include "display.h"
 #include "psram.h"
 #include "fatfs/ff.h"
 
+#include "mouse.h"
 #include "picolib.h"
 
 static FATFS fs;
@@ -17,6 +19,25 @@ static FATFS fs;
 #else
 #error "No PSRAM CS!"
 #endif
+
+static uint16_t mouse_x = 0, mouse_y = 0;
+
+// input glue
+void update_key_state(uint8_t code, bool state)
+{
+    
+}
+
+void update_mouse_state(int8_t x, int8_t y, bool left, bool right)
+{
+    int tmp_x = mouse_x + x;
+    int tmp_y = mouse_y + y;
+    mouse_x = tmp_x < 0 ? 0 : (tmp_x > 319 ? 319 : tmp_x);
+    mouse_y = tmp_y < 0 ? 0 : (tmp_y > 199 ? 199 : tmp_y);
+
+    Update_Mouse_Pos(mouse_x, mouse_y);
+    // also need to forward the event to the keyboard
+}
 
 void Pico_Init()
 {
@@ -30,6 +51,8 @@ void Pico_Init()
     f_chdir("/CnC/");
 
     Pico_Flash_Cache_Init();
+
+    tusb_init();
 
     init_display();
 }

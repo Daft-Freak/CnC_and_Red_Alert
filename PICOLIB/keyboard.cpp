@@ -13,7 +13,7 @@ WWKeyboardClass::WWKeyboardClass() : MouseQX(0), MouseQY(0), Head(0), Tail(0)
 bool WWKeyboardClass::Check(void)
 {
     // poll for events, return key if any pressed
-    //SDL_Event_Loop();
+    SDL_Event_Loop();
 
     if(Head == Tail) return false;
 
