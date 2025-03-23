@@ -5,9 +5,9 @@ add_library(picolib STATIC
     flash_cache.cpp
     init.cpp
     keyboard.cpp
-    lwip.c
     mem.cpp
     mouse.cpp
+    picosock.cpp
     timer.cpp
     window.cpp
 
@@ -52,7 +52,6 @@ target_link_libraries(picolib PUBLIC
     # lwip usage is mostly so socket code compiles
     pico_lwip pico_lwip_arch
 )
-target_include_directories(picolib PUBLIC ${PICO_LWIP_PATH}/src/include/compat/posix)
 
 target_compile_definitions(picolib PUBLIC
     # Using a Qw/ST connector as a UART...
