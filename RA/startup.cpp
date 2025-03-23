@@ -156,7 +156,7 @@ int main(int argc, char * argv[])
 
 #ifdef PICO_BUILD
 	Pico_Init();
-#endif
+#else
 
 //printf("in program.\n");getch();
 //printf("ram free = %ld\n",Ram_Free(MEM_NORMAL));getch();
@@ -198,6 +198,8 @@ int main(int argc, char * argv[])
 #endif	//(0)
 		return(EXIT_FAILURE);
 	}
+#endif
+
 
 #ifdef _WIN32
 
