@@ -45,7 +45,11 @@
 */
 #include	<wsipx.h>
 #else
+#ifdef PICO_BUILD
+#include "picosock.h"
+#else
 #include <sys/socket.h>
+#endif
 typedef sockaddr_storage SOCKADDR_IPX;
 #endif
 

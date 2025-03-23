@@ -36,7 +36,9 @@
 #include "field.h"
 
 // htons/htonl
-#ifdef _WIN32
+#ifdef PICO_BUILD
+#include "picosock.h"
+#elif defined(_WIN32)
 #include <winsock.h>
 #else
 #include <arpa/inet.h>
