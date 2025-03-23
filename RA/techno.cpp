@@ -4242,7 +4242,7 @@ void TechnoClass::Techno_Draw_Object(void const * shapefile, int shapenum, int x
 		TechnoTypeClass * ttype = Techno_Type_Class();
 		if (shapefile == ttype->Get_Image_Data() && shapenum < Get_Build_Frame_Count(shapefile)-1) {
 			if (ttype->DimensionData == NULL) {
-				ttype->DimensionData = new Rect [Get_Build_Frame_Count(shapefile)];
+				//ttype->DimensionData = new Rect [Get_Build_Frame_Count(shapefile)];
 			}
 			if (ttype->DimensionData != NULL && !ttype->DimensionData[shapenum].Is_Valid()) {
 				ttype->DimensionData[shapenum] = Shape_Dimensions(shapefile, shapenum);
