@@ -359,7 +359,9 @@ IsTheaterShape = Class->IsTheater;
 		shapenum = min(shapenum, count-1);
 
 		if (Class->DimensionData == NULL) {
+#ifndef PICO_BUILD // we can render without this, if perf is a problem this could maybe move to PSRAM instead
 			Class->DimensionData = new Rect [count];
+#endif
 		}
 		if (Class->DimensionData != NULL && !Class->DimensionData[shapenum].Is_Valid()) {
 			Class->DimensionData[shapenum] = Shape_Dimensions(Class->Get_Image_Data(), shapenum);
