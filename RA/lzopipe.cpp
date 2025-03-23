@@ -46,6 +46,12 @@
 #include	<string.h>
 #include	<assert.h>
 
+#ifdef PICO_BUILD
+#include "memflag.h"
+
+static char *LZODictionary = NULL;
+#endif
+
 
 /***********************************************************************************************
  * LZOPipe::LZOPipe -- Constructor for the LZO processor pipe.                                 *
@@ -71,7 +77,7 @@ LZOPipe::LZOPipe(CompControl control, int blocksize) :
 		Buffer2(NULL),
 		BlockSize(blocksize)
 {
-	SafetyMargin = BlockSize;
+	SafetyMargin = 0;//BlockSize;
 	Buffer = new char[BlockSize+SafetyMargin];
 	Buffer2 = new char[BlockSize+SafetyMargin];
 	BlockHeader.CompCount = 0xFFFF;
@@ -130,6 +136,11 @@ int LZOPipe::Put(void const * source, int slen)
 	assert(Buffer != NULL);
 
 	int total = 0;
+
+#ifdef PICO_BUILD
+	if(!LZODictionary)
+		LZODictionary = new(MEM_FIXED_HEAP) char [16*1024 * sizeof(void *)];
+#endif
 
 	/*
 	**	Copy as much as can fit into the buffer from the source data supplied.
@@ -200,9 +211,13 @@ int LZOPipe::Put(void const * source, int slen)
 
 			if (Counter == BlockSize) {
 				unsigned int len = sizeof (Buffer2);
+#ifdef PICO_BUILD
+				lzo1x_1_compress ((unsigned char*)Buffer, BlockSize, (unsigned char*)Buffer2, &len, LZODictionary);
+#else
 				char *dictionary = new char [16*1024 * sizeof(void *)];
 				lzo1x_1_compress ((unsigned char*)Buffer, BlockSize, (unsigned char*)Buffer2, &len, dictionary);
 				delete [] dictionary;
+#endif
 				BlockHeader.CompCount = (unsigned short)len;
 				BlockHeader.UncompCount = (unsigned short)BlockSize;
 				total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
@@ -217,9 +232,13 @@ int LZOPipe::Put(void const * source, int slen)
 		*/
 		while (slen >= BlockSize) {
 			unsigned int len = sizeof (Buffer2);
+#ifdef PICO_BUILD
+			lzo1x_1_compress ((unsigned char*)source, BlockSize, (unsigned char*)Buffer2, &len, LZODictionary);
+#else
 			char *dictionary = new char [16*1024 * sizeof(void *)];
 			lzo1x_1_compress ((unsigned char*)source, BlockSize, (unsigned char*)Buffer2, &len, dictionary);
 			delete [] dictionary;
+#endif
 			source = ((char *)source) + BlockSize;
 			slen -= BlockSize;
 
@@ -304,9 +323,13 @@ int LZOPipe::Flush(void)
 			**	compress the partial block and output normally.
 			*/
 			unsigned int len = sizeof (Buffer2);
+#ifdef PICO_BUILD
+			lzo1x_1_compress ((unsigned char*)Buffer, Counter, (unsigned char*)Buffer2, &len, LZODictionary);
+#else
 			char *dictionary = new char [16*1024 * sizeof(void *)];
 			lzo1x_1_compress ((unsigned char*)Buffer, Counter, (unsigned char *)Buffer2, &len, dictionary);
 			delete [] dictionary;
+#endif
 			BlockHeader.CompCount = (unsigned short)len;
 			BlockHeader.UncompCount = (unsigned short)Counter;
 			total += Pipe::Put(&BlockHeader, sizeof(BlockHeader));
