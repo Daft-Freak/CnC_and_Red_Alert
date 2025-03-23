@@ -20,7 +20,7 @@
 #endif
 
 static uint16_t screen_palette565[256];
-static uint8_t frame_buffer[DISPLAY_WIDTH * DISPLAY_HEIGHT];
+static uint8_t frame_buffer[320 * 200];
 
 // double buffering for lores
 static volatile int buf_index = 0;
@@ -422,6 +422,8 @@ void init_display() {
   dma_channel_set_irq0_enabled(dma_channel, true);
 
   clear();
+
+  set_window(0, 20, DISPLAY_WIDTH, 200);
 
 #ifdef LCD_VSYNC_PIN
   gpio_set_irq_enabled_with_callback(LCD_VSYNC_PIN, GPIO_IRQ_EDGE_RISE, true, vsync_callback);
