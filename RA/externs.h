@@ -147,7 +147,8 @@ extern GraphicBufferClass &	VisiblePage;
 **	Dynamic global variables (these change or are initialized at run time).
 */
 extern MissionControlClass		MissionControl[MISSION_COUNT];
-extern char const *				TutorialText[225];
+extern char const *				TutorialTextData;
+extern uint16_t					TutorialTextOffsets[225];
 extern Buffer *					TheaterBuffer;
 extern GetCDClass					CDList;
 extern CCINIClass					RuleINI;

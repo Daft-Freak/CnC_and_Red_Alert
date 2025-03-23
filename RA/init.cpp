@@ -3471,14 +3471,29 @@ static void Init_Bulk_Data(void)
 	INIClass ini;
 	CCFileClass fc("TUTORIAL.INI");
 	ini.Load(fc);
-	for (int index = 0; index < ARRAY_SIZE(TutorialText); index++) {
-		TutorialText[index] = NULL;
+	int totallen = 0;
+	for (int index = 0; index < ARRAY_SIZE(TutorialTextOffsets); index++) {
+		TutorialTextOffsets[index] = 0xFFFF;
 
 		char buffer[128];
 		char num[10];
 		sprintf(num, "%d", index);
 		if (ini.Get_String("Tutorial", num, "", buffer, sizeof(buffer))) {
-			TutorialText[index] = strdup(buffer);
+			totallen += strlen(buffer) + 1;
+		}
+	}
+
+	// now allocate and copy
+	TutorialTextData = new char[totallen];
+	char *textptr = (char *)TutorialTextData;
+
+	for (int index = 0; index < ARRAY_SIZE(TutorialTextOffsets); index++) {
+		char num[10];
+		sprintf(num, "%d", index);
+		int textoffset = textptr - TutorialTextData;
+		if (ini.Get_String("Tutorial", num, "", textptr, totallen - textoffset)) {
+			TutorialTextOffsets[index] = textoffset;
+			textptr += strlen(textptr) + 1;
 		}
 	}
 

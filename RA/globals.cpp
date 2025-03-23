@@ -236,7 +236,8 @@ MissionControlClass MissionControl[MISSION_COUNT];
 **	There are various tutorial messages that can appear in the game. These
 **	are called upon by number and pointed to by this array.
 */
-char const * TutorialText[225];
+char const * TutorialTextData;
+uint16_t TutorialTextOffsets[225];
 
 
 /***************************************************************************
