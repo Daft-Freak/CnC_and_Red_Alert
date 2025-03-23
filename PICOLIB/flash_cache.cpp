@@ -85,13 +85,16 @@ const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32
     }
 
     // didn't find it
-    auto file = IO_Open_File(filename, READ);
-    if(!file)
+    auto file = Open_File(filename, READ);
+    if(file == -1)
+    {
+        printf("failed to open file!\n");
         return NULL;
+    }
 
     printf("storing %s at %x...\n", filename, scan_offset);
 
-    IO_Seek_File(file, start_offset, SEEK_SET);
+    Seek_File(file, start_offset, SEEK_SET);
 
     // header in first page
     // assuming the file is larger than one page, which it should be
@@ -100,7 +103,7 @@ const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32
     *(uint32_t *)(buf + 12) = size << 8;
     
     size_t read = 0;
-    IO_Read_File(file, buf + 16, FLASH_PAGE_SIZE - 16, read);
+    read = Read_File(file, buf + 16, FLASH_PAGE_SIZE - 16);
 
     auto status = save_and_disable_interrupts();
     flash_range_program(scan_offset, buf, FLASH_PAGE_SIZE);
@@ -113,7 +116,7 @@ const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32
     while(remaining)
     {
         read = 0;
-        IO_Read_File(file, buf, FLASH_PAGE_SIZE, read);
+        read = Read_File(file, buf, FLASH_PAGE_SIZE);
 
         auto status = save_and_disable_interrupts();
         flash_range_program(flash_offset, buf, FLASH_PAGE_SIZE);
@@ -131,7 +134,7 @@ const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32
 
     printf("\n");
 
-    IO_Close_File(file);
+    Close_File(file);
 
     return (const void *)(XIP_NOCACHE_NOALLOC_BASE + scan_offset + 16);
 }

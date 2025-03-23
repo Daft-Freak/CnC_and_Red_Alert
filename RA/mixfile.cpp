@@ -377,7 +377,13 @@ bool MixFileClass<T>::Cache(Buffer const * buffer)
 
 #ifdef PICO_BUILD
 	if(!buffer) {
-		Data = (void *)Pico_Flash_Cache(Filename, DataStart, DataSize);
+		// we need to adjust for bias if this is a nested mixfile
+		// which requires attempting to open it
+		T file(Filename);
+		file.Open();
+		file.Close();
+
+		Data = (void *)Pico_Flash_Cache(Filename, DataStart - file.BiasStart, DataSize);
 		return Data != NULL;
 	}
 #endif
