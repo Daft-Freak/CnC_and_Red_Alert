@@ -2752,7 +2752,7 @@ static void Init_Heaps(void)
 	assert(TheaterBuffer != NULL);
 
 #ifdef PICO_BUILD
-	_staging_buffer = new(MEM_FIXED_HEAP) char[32000];
+	_staging_buffer = new(MEM_FIXED_HEAP) char[STAGING_BUFFER_SIZE];
 #endif
 }
 
