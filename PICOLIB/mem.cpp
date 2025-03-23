@@ -1,3 +1,4 @@
+#include <malloc.h>
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -88,5 +89,13 @@ void *Resize_Alloc(void *original_ptr, unsigned long new_size_in_bytes)
 
 long Ram_Free(MemoryFlagType flag)
 {
-    return 64*1024*1024;
+    // used by WSA to decide allocation size
+    
+    extern char __StackLimit; 
+    extern char end;
+
+    // to match _sbrk
+    uint32_t heap_size = &__StackLimit - &end;
+
+    return heap_size - mallinfo().uordblks;
 }
