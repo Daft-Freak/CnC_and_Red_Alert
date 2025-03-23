@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #include "file.h"
 
@@ -81,21 +82,79 @@ bool IO_Delete_File(const char *filename)
     return f_unlink(filename) == FR_OK;
 }
 
+static void Update_Find_Result(FindFileState &state, FILINFO &info)
+{
+    if(state.name)
+        delete[] state.name;
+
+    state.name = new char[strlen(info.fname) + 1];
+    strcpy((char *)state.name, info.fname);
+
+    // I realise after writing this that we don't have the RTC set up...
+    tm time{};
+
+    time.tm_sec = (info.ftime & 0x1F) * 2;
+    time.tm_min = (info.ftime >> 5) & 0x3F;
+    time.tm_hour = info.ftime >> 11;
+
+    time.tm_mday = info.fdate & 0x1F;
+    time.tm_mon = ((info.fdate >> 5) & 0xF) - 1;
+    time.tm_year = (info.fdate >> 9) + 80; // + 1980 - 1900
+
+    state.mod_time = mktime(&time);
+}
+
 bool Find_First_File(const char *path_glob, FindFileState &state)
 {
-    printf("find first %s\n", path_glob);
-    return false;
+    DIR *dir = new DIR;
+    FILINFO info;
+
+    int res = f_findfirst(dir, &info, "", path_glob);
+    if(res != FR_OK || !info.fname[0])
+    {
+        if(res == FR_OK)
+            f_closedir(dir);
+
+        delete dir;
+        return false;
+    }
+
+    state.data = dir;
+    state.name = NULL;
+
+    Update_Find_Result(state, info);
+
+    return true;
 }
 
 bool Find_Next_File(FindFileState &state)
 {
-    return false;
+    auto dir = (DIR *)state.data;
+    FILINFO info;
+
+    if(f_findnext(dir, &info) != FR_OK || !info.fname[0])
+    {
+        End_Find_File(state);
+        return false;
+    }
+
+    Update_Find_Result(state, info);
+    return true;
 }
 
 void End_Find_File(FindFileState &state)
 {
-    if(state.data)
+    auto dir = (DIR *)state.data;
+
+    if(state.name)
     {
+        delete[] state.name;
+        state.name = NULL;
+    }
+    if(dir)
+    {
+        f_closedir(dir);
+        delete dir;
         state.data = NULL;
     }
 }
