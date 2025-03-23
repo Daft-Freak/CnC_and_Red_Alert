@@ -74,7 +74,14 @@ extern short StreamLowImpact;
 extern short StreamLowImpact;
 #endif  //WIN32
 
+// WIN32 build keeps a second copy of seenbuf for focus loss
+#if defined(WIN32) && !defined(PORTABLE)
+#define SEENBUF_COPY
+#endif
+
+#ifdef SEENBUF_COPY
 GraphicBufferClass *PseudoSeenBuff;
+#endif
 
 struct InfantryAnim {
 	int8_t xpos;
@@ -154,7 +161,7 @@ void ScoreTimeClass::Update(void)
 		oldpage = LogicPage;
 		Set_Logic_Page(SeenBuff);
 		CC_Draw_Shape(DataPtr, Stage, XPos, YPos, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 		Set_Logic_Page(*PseudoSeenBuff);
 		CC_Draw_Shape(DataPtr, Stage, XPos, YPos, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 #endif
@@ -191,7 +198,7 @@ void ScoreCredsClass::Update(void)
 		Play_Sample(Clock1, 255, Options.Normalize_Volume(50));
 #endif
 		CC_Draw_Shape(DataPtr, Stage, XPos, YPos, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 		Set_Logic_Page(*PseudoSeenBuff);
 		CC_Draw_Shape(DataPtr, Stage, XPos, YPos, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 #endif
@@ -246,7 +253,7 @@ void ScorePrintClass::Update(void)
 			localstr[0]=((char *)DataPtr)[Stage-1];
 			HidPage.Print(localstr, pos-6*RESFACTOR, YPos,   TBLACK, TBLACK);
 			HidPage.Blit(SeenPage, pos-6*RESFACTOR, YPos-1*RESFACTOR, pos-6*RESFACTOR, YPos-1*RESFACTOR, 7*RESFACTOR, 8*RESFACTOR);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 			HidPage.Blit(*PseudoSeenBuff, pos-6*RESFACTOR, YPos-1*RESFACTOR, pos-6*RESFACTOR, YPos-1*RESFACTOR, 7*RESFACTOR, 8*RESFACTOR);
 			PseudoSeenBuff->Print(localstr, pos-6*RESFACTOR, YPos,   TBLACK, TBLACK);
 #endif
@@ -257,7 +264,7 @@ void ScorePrintClass::Update(void)
 			SeenPage.Print(localstr, pos,  YPos-1, TBLACK, TBLACK);
 			SeenPage.Print(localstr, pos,  YPos+1, TBLACK, TBLACK);
 			SeenPage.Print(localstr, pos+1, YPos  , TBLACK, TBLACK);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 			PseudoSeenBuff->Print(localstr, pos,  YPos-1, TBLACK, TBLACK);
 			PseudoSeenBuff->Print(localstr, pos,  YPos+1, TBLACK, TBLACK);
 			PseudoSeenBuff->Print(localstr, pos+1, YPos  , TBLACK, TBLACK);
@@ -310,7 +317,7 @@ void ScoreScaleClass::Update(void)
 			}
 			HidPage.Print((char *)DataPtr, XPos, YPos,   TBLACK, TBLACK);
 			HidPage.Blit(SeenPage, XPos, YPos, XPos, YPos, 6*RESFACTOR, 6*RESFACTOR);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 			HidPage.Blit(*PseudoSeenBuff, XPos, YPos, XPos, YPos, 6*RESFACTOR, 6*RESFACTOR);
 #endif
 			delete this;
@@ -382,7 +389,9 @@ void ScoreClass::Presentation(void)
 	*/
 	Disable_Uncompressed_Shapes();
 #endif	//FIXIT
+#ifdef SEENBUF_COPY
 	PseudoSeenBuff = new GraphicBufferClass(SeenBuff.Get_Width(),SeenBuff.Get_Height(),(void*)NULL);
+#endif
 #endif
 	int i;
 	void const * yellowptr;
@@ -450,7 +459,9 @@ void ScoreClass::Presentation(void)
 	Load_Title_Screen(ScreenNames[house], &HidPage, ScorePalette);
 	Increase_Palette_Luminance (ScorePalette , 30, 30, 30, 63);
 	HidPage.Blit(SeenPage);
+#ifdef SEENBUF_COPY
 	HidPage.Blit(*PseudoSeenBuff);
+#endif
 #else
 	Animate_Frame(anim, HidPage, 1);
 	HidPage.Blit(SeenPage);
@@ -859,7 +870,9 @@ Keyboard->Clear();
 	ControlQ = 0;
 
 #ifdef WIN32
+#ifdef SEENBUF_COPY
 	delete PseudoSeenBuff;
+#endif
 #ifdef FIXIT_SCORE_CRASH
 	/*
 	** Fix for the score screen crash due to uncompressed shape buffer overflow.
@@ -1089,7 +1102,7 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 
 	for (i = 1; i <= gdikilled; i++) {
 		if (i != gdikilled) {
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 			Set_Logic_Page(*PseudoSeenBuff);
 			CC_Draw_Shape(yellowptr, i, xpos*RESFACTOR, ypos*RESFACTOR, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 			Set_Logic_Page(SeenBuff);
@@ -1097,7 +1110,7 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 			CC_Draw_Shape(yellowptr, i, xpos*RESFACTOR, ypos*RESFACTOR, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 		} else {
 			HidPage.Blit(SeenPage, 0, 0, xpos*RESFACTOR, ypos*RESFACTOR, (3+gdikilled)*RESFACTOR, 8*RESFACTOR);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 			HidPage.Blit(*PseudoSeenBuff, 0, 0, xpos*RESFACTOR, ypos*RESFACTOR, (3+gdikilled)*RESFACTOR, 8*RESFACTOR);
 #endif
 		}
@@ -1113,7 +1126,7 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 //BG		}
 	}
 	CC_Draw_Shape(yellowptr, gdikilled, xpos*RESFACTOR, ypos*RESFACTOR   , WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 	Set_Logic_Page(*PseudoSeenBuff);
 	CC_Draw_Shape(yellowptr, gdikilled, xpos*RESFACTOR, ypos*RESFACTOR   , WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 	Set_Logic_Page(SeenBuff);
@@ -1128,7 +1141,7 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 #endif
 	for (i = 1; i <= nodkilled; i++) {
 		if (i != nodkilled) {
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 			Set_Logic_Page(*PseudoSeenBuff);
 			CC_Draw_Shape(redptr, i, xpos*RESFACTOR, (ypos+12)*RESFACTOR, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 			Set_Logic_Page(SeenBuff);
@@ -1136,7 +1149,7 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 			CC_Draw_Shape(redptr, i, xpos*RESFACTOR, (ypos+12)*RESFACTOR, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 		} else {
 			HidPage.Blit(SeenPage, 0, 0, xpos*RESFACTOR, (ypos+12)*RESFACTOR, (3+nodkilled)*RESFACTOR, 8*RESFACTOR);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 			HidPage.Blit(*PseudoSeenBuff, 0, 0, xpos*RESFACTOR, (ypos+12)*RESFACTOR, (3+nodkilled)*RESFACTOR, 8*RESFACTOR);
 #endif
 		}
@@ -1157,7 +1170,7 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 	/*
 	** Make sure accurate count is printed at end
 	*/
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 	Set_Logic_Page(*PseudoSeenBuff);
 	CC_Draw_Shape(   redptr, nodkilled, xpos*RESFACTOR, (ypos+12)*RESFACTOR, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 	Set_Logic_Page(SeenBuff);
@@ -1351,7 +1364,7 @@ void ScoreClass::Print_Minutes(int minutes)
 		sprintf(str, Text_String(TXT_SCORE_TIMEFORMAT2), minutes);
 	}
 	SeenPage.Print(str, 275*RESFACTOR, 9*RESFACTOR, TBLACK, TBLACK);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 	PseudoSeenBuff->Print(str, 275*RESFACTOR, 9*RESFACTOR, TBLACK, TBLACK);
 #endif
 }
@@ -1383,7 +1396,7 @@ void ScoreClass::Count_Up_Print(char *str, int percent, int maxval, int xpos, in
 
 	sprintf(destbuf, str, percent <= maxval ? percent : maxval);
 	SeenPage.Print(	destbuf, xpos * RESFACTOR, ypos * RESFACTOR, TBLACK, BLACK);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 	PseudoSeenBuff->Print(	destbuf, xpos * RESFACTOR, ypos * RESFACTOR, TBLACK, BLACK);
 #endif
 }
@@ -1452,7 +1465,7 @@ void ScoreClass::Input_Name(char str[], int xpos, int ypos, char const pal[])
 
 					int xposindex6 = (xpos+(index*6))*RESFACTOR;
 					HidPage.Blit(SeenPage, xposindex6, (ypos-100)*RESFACTOR, xposindex6, ypos*RESFACTOR, 6*RESFACTOR, 6*RESFACTOR);
-		#ifdef WIN32
+		#ifdef SEENBUF_COPY
 					HidPage.Blit(*PseudoSeenBuff, xposindex6, (ypos-100)*RESFACTOR, xposindex6, ypos*RESFACTOR, 6*RESFACTOR, 6*RESFACTOR);
 		#endif
 					HidPage.Blit(HidPage,  xposindex6, (ypos-100)*RESFACTOR, xposindex6, ypos*RESFACTOR, 6*RESFACTOR, 6*RESFACTOR);
@@ -1463,7 +1476,7 @@ void ScoreClass::Input_Name(char str[], int xpos, int ypos, char const pal[])
 				if (ascii >= 'a' && ascii <= 'z') ascii -= ('a' - 'A');
 				if ( (ascii >= '!' && ascii <= KA_TILDA) || ascii == ' ') {
 					HidPage.Blit(SeenPage, (xpos + (index*6))*RESFACTOR, (ypos-100)*RESFACTOR, (xpos + (index*6))*RESFACTOR, ypos*RESFACTOR, 6*RESFACTOR, 6*RESFACTOR);
-		#ifdef WIN32
+		#ifdef SEENBUF_COPY
 					HidPage.Blit(*PseudoSeenBuff, (xpos + (index*6))*RESFACTOR, (ypos-100)*RESFACTOR, (xpos + (index*6))*RESFACTOR, ypos*RESFACTOR, 6*RESFACTOR, 6*RESFACTOR);
 		#endif
 					HidPage.Blit(HidPage, (xpos + (index*6))*RESFACTOR, (ypos-100)*RESFACTOR, (xpos + (index*6))*RESFACTOR, ypos*RESFACTOR, 6*RESFACTOR, 6*RESFACTOR);
@@ -1499,14 +1512,14 @@ void Animate_Cursor(int pos, int ypos)
 	// If they moved the cursor, erase old one and force state=0, to make green draw right away
 	if (pos != _lastpos) {
 		HidPage.Blit(SeenPage, (HALLFAME_X + (_lastpos*6))*RESFACTOR, ypos-100*RESFACTOR, (HALLFAME_X + (_lastpos*6))*RESFACTOR, ypos, 6*RESFACTOR, 1*RESFACTOR);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 		HidPage.Blit(*PseudoSeenBuff, (HALLFAME_X + (_lastpos*6))*RESFACTOR, ypos-100*RESFACTOR, (HALLFAME_X + (_lastpos*6))*RESFACTOR, ypos, 6*RESFACTOR, 1*RESFACTOR);
 #endif
 		_lastpos = pos;
 		_state = 0;
 	}
 	SeenBuff.Draw_Line((HALLFAME_X + (pos*6))*RESFACTOR, ypos, (HALLFAME_X + (pos*6)+5)*RESFACTOR, ypos, _state ? LTBLUE : TBLACK);
-#ifdef WIN32
+#ifdef SEENBUF_COPY
 	PseudoSeenBuff->Draw_Line((HALLFAME_X + (pos*6))*RESFACTOR, ypos, (HALLFAME_X + (pos*6)+5)*RESFACTOR, ypos, _state ? LTBLUE : TBLACK);
 #endif
 	/*
@@ -1740,6 +1753,7 @@ void Animate_Score_Objs()
 {
 #ifdef WIN32
 	StillUpdating = false;
+#ifdef SEENBUF_COPY
 		/*
 		** If we have just received input focus again after running in the background then
 		** we need to redraw.
@@ -1748,6 +1762,7 @@ void Animate_Score_Objs()
 			AllSurfaces.SurfacesRestored=FALSE;
 			PseudoSeenBuff->Blit(SeenPage);
 		}
+#endif
 #endif
 	for (int i = 0; i < MAXSCOREOBJS; i++) {
 		if (ScoreObjs[i]) {
@@ -1785,7 +1800,9 @@ void Multi_Score_Presentation(void)
 	char remap[16];
 #if RESFACTOR == 2
 	GraphicBufferClass *pseudoseenbuff = new GraphicBufferClass(320, 200, (void*)NULL);
+#ifdef SEENBUF_COPY
 	PseudoSeenBuff = new GraphicBufferClass(SeenBuff.Get_Width(),SeenBuff.Get_Height(),(void*)NULL);
+#endif
 #endif
 
 	int i,k;
@@ -1830,7 +1847,7 @@ CopyType = 1;
 	}
 	Close_Animation(anim);
 
-#if RESFACTOR == 2
+#if RESFACTOR == 2 && defined(SEENBUF_COPY)
 	CopyType = 1;
 	Interpolate_2X_Scale(pseudoseenbuff , PseudoSeenBuff , NULL);
 	CopyType = 0;
@@ -1919,7 +1936,7 @@ CopyType = 1;
 	BlackPalette.Set(FADE_PALETTE_FAST, NULL);
 	SeenPage.Clear();
 	GamePalette.Set();
-#if RESFACTOR == 2
+#if SEENBUF_COPY
 	delete PseudoSeenBuff;
 #endif
 	Set_Font(oldfont);
