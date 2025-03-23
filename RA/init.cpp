@@ -3003,20 +3003,17 @@ static void Init_Bootstrap_Mixfiles(void)
 		new MFCD("EXPAND2.MIX", &FastKey);
 		bool ok = MFCD::Cache("EXPAND2.MIX");
 		assert(ok);
-	}
-#endif
 
-#ifdef FIXIT_CSII	//	Ok. ajw
-	bool ok1;
  #if RESFACTOR == 2
-	new MFCD("HIRES1.MIX", &FastKey);
-	ok1 = MFCD::Cache("HIRES1.MIX");
-	assert(ok1);
+		new MFCD("HIRES1.MIX", &FastKey);
+		ok = MFCD::Cache("HIRES1.MIX");
+		assert(ok);
  #else
-	new MFCD("LORES1.MIX", &FastKey);
-	ok1 = MFCD::Cache("LORES1.MIX");
-	assert(ok1);
+		new MFCD("LORES1.MIX", &FastKey);
+		ok = MFCD::Cache("LORES1.MIX");
+		assert(ok);
  #endif
+	}
 #endif
 
 #ifdef FIXIT_ANTS	//	Ok. ajw
