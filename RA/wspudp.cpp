@@ -57,13 +57,13 @@
 
 typedef int socklen_t;
 #else
+#ifdef PICO_BUILD
+#include "picosock.h"
+#else
 #include <netdb.h>
 #include <unistd.h>
 #include <arpa/inet.h>
 #include <netinet/in.h>
-
-#ifdef PICO_BUILD
-#define gethostname(name, size) name[0] = 0;
 #endif
 
 #define INVALID_SOCKET -1

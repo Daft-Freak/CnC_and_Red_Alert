@@ -63,14 +63,18 @@
 #ifdef _WIN32
 typedef int socklen_t;
 #else
+#ifdef PICO_BUILD
+#include "picosock.h"
+#else
 #include <fcntl.h>
 #include <unistd.h>
 #include <sys/socket.h>
 
+#define closesocket close
+#endif
+
 #define INVALID_SOCKET -1
 #define INVALID_HANDLE_VALUE NULL
-
-#define closesocket close
 
 #define OutputDebugString(x) printf("%s", x)
 #define GetLastError() errno

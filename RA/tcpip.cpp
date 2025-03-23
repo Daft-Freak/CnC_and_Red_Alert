@@ -61,17 +61,18 @@
 #include "function.h"
 #include "tcpip.h"
 
+#ifndef WINSOCK_IPX
 #ifdef _WIN32
 typedef int socklen_t;
 #else
 #include <arpa/inet.h>
-#include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <unistd.h>
 
 #define closesocket close
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
+#endif
 #endif
 
 /*

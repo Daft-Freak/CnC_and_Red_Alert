@@ -2,12 +2,8 @@
 #define _LWIPOPTS_H
 
 
-#define LWIP_ERRNO_STDINCLUDE       1
-#define SYS_LIGHTWEIGHT_PROT        0
-#define LWIP_TIMEVAL_PRIVATE        0
-
-#define NO_SYS                      0
-#define LWIP_SOCKET                 1
+#define NO_SYS                      1
+#define LWIP_SOCKET                 0
 #if PICO_CYW43_ARCH_POLL
 #define MEM_LIBC_MALLOC             1
 #else
