@@ -1,10 +1,16 @@
+#include <bitset>
 #include <string.h>
 
 #include "keyboard.h"
 #include "mouse.h"
 #include "ww_win.h"
 
+#include "class/hid/hid.h"
+
 WWKeyboardClass *TheKeyboard = NULL;
+
+// yeah, this should really be in the class
+static std::bitset<256> KeyState;
 
 WWKeyboardClass::WWKeyboardClass() : MouseQX(0), MouseQY(0), Head(0), Tail(0)
 {
@@ -53,10 +59,21 @@ bool WWKeyboardClass::Put_Key_Message(unsigned vk_key, bool release)
 	//
 	if (vk_key != VK_LBUTTON && vk_key != VK_MBUTTON && vk_key != VK_RBUTTON)
     {
-        
+		if(KeyState[HID_KEY_SHIFT_LEFT] || KeyState[HID_KEY_SHIFT_RIGHT] || KeyState[HID_KEY_CAPS_LOCK])
+			vk_key |= WWKEY_SHIFT_BIT;
+
+        if(KeyState[HID_KEY_CONTROL_LEFT] || KeyState[HID_KEY_CONTROL_RIGHT])
+			vk_key |= WWKEY_CTRL_BIT;
+
+		if(KeyState[HID_KEY_ALT_LEFT] || KeyState[HID_KEY_ALT_RIGHT])
+			vk_key |= WWKEY_ALT_BIT;
 	}
 	if (release)
         vk_key |= WWKEY_RLS_BIT;
+
+
+	// track key state
+	KeyState[vk_key & 0xFF] = !release;
 
 	//
 	// Finally use the put command to enter the key into the keyboard
@@ -70,6 +87,22 @@ int WWKeyboardClass::To_ASCII(int num)
     if(num & WWKEY_RLS_BIT)
         return 0;
 
+	static const char ascii_table[]
+	{
+		  0,   0,   0,   0,  'a', 'b', 'c', 'd',  'e', 'f',  'g',  'h', 'i', 'k', 'k', 'l',
+		'm', 'n', 'o', 'p',  'q', 'r', 's', 't',  'u', 'v',  'w',  'x', 'y', 'z', '1', '2',
+		'3', '4', '5', '6',  '7', '8', '9', '0', '\r',   0, '\b', '\t', ' ', '-', '=', '[',
+		']', '#', '#', ';', '\'', '`', ',', '.',  '/',  // F1-12, numpad, etc...
+	};
+
+	// TODO: mods, non-uk layout?
+
+	if(num < sizeof(ascii_table) && ascii_table[num])
+		return ascii_table[num];
+
+	if(num == HID_KEY_EUROPE_2)
+		return '\\';
+
     return 0;
 }
 
@@ -80,7 +113,7 @@ void WWKeyboardClass::Clear(void)
 
 int WWKeyboardClass::Down(int key)
 {
-    return 0;
+    return KeyState[key];
 }
 
 bool WWKeyboardClass::Is_Mouse_Key(int key)
