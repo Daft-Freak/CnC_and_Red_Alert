@@ -89,12 +89,13 @@ long CountDownTimerClass::Time(void)
 
 WinTimerClass::WinTimerClass(unsigned freq, bool partial) : SysTicks(0), UserTicks(0)
 {
-	add_repeating_timer_ms(1000 / freq, TimerCallback, this, &PicoTimer);
+	TimerSystemOn = add_repeating_timer_ms(1000 / freq, TimerCallback, this, &PicoTimer);
 }
 
 WinTimerClass::~WinTimerClass()
 {
 	cancel_repeating_timer(&PicoTimer);
+	TimerSystemOn = false;
 }
 
 void WinTimerClass::Update_Tick_Count(void)
