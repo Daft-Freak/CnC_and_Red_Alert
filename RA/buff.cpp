@@ -212,7 +212,7 @@ Buffer::~Buffer(void)
 void Buffer::Reset(void)
 {
 	if (IsAllocated) {
-		delete [] BufferPtr;
+		delete [] (char *)BufferPtr;
 	}
 	BufferPtr = NULL;
 	Size = 0;
