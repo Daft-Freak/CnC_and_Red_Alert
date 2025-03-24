@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "pico/stdlib.h"
+#include "pico/cyw43_arch.h"
 #include "tusb.h"
 
 #include "display.h"
@@ -80,4 +81,23 @@ void Pico_Init()
     tusb_init();
 
     init_display();
+}
+
+void Pico_Wifi_Init(const char *ssid, const char *pass)
+{
+    if(cyw43_arch_init() != 0)
+    {
+        printf("cyw43_arch_init failed!\n");
+        return;
+    }
+
+    cyw43_arch_enable_sta_mode();
+
+    if(cyw43_arch_wifi_connect_timeout_ms(ssid, pass, CYW43_AUTH_WPA2_AES_PSK, 10000))
+    {
+        printf("failed to connect\n");
+        return;
+    }
+
+    printf("wifi connected.\n");
 }
