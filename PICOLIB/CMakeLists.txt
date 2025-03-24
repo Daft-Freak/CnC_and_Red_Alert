@@ -47,10 +47,8 @@ target_include_directories(picolib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/driver)
 
 target_link_libraries(picolib PUBLIC
     hardware_dma hardware_pio hardware_pwm
-    pico_stdlib
+    pico_stdlib pico_cyw43_arch_lwip_threadsafe_background
     tinyusb_host
-    # lwip usage is mostly so socket code compiles
-    pico_lwip pico_lwip_arch
 )
 
 target_compile_definitions(picolib PUBLIC
