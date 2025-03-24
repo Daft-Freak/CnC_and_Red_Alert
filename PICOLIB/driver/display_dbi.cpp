@@ -455,7 +455,7 @@ void update_display(uint32_t time) {
 
 
 bool display_render_needed() {
-  return do_render;
+  return do_render || (!have_vsync && !dma_is_busy());
 }
 
 void set_screen_palette(const uint8_t *colours, int num_cols) {
