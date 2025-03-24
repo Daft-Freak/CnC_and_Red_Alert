@@ -1,3 +1,5 @@
+#include "hardware/sync.h"
+
 #include "gbuffer.h"
 #include "timer.h"
 
@@ -5,12 +7,15 @@
 
 bool GraphicBufferClass::Lock(void)
 {
-    if(!PaletteSurface)
-        return true;
-
     if(!LockCount)
     {
-        
+        if(Offset == get_framebuffer())
+        {
+            // this is possibly a bit specific to the DBI driver but
+            // "render needed" means that the last frame transfer has finished
+            // so if render is NOT needed it means we're still reading the framebuffer
+            while(!display_render_needed()) __wfe();
+        }
     }
 
     LockCount++;
@@ -19,7 +24,7 @@ bool GraphicBufferClass::Lock(void)
 
 bool GraphicBufferClass::Unlock(void)
 {
-    if(!PaletteSurface || !LockCount)
+    if(!LockCount)
         return true;
 
     LockCount--;
@@ -35,8 +40,10 @@ bool GraphicBufferClass::Unlock(void)
 void GraphicBufferClass::Update_Window_Surface(bool end_frame)
 {
     if(end_frame)
+    {
+        while(!display_render_needed()) __wfe();
         update_display(Get_Time_Ms());
-    // wait for sync?
+    }
 }
 
 void GraphicBufferClass::Update_Palette(uint8_t *palette)
