@@ -217,12 +217,12 @@ bool UDPInterfaceClass::Open_Socket ( SOCKET )
 	** Add all local IP addresses to the list. This list will be used to discard any packets that
 	** we send to ourselves.
 	*/
-	unsigned long **addresses = (unsigned long**) (host_info->h_addr_list);
+	uint32_t **addresses = (uint32_t**) (host_info->h_addr_list);
 
 	for ( ;; ) {
 		if ( !*addresses ) break;
 
-		unsigned long address = **addresses++;
+		uint32_t address = **addresses++;
 		//address = ntohl (address);
 
 		char temp[128];
@@ -230,7 +230,7 @@ bool UDPInterfaceClass::Open_Socket ( SOCKET )
 		OutputDebugString (temp);
 
 		unsigned char *a = new unsigned char [4];
-		* ((unsigned long*) a) = address;
+		* ((uint32_t*) a) = address;
 		LocalAddresses.Add (a);
 	}
 
