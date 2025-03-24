@@ -190,7 +190,7 @@ typedef enum SerialCommandType {
 //...........................................................................
 // Commands sent over the network Global Channel
 //...........................................................................
-typedef enum NetCommandType {
+typedef enum NetCommandType : uint16_t {
 	NET_QUERY_GAME,			// Hey, what games are out there?
 	NET_ANSWER_GAME,			// Yo, Here's my game's name!
 	NET_QUERY_PLAYER,			// Hey, what players are in this game?
