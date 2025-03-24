@@ -25,7 +25,7 @@ void SDL_Event_Loop()
 {
 
     // this is replacing WSAAsyncSelect, which would send through the windows event loop
-    //Socket_Select();
+    Socket_Select();
 
     tuh_task();
 }
