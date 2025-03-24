@@ -7,6 +7,7 @@ add_library(picolib STATIC
     keyboard.cpp
     mem.cpp
     mouse.cpp
+    net_select.cpp
     picosock.cpp
     timer.cpp
     window.cpp
@@ -19,7 +20,6 @@ add_library(picolib STATIC
     ../SDLLIB/iconcach.cpp
     ../SDLLIB/iff.cpp
     ../SDLLIB/misc.cpp
-    ../SDLLIB/net_select.cpp
     ../SDLLIB/palette.cpp
     ../SDLLIB/playcd.cpp
     ../SDLLIB/shape.cpp
