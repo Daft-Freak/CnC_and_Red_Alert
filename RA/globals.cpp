@@ -669,8 +669,13 @@ NullModemClass NullModem (
 IPXManagerClass Ipx (
 	MAX (sizeof (GlobalPacketType), sizeof(RemoteFileTransferType)),		// size of Global Channel packets
 	((546 - sizeof(CommHeaderType)) / sizeof(EventClass) ) * sizeof(EventClass),
+#ifdef PICO_BUILD
+	16, 													// # entries in Global Queue
+	8,  													// # entries in Private Queues
+#else
 	160, 													// # entries in Global Queue
 	32, 													// # entries in Private Queues
+#endif
 	VIRGIN_SOCKET, 									// Socket ID #
 	IPXGlobalConnClass::COMMAND_AND_CONQUER0);// Product ID #
 
