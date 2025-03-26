@@ -785,7 +785,7 @@ inline char const * Text_String(int string) {
 };
 
 
-template<class T> inline T Random_Picky(T a, T b, char *sfile, int line)
+template<class T> inline T Random_Picky(T a, T b, const char *sfile, int line)
 {
 	sfile = sfile;
 	line = line;
