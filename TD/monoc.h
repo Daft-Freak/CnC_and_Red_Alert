@@ -48,14 +48,14 @@ class MonoClass {
 		**	really made up of characters. This specifies which characters to use.
 		*/
 		typedef struct {
-			char	UpperLeft;
-			char	TopEdge;
-			char	UpperRight;
-			char	RightEdge;
-			char	BottomRight;
-			char	BottomEdge;
-			char	BottomLeft;
-			char	LeftEdge;
+			unsigned char	UpperLeft;
+			unsigned char	TopEdge;
+			unsigned char	UpperRight;
+			unsigned char	RightEdge;
+			unsigned char	BottomRight;
+			unsigned char	BottomEdge;
+			unsigned char	BottomLeft;
+			unsigned char	LeftEdge;
 		} BoxDataType;
 
 		/*
