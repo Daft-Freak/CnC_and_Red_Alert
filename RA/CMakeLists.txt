@@ -60,6 +60,7 @@ add_library(tech STATIC
 )
 target_link_libraries(tech port vqa32)
 target_compile_definitions(tech PUBLIC WINSOCK_IPX=1)
+target_include_directories(tech PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 
 set(RA_SOURCES
 	aadata.cpp

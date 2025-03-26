@@ -43,4 +43,5 @@ add_subdirectory(RA)
 
 if(NOT PICO_SDK_PATH)
     add_subdirectory(TD)
+    add_subdirectory(TOOLS/REMIX)
 endif()
