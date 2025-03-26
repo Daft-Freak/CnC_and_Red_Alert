@@ -109,11 +109,11 @@ bool Get_Broadcast_Addresses (void)
 	/*
 	** Add all the ip addresses from the ini file to the list box.
 	*/
-	CCINIClass ip_ini;
+	INIClass ip_ini;
 	int res=0;
 
 	CCFileClass fc("IP.INI");
-	if (ip_ini.Load(fc, false)) {
+	if (ip_ini.Load(fc)) {
 		int entry=0;
 		char entry_name[16];
 		do {
