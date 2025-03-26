@@ -725,7 +725,7 @@ DirType Desired_Facing256(int srcx, int srcy, int dstx, int dsty);
 /*
 **	Inline miscellaneous functions.
 */
-#define	XYP_COORD(x,y)	(((x)*ICON_LEPTON_W)/CELL_PIXEL_W + ((((y)*ICON_LEPTON_H)/CELL_PIXEL_H)<<16))
+#define	XYP_COORD(x,y)	COORDINATE(((x)*ICON_LEPTON_W)/CELL_PIXEL_W + ((((y)*ICON_LEPTON_H)/CELL_PIXEL_H)<<16))
 inline FacingType Dir_Facing(DirType facing) {return (FacingType)(((unsigned char)(facing+0x10)&0xFF)>>5);}
 inline DirType Facing_Dir(FacingType facing) {return (DirType)((int)facing << 5);}
 inline int Cell_To_Lepton(int cell) {return cell<<8;}
