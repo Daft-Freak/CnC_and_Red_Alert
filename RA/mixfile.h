@@ -54,6 +54,8 @@ class MixFileClass : public Node<MixFileClass<T> >
 			int operator == (SubBlock & two) const {return (CRC == two.CRC);};
 		};
 
+		static void List_All(void (*callback)(MixFileClass *, SubBlock *));
+
 	private:
 		static MixFileClass * Finder(char const * filename);
 		long Offset(long crc, long * size = 0) const;
