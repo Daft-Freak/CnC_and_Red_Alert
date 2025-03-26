@@ -234,7 +234,7 @@ void Send_Statistics_Packet(void)
 	static char field_player_crates_found[5]		= { "CRA?" };
 	static char field_player_harvested[5]			= { "HRV?" };
 
-	static char *houses[] = {
+	static char const *houses[] = {
 		"SPA",
 		"GRE",
 		"USS",

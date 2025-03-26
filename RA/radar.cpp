@@ -367,7 +367,7 @@ void RadarClass::Draw_It(bool forced)
 {
 	DisplayClass::Draw_It(forced);
 
-	static char * _hiresradarnames[]={
+	static char const* _hiresradarnames[]={
 		"natoradr.shp",	//HOUSE_SPAIN,
 		"natoradr.shp",   //HOUSE_GREECE,
 		"ussrradr.shp",   //HOUSE_USSR,
@@ -379,7 +379,7 @@ void RadarClass::Draw_It(bool forced)
 		"natoradr.shp",	//HOUSE_GOOD
 		"ussrradr.shp",	//HOUSE_BAD
 	};
-	static char * _frames[]={
+	static char const* _frames[]={
 		"nradrfrm.shp",   //HOUSE_SPAIN,
 		"nradrfrm.shp",   //HOUSE_GREECE,
 		"uradrfrm.shp",   //HOUSE_USSR,

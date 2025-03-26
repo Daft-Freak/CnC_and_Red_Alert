@@ -1784,7 +1784,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 		REDRAW_ALL = REDRAW_BACKGROUND
 	} RedrawType;
 
-	static char *portname[4] = {
+	static char const *portname[4] = {
 		"COM1 - 3F8",
 		"COM2 - 2F8",
 		"COM3 - 3E8",
@@ -1796,7 +1796,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 
 
 #ifndef WIN32		// No IRQ dialog in Win version
-	static char *irqname[5] = {
+	static char const *irqname[5] = {
 		"2 / 9",
 		"3 - [COM2 & 4]",
 		"4 - [COM1 & 3]",
@@ -1814,7 +1814,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 #endif	//WIN32
 
 #ifdef WIN32
-	static char *baudname[5] = {
+	static char const *baudname[5] = {
 		"14400",
 		"19200",
 		"28800",
@@ -1825,7 +1825,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 	static char modemnames[10][MODEM_NAME_MAX];
 
 #else	//WIN32
-	static char *baudname[5] = {
+	static char const *baudname[5] = {
 		"9600",
 		"14400",
 		"19200",
@@ -7542,7 +7542,7 @@ static void Modem_Echo( char c )
 }	/* end of Modem_Echo */
 
 
-void Smart_Printf( char *format, ... )
+void Smart_Printf( char const *format, ... )
 {
 	va_list arglist;
 	char buf[501];

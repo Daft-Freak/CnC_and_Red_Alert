@@ -4155,7 +4155,7 @@ void Handle_View(int view, int action)
 #define ROR_NOT_READY 21
 #endif
 
-static char * _CD_Volume_Label[] = {
+static char const * _CD_Volume_Label[] = {
 	"CD1",
 	"CD2",
 	"CD3",
@@ -4385,7 +4385,7 @@ bool Force_CD_Available( int cd_desired )				//	ajw
 	static int _last = -1;
 	static void *font;
 #ifdef FRENCH
-	static char * _cd_name[] = {
+	static char const * _cd_name[] = {
 		"ALERTE ROUGE CD1",
 		"ALERTE ROUGE CD2",
 		"CD Missions Taiga",
@@ -4394,7 +4394,7 @@ bool Force_CD_Available( int cd_desired )				//	ajw
 };
 #endif
 #ifdef GERMAN
-	static char * _cd_name[] = {
+	static char const * _cd_name[] = {
 		"ALARMSTUFE ROT CD1",
 		"ALARMSTUFE ROT CD2",
 		"CD Gegenangriff einlegen",
@@ -4403,7 +4403,7 @@ bool Force_CD_Available( int cd_desired )				//	ajw
 	};
 #endif
 #ifdef ENGLISH
-	static char * _cd_name[] = {
+	static char const * _cd_name[] = {
 		"RED ALERT DISK 1",
 		"RED ALERT DISK 2",
 		"CounterStrike CD",
@@ -4701,7 +4701,7 @@ bool Force_CD_Available(int cd)
 //	static char _hold[256];
 	static void *font;
 #ifdef FRENCH
-	static char * _cd_name[] = {
+	static char const * _cd_name[] = {
 		"ALERTE ROUGE CD1",
 		"ALERTE ROUGE CD2",
 		"CD Missions Taiga",
@@ -4715,7 +4715,7 @@ bool Force_CD_Available(int cd)
 
 #endif
 #ifdef GERMAN
-	static char * _cd_name[] = {
+	static char const * _cd_name[] = {
 		"ALARMSTUFE ROT CD1 einlegen",
 		"ALARMSTUFE ROT CD2 einlegen",
 		"CD Gegenangriff einlegen",
@@ -4728,7 +4728,7 @@ bool Force_CD_Available(int cd)
 	};
 #endif
 #ifdef ENGLISH
-	static char * _cd_name[] = {
+	static char const * _cd_name[] = {
 		"RED ALERT DISK 1",
 		"RED ALERT DISK 2",
 		"CounterStrike CD",

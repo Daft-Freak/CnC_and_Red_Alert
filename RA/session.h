@@ -671,8 +671,8 @@ class SessionClass
 
 		DynamicVectorClass<PhoneEntryClass *> PhoneBook;
 		DynamicVectorClass <char *> InitStrings;
-		static char * DialMethodCheck[ DIAL_METHODS ];
-		static char * CallWaitStrings[ CALL_WAIT_STRINGS_NUM ];
+		static char const* DialMethodCheck[ DIAL_METHODS ];
+		static char* CallWaitStrings[ CALL_WAIT_STRINGS_NUM ];
 
 		//.....................................................................
 		// For finding Sync Bugs

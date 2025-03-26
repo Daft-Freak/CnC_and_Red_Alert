@@ -127,7 +127,7 @@ char * SessionClass::SerialPacketNames[] = {
 };
 
 
-char * SessionClass::DialMethodCheck[ DIAL_METHODS ] = {
+char const* SessionClass::DialMethodCheck[ DIAL_METHODS ] = {
 	"T",
 	"P"
 };
