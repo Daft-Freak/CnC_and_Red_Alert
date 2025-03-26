@@ -2274,9 +2274,9 @@ bool CellClass::Goodie_Check(FootClass * object)
 			**	yard available, then force the money to be enough to rebuild the refinery.
 			*/
 			if (powerup == CRATE_MONEY && (object->House->BScan & (STRUCTF_CONST|STRUCTF_REFINERY)) == STRUCTF_CONST &&
-						object->House->Available_Money() < BuildingTypeClass::As_Reference(STRUCT_REFINERY).Cost * object->House->CostBias) {
+						object->House->Available_Money() < int(BuildingTypeClass::As_Reference(STRUCT_REFINERY).Cost) * object->House->CostBias) {
 
-				force_money = BuildingTypeClass::As_Reference(STRUCT_REFINERY).Cost * object->House->CostBias;
+				force_money = int(BuildingTypeClass::As_Reference(STRUCT_REFINERY).Cost) * object->House->CostBias;
 			}
 
 			/*

@@ -1343,7 +1343,7 @@ void DriveClass::AI(void)
 #else
 		if (PrimaryFacing.Is_Rotating()) {
 			Mark(MARK_CHANGE_REDRAW);
-			if (PrimaryFacing.Rotation_Adjust(Techno_Type_Class()->ROT * House->GroundspeedBias)) {
+			if (PrimaryFacing.Rotation_Adjust(int(Techno_Type_Class()->ROT) * House->GroundspeedBias)) {
 				Mark(MARK_CHANGE_REDRAW);
 			}
 #endif
