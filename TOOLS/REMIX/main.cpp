@@ -1,7 +1,14 @@
+#include <fstream>
 #include <list>
 #include <set>
 #include <string>
 #include <unordered_map>
+
+#ifdef _WIN32
+#include <direct.h>
+#else
+#include <sys/stat.h>
+#endif
 
 #include "base64.h"
 #include "ccfile.h"
@@ -9,6 +16,7 @@
 #include "mixfile.h"
 #include "rndstraw.h"
 
+#include "mixwriter.h"
 #include "names.h"
 
 using CCMixFile = MixFileClass<CCFileClass>;
@@ -56,7 +64,7 @@ static MixFileClass<CCFileClass> *last_mix = nullptr;
 std::set<CCMixFile *> mix_files;
 
 // keep track of nesting
-static std::unordered_map<CCMixFile *, CCMixFile *> mix_parents;
+static std::unordered_map<CCMixFile *, std::tuple<CCMixFile *, int32_t>> mix_parents;
 
 struct FileEntry
 {
@@ -66,6 +74,14 @@ struct FileEntry
 };
 
 static std::unordered_multimap<int32_t, FileEntry> all_files;
+
+static bool create_directory(const char *path) {
+#ifdef _WIN32
+  	return _mkdir(path) == 0 || errno == EEXIST;
+#else
+  	return mkdir(path, 0755) == 0 || errno == EEXIST;
+#endif
+}
 
 static const char *get_filename(int32_t crc)
 {
@@ -88,7 +104,7 @@ static void mix_file_callback(CCMixFile *mix, CCMixFile::SubBlock *entry)
 
 		auto parent_it = mix_parents.find(mix);
 		if(parent_it != mix_parents.end())
-			printf("\n%s (%s):\n", mix->Filename, parent_it->second->Filename);
+			printf("\n%s (%s):\n", mix->Filename, std::get<0>(parent_it->second)->Filename);
 		else
         	printf("\n%s:\n", mix->Filename);
     }
@@ -107,7 +123,7 @@ static void mix_file_callback(CCMixFile *mix, CCMixFile::SubBlock *entry)
             if(strcmp(ext, ".MIX") == 0)
 			{
                 auto new_mix = new CCMixFile(filename, key);
-				mix_parents.emplace(new_mix, mix);
+				mix_parents.emplace(new_mix, std::make_tuple(mix, entry->Offset));
 			}
 		}
         printf("%-12s size %9u offset %9u\n", filename, entry->Size, entry->Offset);
@@ -285,6 +301,100 @@ int main(int argc, char *argv[])
 		total += fs.second;
 	}
 	printf("\t ALL: %9u\n", total);
+
+	// now try to re-assemble the files
+	std::unordered_map<std::string, MixWriter> output_mixes;
+	for(auto it = all_files.begin(); it != all_files.end(); ++it)
+	{
+		// look up the real file
+		uint32_t offset = it->second.block->Offset + it->second.mix->Get_Data_Start();
+		auto mix_filename = it->second.mix->Filename;
+		auto parent_it = mix_parents.find(it->second.mix);
+
+		auto filename = it->second.name;
+		const char *ext = NULL;
+		if(filename)
+			ext = strrchr(filename, '.');
+
+		// skip nested mixes, we'll rebuild the container mixes later
+		if(ext && strcmp(ext, ".MIX") == 0)
+			continue;
+
+		// nested mix, go back to true file
+		if(parent_it != mix_parents.end())
+		{
+			auto parent_mix = std::get<0>(parent_it->second);
+			mix_filename = parent_mix->Filename;
+		}
+
+		// read ALL the data
+		auto data = new uint8_t[it->second.block->Size];
+		std::ifstream file(mix_filename, std::ios::binary);
+
+		file.seekg(offset);
+		file.read((char *)data, it->second.block->Size);
+		output_mixes[it->second.mix->Filename].addEntry(it->second.block->CRC, it->second.block->Size, data);
+	}
+
+	if(!create_directory("./remixed"))
+	{
+		printf("couldn't create output directory!\n");
+		return 1;
+	}
+
+	for(auto &file : output_mixes)
+		file.second.write(std::string("./remixed/").append(file.first).c_str());
+
+	// build the "container" mixes
+	std::list<const char *> redalert_files{"LOCAL.MIX", "SPEECH.MIX"};
+	std::list<const char *> main_files{"MOVIES1.MIX", "CONQUER.MIX", "RUSSIAN.MIX", "ALLIES.MIX", "SOUNDS.MIX", "SCORES.MIX", "SNOW.MIX", "INTERIOR.MIX", "TEMPERAT.MIX", "GENERAL.MIX"};
+
+	if(hires)
+	{
+		redalert_files.push_back("HIRES.MIX");
+		redalert_files.push_back("NCHIRES.MIX");
+
+		if(editor)
+			main_files.push_back("EDHI.MIX");
+	}
+	else
+	{
+		redalert_files.push_back("LORES.MIX");
+		if(editor)
+			main_files.push_back("EDLO.MIX");
+	}
+
+	if(editor)
+		redalert_files.push_back("EDITOR.MIX");
+
+	MixWriter redalert_mix, main_mix;
+
+	for(auto &filename : main_files)
+	{
+		std::ifstream file(std::string("./remixed/").append(filename).c_str(), std::ios::binary);
+		file.seekg(0, std::ios::end);
+		auto size = file.tellg();
+		file.seekg(0, std::ios::beg);
+
+		auto data = new uint8_t[size];
+		file.read((char *)data, size);
+		main_mix.addEntry(CRCEngine()(filename, strlen(filename)), size, data);
+	}
+
+	for(auto &filename : redalert_files)
+	{
+		std::ifstream file(std::string("./remixed/").append(filename).c_str(), std::ios::binary);
+		file.seekg(0, std::ios::end);
+		auto size = file.tellg();
+		file.seekg(0, std::ios::beg);
+
+		auto data = new uint8_t[size];
+		file.read((char *)data, size);
+		redalert_mix.addEntry(CRCEngine()(filename, strlen(filename)), size, data);
+	}
+
+	main_mix.write("./remixed/MAIN.MIX");
+	redalert_mix.write("./remixed/REDALERT.MIX");
 
 	// because we unlinked, these are going to leak
 	for(auto &file : mix_files)
