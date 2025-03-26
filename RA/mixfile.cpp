@@ -601,4 +601,13 @@ assert(1);//BG
 	return(false);
 }
 
+template<class T>
+void MixFileClass<T>::List_All(void (*callback)(MixFileClass *, SubBlock *))
+{
+	for(MixFileClass<T> *ptr = MixList.First(); ptr->Is_Valid(); ptr = ptr->Next()) {
+		for(int i = 0; i < ptr->Count; i++)
+			callback(ptr, ptr->HeaderBuffer + i);
+	}
+}
+
 template class MixFileClass<CCFileClass>;
