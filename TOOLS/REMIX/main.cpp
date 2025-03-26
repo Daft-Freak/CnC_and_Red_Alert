@@ -180,6 +180,10 @@ int main(int argc, char *argv[])
 		if(!editor && (strcmp(mix_filename, "EDITOR.MIX") == 0 || strcmp(mix_filename, "EDLO.MIX") == 0 || strcmp(mix_filename, "EDHI.MIX") == 0))
 			remove = true;
 
+		// video and palette table for a large video not referenced by the game
+		if(it->first == 0x18FF53F1 || it->first == 0x27FF53F1)
+			remove = true;
+
 		if(remove)
 		{
 			printf("removing %s in %s\n", it->second.name, mix_filename);
