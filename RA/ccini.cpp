@@ -107,7 +107,7 @@
  *   07/03/1996 JLB : Created.                                                                 *
  *   08/21/1996 JLB : Handles digest control.                                                  *
  *=============================================================================================*/
-bool CCINIClass::Load(FileClass & file, bool withdigest)
+int CCINIClass::Load(FileClass & file, bool withdigest)
 {
 	FileStraw fs(file);
 	return(Load(fs, withdigest));
@@ -133,7 +133,7 @@ bool CCINIClass::Load(FileClass & file, bool withdigest)
  *   07/10/1996 JLB : Created.                                                                 *
  *   08/21/1996 JLB : Handles message digest control.                                          *
  *=============================================================================================*/
-bool CCINIClass::Load(Straw & file, bool withdigest)
+int CCINIClass::Load(Straw & file, bool withdigest)
 {
 	bool ok = INIClass::Load(file);
 
