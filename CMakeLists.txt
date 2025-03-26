@@ -20,8 +20,8 @@ if(MSVC)
         /wd4661 # missing template definitions, 10000s of these
     )
 else()
-    # -Wno-changes-meaning/-Wnarrowing to compile, others for noise
-    add_compile_options(-Wno-error=changes-meaning -Wno-error=narrowing -Wno-write-strings)
+    # for noise
+    add_compile_options(-Wno-write-strings)
     # workarounds
     add_compile_definitions(-D__cdecl= -D__far= -D__stdcall= -Dcdecl= -Dfar=)
 endif()
