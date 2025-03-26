@@ -60,14 +60,14 @@ class FieldClass {
 		// of fields.
 		//
 		FieldClass(void) {};
-		FieldClass(char *id, char data);
-		FieldClass(char *id, unsigned char data);
-		FieldClass(char *id, short data);
-		FieldClass(char *id, unsigned short data);
-		FieldClass(char *id, long data);
-		FieldClass(char *id, unsigned long data);
-		FieldClass(char *id, const char *data);
-		FieldClass(char *id, void *data, int length);
+		FieldClass(char const *id, char data);
+		FieldClass(char const *id, unsigned char data);
+		FieldClass(char const *id, short data);
+		FieldClass(char const *id, unsigned short data);
+		FieldClass(char const *id, long data);
+		FieldClass(char const *id, unsigned long data);
+		FieldClass(char const *id, char const *data);
+		FieldClass(char const *id, void *data, int length);
 
 		void Host_To_Net(void);
 		void Net_To_Host(void);

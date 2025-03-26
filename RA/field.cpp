@@ -44,7 +44,7 @@
 #include <arpa/inet.h>
 #endif
 
-FieldClass::FieldClass(char *id, char data)
+FieldClass::FieldClass(char const *id, char data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_CHAR;
@@ -54,7 +54,7 @@ FieldClass::FieldClass(char *id, char data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, unsigned char data)
+FieldClass::FieldClass(char const *id, unsigned char data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_UNSIGNED_CHAR;
@@ -64,7 +64,7 @@ FieldClass::FieldClass(char *id, unsigned char data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, short data)
+FieldClass::FieldClass(char const *id, short data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_SHORT;
@@ -74,7 +74,7 @@ FieldClass::FieldClass(char *id, short data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, unsigned short data)
+FieldClass::FieldClass(char const *id, unsigned short data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_UNSIGNED_SHORT;
@@ -84,7 +84,7 @@ FieldClass::FieldClass(char *id, unsigned short data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, long data)
+FieldClass::FieldClass(char const *id, long data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_LONG;
@@ -94,7 +94,7 @@ FieldClass::FieldClass(char *id, long data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, unsigned long data)
+FieldClass::FieldClass(char const *id, unsigned long data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_UNSIGNED_LONG;
@@ -104,7 +104,7 @@ FieldClass::FieldClass(char *id, unsigned long data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, const char *data)
+FieldClass::FieldClass(char const *id, const char *data)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_STRING;
@@ -114,7 +114,7 @@ FieldClass::FieldClass(char *id, const char *data)
 	Next		= NULL;
 }
 
-FieldClass::FieldClass(char *id, void *data, int length)
+FieldClass::FieldClass(char const *id, void *data, int length)
 {
 	strncpy(ID, id, sizeof(ID));
 	DataType = TYPE_CHUNK;
