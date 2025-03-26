@@ -2965,7 +2965,7 @@ bool AircraftClass::Process_Landing(void)
 //					Set_Speed(distance/2);
 //				}
 
-				Set_Speed(Class->LandingSpeed / House->AirspeedBias);
+				Set_Speed(int(Class->LandingSpeed) / House->AirspeedBias);
 				break;
 		}
 
