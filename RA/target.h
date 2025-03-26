@@ -118,7 +118,7 @@ class xTargetClass
 
 		unsigned Value(void) const {return(Target.Sub.Mantissa);};
 
-		void Invalidate(void) {Target.Sub.Exponent = RTTI_NONE;Target.Sub.Mantissa = -1;}
+		void Invalidate(void) {Target.Sub.Exponent = RTTI_NONE;Target.Sub.Mantissa = (1 << TARGET_MANTISSA) - 1;}
 		bool Is_Valid(void) const {return (Target.Sub.Exponent != RTTI_NONE);}
 
 		TARGET As_Target(void) const {return(Target.Target);}
