@@ -14,7 +14,7 @@ void Focus_Restore(void);
 
 void VQA_ResumeAudio(void);
 
-void CCDebugString (char *string)
+void CCDebugString (char const *string)
 {
 }
 

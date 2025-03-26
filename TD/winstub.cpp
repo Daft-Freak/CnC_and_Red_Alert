@@ -554,7 +554,7 @@ HANDLE DebugFile = INVALID_HANDLE_VALUE;
  * HISTORY:                                                                                    *
  *    10/28/96 12:48PM ST : Created                                                            *
  *=============================================================================================*/
-void CCDebugString (char *string)
+void CCDebugString (char const *string)
 {
 #if (0)
 

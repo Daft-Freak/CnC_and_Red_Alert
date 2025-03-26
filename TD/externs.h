@@ -387,7 +387,7 @@ void Memory_Error_Handler(void);
 extern bool GameStatisticsPacketSent;
 extern bool ConnectionLost;
 extern bool InMainLoop;			         // True if in game state rather than menu state
-void CCDebugString (char *string);
+void CCDebugString (char const *string);
 extern void *PacketLater;
 void Load_Title_Screen(char *name, GraphicViewPortClass *video_page, unsigned char *palette);
 
