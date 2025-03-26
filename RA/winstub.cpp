@@ -337,7 +337,7 @@ HANDLE DebugFile = INVALID_HANDLE_VALUE;
  * HISTORY:                                                                                    *
  *    10/28/96 12:48PM ST : Created                                                              *
  *=============================================================================================*/
-void WWDebugString (char *string)
+void WWDebugString (char const *string)
 {
 #if (0)
 	char outstr[256];

@@ -72,7 +72,7 @@ BOOL RA95AlreadyRunning = FALSE;		//Was there an instance of Red Alert 95 alread
 extern HWND 			MainWindow;
 extern TimerClass	GameTimer;
 extern bool			GameTimerInUse;
-extern void 			WWDebugString (char *string);
+extern void 			WWDebugString (char const *string);
 
 
 /***********************************************************************************************

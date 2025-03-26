@@ -12,7 +12,7 @@ void Focus_Restore(void);
 
 void VQA_ResumeAudio(void);
 
-void WWDebugString (char *string)
+void WWDebugString (char const *string)
 {}
 
 void Check_For_Focus_Loss(void)
