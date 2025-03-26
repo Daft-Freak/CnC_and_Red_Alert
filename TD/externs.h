@@ -389,7 +389,7 @@ extern bool ConnectionLost;
 extern bool InMainLoop;			         // True if in game state rather than menu state
 void CCDebugString (char const *string);
 extern void *PacketLater;
-void Load_Title_Screen(char *name, GraphicViewPortClass *video_page, unsigned char *palette);
+void Load_Title_Screen(char const *name, GraphicViewPortClass *video_page, unsigned char *palette);
 
 extern "C"{
 	extern bool IsTheaterShape;
