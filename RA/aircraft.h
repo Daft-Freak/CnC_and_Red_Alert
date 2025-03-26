@@ -172,7 +172,7 @@ class AircraftClass : public FootClass, public FlyClass
 		**	File I/O.
 		*/
 		static void Read_INI(CCINIClass & ini);
-		static char * INI_Name(void) {return "AIRCRAFT";};
+		static char const * INI_Name(void) {return "AIRCRAFT";};
 		bool Load(Straw & file);
 		bool Save(Pipe & file) const;
 

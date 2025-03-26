@@ -69,7 +69,7 @@ class OverlayClass : public ObjectClass
 		*/
 		static void Read_INI(char *);
 		static void Write_INI(char *);
-		static char *INI_Name(void) {return "OVERLAY";};
+		static char const *INI_Name(void) {return "OVERLAY";};
 		bool Load(FileClass & file);
 		bool Save(FileClass & file);
 		virtual void Code_Pointers(void);

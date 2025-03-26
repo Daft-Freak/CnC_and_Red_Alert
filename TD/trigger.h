@@ -140,7 +140,7 @@ class TriggerClass {
 		static void Read_INI (char *buffer);
 		void  Fill_In(char *name, char *entry);
 		static void Write_INI (char *buffer, bool refresh);
-		static char * INI_Name(void) {return "Triggers";};
+		static char const * INI_Name(void) {return "Triggers";};
 		bool  Load(FileClass & file);
 		bool  Save(FileClass & file);
 		void  Code_Pointers(void);

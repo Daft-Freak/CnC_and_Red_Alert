@@ -121,7 +121,7 @@ class TriggerTypeClass : public AbstractTypeClass
 		void Fill_In(char * name, char * entry);
 		void Build_INI_Entry(char * buf) const;
 
-		static char * INI_Name(void) {return "Trigs";};
+		static char const * INI_Name(void) {return "Trigs";};
 		bool Load(Straw & file);
 		bool Save(Pipe & file) const;
 		void Code_Pointers(void);

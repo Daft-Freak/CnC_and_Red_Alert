@@ -131,7 +131,7 @@ class TerrainClass : public ObjectClass, public StageClass
 		*/
 		static void Read_INI(CCINIClass & ini);
 		static void Write_INI(CCINIClass & ini);
-		static char *INI_Name(void) {return "TERRAIN";};
+		static char const *INI_Name(void) {return "TERRAIN";};
 		bool Load(Straw & file);
 		bool Save(Pipe & file) const;
 

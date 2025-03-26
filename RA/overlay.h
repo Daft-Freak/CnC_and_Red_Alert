@@ -72,7 +72,7 @@ class OverlayClass : public ObjectClass
 		*/
 		static void Read_INI(CCINIClass & ini);
 		static void Write_INI(CCINIClass & ini);
-		static char *INI_Name(void) {return "OVERLAY";};
+		static char const *INI_Name(void) {return "OVERLAY";};
 		bool Load(Straw & file);
 		bool Save(Pipe & file) const;
 

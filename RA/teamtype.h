@@ -140,7 +140,7 @@ class TeamTypeClass : public AbstractTypeClass
 		static void Read_INI(CCINIClass & ini);
 		void Fill_In(char *name, char *entry);
 		static void Write_INI(CCINIClass & ini);
-		static char * INI_Name(void) {return "TeamTypes";};
+		static char const * INI_Name(void) {return "TeamTypes";};
 		bool Load(Straw & file);
 		bool Save(Pipe & file) const;
 		void Code_Pointers(void);

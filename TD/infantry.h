@@ -205,7 +205,7 @@ class InfantryClass : public FootClass
 		*/
 		static void  Read_INI(char *buffer);
 		static void  Write_INI(char *buffer);
-		static char *INI_Name(void) {return "INFANTRY";};
+		static char const *INI_Name(void) {return "INFANTRY";};
 		bool  Load(FileClass & file);
 		bool  Save(FileClass & file);
 		virtual void Code_Pointers(void);

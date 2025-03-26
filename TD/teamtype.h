@@ -108,7 +108,7 @@ class TeamTypeClass : public AbstractTypeClass
 		void  Fill_In(char *name, char *entry);
 		static void Write_INI(char *buffer, bool refresh);
 		static void Read_Old_INI(char *buffer);
-		static char * INI_Name(void) {return "TeamTypes";};
+		static char const * INI_Name(void) {return "TeamTypes";};
 		bool  Load(FileClass & file);
 		bool  Save(FileClass & file);
 		void  Code_Pointers(void);

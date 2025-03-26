@@ -130,7 +130,7 @@ class TerrainClass : public ObjectClass, public StageClass
 		*/
 		static void Read_INI(char *buffer);
 		static void Write_INI(char *buffer);
-		static char *INI_Name(void) {return "TERRAIN";};
+		static char const *INI_Name(void) {return "TERRAIN";};
 		bool Load(FileClass & file);
 		bool Save(FileClass & file);
 		virtual void Code_Pointers(void);

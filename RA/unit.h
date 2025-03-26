@@ -240,7 +240,7 @@ class UnitClass :	public DriveClass
 		*/
 		static void Read_INI(CCINIClass & ini);
 		static void Write_INI(CCINIClass & ini);
-		static char *INI_Name(void) {return "UNITS";};
+		static char const *INI_Name(void) {return "UNITS";};
 		bool Load(Straw & file);
 		bool Save(Pipe & file) const;
 };
