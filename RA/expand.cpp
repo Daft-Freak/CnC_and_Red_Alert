@@ -248,11 +248,11 @@ const char* XlatNames[] = {
 
 
 
-#ifndef WIN32	 //VG
+#if RESFACTOR == 1
 
 	#define	OPTION_WIDTH	236
 #ifdef FIXIT_CSII	//	checked - ajw 9/28/98
-#error Can never again build without WIN32 defined.
+//#error Can never again build without WIN32 defined.
 	#define	OPTION_HEIGHT	162
 #else
 	#define	OPTION_HEIGHT	162
@@ -358,7 +358,7 @@ void EListClass::Draw_Entry(int index, int x, int y, int width, int selected)
 		}
 	}
 
-#ifndef WIN32
+#if RESFACTOR == 1
         Conquer_Clip_Text_Print(buffer, x, y, scheme, TBLACK, flags & ~(TPF_CENTER), width, Tabs);
 #else
 	Conquer_Clip_Text_Print(buffer, x + 100, y, scheme, TBLACK, flags & ~(TPF_CENTER), width, Tabs);
@@ -373,7 +373,7 @@ bool Expansion_Dialog(void)
 {
 	GadgetClass * buttons = NULL;
 
-#ifndef WIN32
+#if RESFACTOR == 1
 	TextButtonClass ok(200, TXT_OK, TPF_BUTTON, OPTION_X+40, OPTION_Y+OPTION_HEIGHT-15);
 	TextButtonClass cancel(201, TXT_CANCEL, TPF_BUTTON, OPTION_X+OPTION_WIDTH-85, OPTION_Y+OPTION_HEIGHT-15);
 #else
@@ -381,7 +381,7 @@ bool Expansion_Dialog(void)
 	TextButtonClass cancel(201, TXT_CANCEL, TPF_BUTTON, OPTION_X+OPTION_WIDTH-85, OPTION_Y + OPTION_HEIGHT - 50 );
 #endif
 
-#ifndef WIN32
+#if RESFACTOR == 1
 	EListClass list(202, OPTION_X + 20, OPTION_Y+20, OPTION_WIDTH-40, OPTION_HEIGHT-40, TPF_BUTTON, MFCD::Retrieve("BTN-UP.SHP"), MFCD::Retrieve("BTN-DN.SHP"));
 #else
 	EListClass list(202, OPTION_X+35, OPTION_Y + 30, OPTION_WIDTH-70, OPTION_HEIGHT - 85, TPF_BUTTON, MFCD::Retrieve("BTN-UP.SHP"), MFCD::Retrieve("BTN-DN.SHP"));
