@@ -15,6 +15,37 @@ using CCMixFile = MixFileClass<CCFileClass>;
 
 static std::unordered_map<int32_t, const char *> name_map;
 
+// game load order, first one takes priority
+static const char *mix_priority[]
+{
+	// Bootstrap
+	"WOLAPI.MIX",
+	"EXPAND2.MIX",
+	"HIRES1.MIX", // only one of
+	"LORES1.MIX", // these is loaded
+	"EXPAND.MIX",
+	"REDALERT.MIX", // container
+	"LOCAL.MIX",
+	"HIRES.MIX", // only one of
+	"LORES.MIX", // these is loaded
+	"NCHIRES.MIX", // hires
+
+	// Expansion
+	// SC*/SS*
+
+	// Secondary
+	"MAIN.MIX", // container
+	"CONQUER.MIX",
+	"GENERAL.MIX",
+	"MOVIES1.MIX",
+	"MOVIES2.MIX", // only if MOVIES1 isn't found
+	"SCORES.MIX",
+	"SPEECH.MIX",
+	"SOUNDS.MIX",
+	"RUSSIAN.MIX",
+	"ALLIES.MIX",
+};
+
 static PKey *key;
 
 // list state
@@ -158,9 +189,7 @@ int main(int argc, char *argv[])
 			++it;
 	}
 
-	// go through final list
-	std::unordered_map<std::string, uint32_t> size_by_ext;
-
+	// deduplication
 	for(auto it = all_files.begin(); it != all_files.end();)
 	{
 		// find next entry
@@ -176,10 +205,49 @@ int main(int argc, char *argv[])
 		if(count > 1)
 		{
 			printf("\n%s exists in multiple mixes:\n", it->second.name);
-			for(auto it2 = it; it2 != next_key; ++it2)
-				printf("\t%s (size %u)\n", it2->second.mix->Filename, it2->second.block->Size);
-		}
+	
+			int prio_count = sizeof(mix_priority) / sizeof(mix_priority[0]);
+			int min_prio = prio_count;
+			std::unordered_multimap<int32_t, FileEntry>::iterator min_it;
 
+			for(auto it2 = it; it2 != next_key; ++it2)
+			{
+				// calc priority
+				int prio = 0;
+				for(auto &mix_name : mix_priority)
+				{
+					if(strcmp(mix_name, it2->second.mix->Filename) == 0)
+						break;
+					prio++;
+				}
+
+				printf("\t%-12s (prio %2i size %u)\n", it2->second.mix->Filename, prio, it2->second.block->Size);
+			
+				if(prio < min_prio)
+				{
+					min_prio = prio;
+					min_it = it2;
+				}
+			}
+
+			// now remove all the lower proprity ones
+			for(auto it2 = it; it2 != next_key;)
+			{
+				if(it2 == min_it)
+					++it2;
+				else
+					it2 = all_files.erase(it2);
+			}
+		}
+	
+		it = next_key;
+	}
+
+	// go through final list
+	std::unordered_map<std::string, uint32_t> size_by_ext;
+
+	for(auto it = all_files.begin(); it != all_files.end(); ++it)
+	{
 		// add up total sizes
 		auto filename = it->second.name;
 		const char * ext = nullptr;
@@ -196,8 +264,6 @@ int main(int argc, char *argv[])
 
 		if(strcmp(ext, ".MIX") != 0)
 			size_by_ext[ext] += it->second.block->Size;
-	
-		it = next_key;
 	}
 
 	// display size breakdown
