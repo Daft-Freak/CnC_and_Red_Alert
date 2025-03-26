@@ -3383,7 +3383,7 @@ static int Net_New_Dialog(void)
 					rc = TRUE;
 					process = FALSE;
 				} else {
-					CCMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,NULL);
+					CCMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,TXT_NONE);
 					display = REDRAW_ALL;
 				}
 				break;
@@ -4518,7 +4518,7 @@ CCDebugString ("C&C95 - Join timer expired\n");
 						rc = TRUE;
 						process = FALSE;
 					} else {
-						CCMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,NULL);
+						CCMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,TXT_NONE);
 						display = REDRAW_ALL;
 					}
 				}

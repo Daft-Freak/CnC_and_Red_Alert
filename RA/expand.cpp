@@ -410,7 +410,7 @@ bool Expansion_Dialog(void)
 		strcpy(buffer, TestNames2[index]);
 		strcpy(buffer2, TestNames2[index]);
 #endif
-		if(buffer[0] == NULL)
+		if(buffer[0] == 0)
 		   break;
 
      	strcat(buffer, ".INI");

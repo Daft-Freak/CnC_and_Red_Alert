@@ -339,7 +339,7 @@ int Sound_Effect(VocType voc, VolType volume, int variation=1, signed short panv
 void Speak(VoxType voice);
 void Speak_AI(void);
 void Stop_Speaking(void);
-void Sound_Effect(VocType voc, COORDINATE coord=NULL, int variation=1);
+void Sound_Effect(VocType voc, COORDINATE coord=0, int variation=1);
 bool Is_Speaking(void);
 
 /*

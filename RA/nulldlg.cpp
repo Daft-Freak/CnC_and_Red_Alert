@@ -3903,7 +3903,7 @@ oh_dear_its_a_label:
 					transmit = true;
 					transmittime = 0;
 				} else {
-					WWMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,NULL);
+					WWMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,TXT_NONE);
 					display = REDRAW_ALL;
 				}
 				if (input==(BUTTON_LOAD | KN_BUTTON))

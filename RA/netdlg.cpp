@@ -6473,7 +6473,7 @@ static int Net_Fake_New_Dialog(void)
 						rc = TRUE;
 						process = FALSE;
 					} else {
-						WWMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,NULL);
+						WWMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,TXT_NONE);
 						display = REDRAW_ALL;
 						Sound_Effect(VOC_SYS_ERROR);
 					}

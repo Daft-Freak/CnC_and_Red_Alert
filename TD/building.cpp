@@ -306,7 +306,7 @@ RadioMessageType BuildingClass::Receive_Message(RadioClass * from, RadioMessageT
 					*/
 					Transmit_Message(RADIO_TETHER);
 					if (*this == STRUCT_REFINERY && Transmit_Message(RADIO_BACKUP_NOW, from) != RADIO_ROGER) {
-						from->Scatter(NULL, true);
+						from->Scatter(0, true);
 					}
 				}
 			}

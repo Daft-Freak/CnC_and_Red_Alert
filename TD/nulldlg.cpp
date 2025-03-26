@@ -3942,7 +3942,7 @@ int Com_Scenario_Dialog(void)
 						transmittime = 0;
 
 					} else {
-						CCMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,NULL);
+						CCMessageBox().Process (TXT_ONLY_ONE,TXT_OOPS,TXT_NONE);
 						display = REDRAW_ALL;
 					}
 				}

@@ -108,7 +108,7 @@ FootClass::FootClass(void) : Speed(0)
 	NavCom = TARGET_NONE;
 	SuspendedNavCom = TARGET_NONE;
 	Path[0] = FACING_NONE;
-	HeadToCoord = NULL;
+	HeadToCoord = 0;
 	Member = 0;
 	Team = 0;
 	PathDelay = 0;
@@ -756,7 +756,7 @@ int FootClass::Mission_Timed_Hunt(void)
 bool FootClass::Stop_Driver(void)
 {
 	if (HeadToCoord) {
-		HeadToCoord = NULL;
+		HeadToCoord = 0;
 		Set_Speed(0);
 		IsDriving = false;
 		return(true);
@@ -796,7 +796,7 @@ bool FootClass::Start_Driver(COORDINATE &headto)
 			return(true);
 		}
 
-		HeadToCoord = NULL;
+		HeadToCoord = 0;
 		IsDriving = false;
 	}
 	return(false);

@@ -724,7 +724,7 @@ bool FootClass::Stop_Driver(void)
 	assert(IsActive);
 
 	if (HeadToCoord) {
-		HeadToCoord = NULL;
+		HeadToCoord = 0;
 		Set_Speed(0);
 		IsDriving = false;
 		return(true);
@@ -767,7 +767,7 @@ bool FootClass::Start_Driver(COORDINATE &headto)
 		}
 		if (!IsActive) return(false);
 
-		HeadToCoord = NULL;
+		HeadToCoord = 0;
 		IsDriving = false;
 	}
 	return(false);

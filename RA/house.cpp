@@ -4432,7 +4432,7 @@ COORDINATE HouseClass::Find_Build_Location(BuildingClass * building) const
 		if (zcell) return(zcell);
 	}
 
-	return(NULL);
+	return(0);
 }
 
 
