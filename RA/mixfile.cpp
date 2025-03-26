@@ -68,7 +68,7 @@ extern MFCD temp;
 **	with the mixfile system.
 */
 template<class T>
-List<MixFileClass<T> > MixFileClass<T>::List;
+List<MixFileClass<T> > MixFileClass<T>::MixList;
 
 
 /***********************************************************************************************
@@ -248,7 +248,7 @@ MixFileClass<T>::MixFileClass(char const * filename, PKey const * key) :
 	/*
 	**	Attach to list of mixfiles.
 	*/
-	List.Add_Tail(this);
+	MixList.Add_Tail(this);
 }
 
 
@@ -299,7 +299,7 @@ void const * MixFileClass<T>::Retrieve(char const * filename)
 template<class T>
 MixFileClass<T> * MixFileClass<T>::Finder(char const * filename)
 {
-	MixFileClass<T> * ptr = List.First();
+	MixFileClass<T> * ptr = MixList.First();
 	while (ptr->Is_Valid()) {
 		char path[_MAX_PATH];
 		char name[_MAX_FNAME];
@@ -565,7 +565,7 @@ assert(filename != NULL);//BG
 	/*
 	**	Sweep through all registered mixfiles, trying to find the file in question.
 	*/
-	ptr = List.First();
+	ptr = MixList.First();
 	while (ptr->Is_Valid()) {
 		SubBlock * block;
 
