@@ -125,7 +125,7 @@ class TFixedHeapClass : public FixedHeapClass
 		int ID(T const * pointer) {return FixedHeapClass::ID(pointer);};
 
 		virtual T * Alloc(void) {return (T*)FixedHeapClass::Allocate();};
-		virtual int Free(T * pointer) {FixedHeapClass::Free(pointer);};
+		virtual int Free(T * pointer) {return FixedHeapClass::Free(pointer);};
 
 	protected:
 		T & operator[](int index) {return *(((char *)Buffer) + (index * Size));};
