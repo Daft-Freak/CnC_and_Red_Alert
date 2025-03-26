@@ -9,7 +9,7 @@ void Focus_Restore(void);
 
 void VQA_ResumeAudio(void);
 
-void WWDebugString (char *string)
+void WWDebugString (char const *string)
 {
 #ifndef NDEBUG
 	printf("%s", string);
