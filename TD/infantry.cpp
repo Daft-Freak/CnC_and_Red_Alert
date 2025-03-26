@@ -191,26 +191,26 @@ void InfantryClass::Debug_Dump(MonoClass *mono) const
 {
 	Validate();
 	mono->Set_Cursor(0, 0);mono->Print(
-		"�Name:���������������Mission:����TarCom:�NavCom:�Radio:�Coord:���HeadTo:��St:Ŀ\n"
-		"�                   �           �       �       �      �        �        �    �\n"
-		"����������������N�Y�Health:��Body:�Turret:�Speed:�Path:��������Cargo:��������Ĵ\n"
-		"�Active........� � �        �     �       �      �            �               �\n"
-		"�Limbo.........� � ����������������������������������������������������������Ĵ\n"
-		"�Owned.........� � �Last Message:                                             �\n"
-		"�Discovered....� � �Timer:�Arm:�Track:�Tiberium:�Flash:�Stage:�Team:�����Arch:�\n"
-		"�Selected......� � �      �    �      �         �      �      �         �     �\n"
-		"�Teathered.....� � ������������������������������������������������������������\n"
-		"�Locked on Map.� � �                                                           \n"
-		"�Is Prone......� � �                                                           \n"
-		"�Is A Loner....� � �                                                           \n"
-		"�Deploying.....� � �                                                           \n"
-		"�Rotating......� � �                                                           \n"
-		"�Firing........� � �                                                           \n"
-		"�Driving.......� � �                                                           \n"
-		"�To Look.......� � �                                                           \n"
-		"�Recoiling.....� � �                                                           \n"
-		"�To Display....� � �                                                           \n"
-		"��������������������                                                           \n");
+		"┌Name:──────────────┬Mission:───┬TarCom:┬NavCom:┬Radio:┬Coord:──┬HeadTo:─┬St:─┐\n"
+		"│                   │           │       │       │      │        │        │    │\n"
+		"├──────────────┬N┬Y┬Health:─┬Body:┬Turret:┬Speed:┬Path:┴──────┬Cargo:────┴────┤\n"
+		"│Active........│ │ │        │     │       │      │            │               │\n"
+		"│Limbo.........│ │ ├────────┴─────┴───────┴──────┴────────────┴───────────────┤\n"
+		"│Owned.........│ │ │Last Message:                                             │\n"
+		"│Discovered....│ │ ├Timer:┬Arm:┬Track:┬Tiberium:┬Flash:┬Stage:┬Team:────┬Arch:┤\n"
+		"│Selected......│ │ │      │    │      │         │      │      │         │     │\n"
+		"│Teathered.....│ │ ├──────┴────┴──────┴─────────┴──────┴──────┴─────────┴─────┘\n"
+		"│Locked on Map.│ │ │                                                           \n"
+		"│Is Prone......│ │ │                                                           \n"
+		"│Is A Loner....│ │ │                                                           \n"
+		"│Deploying.....│ │ │                                                           \n"
+		"│Rotating......│ │ │                                                           \n"
+		"│Firing........│ │ │                                                           \n"
+		"│Driving.......│ │ │                                                           \n"
+		"│To Look.......│ │ │                                                           \n"
+		"│Recoiling.....│ │ │                                                           \n"
+		"│To Display....│ │ │                                                           \n"
+		"└──────────────┴─┴─┘                                                           \n");
 	mono->Set_Cursor(1, 1);mono->Printf("%s:%s", House->Class->IniName, Class->IniName);
 	mono->Text_Print("X", 16 + (IsProne?2:0), 10);
 	mono->Set_Cursor(33, 7);mono->Printf("%2d", Fear);

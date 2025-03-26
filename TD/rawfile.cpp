@@ -156,7 +156,7 @@ void RawFileClass::Error(int error, int canretry, char const * filename)
 	} else {
 		if (GraphicMode == TXT_MODE) strcat(message, "\n");
 #ifdef GERMAN
-		strcat(message, " Beliebige Taste dr�cken, um das Programm zu verlassen.");
+		strcat(message, " Beliebige Taste drücken, um das Programm zu verlassen.");
 #else
 #ifdef FRENCH
 		strcat(message, " Appuyez sur une touche pour quitter le programme.");
