@@ -309,6 +309,7 @@ int main(int argc, char *argv[])
 		// look up the real file
 		uint32_t offset = it->second.block->Offset + it->second.mix->Get_Data_Start();
 		auto mix_filename = it->second.mix->Filename;
+		auto orig_mix_filename = mix_filename;
 		auto parent_it = mix_parents.find(it->second.mix);
 
 		auto filename = it->second.name;
@@ -319,6 +320,10 @@ int main(int argc, char *argv[])
 		// skip nested mixes, we'll rebuild the container mixes later
 		if(ext && strcmp(ext, ".MIX") == 0)
 			continue;
+
+		// special case: merge the two MOVIES mixes
+		if(strcmp(mix_filename, "MOVIES2.MIX") == 0)
+			orig_mix_filename = "MOVIES1.MIX";
 
 		// nested mix, go back to true file
 		if(parent_it != mix_parents.end())
@@ -333,7 +338,7 @@ int main(int argc, char *argv[])
 
 		file.seekg(offset);
 		file.read((char *)data, it->second.block->Size);
-		output_mixes[it->second.mix->Filename].addEntry(it->second.block->CRC, it->second.block->Size, data);
+		output_mixes[orig_mix_filename].addEntry(it->second.block->CRC, it->second.block->Size, data);
 	}
 
 	if(!create_directory("./remixed"))
