@@ -78,11 +78,11 @@ class ScoreClass {
 		void Print_Graph_Title(int,int);
 		void Print_Minutes(int minutes);
 		void Count_Up_Print(char *str, int percent, int max, int xpos, int ypos);
-		void Show_Credits(int house, char const pal[]);
+		void Show_Credits(int house, unsigned char const pal[]);
 		void Do_GDI_Graph(void const * yellowptr, void const * redptr, int gdikilled, int nodkilled, int ypos);
 		void Do_Nod_Casualties_Graph(void);
 		void Do_Nod_Buildings_Graph(void);
-		void Input_Name(char str[], int xpos, int ypos, char const pal[]);
+		void Input_Name(char str[], int xpos, int ypos, unsigned char const pal[]);
 };
 
 class ScoreAnimClass {
@@ -133,9 +133,9 @@ class ScorePrintClass : public ScoreAnimClass {
 class ScoreScaleClass : public ScoreAnimClass {
 	public:
 		int Stage;
-		char const * Palette;
+		unsigned char const * Palette;
 		virtual void Update(void);
-		ScoreScaleClass(void const * data, int xpos, int ypos, char const pal[]);
+		ScoreScaleClass(void const * data, int xpos, int ypos, unsigned char const pal[]);
 		virtual ~ScoreScaleClass(void) {Palette=0;};
 
 };

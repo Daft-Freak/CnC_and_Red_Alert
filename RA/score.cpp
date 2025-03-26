@@ -275,7 +275,7 @@ void ScorePrintClass::Update(void)
 }
 
 
-ScoreScaleClass::ScoreScaleClass(void const * string, int xpos, int ypos, char const palette[]) :
+ScoreScaleClass::ScoreScaleClass(void const * string, int xpos, int ypos, unsigned char const palette[]) :
 	ScoreAnimClass(xpos, ypos, string)
 {
 	Palette = &palette[0];
@@ -358,10 +358,10 @@ int Alloc_Object(ScoreAnimClass *obj)
  * HISTORY:                                                                                    *
  *   05/02/1994     : Created.                                                                 *
  *=============================================================================================*/
-static char const  _bluepal[]={0xC0,0xC1,0xC1,0xC3,0xC2,0xC5,0xC3,0xC7,0xC4,0xC9,0xCA,0xCB,0xCC,0xCD,0xC0,0xCF};
-static char const _greenpal[]={0x70,0x71,0x7C,0x73,0x7D,0x75,0x7E,0x77,0x7F,0x79,0x7A,0x7B,0x7C,0x7D,0x7C,0x7F};
-static char const   _redpal[]={0xD0,0xD1,0xD7,0xD3,0xD9,0xD5,0xDA,0xD7,0xDB,0xD9,0xDA,0xDB,0xDC,0xDD,0xD6,0xDF};
-static char const _yellowpal[]={0x0,0x0,0xEC,0x0,0xEB,0x0,0xEA,0x0,0xE9,0x0,0x0,0x0,0x0,0x0,0xED,0x0};
+static unsigned char const  _bluepal[]={0xC0,0xC1,0xC1,0xC3,0xC2,0xC5,0xC3,0xC7,0xC4,0xC9,0xCA,0xCB,0xCC,0xCD,0xC0,0xCF};
+static unsigned char const _greenpal[]={0x70,0x71,0x7C,0x73,0x7D,0x75,0x7E,0x77,0x7F,0x79,0x7A,0x7B,0x7C,0x7D,0x7C,0x7F};
+static unsigned char const   _redpal[]={0xD0,0xD1,0xD7,0xD3,0xD9,0xD5,0xDA,0xD7,0xDB,0xD9,0xDA,0xDB,0xDC,0xDD,0xD6,0xDF};
+static unsigned char const _yellowpal[]={0x0,0x0,0xEC,0x0,0xEB,0x0,0xEA,0x0,0xE9,0x0,0x0,0x0,0x0,0x0,0xED,0x0};
 void ScoreClass::Presentation(void)
 {
 #ifdef WIN32
@@ -790,7 +790,7 @@ Keyboard->Clear();
 #ifdef WIN32
 	char maststr[NUMFAMENAMES*32];
 #endif
-	char const *pal;
+	unsigned char const *pal;
 	for (i = 0; i < NUMFAMENAMES; i++) {
 		pal = hallfame[i].side ? _redpal : _bluepal;
 		Alloc_Object(new ScorePrintClass(hallfame[i].name, HALLFAME_X, HALLFAME_Y + (i*8), pal));
@@ -1280,7 +1280,7 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 }
 
 
-void ScoreClass::Show_Credits(int house, char const pal[])
+void ScoreClass::Show_Credits(int house, unsigned char const pal[])
 {
 	static int _credsx[2]={276,276};
 	static int _credsy[2]={173,58};
@@ -1419,7 +1419,7 @@ void ScoreClass::Count_Up_Print(char *str, int percent, int maxval, int xpos, in
  * HISTORY:                                                                                    *
  *   05/15/1995 BWG : Created.                                                                 *
  *=============================================================================================*/
-void ScoreClass::Input_Name(char str[], int xpos, int ypos, char const pal[])
+void ScoreClass::Input_Name(char str[], int xpos, int ypos, unsigned char const pal[])
 {
 	int key = 0;
 	int ascii, index=0;
