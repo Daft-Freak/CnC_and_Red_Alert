@@ -100,7 +100,9 @@ int main(int argc, char *argv[])
         name_map.emplace(crc, name);
     }
 
+	// filter config
 	bool hires = false;
+	bool editor = false;
 
     // init key
     char exp_buf[512];
@@ -113,26 +115,45 @@ int main(int argc, char *argv[])
 
     // register files
     for(int i = 1; i < argc; i++)
-        new CCMixFile(argv[i], key);
+	{
+		if(argv[i][0] == '-')
+		{
+			if(strcmp(argv[i], "--hires") == 0)
+				hires = true;
+			if(strcmp(argv[i], "--editor") == 0)
+				editor = true;
+		}
+		else
+        	new CCMixFile(argv[i], key);
+	}
 
     // list them
     CCMixFile::List_All(mix_file_callback);
 
+	printf("\nfiltering...\n");
 
-	// filter out hi/lores
+	// filter out unwanted files (hi/lores, editor, etc.)
 	for(auto it = all_files.begin(); it != all_files.end();)
 	{
 		bool remove = false;
 
+		auto mix_filename = it->second.mix->Filename;
+
 		// LORES, LORES1, EDLO
-		if(hires && (strstr(it->second.mix->Filename, "LORES") || strcmp(it->second.mix->Filename, "EDLO.MIX") == 0))
+		if(hires && (strstr(mix_filename, "LORES") || strcmp(mix_filename, "EDLO.MIX") == 0))
 			remove = true;
 		// HIRES, HIRES1, NCHIRES, EDHI
-		else if(!hires && (strstr(it->second.mix->Filename, "HIRES") || strcmp(it->second.mix->Filename, "EDHI.MIX") == 0))
+		else if(!hires && (strstr(mix_filename, "HIRES") || strcmp(mix_filename, "EDHI.MIX") == 0))
+			remove = true;
+
+		if(!editor && (strcmp(mix_filename, "EDITOR.MIX") == 0 || strcmp(mix_filename, "EDLO.MIX") == 0 || strcmp(mix_filename, "EDHI.MIX") == 0))
 			remove = true;
 
 		if(remove)
+		{
+			printf("removing %s in %s\n", it->second.name, mix_filename);
 			it = all_files.erase(it);
+		}
 		else
 			++it;
 	}
