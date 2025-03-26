@@ -4610,7 +4610,7 @@ int BuildingClass::Power_Output(void) const
 	assert(IsActive);
 
 	if (Class->Power) {
-		return(Class->Power * fixed(LastStrength, Class->MaxStrength));
+		return(int(Class->Power) * fixed(LastStrength, Class->MaxStrength));
 	}
 	return(0);
 }

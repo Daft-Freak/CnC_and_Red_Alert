@@ -6076,7 +6076,7 @@ int TechnoTypeClass::Get_Ownable(void) const
  *=============================================================================================*/
 int TechnoTypeClass::Time_To_Build(void) const
 {
-	return(Cost * Rule.BuildSpeedBias * fixed(TICKS_PER_MINUTE, 1000));
+	return(int(Cost) * Rule.BuildSpeedBias * fixed(TICKS_PER_MINUTE, 1000));
 }
 
 

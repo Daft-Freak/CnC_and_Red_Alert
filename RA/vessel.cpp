@@ -2176,7 +2176,7 @@ void VesselClass::Rotation_AI(void)
 
 		if (SecondaryFacing.Is_Rotating()) {
 			Mark(MARK_CHANGE_REDRAW);
-			if (SecondaryFacing.Rotation_Adjust((Class->ROT * House->GroundspeedBias)+1)) {
+			if (SecondaryFacing.Rotation_Adjust((int(Class->ROT) * House->GroundspeedBias)+1)) {
 				Mark(MARK_CHANGE_REDRAW);
 			}
 
