@@ -40,6 +40,7 @@ class MixFileClass : public Node<MixFileClass<T> >
 		static bool Free(char const *filename);
 		void Free(void);
 		bool Cache(Buffer const * buffer = NULL);
+		long Get_Data_Start() {return DataStart;}
 		static bool Cache(char const *filename, Buffer const * buffer=NULL);
 		static bool Offset(char const *filename, void ** realptr = 0, MixFileClass ** mixfile = 0, long * offset = 0, long * size = 0);
 		static void const * Retrieve(char const *filename);
