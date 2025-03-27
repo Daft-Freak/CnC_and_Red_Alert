@@ -135,7 +135,7 @@ int CCINIClass::Load(FileClass & file, bool withdigest)
  *=============================================================================================*/
 int CCINIClass::Load(Straw & file, bool withdigest)
 {
-	bool ok = INIClass::Load(file);
+	bool ok = ini.Load(file);
 
 	Invalidate_Message_Digest();
 	if (ok && withdigest) {
@@ -214,7 +214,7 @@ int CCINIClass::Save(FileClass & file, bool withdigest) const
 int CCINIClass::Save(Pipe & pipe, bool withdigest) const
 {
 	if (!withdigest) {
-		return(INIClass::Save(pipe));
+		return(ini.Save(pipe));
 	}
 
 	/*
@@ -235,7 +235,7 @@ int CCINIClass::Save(Pipe & pipe, bool withdigest) const
 	/*
 	**	Output the database to the pipe specified.
 	*/
-	int length = INIClass::Save(pipe);
+	int length = ini.Save(pipe);
 
 	/*
 	**	Remove the digest from the database. It shouldn't stick around as if it were real data
@@ -249,6 +249,81 @@ int CCINIClass::Save(Pipe & pipe, bool withdigest) const
 	return(length);
 }
 
+// wrappers
+bool CCINIClass::Clear(char const * section, char const * entry)
+{
+	return ini.Clear(section, entry);
+}
+		
+bool CCINIClass::Is_Present(char const * section, char const * entry) const
+{
+	return ini.Is_Present(section, entry);
+}
+
+int CCINIClass::Entry_Count(char const * section) const
+{
+	return ini.Entry_Count(section);
+}
+
+char const * CCINIClass::Get_Entry(char const * section, int index) const
+{
+	return ini.Get_Entry(section, index);
+}
+
+int CCINIClass::Get_String(char const * section, char const * entry, char const * defvalue, char * buffer, int size) const
+{
+	return ini.Get_String(section, entry, defvalue, buffer, size);
+}
+
+int CCINIClass::Get_Int(char const * section, char const * entry, int defvalue) const
+{
+	return ini.Get_Int(section, entry, defvalue);
+}
+
+bool CCINIClass::Get_Bool(char const * section, char const * entry, bool defvalue) const
+{
+	return ini.Get_Bool(section, entry, defvalue);
+}
+
+fixed CCINIClass::Get_Fixed(char const * section, char const * entry, fixed defvalue) const
+{
+	return ini.Get_Fixed(section, entry, defvalue);
+}
+
+int CCINIClass::Get_TextBlock(char const * section, char * buffer, int len) const
+{
+	return ini.Get_TextBlock(section, buffer, len);
+}
+
+int CCINIClass::Get_UUBlock(char const * section, void * buffer, int len) const
+{
+	return ini.Get_UUBlock(section, buffer, len);
+}
+
+bool CCINIClass::Put_Fixed(char const * section, char const * entry, fixed value)
+{
+	return ini.Put_Fixed(section, entry, value);
+}
+
+bool CCINIClass::Put_String(char const * section, char const * entry, char const * string)
+{
+	return ini.Put_String(section, entry, string);
+}
+
+bool CCINIClass::Put_Int(char const * section, char const * entry, int number, int format)
+{
+	return ini.Put_Int(section, entry, number, format);
+}
+
+bool CCINIClass::Put_Bool(char const * section, char const * entry, bool value)
+{
+	return ini.Put_Bool(section, entry, value);
+}
+
+bool CCINIClass::Put_UUBlock(char const * section, void const * block, int len)
+{
+	return ini.Put_UUBlock(section, block, len);
+}
 
 static inline int _Scale_To_256(int val)
 {
@@ -1462,7 +1537,7 @@ void CCINIClass::Calculate_Message_Digest(void)
 	**	Calculate the message digest for the INI data that was read.
 	*/
 	SHAPipe sha;
-	INIClass::Save(sha);
+	ini.Save(sha);
 	sha.Result(Digest);
 	IsDigestPresent = true;
 }
