@@ -70,6 +70,9 @@ class INIClass {
 		int Save(FileClass & file) const;
 		int Save(Pipe & file) const;
 
+		int Save_SIF(FileClass & file, uint8_t *extradata, int extralen = 0) const;
+		int Save_SIF(Pipe & pipe, uint8_t *extradata, int extralen = 0) const;
+
 		/*
 		**	Erase all data within this INI file manager.
 		*/

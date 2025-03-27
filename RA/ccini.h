@@ -52,7 +52,8 @@ class TriggerTypeClass;
 class CCINIClass
 {
 	public:
-		CCINIClass(void) : IsDigestPresent(false) {}
+		CCINIClass(void) : IsDigestPresent(false), Buffer(NULL) {}
+		~CCINIClass();
 
 		int Load(FileClass & file, bool withdigest);
 		int Load(Straw & file, bool withdigest);
@@ -125,8 +126,35 @@ class CCINIClass
 		int Get_Unique_ID(void) const;
 
 	private:
+		struct SIFHeader {
+			uint16_t Flags;
+			uint16_t SectionCount;
+			uint16_t TotalEntryCount;
+			uint16_t StringTableSize;
+		};
+
+		struct SIFSection {
+			uint16_t EntryCount;
+			uint16_t NameIndex;
+		};
+
+		struct SIFEntry {
+			uint16_t KeyIndex;
+			uint16_t ValueIndex;
+		};
+
 		void Calculate_Message_Digest(void);
 		void Invalidate_Message_Digest(void);
+
+		char const *Lookup_String(uint16_t offset) const;
+
+		SIFSection *Find_Section(char const *name) const;
+		SIFSection *Find_Section(char const *name, int &entryoffset) const;
+
+		SIFEntry *Find_Entry(char const *section, char const *name) const;
+		SIFEntry *Find_Entry(char const *name, SIFEntry *start, int numentries) const;
+
+		char const *Find_Entry_Value(char const *section, char const *name) const;
 
 		bool IsDigestPresent:1;
 
@@ -137,6 +165,14 @@ class CCINIClass
 		unsigned char Digest[20];
 
 		INIClass ini;
+
+		uint8_t *Buffer;
+	
+		SIFSection *Sections;
+		SIFEntry *Entries;
+		const char *Strings;
+
+		uint16_t StringTableSize;
 };
 
 #endif

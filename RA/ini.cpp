@@ -419,6 +419,107 @@ int INIClass::Save(Pipe & pipe) const
 	return(total);
 }
 
+int INIClass::Save_SIF(FileClass & file, uint8_t *extradata, int extralen) const
+{
+	FilePipe fp(file);
+	return Save_SIF(fp, extradata, extralen);
+}
+
+int INIClass::Save_SIF(Pipe & pipe, uint8_t *extradata, int extralen) const
+{
+	// convert to a Smaller INI Format
+
+	int total = 0;
+
+	// count total sizes
+	int sectioncount = Section_Count();
+	
+	int totalentries = 0;
+	int stringtablesize = 0;
+
+	for (INISection * secptr = SectionList.First(); secptr && secptr->Is_Valid(); secptr = secptr->Next()) {
+#ifdef INI_NO_INDEX
+		int entrycount = secptr->EntryCount;
+#else
+		int entrycount = secptr->EntryIndex.Count();
+#endif
+		totalentries += entrycount;
+	}
+
+	for(StringPoolChunk *pool = StringPool; pool; pool = pool->Next) {
+		int len = sizeof(pool->Data);
+
+		// trim last chunk
+		if(!pool->Next) {
+			while(!pool->Data[len - 1])
+				len--;
+
+			len++; // put back one null
+		}
+		stringtablesize += len;
+	}
+
+	// build header
+
+	// flags
+	uint16_t v16 = extralen ? 1 : 0;
+	total += pipe.Put(&v16, 2);
+
+	// section count
+	v16 = sectioncount;
+	total += pipe.Put(&v16, 2);
+	// total entries
+	v16 = totalentries;
+	total += pipe.Put(&v16, 2);
+	// string table size
+	v16 = stringtablesize;
+	total += pipe.Put(&v16, 2);
+
+	// section headers
+	for (INISection * secptr = SectionList.First(); secptr && secptr->Is_Valid(); secptr = secptr->Next()) {
+#ifdef INI_NO_INDEX
+		int entrycount = secptr->EntryCount;
+#else
+		int entrycount = secptr->EntryIndex.Count();
+#endif
+
+		// section header (entry count + name index)
+		v16 = entrycount;
+		total += pipe.Put(&v16, 2);
+		v16 = secptr->Section;
+		total += pipe.Put(&v16, 2);
+	}
+
+	// section entries
+	for (INISection * secptr = SectionList.First(); secptr && secptr->Is_Valid(); secptr = secptr->Next()) {
+		for(INIEntry *entptr = secptr->EntryList; entptr; entptr = entptr->Next) {
+			// key index, value index
+			v16 = entptr->Entry;
+			total += pipe.Put(&v16, 2);
+			v16 = entptr->Value;
+			total += pipe.Put(&v16, 2);
+		}
+	}
+
+	// string data (will be a litte bit of wasted space here)
+	for(StringPoolChunk *pool = StringPool; pool; pool = pool->Next) {
+		int len = sizeof(pool->Data);
+
+		if(stringtablesize < len)
+			len = stringtablesize;
+
+		stringtablesize -= len;
+
+		total += pipe.Put(pool->Data, len);
+	}
+
+	if(extralen)
+		total += pipe.Put(extradata, extralen);
+
+	total += pipe.End();
+
+	return total;
+}
 
 /***********************************************************************************************
  * INIClass::Find_Section -- Find the specified section within the INI data.                   *

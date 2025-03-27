@@ -83,6 +83,10 @@
 
 #include	"function.h"
 
+CCINIClass::~CCINIClass()
+{
+	delete[] Buffer;
+}
 
 /***********************************************************************************************
  * CCINIClass::Load -- Load the INI database from the file specified.                          *
@@ -109,6 +113,45 @@
  *=============================================================================================*/
 int CCINIClass::Load(FileClass & file, bool withdigest)
 {
+	// remap to SIF (definitely not a hack)
+	char name[_MAX_FNAME];
+	char sifname[_MAX_FNAME + _MAX_EXT];
+	_splitpath(file.File_Name(), NULL, NULL, name, NULL);
+	_makepath(sifname, NULL, NULL, name, ".SIF");
+	
+	file.Set_Name(sifname);
+
+	if(!file.Is_Available()) {
+		// oh no, set it back
+		char ininame[_MAX_FNAME + _MAX_EXT];
+		_makepath(ininame, NULL, NULL, name, ".INI");
+		file.Set_Name(ininame);
+
+		// convert
+		if(!ini.Load(file))
+			return 0; // okay, it really doesn't exist
+
+		// recalc digest if present
+		unsigned char newdigest[20];
+		int digestlen = 0;
+
+		if(ini.Is_Present("Digest"))
+		{
+			ini.Clear("Digest");
+			SHAPipe sha;
+			ini.Save_SIF(sha, NULL, 0);
+			sha.Result(newdigest);
+			digestlen = 20;
+		}
+
+		RawFileClass fc(sifname);
+		ini.Save_SIF(fc, newdigest, digestlen);
+		ini.Clear();
+
+		// now we can use it
+		file.Set_Name(sifname);
+	}
+
 	FileStraw fs(file);
 	return(Load(fs, withdigest));
 }
@@ -135,7 +178,29 @@ int CCINIClass::Load(FileClass & file, bool withdigest)
  *=============================================================================================*/
 int CCINIClass::Load(Straw & file, bool withdigest)
 {
-	bool ok = ini.Load(file);
+	bool ok = true;
+
+	SIFHeader header;
+
+	file.Get(&header, sizeof(header));
+	int totalsize = header.SectionCount * sizeof(SIFSection) + header.TotalEntryCount * sizeof(SIFEntry) + header.StringTableSize;
+
+	// digest present
+	if(header.Flags & 1)
+		totalsize += 20;
+
+	// read the whole thing
+	delete[] Buffer;
+	Buffer = new uint8_t[totalsize];
+	if(file.Get(Buffer, totalsize) != totalsize)
+		ok = false;
+	else
+	{
+		Sections = (SIFSection *)Buffer;
+		Entries = (SIFEntry *)(Sections + header.SectionCount);
+		Strings = (char const *)(Entries + header.TotalEntryCount);
+		StringTableSize = header.StringTableSize;
+	}
 
 	Invalidate_Message_Digest();
 	if (ok && withdigest) {
@@ -143,10 +208,8 @@ int CCINIClass::Load(Straw & file, bool withdigest)
 		/*
 		**	If a digest is present, fetch it.
 		*/
-		unsigned char digest[20];
-		int len = Get_UUBlock("Digest", digest, sizeof(digest));
-		if (len > 0) {
-			Clear("Digest");
+		if (header.Flags & 1) {
+			unsigned char *digest = (unsigned char *)Strings + StringTableSize;
 
 			/*
 			**	Calculate the message digest for the INI data that was read.
@@ -213,116 +276,245 @@ int CCINIClass::Save(FileClass & file, bool withdigest) const
  *=============================================================================================*/
 int CCINIClass::Save(Pipe & pipe, bool withdigest) const
 {
-	if (!withdigest) {
-		return(ini.Save(pipe));
+	if(withdigest) {
+		/*
+		**	Calculate what the new digest should be.
+		*/
+		((CCINIClass *)this)->Calculate_Message_Digest();
 	}
-
-	/*
-	**	Just in case these entries are present, clear them out.
-	*/
-	((CCINIClass *)this)->Clear("Digest");
-
-	/*
-	**	Calculate what the new digest should be.
-	*/
-	((CCINIClass *)this)->Calculate_Message_Digest();
-
-	/*
-	**	Store the actual digest into the INI database.
-	*/
-	((CCINIClass *)this)->Put_UUBlock("Digest", Digest, sizeof(Digest));
 
 	/*
 	**	Output the database to the pipe specified.
 	*/
-	int length = ini.Save(pipe);
+	SIFHeader header;
+	header.Flags = withdigest ? 1 : 0;
+	header.SectionCount = (SIFSection *)Entries - Sections;
+	header.TotalEntryCount = (SIFEntry *)Strings - Entries;
+	header.StringTableSize = StringTableSize;
 
-	/*
-	**	Remove the digest from the database. It shouldn't stick around as if it were real data
-	**	since it isn't really part of the INI database proper.
-	*/
-	((CCINIClass *)this)->Clear("Digest");
+	int totalsize = header.SectionCount * sizeof(SIFSection) + header.TotalEntryCount * sizeof(SIFEntry) + header.StringTableSize;
+
+	int total = pipe.Put(&header, sizeof(header));
+	total += pipe.Put(Buffer, totalsize);
+
+	if(withdigest)
+		total += pipe.Put(Digest, sizeof(Digest));
+
+	total += pipe.Flush();
 
 	/*
 	**	Finally, return with the total number of bytes send out the pipe.
 	*/
-	return(length);
+	return total;
 }
 
 // wrappers
 bool CCINIClass::Clear(char const * section, char const * entry)
 {
-	return ini.Clear(section, entry);
+	// writing not supported, this would only break the editor
+	// if we were building it
+	return false;
 }
-		
+
 bool CCINIClass::Is_Present(char const * section, char const * entry) const
 {
-	return ini.Is_Present(section, entry);
+	int entryoffset;
+	SIFSection *secptr = Find_Section(section, entryoffset);
+
+	if(!secptr)
+		return false;
+
+	if(!entry)
+		return true;
+
+	return Find_Entry(entry, Entries + entryoffset, secptr->EntryCount) != NULL;
 }
 
 int CCINIClass::Entry_Count(char const * section) const
 {
-	return ini.Entry_Count(section);
+	SIFSection *secptr = Find_Section(section);
+
+	return secptr ? secptr->EntryCount : 0;
 }
 
 char const * CCINIClass::Get_Entry(char const * section, int index) const
 {
-	return ini.Get_Entry(section, index);
+	int entryoffset;
+	SIFSection *secptr = Find_Section(section, entryoffset);
+
+	if(!secptr || index > secptr->EntryCount)
+		return NULL;
+
+	return Lookup_String(Entries[entryoffset + index].KeyIndex);
 }
 
 int CCINIClass::Get_String(char const * section, char const * entry, char const * defvalue, char * buffer, int size) const
 {
-	return ini.Get_String(section, entry, defvalue, buffer, size);
+	// validate params
+	if (!buffer || !size) return 0;
+
+	buffer[0] = '\0';
+
+	// find entry
+	char const *value = Find_Entry_Value(section, entry);
+	if(value)
+		defvalue = value;
+
+	if(defvalue) {
+		// copy entry or default
+		if(buffer != defvalue) {
+			strncpy(buffer, defvalue, size);
+			buffer[size-1] = '\0';
+		}
+		strtrim(buffer);
+		return strlen(buffer);
+	}
+
+	// no entry or default
+	return 0;
 }
 
 int CCINIClass::Get_Int(char const * section, char const * entry, int defvalue) const
 {
-	return ini.Get_Int(section, entry, defvalue);
+	char const *str = Find_Entry_Value(section, entry);
+
+	if(!str)
+		return defvalue;
+	
+	// parse
+	if (*str == '$')
+		sscanf(str, "$%x", &defvalue);
+	else if (tolower(str[strlen(str)-1]) == 'h')
+		sscanf(str, "%xh", &defvalue);
+	else
+		defvalue = atoi(str);
+
+	return defvalue;
 }
 
 bool CCINIClass::Get_Bool(char const * section, char const * entry, bool defvalue) const
 {
-	return ini.Get_Bool(section, entry, defvalue);
+	char const *str = Find_Entry_Value(section, entry);
+
+	if(!str)
+		return defvalue;
+
+	switch(toupper(*str)) {
+		case 'Y':
+		case 'T':
+		case '1':
+			return true;
+
+		case 'N':
+		case 'F':
+		case '0':
+			return false;
+	}
+
+	return defvalue;
 }
 
 fixed CCINIClass::Get_Fixed(char const * section, char const * entry, fixed defvalue) const
 {
-	return ini.Get_Fixed(section, entry, defvalue);
+	char const *str = Find_Entry_Value(section, entry);
+	if(!str)
+		return defvalue;
+
+	return fixed(str);
 }
 
 int CCINIClass::Get_TextBlock(char const * section, char * buffer, int len) const
 {
-	return ini.Get_TextBlock(section, buffer, len);
+	if (len <= 0) return(0);
+
+	buffer[0] = '\0';
+	if (len <= 1) return(0);
+
+	// lookup section
+	int entryoffset;
+	SIFSection *secptr = Find_Section(section, entryoffset);
+
+	if(!secptr)
+		return 0;
+
+	SIFEntry *entptr = Entries + entryoffset;
+
+	int total = 0;
+	for (int index = 0; index < secptr->EntryCount; index++) {
+
+		/*
+		**	Add spacers between lines of fetched text.
+		*/
+		if (index > 0) {
+			*buffer++ = ' ';
+			len--;
+			total++;
+		}
+
+		strncpy(buffer, Lookup_String(entptr[index].ValueIndex), len);
+		buffer[len - 1] = 0;
+
+		int partial = strlen(buffer);
+		total += partial;
+		buffer += partial;
+		len -= partial;
+		if (len <= 1) break;
+	}
+	return(total);
 }
 
 int CCINIClass::Get_UUBlock(char const * section, void * buffer, int len) const
 {
-	return ini.Get_UUBlock(section, buffer, len);
+	if (!section) return 0;
+
+	Base64Pipe b64pipe(Base64Pipe::DECODE);
+	BufferPipe bpipe(buffer, len);
+
+	b64pipe.Put_To(&bpipe);
+
+	// lookup section
+	int entryoffset;
+	SIFSection *secptr = Find_Section(section, entryoffset);
+
+	if(!secptr)
+		return 0;
+
+	SIFEntry *entptr = Entries + entryoffset;
+
+	// feed entries into pipe
+	int total = 0;
+	for (int index = 0; index < secptr->EntryCount; index++) {
+		char const *str = Lookup_String(entptr[index].ValueIndex);
+		int outcount = b64pipe.Put(str, strlen(str));
+		total += outcount;
+	}
+	total += b64pipe.End();
+	return(total);
 }
 
 bool CCINIClass::Put_Fixed(char const * section, char const * entry, fixed value)
 {
-	return ini.Put_Fixed(section, entry, value);
+	return false;
 }
 
 bool CCINIClass::Put_String(char const * section, char const * entry, char const * string)
 {
-	return ini.Put_String(section, entry, string);
+	return false;
 }
 
 bool CCINIClass::Put_Int(char const * section, char const * entry, int number, int format)
 {
-	return ini.Put_Int(section, entry, number, format);
+	return false;
 }
 
 bool CCINIClass::Put_Bool(char const * section, char const * entry, bool value)
 {
-	return ini.Put_Bool(section, entry, value);
+	return false;
 }
 
 bool CCINIClass::Put_UUBlock(char const * section, void const * block, int len)
 {
-	return ini.Put_UUBlock(section, block, len);
+	return false;
 }
 
 static inline int _Scale_To_256(int val)
@@ -1537,7 +1729,7 @@ void CCINIClass::Calculate_Message_Digest(void)
 	**	Calculate the message digest for the INI data that was read.
 	*/
 	SHAPipe sha;
-	ini.Save(sha);
+	Save(sha, false);
 	sha.Result(Digest);
 	IsDigestPresent = true;
 }
@@ -1561,4 +1753,69 @@ void CCINIClass::Calculate_Message_Digest(void)
 void CCINIClass::Invalidate_Message_Digest(void)
 {
 	IsDigestPresent = false;
+}
+
+char const *CCINIClass::Lookup_String(uint16_t offset) const
+{
+	if(offset >= StringTableSize)
+		return NULL;
+
+	return Strings + offset;
+}
+
+CCINIClass::SIFSection *CCINIClass::Find_Section(char const *name) const
+{
+	int off;
+	return Find_Section(name, off);
+}
+
+CCINIClass::SIFSection *CCINIClass::Find_Section(char const *name, int &entryoffset) const
+{
+	SIFSection *end = (SIFSection *)Entries;
+	entryoffset = 0;
+
+	// we should maybe do some pre-processing so that we can do a faster search...
+	for(SIFSection *ptr = Sections; ptr != end; ptr++) {
+		if(strcmp(Lookup_String(ptr->NameIndex), name) == 0)
+			return ptr;
+
+		entryoffset += ptr->EntryCount;
+	}
+
+	return NULL;
+}
+
+CCINIClass::SIFEntry *CCINIClass::Find_Entry(char const *section, char const *name) const
+{
+	int entryoffset;
+	SIFSection *secptr = Find_Section(section, entryoffset);
+
+	if(!secptr)
+		return NULL;
+
+	return Find_Entry(name, Entries + entryoffset, secptr->EntryCount);
+}
+
+CCINIClass::SIFEntry *CCINIClass::Find_Entry(char const *name, SIFEntry *start, int numentries) const
+{
+	SIFEntry *end = start + numentries;
+
+	for(SIFEntry *ptr = start; ptr != end; ptr++) {
+		if(strcmp(Lookup_String(ptr->KeyIndex), name) == 0)
+			return ptr;
+	}
+
+	return NULL;
+}
+
+char const *CCINIClass::Find_Entry_Value(char const *section, char const *name) const
+{
+	if(!section || !name)
+		return NULL;
+
+	SIFEntry *entptr = Find_Entry(section, name);
+	if(entptr)
+		return Lookup_String(entptr->ValueIndex);
+		
+	return NULL;
 }
