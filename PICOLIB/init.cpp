@@ -1,7 +1,9 @@
 #include <stdio.h>
 
 #include "pico/stdlib.h"
+#ifdef WIFI_ENABLED
 #include "pico/cyw43_arch.h"
+#endif
 #include "tusb.h"
 
 #include "display.h"
@@ -85,6 +87,7 @@ void Pico_Init()
 
 void Pico_Wifi_Init(const char *ssid, const char *pass)
 {
+#ifdef WIFI_ENABLED
     if(cyw43_arch_init() != 0)
     {
         printf("cyw43_arch_init failed!\n");
@@ -100,4 +103,5 @@ void Pico_Wifi_Init(const char *ssid, const char *pass)
     }
 
     printf("wifi connected.\n");
+#endif
 }

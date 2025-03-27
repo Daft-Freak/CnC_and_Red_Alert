@@ -47,7 +47,7 @@ target_include_directories(picolib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/driver)
 
 target_link_libraries(picolib PUBLIC
     hardware_dma hardware_flash hardware_pio hardware_pwm
-    pico_stdlib pico_cyw43_arch_lwip_threadsafe_background
+    pico_stdlib
     tinyusb_host
 )
 
@@ -57,3 +57,8 @@ target_compile_definitions(picolib PUBLIC
     PICO_DEFAULT_UART_TX_PIN=4
     PICO_DEFAULT_UART_RX_PIN=5
 )
+
+if(PICO_CYW43_SUPPORTED)
+    target_link_libraries(picolib PUBLIC pico_cyw43_arch_lwip_threadsafe_background)
+    target_compile_definitions(picolib PUBLIC WIFI_ENABLED)
+endif()
