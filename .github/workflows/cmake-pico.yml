@@ -1,0 +1,61 @@
+name: CMake on Pico
+
+on:
+  push:
+#    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        build_type: [Release]
+        board: [pimoroni_pico_plus2_w_rp2350]
+        # additional cfg?
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Checkout Pico SDK
+      uses: actions/checkout@v4
+      with:
+        repository: raspberrypi/pico-sdk
+        path: pico-sdk
+        submodules: true
+
+    - name: Install toolchain
+      run: sudo apt update && sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
+
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "build-install-dir=${{ github.workspace }}/build/install" >> "$GITHUB_OUTPUT"
+        echo "artifact-name=${{github.event.repository.name}}-${{github.sha}}-${{matrix.board}}" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      run: >
+        cmake -B ${{ steps.strings.outputs.build-output-dir }}
+        -DCMAKE_INSTALL_PREFIX=${{ steps.strings.outputs.build-install-dir }}
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
+        -DPICO_SDK_PATH=${{ github.workspace }}/pico-sdk
+        -DPICO_BOARD=${{ matrix.board }}
+        -S ${{ github.workspace }}
+
+    - name: Build
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Prepare Artifact
+      run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target install
+ 
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.strings.outputs.artifact-name }}
+        path: ${{ steps.strings.outputs.build-install-dir }}
