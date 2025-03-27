@@ -112,7 +112,7 @@ static void Erase_Mouse(uint8_t *erase_buf, int x, int y, int width, int height,
 }
 
 WWMouseClass::WWMouseClass(GraphicViewPortClass *scr, int mouse_max_width, int mouse_max_height) : MaxWidth(mouse_max_width), MaxHeight(mouse_max_width),
-    MCFlags(0), MCCount(0), EraseBuffX(-100), EraseBuffY(-100), Screen(scr), State(0)
+    MCFlags(0), MCCount(0), EraseBuffX(-100), EraseBuffY(-100), Screen(scr), PrevCursor(NULL), State(0)
 {
     Set_Cursor_Clip();
     _Mouse = this;
