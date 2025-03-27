@@ -49,7 +49,7 @@ class TriggerTypeClass;
 **	identifiers. In addition, it automatically stores a message digest with the INI data
 **	so that verification can occur.
 */
-class CCINIClass : public INIClass
+class CCINIClass
 {
 	public:
 		CCINIClass(void) : IsDigestPresent(false) {}
@@ -58,6 +58,26 @@ class CCINIClass : public INIClass
 		int Load(Straw & file, bool withdigest);
 		int Save(FileClass & file, bool withdigest) const;
 		int Save(Pipe & pipe, bool withdigest) const;
+
+		bool Clear(char const * section = 0, char const * entry = 0);
+		
+		bool Is_Present(char const * section, char const * entry = 0) const;
+
+		int Entry_Count(char const * section) const;
+		char const * Get_Entry(char const * section, int index) const;
+
+		int Get_String(char const * section, char const * entry, char const * defvalue, char * buffer, int size) const;
+		int Get_Int(char const * section, char const * entry, int defvalue=0) const;
+		bool Get_Bool(char const * section, char const * entry, bool defvalue=false) const;
+		fixed Get_Fixed(char const * section, char const * entry, fixed defvalue) const;
+		int Get_TextBlock(char const * section, char * buffer, int len) const;
+		int Get_UUBlock(char const * section, void * buffer, int len) const;
+
+		bool Put_Fixed(char const * section, char const * entry, fixed value);
+		bool Put_String(char const * section, char const * entry, char const * string);
+		bool Put_Int(char const * section, char const * entry, int number, int format=0);
+		bool Put_Bool(char const * section, char const * entry, bool value);
+		bool Put_UUBlock(char const * section, void const * block, int len);
 
 		long Get_Buildings(char const * section, char const * entry, long defvalue) const;
 		UnitType Get_UnitType(char const * section, char const * entry, UnitType defvalue) const;
@@ -115,6 +135,8 @@ class CCINIClass : public INIClass
 		**	the INI file.
 		*/
 		unsigned char Digest[20];
+
+		INIClass ini;
 };
 
 #endif
