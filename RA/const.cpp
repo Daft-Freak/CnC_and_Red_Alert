@@ -43,34 +43,34 @@
 **	and special game options.
 */
 long const PlayCodes[] = {
-	0xE0792D6D,					// Dwight Okahara
-	0x90046ECF,					// Paul S. Mudra
-	0xC3EE9A26,					// Frank Klepaki
-	0xED382178,					// Ed Del Castillo
+	long(0xE0792D6D),					// Dwight Okahara
+	long(0x90046ECF),					// Paul S. Mudra
+	long(0xC3EE9A26),					// Frank Klepaki
+	long(0xED382178),					// Ed Del Castillo
 	0L
 };
 
 long const CheatCodes[] = {
-	0xA0E2AB53,					// Joseph Hewitt
-	0x00532693,					// Mike Lightner
-	0x7DDFF824,					// Joe Bostic
-	0x2CB5CF01,					// Phil Gorrow
-	0xB5B63531,					// Bill Randolph
-	0xDFABC23A,					// Adam Isgreen
-	0x52B19A22,					// Erik Yeo
-	0xBE79088C,					// David Dettmer
-	0xB216AE7E,					// Barry Green
-	0x0E07B213,					// Steve Tall
+	long(0xA0E2AB53),					// Joseph Hewitt
+	long(0x00532693),					// Mike Lightner
+	long(0x7DDFF824),					// Joe Bostic
+	long(0x2CB5CF01),					// Phil Gorrow
+	long(0xB5B63531),					// Bill Randolph
+	long(0xDFABC23A),					// Adam Isgreen
+	long(0x52B19A22),					// Erik Yeo
+	long(0xBE79088C),					// David Dettmer
+	long(0xB216AE7E),					// Barry Green
+	long(0x0E07B213),					// Steve Tall
 	0L
 };
 
 
 long const EditorCodes[] = {
-	0xA2C09326,					// Erik Yeo
-	0x1F944BB3,					// Mike Lightner
-	0xDE07154D,					// Adam Isgreen
-	0x0E07B213,					// Steve Tall
-	0x16B170B1,					// Joe Bostic
+	long(0xA2C09326),					// Erik Yeo
+	long(0x1F944BB3),					// Mike Lightner
+	long(0xDE07154D),					// Adam Isgreen
+	long(0x0E07B213),					// Steve Tall
+	long(0x16B170B1),					// Joe Bostic
 	0L
 };
 

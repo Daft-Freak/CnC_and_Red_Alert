@@ -247,7 +247,7 @@
 **	Enable the set of limited cheat key options.
 */
 #ifdef VIRGIN_CHEAT_KEYS
-#define	PARM_PLAYTEST		0xF7DDC227		// "PLAYTEST"
+#define	PARM_PLAYTEST		long(0xF7DDC227)		// "PLAYTEST"
 #endif
 
 /*
@@ -255,26 +255,26 @@
 */
 #ifdef CHEAT_KEYS
 #ifndef PARM_PLAYTEST
-#define	PARM_PLAYTEST		0xF7DDC227		// "PLAYTEST"
+#define	PARM_PLAYTEST		long(0xF7DDC227)		// "PLAYTEST"
 #endif
 #endif
 
 
-#define	PARM_INSTALL		0xD95C68A2		//	"FROMINSTALL"
+#define	PARM_INSTALL		long(0xD95C68A2)		//	"FROMINSTALL"
 
 
 //
 // Allow normal game play in the MPath version
 //
 #if(MPATH)
-#define	PARM_ALLOW_SOLO	0xc901c9db	// AllowSoloPlayOptions
+#define	PARM_ALLOW_SOLO	long(0xc901c9db)	// AllowSoloPlayOptions
 #endif
 
 //
 // Allow normal game play in the TEN version
 //
 #if(TEN)
-#define	PARM_ALLOW_SOLO	0xc901c9db	// AllowSoloPlayOptions
+#define	PARM_ALLOW_SOLO	long(0xc901c9db)	// AllowSoloPlayOptions
 #endif
 
 /**********************************************************************
