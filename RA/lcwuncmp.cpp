@@ -84,7 +84,7 @@ unsigned long __cdecl LCW_Uncompress (void * source, void * dest, unsigned long 
 
 	dest_end = dest_ptr + length;
 
-	while (1 /*TRUE*/) {
+	while (dest_ptr < dest_end) {
 
 		/* Read in the operation code. */
 		op_code = *source_ptr++;
@@ -133,6 +133,10 @@ unsigned long __cdecl LCW_Uncompress (void * source, void * dest, unsigned long 
 					word_data  = (word_data << 24) + (word_data << 16) + (word_data << 8) + word_data;
 					source_ptr += 3;
 
+					// clamp to decompressed size
+					if(count > dest_end - dest_ptr)
+						count = dest_end - dest_ptr;
+
 					copy_ptr = dest_ptr + 4 - ((uintptr_t) dest_ptr & 0x3);
 					count -= (copy_ptr - dest_ptr);
 					while (dest_ptr < copy_ptr) *dest_ptr++ = data;
@@ -174,6 +178,8 @@ unsigned long __cdecl LCW_Uncompress (void * source, void * dest, unsigned long 
 			}
 		}
 	}
+
+	return ((unsigned long) (dest_ptr - (unsigned char*) dest));
 }
 
 }
