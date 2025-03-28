@@ -5,9 +5,13 @@
 #include "audio.h"
 #include "file.h"
 
+#include "driver/audio.h"
+
 // original code has 5 for windows, 4 for dos
 // effectively one less as one is used to track streaming from disk
 #define	MAX_SFX	4
+
+#define STREAM_SAMPLES 0x2000
 
 enum SCompressType : uint8_t
 {
@@ -41,15 +45,18 @@ int StreamLowImpact;
 
 static int ScoreVolume = 255;
 
-//static SDL_AudioDeviceID AudioDevice;
-//static SDL_AudioSpec ObtainedSpec;
-static uint8_t *MixBuffer; // temp buffer for mixing
+[[gnu::section(".psram_data")]] static int16_t psram_sample_buffers[MAX_SFX * STREAM_SAMPLES];
+
 static AudioCallback ExtraCallback = NULL;
 
 struct ChannelState
 {
     const void *sample = NULL;
-//    SDL_AudioStream *stream = NULL;
+
+    int16_t *stream_samples = NULL;
+    uint16_t stream_in = 0;
+    uint16_t stream_out = 0;
+
     bool playing = false;
     int priority = 0;
     int16_t volume = 32767;
@@ -88,7 +95,9 @@ static uint8_t *DecodeADPCMBlock(ChannelState &chan, int block_size, uint8_t *in
 
     for(int i = 0; i < block_size; i++)
     {
-        int16_t samples[2];
+        int16_t* samples = &chan.stream_samples[chan.stream_in];
+        chan.stream_in = (chan.stream_in + 2) & (STREAM_SAMPLES - 1);
+
         auto b = *in_ptr++;
 
         int nibble = b & 0xF;
@@ -108,8 +117,6 @@ static uint8_t *DecodeADPCMBlock(ChannelState &chan, int block_size, uint8_t *in
         chan.predictor = clamp(chan.predictor + diff, -32768, 32767);
 
         samples[1] = chan.predictor;
-
-        //SDL_AudioStreamPut(chan.stream, samples, sizeof(samples));
     }
 
     return in_ptr;
@@ -117,7 +124,7 @@ static uint8_t *DecodeADPCMBlock(ChannelState &chan, int block_size, uint8_t *in
 
 static bool RefillStream(ChannelState &chan)
 {
-    uint32_t max_update = 0;//ObtainedSpec.samples; // assume the target rate is not lower
+    uint32_t max_update = STREAM_SAMPLES / 2;
 
     if(chan.offset == chan.length)
         return false;
@@ -145,29 +152,61 @@ static bool RefillStream(ChannelState &chan)
     else
         return false; // shouldn't happen, but...
 
-    // written all data, flush the stream
-    //if(chan.offset == chan.length)
-    //    SDL_AudioStreamFlush(chan.stream);
-
     return true;
 }
 
-static void ResetStream(ChannelState &chan, AUDHeaderType *header)
+// from driver
+void audio_callback(int16_t *data, int count)
 {
-    int channels = header->Flags & AUD_FLAG_STEREO ? 2 : 1;
-    int bits = header->Flags & AUD_FLAG_16BIT ? 16 : 8;
+    memset(data, 0, count * sizeof(int16_t));
 
-    // re-allocate stream if needed
-    /*if(channels != chan.channels || bits != chan.bits || header->Rate != chan.sample_rate)
+     // let VQA do its thing
+    if(ExtraCallback)
+        ExtraCallback((uint8_t *)data, count * sizeof(int16_t));
+
+    for(auto &chan : Channels)
     {
-        if(chan.stream)
-            SDL_FreeAudioStream(chan.stream);
+        if(!chan.playing)
+            continue;
 
-        chan.stream = SDL_NewAudioStream(bits == 16 ? AUDIO_S16 : AUDIO_S8, channels, header->Rate, ObtainedSpec.format, ObtainedSpec.channels, ObtainedSpec.freq);
+        // put more data into stream if needed
+        // unless it's a file, we do that elsewhere
+        bool done = chan.stream_in == chan.stream_out;
+        if(done && chan.in_ptr)
+        {
+            if(!RefillStream(chan))
+            {
+                // no more data, it's finished
+                chan.playing = false;
+                continue;
+            }
+        }
+        else if(done && !chan.in_ptr && chan.file_handle == -1)
+        {
+            // if there's no data, pointer or file handle, this is a finished file stream
+            chan.playing = false;
+            continue;
+        }
+
+        if(chan.fade)
+        {
+            // update fade
+            chan.raw_volume -= chan.fade;
+            if(chan.raw_volume <= 0)
+            {
+                chan.playing = false;
+                break;
+            }
+            chan.volume = Calculate_Volume(chan.raw_volume);
+        }
+
+        // assuming refill always produces enough
+        for(int s = 0; s < count && chan.stream_in != chan.stream_out; s++)
+        {
+            data[s] += (chan.stream_samples[chan.stream_out] * chan.volume) >> 15;
+            chan.stream_out = (chan.stream_out + 1) & (STREAM_SAMPLES - 1);
+        }
     }
-    else
-        SDL_AudioStreamClear(chan.stream);
-    */
 }
 
 int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_start)
@@ -212,8 +251,6 @@ int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_star
     chan.volume = Calculate_Volume(chan.raw_volume);
     chan.fade = 0;
 
-    ResetStream(chan, &header);
-
     chan.channels = channels;
     chan.bits = bits;
     chan.sample_rate = header.Rate;
@@ -254,11 +291,9 @@ void Sound_Callback(void)
             continue;
         }
 
-        // limit how much we buffer so we don't end up with the whole file
-        // (not that it's a problem on any modern system, but still)
-        //int max_buf = (SDL_AUDIO_BITSIZE(ObtainedSpec.format) / 8) * ObtainedSpec.channels * ObtainedSpec.freq;
-        //if(SDL_AudioStreamAvailable(chan.stream) >= max_buf)
-        //    continue;
+        // limit how much we buffer so we don't end up overruning the buffer
+        if (((chan.stream_in - chan.stream_out) & (STREAM_SAMPLES - 1)) >= STREAM_SAMPLES / 2)
+            continue;
         
         uint16_t block_header[4];
         if(Read_File(chan.file_handle, block_header, 8) !=8)
@@ -294,43 +329,26 @@ void Sound_Callback(void)
 
 bool Audio_Init(void * window, int bits_per_sample, bool stereo, int rate, int reverse_channels)
 {
-    /*SDL_AudioSpec desired;
-    desired.freq = rate;
-    desired.format = AUDIO_S16; //bits_per_sample == 16 ? AUDIO_S16 : AUDIO_S8;
-    desired.channels = stereo ? 2 : 1;
-    desired.samples = 2048;
-    desired.callback = SDL_Audio_Callback;
-
-    // don't allow format change so I need less mising code
-    int changes = SDL_AUDIO_ALLOW_FREQUENCY_CHANGE | SDL_AUDIO_ALLOW_CHANNELS_CHANGE | SDL_AUDIO_ALLOW_SAMPLES_CHANGE;
-    AudioDevice = SDL_OpenAudioDevice(NULL, false, &desired, &ObtainedSpec, changes);
-
-    if(!AudioDevice)
-    {
-        printf("Audio_Init: %s\n", SDL_GetError());
+    if(!audio_available())
         return false;
+
+    int16_t *stream_mem = psram_sample_buffers;
+ 
+    for(auto &chan : Channels)
+    {
+        chan.stream_samples = stream_mem;
+        stream_mem += STREAM_SAMPLES;
     }
 
-    MixBuffer = new uint8_t[ObtainedSpec.size];
-
-    SDL_PauseAudioDevice(AudioDevice, false);
-
+    // reuse these, that value doesn't matter other than being non-zero
     SoundType = SFX_SDL;
     SampleType = SAMPLE_SDL;
-    return true;*/
-    return false;
+    return true;
 }
 
 void Sound_End(void)
 {
-    //SDL_CloseAudioDevice(AudioDevice);
-
-    delete[] MixBuffer;
-
-    for(auto &chan : Channels)
-    {
-        //SDL_FreeAudioStream(chan.stream);
-    }
+    // TODO?
 }
 
 void Stop_Sample(int handle)
@@ -393,7 +411,7 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
     int channels = header->Flags & AUD_FLAG_STEREO ? 2 : 1;
     int bits = header->Flags & AUD_FLAG_16BIT ? 16 : 8;
 
-    if(header->Compression != SCOMP_SOS || channels != 1 || bits != 16)
+    if(header->Compression != SCOMP_SOS || channels != 1 || bits != 16 || header->Rate != 22050)
     {
         printf("\trate %i size %i/%i channels %i bits %i comp %i\n", header->Rate, header->Size, header->UncompSize, channels, bits, header->Compression);
         return -1;
@@ -404,13 +422,12 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
     auto &chan = Channels[id];
 
     chan.sample = sample;
-    chan.playing = true;
+    chan.stream_in = 0;
+    chan.stream_out = 0;
     chan.priority = priority;
     chan.raw_volume = volume * 255;
     chan.volume = Calculate_Volume(chan.raw_volume);
     chan.fade = 0;
-
-    ResetStream(chan, header);
 
     chan.channels = channels;
     chan.bits = bits;
@@ -427,6 +444,8 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
         chan.step = 0;
         chan.predictor = 0;
     }
+
+    chan.playing = true;
 
     //SDL_UnlockAudioDevice(AudioDevice);
 
@@ -452,18 +471,18 @@ int Set_Score_Vol(int volume)
 
 void Fade_Sample(int handle, int ticks)
 {
-    // recalse from game ticks, to audio callbacks
-    /*int fade_time = (1000 / 60) * ticks;
-    int callback_interval =  ObtainedSpec.samples * 1000 / ObtainedSpec.freq;
+    // rescale from game ticks, to audio callbacks
+    int fade_time = (1000 / 60) * ticks;
+    int callback_interval =  128 * 1000 / 22050; // FIXME: hardcoded for i2s driver
 
     int num_steps = fade_time / callback_interval;
 
     if(Sample_Status(handle))
     {
-        SDL_LockAudioDevice(AudioDevice);
+        //SDL_LockAudioDevice(AudioDevice);
         Channels[handle].fade = Channels[handle].raw_volume / num_steps;
-        SDL_UnlockAudioDevice(AudioDevice);
-    }*/
+        //SDL_UnlockAudioDevice(AudioDevice);
+    }
 }
 
 int Get_Free_Sample_Handle(int priority)
