@@ -44,6 +44,7 @@ endif()
 
 string(TOUPPER ${EXTRA_BOARD} EXTRA_BOARD_UPPER)
 target_compile_definitions(picolib PRIVATE EXTRA_BOARD_${EXTRA_BOARD_UPPER}=1)
+set(AUDIO_DRIVER "none")
 
 if(EXTRA_BOARD STREQUAL "display_pack")
     set(DISPLAY_DRIVER "dbi")
@@ -55,13 +56,15 @@ endif()
 
 target_sources(picolib PRIVATE
     driver/display_${DISPLAY_DRIVER}.cpp
+    driver/audio_${AUDIO_DRIVER}.cpp
 )
 
 # PIO programs
-pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/spi.pio)
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dbi-spi.pio)
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dbi-8bit.pio)
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dpi.pio)
+pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/i2s.pio)
+pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/spi.pio)
 
 target_include_directories(picolib PUBLIC ../SDLLIB/include) # hax
 target_include_directories(picolib PUBLIC ${CMAKE_CURRENT_LIST_DIR})

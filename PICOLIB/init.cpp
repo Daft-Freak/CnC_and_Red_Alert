@@ -7,6 +7,7 @@
 #endif
 #include "tusb.h"
 
+#include "driver/audio.h"
 #include "display.h"
 #include "psram.h"
 #include "mem.h"
@@ -91,6 +92,7 @@ void Pico_Init()
     tusb_init();
 
     init_display();
+    init_audio();
 
     multicore_launch_core1(Core1_Main);
 }
