@@ -8,6 +8,7 @@
 
 #include "display.h"
 #include "psram.h"
+#include "mem.h"
 #include "fatfs/ff.h"
 
 #include "keyboard.h"
@@ -73,7 +74,7 @@ void Pico_Init()
 
     size_t psramSize = psram_init(PSRAM_CS_PIN);
     printf("detected %i bytes PSRAM\n", psramSize);
-    *(uint32_t *)PSRAM_LOCATION = psramSize;
+    PSRAM_Alloc_Init();
 
     f_mount(&fs, "", 0);
     f_chdir("/CnC/");
