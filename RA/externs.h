@@ -53,11 +53,7 @@
 #include	"infantry.h"
 
 #define STAGING_BUFFER_SIZE 32000
-#ifdef PICO_BUILD
-extern char *_staging_buffer;
-#else
 extern char _staging_buffer[STAGING_BUFFER_SIZE];
-#endif
 
 extern "C" {
 void _PRO(void);
