@@ -87,6 +87,23 @@ const struct dvi_timing dvi_timing_720x400p_70hz = {
 	.bit_clk_khz       = 283200
 };
 
+// 720x400@60Hz - Made up, seems to work.  Nice long vblank for updating the frame buffer.
+const struct dvi_timing dvi_timing_720x400p_60hz = {
+	.h_sync_polarity   = false,
+	.h_front_porch     = 18,
+	.h_sync_width      = 108,
+	.h_back_porch      = 69,
+	.h_active_pixels   = 720,
+
+	.v_sync_polarity   = true,
+	.v_front_porch     = 13,
+	.v_sync_width      = 2,
+	.v_back_porch      = 44,
+	.v_active_lines    = 400,
+
+	.bit_clk_khz       = 252000
+};
+
 // 800x480p 60 Hz (note this doesn't seem to be a CEA mode, I just used the
 // output of `cvt 800 480 60`), 295 MHz bit clock
 const struct dvi_timing dvi_timing_800x480p_60hz = {
