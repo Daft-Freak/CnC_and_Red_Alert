@@ -356,9 +356,6 @@ void init_display() {
 
   // setup PIO IRQ
   pio_set_irq0_source_enabled(pio, pio_interrupt_source_t(pis_sm0_tx_fifo_not_full + timing_sm), true);
-  irq_set_exclusive_handler(pio_get_irq_num(pio, 0), pio_timing_irq_handler);
-  irq_set_enabled(pio_get_irq_num(pio, 0), true);
-
   // setup data DMA
   // chain channels in a loop
   for(int i = 0; i < DPI_NUM_DMA_CHANNELS; i++) {
@@ -385,8 +382,6 @@ void init_display() {
 
   dma_hw->ints0 = (chan_mask << DPI_DMA_CH_BASE);
   dma_hw->inte0 = (chan_mask << DPI_DMA_CH_BASE);
-  irq_set_exclusive_handler(DMA_IRQ_0, dma_irq_handler);
-  irq_set_enabled(DMA_IRQ_0, true);
 
   // setup repeat (original code handled mode changes and did this later)
   v_repeat = 2;
@@ -397,6 +392,14 @@ void init_display() {
     dma_channel_set_trans_count(DPI_DMA_CH_BASE + i, line_width / 2, false);
 
   
+}
+
+void init_display_core1(){
+  irq_set_exclusive_handler(pio_get_irq_num(pio, 0), pio_timing_irq_handler);
+  irq_set_enabled(pio_get_irq_num(pio, 0), true);
+
+  irq_set_exclusive_handler(DMA_IRQ_0, dma_irq_handler);
+  irq_set_enabled(DMA_IRQ_0, true);
 }
 
 void update_display(uint32_t time) {

@@ -69,7 +69,7 @@ target_include_directories(picolib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/driver)
 
 target_link_libraries(picolib PUBLIC
     hardware_dma hardware_flash hardware_pio hardware_pwm hardware_spi
-    pico_stdlib
+    pico_multicore pico_stdlib
     tinyusb_host
 )
 
