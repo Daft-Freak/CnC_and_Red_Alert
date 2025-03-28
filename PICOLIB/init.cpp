@@ -1,6 +1,7 @@
 #include <stdio.h>
 
 #include "pico/stdlib.h"
+#include "pico/multicore.h"
 #ifdef WIFI_ENABLED
 #include "pico/cyw43_arch.h"
 #endif
@@ -68,6 +69,12 @@ void update_mouse_state(int8_t x, int8_t y, bool left, bool right)
     }
 }
 
+static void __not_in_flash_func(Core1_Main)()
+{
+    init_display_core1();
+    while(true) __wfe();
+}
+
 void Pico_Init()
 {
     stdio_init_all();
@@ -84,6 +91,8 @@ void Pico_Init()
     tusb_init();
 
     init_display();
+
+    multicore_launch_core1(Core1_Main);
 }
 
 void Pico_Wifi_Init(const char *ssid, const char *pass)
