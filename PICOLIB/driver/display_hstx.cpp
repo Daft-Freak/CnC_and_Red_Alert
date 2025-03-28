@@ -263,7 +263,7 @@ void init_display_core1() {
     line_num = -1;
     v_scanline = 2;
 
-    timing_mode = &dvi_timing_720x400p_70hz;
+    timing_mode = &dvi_timing_720x400p_60hz;
     if (get_core_num() == 1) {
         hw_set_bits(&bus_ctrl_hw->priority, (BUSCTRL_BUS_PRIORITY_PROC1_BITS | BUSCTRL_BUS_PRIORITY_DMA_R_BITS | BUSCTRL_BUS_PRIORITY_DMA_W_BITS));
     }
