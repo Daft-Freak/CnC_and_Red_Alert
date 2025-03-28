@@ -22,6 +22,10 @@
 
 #elif EXTRA_BOARD_VGABOARD
 
+#define AUDIO_I2S_PIO 0
+#define AUDIO_I2S_CLOCK_PIN_BASE 27
+#define AUDIO_I2S_DATA_PIN       26
+
 #define SD_SCK   5
 #define SD_MOSI 18
 #define SD_MISO 19
