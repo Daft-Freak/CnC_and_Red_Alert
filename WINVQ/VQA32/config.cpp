@@ -129,6 +129,9 @@ static VQAConfig _defaultconfig = {
 	NULL, // AudioCallback
 	NULL, // AudioSpec
 #endif
+#if VQAPICO_SOUND
+	NULL, // AudioCallback
+#endif
 #if (VQADIRECT_SOUND)
 	/* -----------------12/15/95 10:40AM-----------------
 	 * SoundObject - ptr to games direct sound object. Null if VQ should create

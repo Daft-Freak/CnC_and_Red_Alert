@@ -711,6 +711,60 @@ void VQA_ResumeAudio(void)
 extern int VQAMovieDone;
 static bool VQAAudioPaused = false;
 
+static void VQA_Audio_Callback(uint8_t *stream, int len)
+{
+	// called from main audio callback
+	if(!VQAP)
+		return;
+	auto audio = &VQAP->VQABuf->Audio;
+	if(!(audio->Flags & VQAAUDF_ISPLAYING) || VQAAudioPaused)
+		return;
+
+	auto config = &VQAP->Config;
+
+	memcpy(stream, audio->Buffer + audio->PlayPosition + audio->BlockOffset, len);
+	audio->BlockOffset += len;
+	if (audio->BlockOffset == config->HMIBufSize) {
+		audio->BlockOffset = 0;
+
+		/* Compute the 'NextBlock' index */
+		audio->NextBlock = audio->CurBlock + 1;
+
+		if (audio->NextBlock >= audio->NumAudBlocks) {
+			audio->NextBlock = 0;
+		}
+
+		/* See if the next block has data in it; if so, update the audio
+			* buffer play position & the 'CurBlock' value.
+			* If not, don't change anything and replay this block.
+			*/
+		if (audio->IsLoaded[audio->NextBlock] == 1) {
+
+			/* Update this block's status to loadable (0) */
+			audio->IsLoaded[audio->CurBlock] = 0;
+
+			/* Update position within audio buffer */
+			audio->PlayPosition += config->HMIBufSize;
+			audio->CurBlock++;
+
+			if (audio->PlayPosition >= config->AudioBufSize) {
+				audio->PlayPosition = 0;
+				audio->CurBlock = 0;
+			}
+			audio->ChunksMovedToAudioBuffer++;
+		} else {
+			if (VQAMovieDone){
+				audio->ChunksMovedToAudioBuffer++;
+			}
+			audio->NumSkipped++;
+			/*
+			** Enable frame skipping to prevent this happening again
+			*/
+			config->DrawFlags &= ~VQACFGF_NOSKIP;
+		}
+	}
+}
+
 long VQA_StartTimerInt(VQAHandleP *vqap, long init)
 {
 	return 0;
@@ -743,12 +797,12 @@ long VQA_OpenAudio(VQAHandleP *vqap, void *window)
 		// if we've already initialised make sure we're not in the callback
 		// (by unsetting it)
 		//SDL_LockAudioDevice(config->AudioDeviceID);
-		//*config->AudioCallback = NULL;
+		*config->AudioCallback = NULL;
 		//SDL_UnlockAudioDevice(config->AudioDeviceID);
 	}
 
 	// register our audio callback
-	//*config->AudioCallback = VQA_Audio_Callback;
+	*config->AudioCallback = VQA_Audio_Callback;
 
 	audio->Flags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
 	AudioFlags |= (HMI_VQAINIT << VQAAUDB_DIGIINIT);
@@ -783,7 +837,7 @@ void VQA_CloseAudio(VQAHandleP *vqap)
 	// unregister our audio callback
 	// and make sure we're not in it
 	//SDL_LockAudioDevice(config->AudioDeviceID);
-	//*config->AudioCallback = NULL;
+	*config->AudioCallback = NULL;
 	//SDL_UnlockAudioDevice(config->AudioDeviceID);
 
 	audio->Flags &= ~VQAAUDF_DIGIINIT;
@@ -811,7 +865,8 @@ long VQA_StartAudio(VQAHandleP *vqap)
 
 	//SDL_LockAudioDevice(config->AudioDeviceID);
 	// setup playback
-	//audio->ChunksMovedToAudioBuffer = 0;
+	audio->ChunksMovedToAudioBuffer = 0;
+	audio->BlockOffset = 0;
 
 	/*
 	** Set the volume
@@ -2981,6 +3036,11 @@ unsigned long VQA_GetTime(VQAHandleP *vqap)
 			samples = samples/(audio->BitsPerSample >> 3);
 
 			#elif VQAPICO_SOUND
+
+			totalbytes = (audio->ChunksMovedToAudioBuffer) * config->HMIBufSize + audio->BlockOffset;
+
+			samples = totalbytes/audio->Channels;
+			samples = samples/(audio->BitsPerSample >> 3);
 
 			#elif (VQADIRECT_SOUND)
 
