@@ -27,7 +27,6 @@ add_library(picolib STATIC
     ../SDLLIB/wsa.cpp
 
     # driver code borrows a lot from the 32blit-sdk
-    driver/display_dbi.cpp
     driver/filesystem.cpp
     driver/psram.c
     driver/storage.cpp
@@ -37,6 +36,24 @@ add_library(picolib STATIC
     driver/fatfs/ffunicode.c
 )
 
+# "extra" board config (the thing the pico is plugged into)
+if(NOT EXTRA_BOARD)
+    message("No EXTRA_BOARD set, assuming Display Pack")
+    set(EXTRA_BOARD display_pack)
+endif()
+
+string(TOUPPER ${EXTRA_BOARD} EXTRA_BOARD_UPPER)
+target_compile_definitions(picolib PRIVATE EXTRA_BOARD_${EXTRA_BOARD_UPPER}=1)
+
+if(EXTRA_BOARD STREQUAL "display_pack")
+    set(DISPLAY_DRIVER "dbi")
+endif()
+
+target_sources(picolib PRIVATE
+    driver/display_${DISPLAY_DRIVER}.cpp
+)
+
+# PIO programs
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/spi.pio)
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dbi-spi.pio)
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dbi-8bit.pio)
