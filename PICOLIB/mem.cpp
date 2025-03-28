@@ -9,13 +9,22 @@
 void (*Memory_Error)(void) = NULL;
 void (*Memory_Error_Exit)(char *string) = NULL;
 
+extern uint8_t __PsramHeapStart;
+extern uint8_t __PsramHeapEnd;
+
+void PSRAM_Alloc_Init()
+{
+    uint32_t* ptr = (uint32_t*)&__PsramHeapStart;
+    *ptr = &__PsramHeapEnd - &__PsramHeapStart;
+}
+
 void *PSRAM_Alloc(size_t size)
 {
     // very dumb allocator
     printf("psalloc %u\n", size);
 
-    auto ptr = (uint8_t *)PSRAM_LOCATION;
-    auto end = ptr + 8 * 1024 * 1024; // whoops, hardcoded size
+    auto ptr = &__PsramHeapStart;
+    auto end = &__PsramHeapEnd;
 
     while(ptr < end)
     {
@@ -28,7 +37,7 @@ void *PSRAM_Alloc(size_t size)
             continue;
         }
 
-        printf("\tfree %u at %x\n", head, ptr - (uint8_t *)PSRAM_LOCATION);
+        printf("\tfree %u at %x\n", head, ptr - &__PsramHeapStart);
 
         size += 4; // header
         size = (size + 3) & ~3; // align
