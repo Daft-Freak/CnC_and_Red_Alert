@@ -49,6 +49,10 @@ if(EXTRA_BOARD STREQUAL "display_pack")
     set(DISPLAY_DRIVER "dbi")
 endif()
 
+if(EXTRA_BOARD STREQUAL "vgaboard")
+    set(DISPLAY_DRIVER "dpi")
+endif()
+
 target_sources(picolib PRIVATE
     driver/display_${DISPLAY_DRIVER}.cpp
 )
@@ -57,13 +61,14 @@ target_sources(picolib PRIVATE
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/spi.pio)
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dbi-spi.pio)
 pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dbi-8bit.pio)
+pico_generate_pio_header(picolib ${CMAKE_CURRENT_LIST_DIR}/driver/dpi.pio)
 
 target_include_directories(picolib PUBLIC ../SDLLIB/include) # hax
 target_include_directories(picolib PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_include_directories(picolib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/driver)
 
 target_link_libraries(picolib PUBLIC
-    hardware_dma hardware_flash hardware_pio hardware_pwm
+    hardware_dma hardware_flash hardware_pio hardware_pwm hardware_spi
     pico_stdlib
     tinyusb_host
 )
