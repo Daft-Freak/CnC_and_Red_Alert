@@ -100,6 +100,7 @@ static uint32_t vsync_line_timings[4];
 static uint16_t screen_palette565[256];
 static uint8_t frame_buffer[320 * 200];
 static uint16_t temp_buffer[320 * DPI_NUM_DMA_CHANNELS];
+static uint32_t zero;
 
 // palette lookup
 static inline void convert_paletted(const uint8_t *in, uint16_t *out, int count) {
@@ -153,11 +154,14 @@ static void __not_in_flash_func(dma_irq_handler)() {
   // alignment hax
   // (I could use a mode with closer to the correct height, but why would I do that?)
 
-  if(display_line < DPI_NUM_DMA_CHANNELS || (display_line >= 220 && display_line < 220 + DPI_NUM_DMA_CHANNELS)) {
-    for(int i = 0; i < w; i++)
-      temp_buffer[palette_buf_idx * w + i] = 0;
-  } else if(display_line > 20 && display_line < 220 && display_line * v_repeat == data_scanline)
-    convert_paletted(cur_display_buffer + (display_line - 20) * w, temp_buffer + palette_buf_idx * w, w);
+  if(display_line > 20 && display_line < 220) {
+    ch->al1_ctrl |= DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
+    if (display_line * v_repeat == data_scanline)
+      convert_paletted(cur_display_buffer + (display_line - 20) * w, temp_buffer + palette_buf_idx * w, w);
+  } else {
+    ch->read_addr = uintptr_t(&zero);
+    ch->al1_ctrl &= ~DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
+  }
 
   data_scanline++;
 }
