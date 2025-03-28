@@ -1,6 +1,7 @@
 #pragma once
 #include <cstdint>
 
+void pre_init_display();
 void init_display();
 void init_display_core1();
 

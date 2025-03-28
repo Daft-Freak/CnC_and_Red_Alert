@@ -333,6 +333,8 @@ static void vsync_callback(uint gpio, uint32_t events) {
   }
 }
 
+void pre_init_display() {}
+
 void init_display() {
   // configure pins
   gpio_set_function(LCD_DC_PIN, GPIO_FUNC_SIO);
