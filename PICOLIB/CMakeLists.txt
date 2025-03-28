@@ -52,6 +52,7 @@ endif()
 
 if(EXTRA_BOARD STREQUAL "vgaboard")
     set(DISPLAY_DRIVER "dpi")
+    set(AUDIO_DRIVER "i2s")
 endif()
 
 target_sources(picolib PRIVATE
