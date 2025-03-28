@@ -115,6 +115,8 @@ static void Display_Loading_Message()
 
 void Pico_Init()
 {
+    pre_init_display();
+
     stdio_init_all();
 
     size_t psramSize = psram_init(PSRAM_CS_PIN);

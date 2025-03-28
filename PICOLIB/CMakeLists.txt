@@ -29,6 +29,7 @@ add_library(picolib STATIC
     ../SDLLIB/wsa.cpp
 
     # driver code borrows a lot from the 32blit-sdk
+    driver/dvi.c
     driver/filesystem.cpp
     driver/psram.c
     driver/storage.cpp
