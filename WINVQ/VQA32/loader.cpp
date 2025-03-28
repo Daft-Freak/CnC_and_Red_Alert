@@ -524,7 +524,7 @@ long VQA_Open(VQAHandle *vqa, char const *filename, VQAConfig *config)
 	}
 
 	/* Turn off audio if the HMI DigiHandle is invalid. */
-#if (!VQADIRECT_SOUND) && !VQASDL_SOUND && !VQA_PICOSOUND
+#if (!VQADIRECT_SOUND) && !VQASDL_SOUND && !VQAPICO_SOUND
 	if (config->DigiHandle == -1) {
 		config->OptionFlags &= ~VQAOPTF_AUDIO;
 	}
@@ -744,6 +744,7 @@ long VQA_LoadFrame(VQAHandle *vqa)
 
 			/* Read chunk ID */
 			if (vqap->IOHandler(vqa, VQACMD_READ, chunk, 8)) {
+				printf("EOF?\n");
 				return (VQAERR_EOF);
 			}
 
@@ -1821,6 +1822,7 @@ long PrimeBuffers(VQAHandle *vqa)
 			vqabuf->LoadedFrames++;
 		}
 		else if ((rc != VQAERR_NOBUFFER) && (rc != VQAERR_SLEEPING)) {
+			printf("PrimeBuffers %i\n", rc);
 			return (rc);
 		}
 	}

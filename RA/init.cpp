@@ -1664,6 +1664,9 @@ static void Play_Intro(bool sequenced)
 GraphicBufferClass VQ640(640, 400, (void *)NULL);
 #endif
 #endif
+#ifdef PICO_BUILD
+[[gnu::section(".psram_data")]] static uint8_t AudioBuf[32768];
+#endif
 void Anim_Init(void)
 {
 
@@ -1701,6 +1704,9 @@ void Anim_Init(void)
 		AnimControl.OptionFlags |= VQAOPTF_SLOWPAL;
 	}
 #if defined(PICO_BUILD)
+	AnimControl.AudioBufSize = sizeof(AudioBuf);
+	AnimControl.AudioBuf = AudioBuf;
+	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
 #elif defined(PORTABLE)
 	AnimControl.AudioDeviceID = Get_Audio_Device();
 	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
