@@ -2750,10 +2750,6 @@ static void Init_Heaps(void)
 	TheaterBuffer = new Buffer(THEATER_BUFFER_SIZE);
 #endif
 	assert(TheaterBuffer != NULL);
-
-#ifdef PICO_BUILD
-	_staging_buffer = new(MEM_FIXED_HEAP) char[STAGING_BUFFER_SIZE];
-#endif
 }
 
 

@@ -138,7 +138,7 @@ SpeedType FormSpeed;
 MPHType FormMaxSpeed;
 
 #ifdef PICO_BUILD
-char *_staging_buffer;
+[[gnu::section(".psram_data")]] char _staging_buffer[STAGING_BUFFER_SIZE];
 #else
 char _staging_buffer[STAGING_BUFFER_SIZE];
 #endif
