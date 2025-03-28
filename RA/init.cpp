@@ -2760,7 +2760,13 @@ static void Init_Expansion_Files(void)
 		do {
 			ptr = strdup(state.name);
 			new MFCD(ptr, &FastKey);
-			MFCD::Cache(ptr);
+			#if PICO_BUILD
+			// Scores.mix is too large to cache.
+			if (stricmp(ptr, "scores.mix") != 0)
+			#endif
+			{
+				MFCD::Cache(ptr);
+			}
 		} while (Find_Next_File(state));
 	}
 	if (Find_First_File("SS*.MIX", state)) {
