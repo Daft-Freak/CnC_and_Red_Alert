@@ -517,7 +517,7 @@ int Get_Free_Sample_Handle(int priority)
 int Get_Digi_Handle(void)
 {
     // used to check if audio is initialised
-    return /*AudioDevice ? 1 :*/ -1;
+    return audio_available() ? 1 : -1;
 }
 
 bool Start_Primary_Sound_Buffer(bool forced)
