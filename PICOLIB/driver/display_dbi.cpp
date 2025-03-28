@@ -432,6 +432,9 @@ void init_display() {
 
 }
 
+void init_display_core1(){
+}
+
 void update_display(uint32_t time) {
   if((do_render || (!have_vsync && time - last_render >= 20)) && !dma_is_busy()) {
 
