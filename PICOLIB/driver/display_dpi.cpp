@@ -547,6 +547,8 @@ static void init_display_spi() {
 #endif
 }
 
+void pre_init_display() {}
+
 void init_display() {
   // send init commands if needed
   init_display_spi();
