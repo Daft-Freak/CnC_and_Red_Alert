@@ -365,6 +365,8 @@ typedef struct _VQAAudio {
 #if VQASDL_SOUND
 	unsigned					ChunksMovedToAudioBuffer;
 #elif VQAPICO_SOUND
+	unsigned					ChunksMovedToAudioBuffer;
+	unsigned					BlockOffset;
 #elif (!VQADIRECT_SOUND)
 	WORD               DigiHandle;
 	WORD               SampleHandle;
