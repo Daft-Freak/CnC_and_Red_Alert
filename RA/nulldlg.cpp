@@ -4472,7 +4472,7 @@ oh_dear_its_a_label:
 					Session.FrameSendRate), (Session.FrameSendRate * 2)
 											);
 			} else {
-				Session.MaxAhead = max( (SendPacket.ScenarioInfo.ResponseTime / 8),
+				Session.MaxAhead = max( unsigned(SendPacket.ScenarioInfo.ResponseTime / 8),
 											  MODEM_MIN_MAX_AHEAD );
 			}
 		}
@@ -6095,7 +6095,7 @@ int Com_Show_Scenario_Dialog(void)
 								(Session.FrameSendRate - 1)) / Session.FrameSendRate) *
 								Session.FrameSendRate), (Session.FrameSendRate * 2) );
 						} else {
-							Session.MaxAhead = max( (ReceivePacket.ScenarioInfo.ResponseTime / 8),
+							Session.MaxAhead = max( unsigned(ReceivePacket.ScenarioInfo.ResponseTime / 8),
 														  MODEM_MIN_MAX_AHEAD );
 						}
 
