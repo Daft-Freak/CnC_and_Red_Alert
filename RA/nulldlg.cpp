@@ -1985,9 +1985,11 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 	/*
 	** Set up the port list box & edit box
 	*/
+#ifndef PORTABLE
 	for (i = 0; i < 4; i++) {
 		portlist.Add_Item( portname[ i ] );
 	}
+#endif
 
 #ifdef WIN32
 	/*
@@ -2399,6 +2401,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 				if (portlist.Current_Index() != port_index) {
 					port_index = portlist.Current_Index();
 					item = (char *)portlist.Current_Item();
+#ifndef PORTABLE
 					if (port_index < 4) {
 						temp = strchr( item, ' ' );
 						pos = (int)(temp - item);
@@ -2421,7 +2424,9 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 						}
 						irq_edt.Clear_Focus();
 #endif	//WIN32
-					} else {
+					} else
+#endif
+					{
 						if (port_index == port_custom_index) {
 							/*
 							** This is the custom entry
@@ -2658,6 +2663,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 			case (KN_RETURN):
 			case (BUTTON_SAVE | KN_BUTTON):
 				switch (port_index) {
+#ifndef PORTABLE
 					case ( 0 ):
 						tempsettings.Port = 0x3f8;
 						tempsettings.ModemName[0] = 0;
@@ -2677,7 +2683,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 						tempsettings.Port = 0x2e8;
 						tempsettings.ModemName[0] = 0;
 						break;
-
+#endif
 					default:
 						if (port_index == port_custom_index) {
 #ifdef WIN32
