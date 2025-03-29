@@ -10,6 +10,7 @@ add_library(picolib STATIC
     net_select.cpp
     picosock.cpp
     timer.cpp
+    wincomm.cpp
     window.cpp
 
     # a lot of SDLLIB isn't SDL specific (or is a stub)
@@ -23,7 +24,6 @@ add_library(picolib STATIC
     ../SDLLIB/palette.cpp
     ../SDLLIB/playcd.cpp
     ../SDLLIB/shape.cpp
-    ../SDLLIB/wincomm.cpp
     ../SDLLIB/wsa.cpp
 
     # driver code borrows a lot from the 32blit-sdk

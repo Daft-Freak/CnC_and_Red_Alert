@@ -203,6 +203,9 @@ class WinModemClass
           CD_SET   = 0x80
        };
 
+#ifdef PICO_BUILD
+	   void RX_Byte(uint8_t b);
+#endif
 
 	protected:
 
