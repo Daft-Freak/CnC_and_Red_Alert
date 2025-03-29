@@ -5048,7 +5048,7 @@ static int Net_New_Dialog(void)
 				Session.FrameSendRate), (Session.FrameSendRate * 2) );
 		}
 		else {
-			Session.MaxAhead = max( (Ipx.Global_Response_Time() / 8),
+			Session.MaxAhead = max( unsigned(Ipx.Global_Response_Time() / 8),
 										  NETWORK_MIN_MAX_AHEAD );
 		}
 

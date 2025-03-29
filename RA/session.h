@@ -91,8 +91,8 @@ class CellClass;
 // Min value for MaxAhead, for both net & modem; only applies for
 // COMM_PROTOCOL_MULTI_E_COMP.
 //...........................................................................
-#define MODEM_MIN_MAX_AHEAD			5ul
-#define NETWORK_MIN_MAX_AHEAD			2ul
+#define MODEM_MIN_MAX_AHEAD			5u
+#define NETWORK_MIN_MAX_AHEAD			2u
 
 //...........................................................................
 // Send period (in frames) for COMM_PROTOCOL_MULTI_E_COMP and above
@@ -170,7 +170,7 @@ typedef enum ModemGameType {
 //...........................................................................
 // Commands sent over the serial Global Channel
 //...........................................................................
-typedef enum SerialCommandType {
+typedef enum SerialCommandType : uint16_t {
 	SERIAL_CONNECT			= 100,	// Are you there?  Hello?  McFly?
 	SERIAL_GAME_OPTIONS	= 101,	// Hey, dudes, here's some new game options
 	SERIAL_SIGN_OFF		= 102,	// Bogus, dudes, my boss is coming; I'm outta here!
@@ -301,8 +301,8 @@ typedef struct {
 		struct {
 			HousesType House;								// player's House
 			PlayerColorType Color;						// player's color or SIGNOFF ID
-			unsigned long MinVersion;					// min version this game supports
-			unsigned long MaxVersion;					// max version this game supports
+			uint32_t MinVersion;						// min version this game supports
+			uint32_t MaxVersion;						// max version this game supports
 			char Scenario[DESCRIP_MAX];				// Scenario name
 			unsigned int Credits;						// player's credits
 			unsigned int IsBases		: 1;				// 1 = bases are allowed
@@ -317,7 +317,7 @@ typedef struct {
 			int Seed;										// random number seed
 			SpecialClass Special;						// command-line options
 			unsigned int GameSpeed;						// Game Speed
-			unsigned long ResponseTime;				// packet response time
+			uint32_t ResponseTime;					// packet response time
 			unsigned int FileLength;					// Length of scenario file to expect from host.
 #ifdef WOLAPI_INTEGRATION
 			char ShortFileName[13];						// Name of scenario file to expect from host
