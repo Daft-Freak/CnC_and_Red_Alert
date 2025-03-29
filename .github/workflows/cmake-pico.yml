@@ -14,8 +14,8 @@ jobs:
       matrix:
         os: [ubuntu-latest]
         build_type: [Release]
-        board: [pimoroni_pico_plus2_w_rp2350]
-        # additional cfg?
+        board: [pimoroni_pico_plus2_rp2350, pimoroni_pico_plus2_w_rp2350]
+        extra_board: [display_pack, vgaboard]
 
     steps:
     - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
       run: |
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         echo "build-install-dir=${{ github.workspace }}/build/install" >> "$GITHUB_OUTPUT"
-        echo "artifact-name=${{github.event.repository.name}}-${{github.sha}}-${{matrix.board}}" >> "$GITHUB_OUTPUT"
+        echo "artifact-name=${{github.event.repository.name}}-${{github.sha}}-${{matrix.board}}-${{matrix.extra_board}}" >> "$GITHUB_OUTPUT"
 
     - name: Configure CMake
       run: >
@@ -46,6 +46,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }}
         -DPICO_SDK_PATH=${{ github.workspace }}/pico-sdk
         -DPICO_BOARD=${{ matrix.board }}
+        -DEXTRA_BOARD=${{ matrix.extra_board }}
         -S ${{ github.workspace }}
 
     - name: Build
