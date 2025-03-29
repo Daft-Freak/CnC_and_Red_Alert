@@ -2783,15 +2783,12 @@ static void Init_Expansion_Files(void)
 	if (Find_First_File("SC*.MIX", state)) {
 		char * ptr;
 		do {
+			// scores shouldn't be loaded here but may be found if main has been extracted
+			if (stricmp(state.name, "scores.mix") == 0)
+				continue;
 			ptr = strdup(state.name);
 			new MFCD(ptr, &FastKey);
-			#if PICO_BUILD
-			// Scores.mix is too large to cache.
-			if (stricmp(ptr, "scores.mix") != 0)
-			#endif
-			{
-				MFCD::Cache(ptr);
-			}
+			MFCD::Cache(ptr);
 		} while (Find_Next_File(state));
 	}
 	if (Find_First_File("SS*.MIX", state)) {
