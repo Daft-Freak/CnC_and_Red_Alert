@@ -58,14 +58,6 @@ typedef enum WinCommDialMethodType {
 #define ASUSERABORT COMMUSERABORT
 typedef void *HANDLE;
 
-/*
-** The size of our serial buffer within the class.
-**
-** !!!!!! THIS MUST BE  A POWER OF 2 !!!!!!
-**
-*/
-#define SIZE_OF_WINDOWS_SERIAL_BUFFER 2048
-
 // same enum as in the class below
 enum
 {
@@ -191,18 +183,6 @@ class WinModemClass
 					HANDLE	Get_Port_Handle(void);
 
 		/*
-		** Status vars for debugging purposes
-		*/
-		int FramingErrors;
-		int IOErrors;
-		int BufferOverruns;
-		int InBufferOverflows;
-		int ParityErrors;
-		int OutBufferOverflows;
-		int InQueue;
-		int OutQueue;
-
-		/*
 		** Modem send result codes
 		*/
 		enum SendModemEnum {
@@ -226,36 +206,10 @@ class WinModemClass
 
 	protected:
 
-
-		/*
-		** Copy incoming data from the windows file buffer into the internal class buffer
-		*/
-		bool							Read_Serial_Chars(void);
-
 		/*
 		** Pointer to the internal class circular buffer for incoming data
 		*/
 		unsigned char				*SerialBuffer;
-
-		/*
-		** Overlap object for asyncronous reads from the serial port
-		*/
-		//OVERLAPPED					ReadOverlap;
-
-		/*
-		** Overlap object for asyncronous writes to the serial port
-		*/
-		//OVERLAPPED					WriteOverlap;
-
-		/*
-		** Flag that there is no outstanding incoming data in the windows buffer
-		*/
-		bool							WaitingForSerialCharRead;
-
-		/*
-		** Flag that we are waiting for the last write to port operation to complete
-		*/
-		bool							WaitingForSerialCharWrite;
 
 		/*
 		** Head and Tail pointers for our internal serial buffer
@@ -266,27 +220,12 @@ class WinModemClass
 		/*
 		** Windows handle to the COM port device
 		*/
-		//HANDLE						PortHandle;
+		HANDLE						PortHandle;
 
 		/*
 		** Dialing method - DIAL_TOUCH_TONE or DIAL_PULSE
 		*/
 		WinCommDialMethodType	DialingMethod;
-
-		/*
-		** Pointer to function for echoing incoming data - can be NULL
-		*/
-		void 							(*EchoFunction)(char c);
-
-		/*
-		** Pointer to function for aborting when ESC pressed - can be NULL
-		*/
-		int							(*AbortFunction)(void);
-
-		/*
-		** Serial buffer for asyncronous reads
-		*/
-		char							TempSerialBuffer[SIZE_OF_WINDOWS_SERIAL_BUFFER];
 };
 
 
