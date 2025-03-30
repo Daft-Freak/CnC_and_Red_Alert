@@ -29,3 +29,15 @@ target_compile_options(sdllib PRIVATE -UWIN32)
 
 find_package(SDL2 REQUIRED)
 target_link_libraries(sdllib SDL2::SDL2)
+
+# optional serial port support
+find_library(LIBSERIALPORT_LIBRARIES serialport)
+find_path(LIBSERIALPORT_INCLUDE_DIR libserialport.h)
+if (LIBSERIALPORT_LIBRARIES AND LIBSERIALPORT_INCLUDE_DIR)
+    message("Found libserialport")
+    message("[MODEM NOISES]")
+
+    target_compile_definitions(sdllib PRIVATE LIBSERIALPORT)
+    target_include_directories(sdllib PRIVATE ${LIBSERIALPORT_INCLUDE_DIR})
+    target_link_libraries(sdllib ${LIBSERIALPORT_LIBRARIES})
+endif()
