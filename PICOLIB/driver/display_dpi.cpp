@@ -109,6 +109,12 @@ enum ST7701Reg {
   DPI_MODE_V_BACK_PORCH  + DPI_MODE_V_ACTIVE_LINES \
 )
 
+#if DPI_MODE_H_ACTIVE_PIXELS >= 640
+#define DPI_SCALE 2
+#else
+#define DPI_SCALE 1
+#endif
+
 // DMA logic
 
 #define DPI_DMA_CH_BASE 0
@@ -140,7 +146,7 @@ static uint32_t vsync_line_timings[4];
 // framebuffer/palette
 static uint16_t screen_palette565[256];
 static uint8_t frame_buffer[320 * 200];
-static uint16_t temp_buffer[320 * DPI_NUM_DMA_CHANNELS];
+static uint16_t temp_buffer[(DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE) * DPI_NUM_DMA_CHANNELS];
 static uint32_t zero;
 
 // palette lookup
@@ -207,7 +213,7 @@ static void __not_in_flash_func(dma_irq_handler)() {
   if(display_line > 20 && display_line < 220) {
     ch->al1_ctrl |= DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
     if (display_line * v_repeat == data_scanline)
-      convert_paletted(cur_display_buffer + (display_line - 20) * w, temp_buffer + palette_buf_idx * w, w);
+      convert_paletted(cur_display_buffer + (display_line - 20) * 320, temp_buffer + palette_buf_idx * w, 320);
   } else {
     ch->read_addr = uintptr_t(&zero);
     ch->al1_ctrl &= ~DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
@@ -508,8 +514,9 @@ void init_display() {
   dma_hw->inte0 = (chan_mask << DPI_DMA_CH_BASE);
 
   // setup repeat (original code handled mode changes and did this later)
-  v_repeat = 2;
-  line_width = 320;
+  v_repeat = DPI_SCALE;
+  line_width = DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE;
+
   update_h_repeat();
 
   for(int i = 0; i < DPI_NUM_DMA_CHANNELS; i++)

@@ -50,6 +50,12 @@ if(EXTRA_BOARD STREQUAL "display_pack")
     set(DISPLAY_DRIVER "dbi")
 endif()
 
+# this is slightly silly as it's a standalone thing
+# but it doesn't have a config header in the SDK and there isn't a generic config to use for RP2350B either
+if(EXTRA_BOARD STREQUAL "presto")
+    set(DISPLAY_DRIVER "dpi")
+endif()
+
 if(EXTRA_BOARD STREQUAL "vgaboard")
     set(DISPLAY_DRIVER "dpi")
     set(AUDIO_DRIVER "i2s")
