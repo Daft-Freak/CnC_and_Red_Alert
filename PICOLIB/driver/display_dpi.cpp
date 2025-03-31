@@ -15,6 +15,47 @@
 
 #include "dpi.pio.h"
 
+enum ST7701Reg {
+  // Command2_BK0
+  PVGAMCTRL = 0xB0,  // Positive Voltage Gamma Control
+  NVGAMCTRL = 0xB1,  // Negative Voltage Gamma Control
+  DGMEN = 0xB8,   // Digital Gamma Enable
+  DGMLUTR = 0xB9, // Digital Gamma LUT for Red
+  DGMLUTB = 0xBA, // Digital Gamma Lut for Blue
+  LNESET = 0xC0,  // Display Line Setting
+  PORCTRL = 0xC1, // Porch Control
+  INVSET = 0xC2,  // Inversion Selection & Frame Rate Control
+  RGBCTRL = 0xC3, // RGB Control
+  PARCTRL = 0xC5, // Partial Mode Control
+  SDIR = 0xC7,    // X-direction Control
+  PDOSET = 0xC8,  // Pseudo-Dot Inversion Diving Setting
+  COLCTRL = 0xCD, // Colour Control
+  SRECTRL = 0xE0, // Sunlight Readable Enhancement
+  NRCTRL = 0xE1,  // Noise Reduce Control
+  SECTRL = 0xE2,  // Sharpness Control
+  CCCTRL = 0xE3,  // Color Calibration Control
+  SKCTRL = 0xE4,  // Skin Tone Preservation Control
+  // Command2_BK1
+  VHRS = 0xB0,    // Vop amplitude
+  VCOMS = 0xB1,   // VCOM amplitude
+  VGHSS = 0xB2,   // VGH voltage
+  TESTCMD = 0xB3, // TEST command
+  VGLS = 0xB5,    // VGL voltage
+  VRHDV = 0xB6,   // VRH_DV voltage
+  PWCTRL1 = 0xB7, // Power Control 1
+  PWCTRL2 = 0xB8, // Power Control 2
+  PCLKS1 = 0xBA,  // Power pumping clock selection 1
+  PCLKS2 = 0xBC,  // Power pumping clock selection 2
+  PDR1 = 0xC1,    // Source pre_drive timing set 1
+  PDR2 = 0xC2,    // Source pre_drive timing set 2
+  // Command2_BK3
+  NVMEN = 0xC8,    // NVM enable
+  NVMSET = 0xCA,   // NVM manual control
+  PROMACT = 0xCC,  // NVM program active
+  // Other
+  CND2BKxSEL = 0xFF,
+};
+
 #ifndef DPI_DATA_PIN_BASE
 #define DPI_DATA_PIN_BASE 0
 #endif
@@ -115,11 +156,20 @@ static inline void update_h_repeat() {
   pio_sm_exec(pio, data_sm, pio_encode_out(pio_y, 32));
 
   // patch loop delay for repeat
-  auto offset = dpi_data_16_offset_data_loop_delay;
   int h_repeat = DPI_MODE_H_ACTIVE_PIXELS / line_width;
   auto delay = (h_repeat - 1) * 2;
+
+#ifdef DPI_BIT_REVERSE
+  auto offset = dpi_data_reversed_16_offset_data_loop_delay;
+  auto instr = dpi_data_reversed_16_program.instructions[offset];
+  delay *= 2;
+#else
+  auto offset = dpi_data_16_offset_data_loop_delay;
+  auto instr = dpi_data_16_program.instructions[offset];
+#endif
+
   // need to add the program offset as it's a jump
-  pio->instr_mem[data_program_offset + offset] = (dpi_data_16_program.instructions[offset] | pio_encode_delay(delay)) + data_program_offset;
+  pio->instr_mem[data_program_offset + offset] = (instr | pio_encode_delay(delay)) + data_program_offset;
 }
 
 static void __not_in_flash_func(dma_irq_handler)() {
@@ -187,13 +237,26 @@ static void __not_in_flash_func(pio_timing_irq_handler)() {
 #ifdef DPI_SPI_INIT
 static void command(uint8_t reg, size_t len = 0, const char *data = nullptr) {
   gpio_put(LCD_CS_PIN, 0);
+
+#if LCD_DC_PIN != -1
   gpio_put(LCD_DC_PIN, 0); // command
-  spi_write_blocking(spi0, &reg, 1);
+  spi_write_blocking(DPI_SPI_INIT, &reg, 1);
 
   if(data) {
     gpio_put(LCD_DC_PIN, 1); // data
-    spi_write_blocking(spi0, (const uint8_t *)data, len);
+    spi_write_blocking(DPI_SPI_INIT, (const uint8_t *)data, len);
   }
+#else
+  uint16_t v = reg;
+  spi_write16_blocking(DPI_SPI_INIT, &v, 1);
+
+  if(data) {
+    for(size_t i = 0; i < len; i++) {
+      v = data[i] | 0x100;
+      spi_write16_blocking(DPI_SPI_INIT, &v, 1);
+    }
+  }
+#endif
 
   gpio_put(LCD_CS_PIN, 1);
 }
@@ -201,7 +264,7 @@ static void command(uint8_t reg, size_t len = 0, const char *data = nullptr) {
 
 static void init_display_spi() {
 #ifdef DPI_SPI_INIT
-  spi_init(spi0, 1 * 1000 * 1000);
+  spi_init(DPI_SPI_INIT, 1 * 1000 * 1000);
   gpio_set_function(LCD_SCK_PIN, GPIO_FUNC_SPI);
   gpio_set_function(LCD_MOSI_PIN, GPIO_FUNC_SPI);
 
@@ -210,14 +273,20 @@ static void init_display_spi() {
   gpio_set_dir(LCD_CS_PIN, GPIO_OUT);
   gpio_put(LCD_CS_PIN, 1);
 
+  bi_decl_if_func_used(bi_1pin_with_name(LCD_MOSI_PIN, "Display TX"));
+  bi_decl_if_func_used(bi_1pin_with_name(LCD_SCK_PIN, "Display SCK"));
+  bi_decl_if_func_used(bi_1pin_with_name(LCD_CS_PIN, "Display CS"));
+
+#if LCD_DC_PIN != -1
   // init D/C
   gpio_init(LCD_DC_PIN);
   gpio_set_dir(LCD_DC_PIN, GPIO_OUT);
 
-  bi_decl_if_func_used(bi_1pin_with_name(LCD_MOSI_PIN, "Display TX"));
-  bi_decl_if_func_used(bi_1pin_with_name(LCD_SCK_PIN, "Display SCK"));
   bi_decl_if_func_used(bi_1pin_with_name(LCD_DC_PIN, "Display D/C"));
-  bi_decl_if_func_used(bi_1pin_with_name(LCD_CS_PIN, "Display CS"));
+#else
+  // configure for 9 bit if no D/C pin
+  spi_set_format(DPI_SPI_INIT, 9, SPI_CPOL_0, SPI_CPHA_0, SPI_MSB_FIRST);
+#endif
 
 #ifdef LCD_RESET_PIN
   gpio_init(LCD_RESET_PIN);
@@ -230,31 +299,71 @@ static void init_display_spi() {
   bi_decl_if_func_used(bi_1pin_with_name(LCD_RESET_PIN, "Display Reset"));
 #endif
 
-#ifdef DPI_ST7796S
-  // pile of magic
-  command(0xF0, 1, "\xC3"); // CSCON (enable part 1)
-  command(0xF0, 1, "\x96"); // CSCON (enable part 2)
+#ifdef DPI_ST7701
+  command(MIPIDCS::SoftReset);
 
-  command(0xB0, 1, "\x80"); // IFMODE (SPI_EN)
+  sleep_ms(150);
 
-  command(0xE8, 8, "\x40\x8A\x00\x00\x29\x19\xA5\x33"); // DOCA (S_END=9, G_START=25, G_EQ, G_END=21)
+  // Commmand 2 BK0 - kinda a page select
+  command(ST7701Reg::CND2BKxSEL, 5, "\x77\x01\x00\x00\x10");
 
-  command(0xC2, 1, "\xA7"); // PWR3 (SOP=1, GOP=3)
+  command(ST7701Reg::LNESET, 2, "\x3b\x00");   // (59 + 1) * 8 = 480 lines
+  command(ST7701Reg::PORCTRL, 2, "\x0d\x02");  // Display porch settings: 13 VBP, 2 VFP (these should not be changed)
+  command(ST7701Reg::INVSET, 2, "\x31\x01");
+  command(ST7701Reg::COLCTRL, 1, "\x08");      // LED polarity reversed
+  command(ST7701Reg::PVGAMCTRL, 16, "\x00\x11\x18\x0e\x11\x06\x07\x08\x07\x22\x04\x12\x0f\xaa\x31\x18");
+  command(ST7701Reg::NVGAMCTRL, 16, "\x00\x11\x19\x0e\x12\x07\x08\x08\x08\x22\x04\x11\x11\xa9\x32\x18");
+  command(ST7701Reg::RGBCTRL, 3, "\x80\x2e\x0e");  // HV mode, H and V back porch + sync
 
-  // setup for RGB sync mode
-  command(0xB6, 2, "\xE0\x02\3B"); // DFC (BYPASS, RCM, RM)
-  command(0xB5, 4, "\x08\x08\x00\x3E"); // BPC(VFP=8, VBP=8, HBP=62)
 
-  command(0xF0, 1, "\xC3"); // CSCON (disable part 1)
-  command(0xF0, 1, "\x69"); // CSCON (disable part 2)
+  // Command 2 BK1 - Voltages and power and stuff
+  command(ST7701Reg::CND2BKxSEL, 5, "\x77\x01\x00\x00\x11");
+  command(ST7701Reg::VHRS, 1, "\x60");    // 4.7375v
+  command(ST7701Reg::VCOMS, 1, "\x32");   // 0.725v
+  command(ST7701Reg::VGHSS, 1, "\x07");   // 15v
+  command(ST7701Reg::TESTCMD, 1, "\x80"); // y tho?
+  command(ST7701Reg::VGLS, 1, "\x49");    // -10.17v
+  command(ST7701Reg::PWCTRL1, 1, "\x85"); // Middle/Min/Min bias
+  command(ST7701Reg::PWCTRL2, 1, "\x21"); // 6.6 / -4.6
+  command(ST7701Reg::PDR1, 1, "\x78");    // 1.6uS
+  command(ST7701Reg::PDR2, 1, "\x78");    // 6.4uS
 
-  command(MIPIDCS::SetPixelFormat, 1, "\x55"); // (16bpp)
-  // can set ML/RGB/MH, others control memory access and have no effect
-  uint8_t madctl = MADCTL::RGB | MADCTL::HORIZ_ORDER;
+  // Begin Forbidden Knowledge
+  // This sequence is probably specific to TL040WVS03CT15-H1263A.
+  // It is not documented in the ST7701s datasheet.
+  // TODO: 👇 W H A T ! ? 👇
+  command(0xE0, 3, "\x00\x1b\x02");
+  command(0xE1, 11, "\x08\xa0\x00\x00\x07\xa0\x00\x00\x00\x44\x44");
+  command(0xE2, 12, "\x11\x11\x44\x44\xed\xa0\x00\x00\xec\xa0\x00\x00");
+  command(0xE3, 4, "\x00\x00\x11\x11");
+  command(0xE4, 2, "\x44\x44");
+  command(0xE5, 16, "\x0a\xe9\xd8\xa0\x0c\xeb\xd8\xa0\x0e\xed\xd8\xa0\x10\xef\xd8\xa0");
+  command(0xE6, 4, "\x00\x00\x11\x11");
+  command(0xE7, 2, "\x44\x44");
+  command(0xE8, 16, "\x09\xe8\xd8\xa0\x0b\xea\xd8\xa0\x0d\xec\xd8\xa0\x0f\xee\xd8\xa0");
+  command(0xEB, 7, "\x02\x00\xe4\xe4\x88\x00\x40");
+  command(0xEC, 2, "\x3c\x00");
+  command(0xED, 16, "\xab\x89\x76\x54\x02\xff\xff\xff\xff\xff\xff\x20\x45\x67\x98\xba");
+  command(0x36, 1, "\x00");
+
+  // Command 2 BK3
+  command(ST7701Reg::CND2BKxSEL, 5, "\x77\x01\x00\x00\x13");
+  command(0xE5, 1, "\xe4");
+  // End Forbidden Knowledge
+
+  command(ST7701Reg::CND2BKxSEL, 5, "\x77\x01\x00\x00\x00");
+
+  command(MIPIDCS::SetPixelFormat, 1, "\x66"); // (18bpp)
+
+  uint8_t madctl = MADCTL::RGB;
   command(MIPIDCS::SetAddressMode, 1, (char *)&madctl);
 
+  command(MIPIDCS::EnterInvertMode);
+  sleep_ms(1);
   command(MIPIDCS::ExitSleepMode);
+  sleep_ms(120);
   command(MIPIDCS::DisplayOn);
+
 #endif
 #endif
 }
@@ -317,14 +426,25 @@ void init_display() {
   pio_sm_init(pio, timing_sm, pio_offset, &cfg);
 
   // setup data program
+
+#ifdef DPI_BIT_REVERSE
+  pio_offset = pio_add_program(pio, &dpi_data_reversed_16_program);
+
+  cfg = dpi_data_reversed_16_program_get_default_config(pio_offset);
+  assert(!(clkdiv & 1));
+  sm_config_set_clkdiv_int_frac(&cfg, clkdiv / 2, 0);
+#else
   pio_offset = pio_add_program(pio, &dpi_data_16_program);
-  data_program_offset = pio_offset;
 
   cfg = dpi_data_16_program_get_default_config(pio_offset);
   sm_config_set_clkdiv_int_frac(&cfg, clkdiv, 0);
+#endif
   sm_config_set_out_shift(&cfg, true, true, 32);
+  sm_config_set_in_shift(&cfg, false, false, 32);
   sm_config_set_out_pins(&cfg, DPI_DATA_PIN_BASE, num_data_pins);
   sm_config_set_fifo_join(&cfg, PIO_FIFO_JOIN_TX);
+
+  data_program_offset = pio_offset;
 
   pio_sm_init(pio, data_sm, pio_offset, &cfg);
 
