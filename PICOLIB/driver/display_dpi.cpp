@@ -126,11 +126,6 @@ static PIO pio = pio0;
 static uint8_t timing_sm, data_sm;
 static uint8_t data_program_offset;
 
-// pixel/line repeat
-static uint16_t line_width = 0;
-static uint8_t v_repeat = 0;
-static uint8_t new_v_repeat = 0;
-
 static uint data_scanline = DPI_NUM_DMA_CHANNELS;
 static uint timing_scanline = 0;
 static uint8_t timing_offset = 0;
@@ -156,7 +151,7 @@ static inline void convert_paletted(const uint8_t *in, uint16_t *out, int count)
 }
 
 // assumes data SM is idle
-static inline void update_h_repeat() {
+static inline void update_h_repeat(int line_width) {
   // update Y register
   pio_sm_put(pio, data_sm, line_width - 1);
   pio_sm_exec(pio, data_sm, pio_encode_out(pio_y, 32));
@@ -199,9 +194,9 @@ static void __not_in_flash_func(dma_irq_handler)() {
   }
 
   // setup next line DMA
-  int display_line = data_scanline / v_repeat;
+  int display_line = data_scanline / DPI_SCALE;
   int palette_buf_idx = display_line % DPI_NUM_DMA_CHANNELS;
-  auto w = line_width;
+  auto w = DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE;
   auto fb_line_ptr = cur_display_buffer + display_line * w;
 
   ch->read_addr = uintptr_t(temp_buffer + palette_buf_idx * w);
@@ -212,7 +207,7 @@ static void __not_in_flash_func(dma_irq_handler)() {
 
   if(display_line > 20 && display_line < 220) {
     ch->al1_ctrl |= DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
-    if (display_line * v_repeat == data_scanline)
+    if (display_line * DPI_SCALE == data_scanline)
       convert_paletted(cur_display_buffer + (display_line - 20) * 320, temp_buffer + palette_buf_idx * w, 320);
   } else {
     ch->read_addr = uintptr_t(&zero);
@@ -514,15 +509,12 @@ void init_display() {
   dma_hw->inte0 = (chan_mask << DPI_DMA_CH_BASE);
 
   // setup repeat (original code handled mode changes and did this later)
-  v_repeat = DPI_SCALE;
-  line_width = DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE;
+  int line_width = DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE;
 
-  update_h_repeat();
+  update_h_repeat(line_width);
 
   for(int i = 0; i < DPI_NUM_DMA_CHANNELS; i++)
     dma_channel_set_trans_count(DPI_DMA_CH_BASE + i, line_width / 2, false);
-
-  
 }
 
 void init_display_core1(){
