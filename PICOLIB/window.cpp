@@ -17,10 +17,6 @@ int Change_Window(int windnum)
     return 0;
 }
 
-void SDL_Create_Main_Window(const char *title, int width, int height)
-{
-}
-
 void SDL_Event_Loop()
 {
 

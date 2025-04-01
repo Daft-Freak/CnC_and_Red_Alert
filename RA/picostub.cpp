@@ -40,8 +40,6 @@ void Memory_Error_Handler(void)
 
 void Create_Main_Window(HANDLE instance, int command_show, int width, int height)
 {
-	//SDL_Create_Main_Window(WINDOW_NAME, width, height);
-
 	GameInFocus = true; // there is no other state
 }
 
