@@ -15,7 +15,11 @@ jobs:
         os: [ubuntu-latest]
         build_type: [Release]
         board: [pimoroni_pico_plus2_rp2350, pimoroni_pico_plus2_w_rp2350]
-        extra_board: [display_pack, vgaboard]
+        extra_board: [display_pack, presto, vgaboard]
+        exclude:
+          # presto is a bit of a hack, but don't bother with a non-wifi version
+          - board: pimoroni_pico_plus2_rp2350
+            extra_board: presto
 
     steps:
     - uses: actions/checkout@v4
