@@ -204,11 +204,12 @@ static void __not_in_flash_func(dma_irq_handler)() {
 
   // alignment hax
   // (I could use a mode with closer to the correct height, but why would I do that?)
+  const int margin = ((DPI_MODE_V_ACTIVE_LINES / DPI_SCALE) - 200) / 2;
 
-  if(display_line > 20 && display_line < 220) {
+  if(display_line > margin && display_line < 200 + margin) {
     ch->al1_ctrl |= DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
     if (display_line * DPI_SCALE == data_scanline)
-      convert_paletted(cur_display_buffer + (display_line - 20) * 320, temp_buffer + palette_buf_idx * w, 320);
+      convert_paletted(cur_display_buffer + (display_line - margin) * 320, temp_buffer + palette_buf_idx * w, 320);
   } else {
     ch->read_addr = uintptr_t(&zero);
     ch->al1_ctrl &= ~DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
