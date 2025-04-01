@@ -51,6 +51,7 @@ jobs:
         -DPICO_SDK_PATH=${{ github.workspace }}/pico-sdk
         -DPICO_BOARD=${{ matrix.board }}
         -DEXTRA_BOARD=${{ matrix.extra_board }}
+        -DCMAKE_POLICY_VERSION_MINIMUM=3.5
         -S ${{ github.workspace }}
 
     - name: Build
