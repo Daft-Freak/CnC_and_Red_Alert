@@ -4,6 +4,7 @@ add_library(picolib STATIC
     file.cpp
     flash_cache.cpp
     init.cpp
+    input.cpp
     keyboard.cpp
     mem.cpp
     mouse.cpp
