@@ -45,6 +45,12 @@
 
 #define DPI_SCALE_1_5 // remove if you like borders
 
+#define FT6236_I2C i2c1
+#define FT6236_SDA_PIN 30
+#define FT6236_SCL_PIN 31
+#define FT6236_INT_PIN 32
+#define FT6236_ADDR 0x48
+
 #define LCD_CS_PIN        28
 #define LCD_DC_PIN        -1
 #define LCD_SCK_PIN       26
