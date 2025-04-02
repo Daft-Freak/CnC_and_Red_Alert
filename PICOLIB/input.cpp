@@ -8,6 +8,16 @@ static uint16_t mouse_x = 0, mouse_y = 0;
 static uint8_t mouse_buttons = 0;
 extern WWKeyboardClass *TheKeyboard;
 
+void Put_Mouse_Message(int key, bool down)
+{
+    if(!TheKeyboard)
+        return;
+
+    TheKeyboard->Put_Key_Message(key, !down);
+    TheKeyboard->Put(mouse_x);
+    TheKeyboard->Put(mouse_y);
+}
+
 // input glue
 void update_key_state(uint8_t code, bool state)
 {
@@ -31,17 +41,9 @@ void update_mouse_state(int8_t x, int8_t y, bool left, bool right)
         bool old_right = mouse_buttons & 2;
 
         if(old_left != left)
-        {
-            TheKeyboard->Put_Key_Message(VK_LBUTTON, !left);
-            TheKeyboard->Put(mouse_x);
-            TheKeyboard->Put(mouse_y);
-        }
+            Put_Mouse_Message(VK_LBUTTON, left);
         if(old_right != right)
-        {
-            TheKeyboard->Put_Key_Message(VK_RBUTTON, !right);
-            TheKeyboard->Put(mouse_x);
-            TheKeyboard->Put(mouse_y);
-        }
+            Put_Mouse_Message(VK_RBUTTON, right);
 
         mouse_buttons = (left ? 1 : 0) | (right ? 2 : 0);
     }
