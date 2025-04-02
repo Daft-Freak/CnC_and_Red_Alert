@@ -1,8 +1,42 @@
 #include "tusb.h"
 
+#include "hardware/gpio.h"
+#include "hardware/i2c.h"
+
 #include "picolib.h"
 #include "keyboard.h"
 #include "mouse.h"
+
+#include "config.h"
+
+enum FT6236Reg
+{
+    FT6236_DEV_MODE = 0,
+    FT6236_GEST_ID,
+    FT6236_TD_STATUS,
+
+    FT6236_P1_XH,
+    FT6236_P1_XL,
+    FT6236_P1_YH,
+    FT6236_P1_YL,
+    FT6236_P1_WEIGHT,
+    FT6236_P1_MISC,
+
+    FT6236_P2_XH,
+    FT6236_P2_XL,
+    FT6236_P2_YH,
+    FT6236_P2_YL,
+    FT6236_P2_WEIGHT,
+    FT6236_P2_MISC,
+};
+
+enum FT6236Event
+{
+    FT6236_DOWN = 0,
+    FT6236_UP,
+    FT6236_CONTACT,
+    FT6236_NONE
+};
 
 static uint16_t mouse_x = 0, mouse_y = 0;
 static uint8_t mouse_buttons = 0;
@@ -52,9 +86,63 @@ void update_mouse_state(int8_t x, int8_t y, bool left, bool right)
 void Pico_Input_Init()
 {
     tusb_init();
+
+#ifdef FT6236_I2C
+    // presto touch (FT6236)
+    i2c_init(FT6236_I2C, 400000);
+    gpio_set_function(FT6236_SDA_PIN, GPIO_FUNC_I2C);
+    gpio_set_function(FT6236_SCL_PIN, GPIO_FUNC_I2C);
+
+    gpio_pull_up(FT6236_SDA_PIN);
+    gpio_pull_up(FT6236_SCL_PIN);
+
+    // int
+    gpio_set_dir(FT6236_INT_PIN, false);
+    gpio_set_function(FT6236_INT_PIN, GPIO_FUNC_SIO);
+#endif
 }
 
 void Pico_Input_Update()
 {
     tuh_task();
+
+#ifdef FT6236_I2C
+    if(!gpio_get(FT6236_INT_PIN))
+    {
+        uint8_t reg = 0;
+        uint8_t data[16];
+        i2c_write_blocking(FT6236_I2C, FT6236_ADDR, &reg, 1, true);
+        i2c_read_blocking(FT6236_I2C, FT6236_ADDR, data, 16, false);
+
+        int num_touches = data[FT6236_TD_STATUS] & 0xF;
+        static bool touch_down = false;
+
+        if(num_touches)
+        {
+            for(int i = 0; i < num_touches; i++)
+            {
+                int x = (data[FT6236_P1_XH + i * 6] & 0xF) << 8 | data[FT6236_P1_XL + i * 6];
+                int y = (data[FT6236_P1_YH + i * 6] & 0xF) << 8 | data[FT6236_P1_YL + i * 6];
+                int flag = data[FT6236_P1_XH + i * 6 + 0] >> 6;
+                int id = data[FT6236_P1_YH + i * 6 + 2] >> 4;
+
+                if(id == 0)
+                {
+                    mouse_x = (x * 2) / 3;
+                    mouse_y = (y * 2) / 3 - 60;
+
+                    bool new_touch_down = flag != FT6236_NONE && flag != FT6236_CONTACT;
+
+                    Update_Mouse_Pos(mouse_x, mouse_y);
+
+                    if(new_touch_down != touch_down)
+                    {
+                        Put_Mouse_Message(VK_LBUTTON, new_touch_down);
+                        touch_down = new_touch_down;
+                    }
+                }
+            }
+        }
+    }
+#endif
 }
