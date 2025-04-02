@@ -126,7 +126,11 @@ static PIO pio = pio0;
 static uint8_t timing_sm, data_sm;
 static uint8_t data_program_offset;
 
+#ifdef DPI_SCALE_1_5
+static uint data_scanline = DPI_NUM_DMA_CHANNELS * 3;
+#else
 static uint data_scanline = DPI_NUM_DMA_CHANNELS;
+#endif
 static uint timing_scanline = 0;
 static uint8_t timing_offset = 0;
 
@@ -141,13 +145,60 @@ static uint32_t vsync_line_timings[4];
 // framebuffer/palette
 static uint16_t screen_palette565[256];
 static uint8_t frame_buffer[320 * 200];
+#ifdef DPI_SCALE_1_5
+static uint16_t temp_buffer[(DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE) * DPI_NUM_DMA_CHANNELS * 3];
+#else
 static uint16_t temp_buffer[(DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE) * DPI_NUM_DMA_CHANNELS];
+#endif
 static uint32_t zero;
+
+static void pio_timing_irq_handler();
 
 // palette lookup
 static inline void convert_paletted(const uint8_t *in, uint16_t *out, int count) {
   for(int i = 0; i < count; i++)
     *out++ = screen_palette565[*in++];
+}
+
+// 1.5x scaled palette lookup
+static inline uint16_t blend565(uint16_t a, uint16_t b) {
+  // this may be madness
+  uint32_t a_tmp = (a & 0xF81F) | (a & 0x07E0) << 16;
+  uint32_t b_tmp = (b & 0xF81F) | (b & 0x07E0) << 16;
+  uint32_t res = (a_tmp + b_tmp) >> 1;
+
+  return (res & 0xF81F) | ((res >> 16) & 0x07E0);
+}
+
+static inline void convert_paletted_1_5x(const uint8_t *in, uint16_t *out, int count) {
+  auto in2 = in + 320;
+  auto out2 = out + DPI_MODE_H_ACTIVE_PIXELS;
+  auto out3 = out2 + DPI_MODE_H_ACTIVE_PIXELS;
+
+  for(int i = 0; i < count; i += 2) {
+    // get four original pixels
+    auto col0_0 = screen_palette565[*in++];
+    auto col2_0 = screen_palette565[*in++];
+    auto col0_2 = screen_palette565[*in2++];
+    auto col2_2 = screen_palette565[*in2++];
+
+    // blend horizontally
+    auto col1_0 = blend565(col0_0, col2_0);
+    auto col1_2 = blend565(col0_2, col2_2);
+
+    *out++ = col0_0;
+    *out++ = col1_0;
+    *out++ = col2_0;
+  
+    *out3++ = col0_2;
+    *out3++ = col1_2;
+    *out3++ = col2_2;
+
+    // blend vertically
+    *out2++ = blend565(col0_0, col0_2);
+    *out2++ = blend565(col1_0, col1_2);
+    *out2++ = blend565(col2_0, col2_2);
+  }
 }
 
 // assumes data SM is idle
@@ -193,11 +244,36 @@ static void __not_in_flash_func(dma_irq_handler)() {
     }
   }
 
+#ifdef DPI_SCALE_1_5
+  // setup next three lines DMA
+  int display_line = (data_scanline * 2) / 3;
+  int palette_buf_idx = (display_line / 2) % DPI_NUM_DMA_CHANNELS;
+
+  auto w = DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE;
+
+  ch->read_addr = uintptr_t(temp_buffer + palette_buf_idx * w * 3);
+  ch->transfer_count = (w / 2) * 3;
+
+  // alignment hax
+  // (I could use a mode with closer to the correct height, but why would I do that?)
+  const int margin = ((DPI_MODE_V_ACTIVE_LINES * 2 / 3) - 200) / 2;
+
+  if(display_line >= margin && display_line < 200 + margin) {
+    ch->al1_ctrl |= DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
+    convert_paletted_1_5x(cur_display_buffer + (display_line - margin) * 320, temp_buffer + palette_buf_idx * w * 3, 320);
+  } else {
+    ch->read_addr = uintptr_t(&zero);
+    ch->al1_ctrl &= ~DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
+  }
+
+  data_scanline += 3;
+
+#else
+
   // setup next line DMA
   int display_line = data_scanline / DPI_SCALE;
   int palette_buf_idx = display_line % DPI_NUM_DMA_CHANNELS;
   auto w = DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE;
-  auto fb_line_ptr = cur_display_buffer + display_line * w;
 
   ch->read_addr = uintptr_t(temp_buffer + palette_buf_idx * w);
   ch->transfer_count = w / 2;
@@ -206,7 +282,7 @@ static void __not_in_flash_func(dma_irq_handler)() {
   // (I could use a mode with closer to the correct height, but why would I do that?)
   const int margin = ((DPI_MODE_V_ACTIVE_LINES / DPI_SCALE) - 200) / 2;
 
-  if(display_line > margin && display_line < 200 + margin) {
+  if(display_line >= margin && display_line < 200 + margin) {
     ch->al1_ctrl |= DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
     if (display_line * DPI_SCALE == data_scanline)
       convert_paletted(cur_display_buffer + (display_line - margin) * 320, temp_buffer + palette_buf_idx * w, 320);
@@ -216,6 +292,7 @@ static void __not_in_flash_func(dma_irq_handler)() {
   }
 
   data_scanline++;
+#endif
 }
 
 static void __not_in_flash_func(pio_timing_irq_handler)() {

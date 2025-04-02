@@ -43,6 +43,8 @@
 
 #define DPI_BIT_REVERSE
 
+#define DPI_SCALE_1_5 // remove if you like borders
+
 #define LCD_CS_PIN        28
 #define LCD_DC_PIN        -1
 #define LCD_SCK_PIN       26
