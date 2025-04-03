@@ -208,7 +208,9 @@ void Pico_Input_Update()
     else if(gpio & (1 << QWSTPAD_RIGHT_IO))
         mouse_x += gpio_dt;
 
-    if(gpio & (1 << QWSTPAD_UP_IO | 1 << QWSTPAD_LEFT_IO | 1 << QWSTPAD_RIGHT_IO | 1 << QWSTPAD_DOWN_IO))
+    const auto any_dir_mask =(1 << QWSTPAD_UP_IO | 1 << QWSTPAD_LEFT_IO | 1 << QWSTPAD_RIGHT_IO | 1 << QWSTPAD_DOWN_IO);
+
+    if(gpio & any_dir_mask)
     {
         // clamp
         if(mouse_x < 0)
@@ -221,6 +223,21 @@ void Pico_Input_Update()
         else if(mouse_y >= 200)
             mouse_y = 199;
         
+        Update_Mouse_Pos(mouse_x, mouse_y);
+    }
+    else if(changed & any_dir_mask)
+    {
+        // move the mouse slightly so we stop scrolling
+        if(mouse_x == 0)
+            mouse_x = 1;
+        else if(mouse_x == 319)
+            mouse_x--;
+
+        if(mouse_y == 0)
+            mouse_y = 1;
+        else if(mouse_y == 199)
+            mouse_y--;
+
         Update_Mouse_Pos(mouse_x, mouse_y);
     }
 
