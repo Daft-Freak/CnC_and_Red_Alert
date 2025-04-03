@@ -245,7 +245,6 @@ int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_star
     auto &chan = Channels[id];
 
     chan.sample = NULL;
-    chan.playing = true;
     chan.priority = 0xFF;
     chan.raw_volume = volume * ScoreVolume;
     chan.volume = Calculate_Volume(chan.raw_volume);
@@ -269,6 +268,7 @@ int File_Stream_Sample_Vol(char const *filename, int volume, bool real_time_star
         chan.predictor = 0;
     }
 
+    chan.playing = true;
     //SDL_UnlockAudioDevice(AudioDevice);
 
     return id;
