@@ -38,7 +38,7 @@ enum FT6236Event
     FT6236_NONE
 };
 
-static uint16_t mouse_x = 0, mouse_y = 0;
+static int16_t mouse_x = 0, mouse_y = 0;
 static uint8_t mouse_buttons = 0;
 extern WWKeyboardClass *TheKeyboard;
 
@@ -130,6 +130,11 @@ void Pico_Input_Update()
                 {
                     mouse_x = (x * 2) / 3;
                     mouse_y = (y * 2) / 3 - 60;
+
+                    if(mouse_y < 0)
+                        mouse_y = 0;
+                    else if(mouse_y >= 200)
+                        mouse_y = 200;
 
                     bool new_touch_down = flag != FT6236_NONE && flag != FT6236_CONTACT;
 
