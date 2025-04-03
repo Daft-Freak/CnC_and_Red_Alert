@@ -38,6 +38,20 @@ enum FT6236Event
     FT6236_NONE
 };
 
+enum QwSTPadIO
+{
+    QWSTPAD_UP_IO     = 1,
+    QWSTPAD_LEFT_IO   = 2,
+    QWSTPAD_RIGHT_IO  = 3,
+    QWSTPAD_DOWN_IO   = 4,
+    QWSTPAD_SELECT_IO = 5,
+    QWSTPAD_START_IO  = 11,
+    QWSTPAD_B_IO      = 12,
+    QWSTPAD_Y_IO      = 13,
+    QWSTPAD_A_IO      = 14,
+    QWSTPAD_X_IO      = 15,
+};
+
 static int16_t mouse_x = 0, mouse_y = 0;
 static uint8_t mouse_buttons = 0;
 extern WWKeyboardClass *TheKeyboard;
@@ -114,6 +128,17 @@ void Pico_Input_Init()
     gpio_set_function(FT6236_INT_PIN, GPIO_FUNC_SIO);
     gpio_set_irq_enabled_with_callback(FT6236_INT_PIN, GPIO_IRQ_LEVEL_LOW, true, ft6236_int_handler);
 #endif
+
+#ifdef QWSTPAD_I2C
+    // qwst pad (tca9555)
+    i2c_init(QWSTPAD_I2C, 400000);
+    gpio_set_function(QWSTPAD_SDA_PIN, GPIO_FUNC_I2C);
+    gpio_set_function(QWSTPAD_SCL_PIN, GPIO_FUNC_I2C);
+
+    // setup for read
+    uint8_t port = 0;
+    i2c_write_blocking(QWSTPAD_I2C, QWSTPAD_ADDR, &port, 1, true);
+#endif
 }
 
 void Pico_Input_Update()
@@ -153,5 +178,60 @@ void Pico_Input_Update()
         Put_Mouse_Message(VK_LBUTTON, new_touch_down);
         touch_down = new_touch_down;
     }
+#endif
+
+#ifdef QWSTPAD_I2C
+    uint16_t gpio = 0;
+    static uint16_t last_gpio = 0xFFFF;
+    static absolute_time_t last_gpio_time = 0;
+
+    i2c_read_blocking(QWSTPAD_I2C, QWSTPAD_ADDR, (uint8_t *)&gpio, 2, false);
+    gpio = ~gpio;
+
+    // get time delta
+    auto gpio_time = get_absolute_time();
+    auto gpio_dt = absolute_time_diff_us(last_gpio_time, gpio_time) / 10000; // 100ths of a second
+    last_gpio_time = delayed_by_ms(last_gpio_time, gpio_dt * 10);
+
+    auto changed = gpio ^ last_gpio;
+    last_gpio = gpio;
+    
+    // directional buttons -> mouse
+    // TODO: accelerate?
+    if(gpio & (1 << QWSTPAD_UP_IO))
+        mouse_y -= gpio_dt;
+    else if(gpio & (1 << QWSTPAD_DOWN_IO))
+        mouse_y += gpio_dt;
+
+    if(gpio & (1 << QWSTPAD_LEFT_IO))
+        mouse_x -= gpio_dt;
+    else if(gpio & (1 << QWSTPAD_RIGHT_IO))
+        mouse_x += gpio_dt;
+
+    if(gpio & (1 << QWSTPAD_UP_IO | 1 << QWSTPAD_LEFT_IO | 1 << QWSTPAD_RIGHT_IO | 1 << QWSTPAD_DOWN_IO))
+    {
+        // clamp
+        if(mouse_x < 0)
+            mouse_x = 0;
+        else if(mouse_x >= 320)
+            mouse_x = 319;
+
+        if(mouse_y < 0)
+            mouse_y = 0;
+        else if(mouse_y >= 200)
+            mouse_y = 199;
+        
+        Update_Mouse_Pos(mouse_x, mouse_y);
+    }
+
+    // A/B -> mouse buttons
+    if(changed & (1 << QWSTPAD_A_IO))
+        Put_Mouse_Message(VK_LBUTTON, gpio & (1 << QWSTPAD_A_IO));
+    if(changed & (1 << QWSTPAD_B_IO))
+        Put_Mouse_Message(VK_RBUTTON, gpio & (1 << QWSTPAD_B_IO));
+
+    // start -> esc
+    if(changed & (1 << QWSTPAD_START_IO))
+        TheKeyboard->Put_Key_Message(VK_ESCAPE, gpio & (1 << QWSTPAD_START_IO));
 #endif
 }
