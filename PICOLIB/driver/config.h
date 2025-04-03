@@ -63,6 +63,11 @@
 #define SD_MISO 36
 #define SD_CS   39
 
+#define QWSTPAD_I2C i2c0
+#define QWSTPAD_SDA_PIN 40
+#define QWSTPAD_SCL_PIN 41
+#define QWSTPAD_ADDR 0x21
+
 #elif EXTRA_BOARD_VGABOARD
 
 #define AUDIO_I2S_PIO 0
