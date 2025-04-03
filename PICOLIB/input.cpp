@@ -83,6 +83,19 @@ void update_mouse_state(int8_t x, int8_t y, bool left, bool right)
     }
 }
 
+#ifdef FT6236_I2C
+static uint8_t ft6236_data[14];
+static void ft6236_int_handler(uint gpio, uint32_t events)
+{
+    if(gpio == FT6236_INT_PIN)
+    {
+        uint8_t reg = 0;
+        i2c_write_blocking(FT6236_I2C, FT6236_ADDR, &reg, 1, true);
+        i2c_read_blocking(FT6236_I2C, FT6236_ADDR, ft6236_data, 14, false);
+    }
+}
+#endif
+
 void Pico_Input_Init()
 {
     tusb_init();
@@ -99,6 +112,7 @@ void Pico_Input_Init()
     // int
     gpio_set_dir(FT6236_INT_PIN, false);
     gpio_set_function(FT6236_INT_PIN, GPIO_FUNC_SIO);
+    gpio_set_irq_enabled_with_callback(FT6236_INT_PIN, GPIO_IRQ_LEVEL_LOW, true, ft6236_int_handler);
 #endif
 }
 
@@ -107,47 +121,37 @@ void Pico_Input_Update()
     tuh_task();
 
 #ifdef FT6236_I2C
-    if(!gpio_get(FT6236_INT_PIN))
+    int num_touches = ft6236_data[FT6236_TD_STATUS] & 0xF;
+    static bool touch_down = false;
+    bool new_touch_down;
+
+    for(int i = 0; i < num_touches; i++)
     {
-        uint8_t reg = 0;
-        uint8_t data[16];
-        i2c_write_blocking(FT6236_I2C, FT6236_ADDR, &reg, 1, true);
-        i2c_read_blocking(FT6236_I2C, FT6236_ADDR, data, 16, false);
+        int x = (ft6236_data[FT6236_P1_XH + i * 6] & 0xF) << 8 | ft6236_data[FT6236_P1_XL + i * 6];
+        int y = (ft6236_data[FT6236_P1_YH + i * 6] & 0xF) << 8 | ft6236_data[FT6236_P1_YL + i * 6];
+        int flag = ft6236_data[FT6236_P1_XH + i * 6 + 0] >> 6;
+        int id = ft6236_data[FT6236_P1_YH + i * 6 + 2] >> 4;
 
-        int num_touches = data[FT6236_TD_STATUS] & 0xF;
-        static bool touch_down = false;
-
-        if(num_touches)
+        if(id == 0)
         {
-            for(int i = 0; i < num_touches; i++)
-            {
-                int x = (data[FT6236_P1_XH + i * 6] & 0xF) << 8 | data[FT6236_P1_XL + i * 6];
-                int y = (data[FT6236_P1_YH + i * 6] & 0xF) << 8 | data[FT6236_P1_YL + i * 6];
-                int flag = data[FT6236_P1_XH + i * 6 + 0] >> 6;
-                int id = data[FT6236_P1_YH + i * 6 + 2] >> 4;
+            mouse_x = (x * 2) / 3;
+            mouse_y = (y * 2) / 3 - 60;
 
-                if(id == 0)
-                {
-                    mouse_x = (x * 2) / 3;
-                    mouse_y = (y * 2) / 3 - 60;
+            if(mouse_y < 0)
+                mouse_y = 0;
+            else if(mouse_y >= 200)
+                mouse_y = 200;
 
-                    if(mouse_y < 0)
-                        mouse_y = 0;
-                    else if(mouse_y >= 200)
-                        mouse_y = 200;
+            new_touch_down = flag != FT6236_NONE && flag != FT6236_UP;
 
-                    bool new_touch_down = flag != FT6236_NONE && flag != FT6236_CONTACT;
-
-                    Update_Mouse_Pos(mouse_x, mouse_y);
-
-                    if(new_touch_down != touch_down)
-                    {
-                        Put_Mouse_Message(VK_LBUTTON, new_touch_down);
-                        touch_down = new_touch_down;
-                    }
-                }
-            }
+            Update_Mouse_Pos(mouse_x, mouse_y);
         }
+    }
+
+    if(new_touch_down != touch_down)
+    {
+        Put_Mouse_Message(VK_LBUTTON, new_touch_down);
+        touch_down = new_touch_down;
     }
 #endif
 }
