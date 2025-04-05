@@ -496,8 +496,13 @@ int Set_Score_Vol(int volume)
     {
         if(chan.playing && !chan.in_ptr) // score is a file stream
         {
-            chan.raw_volume = chan.raw_volume / old * ScoreVolume;
-            chan.volume = Calculate_Volume(chan.raw_volume);
+            if(ScoreVolume)
+            {
+                chan.raw_volume = chan.raw_volume / old * ScoreVolume;
+                chan.volume = Calculate_Volume(chan.raw_volume);
+            }
+            else
+                chan.playing = false;
         }
     }
 
