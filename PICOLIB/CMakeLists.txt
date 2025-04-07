@@ -3,6 +3,7 @@ add_library(picolib STATIC
     drawbuff_pico.cpp
     file.cpp
     flash_cache.cpp
+    font.cpp
     init.cpp
     input.cpp
     keyboard.cpp
