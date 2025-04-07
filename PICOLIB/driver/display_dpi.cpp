@@ -5,6 +5,7 @@
 #include "hardware/irq.h"
 #include "hardware/pio.h"
 #include "hardware/spi.h"
+#include "hardware/sync.h"
 #include "pico/binary_info.h"
 #include "pico/time.h"
 
@@ -241,6 +242,7 @@ static void __not_in_flash_func(dma_irq_handler)() {
 
     if(!do_render) {
       do_render = true;
+      __sev();
     }
   }
 
