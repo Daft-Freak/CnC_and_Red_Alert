@@ -54,6 +54,35 @@ static const char *mix_priority[]
 	"ALLIES.MIX",
 };
 
+// files only used by hi/lores, but not in hi/lores.mix
+static std::set<std::string> hires_only
+{
+	// score screen
+	"ALIBACKH.PCX",
+	"BAR3BHR.SHP",
+	"BAR3RHR.SHP",
+	"CREDSAHR.SHP",
+	"CREDSUHR.SHP",
+	"HISC1-HR.SHP",
+	"HISC2-HR.SHP",
+	"SOVBACKH.PCX",
+	"TIMEHR.SHP",	
+};
+
+static std::set<std::string> lores_only
+{
+	// score screen
+	"ALI-TRAN.WSA",
+	"BAR3BLU.SHP",
+	"BAR3RED.SHP",
+	"CREDSA.SHP",
+	"CREDSU.SHP",
+	"HISCORE1.SHP",
+	"HISCORE2.SHP",	
+	"SOV-TRAN.WSA",
+	"TIME.SHP",
+};
+
 static PKey *key;
 
 // list state
@@ -194,6 +223,12 @@ int main(int argc, char *argv[])
 			remove = true;
 
 		if(!editor && (strcmp(mix_filename, "EDITOR.MIX") == 0 || strcmp(mix_filename, "EDLO.MIX") == 0 || strcmp(mix_filename, "EDHI.MIX") == 0))
+			remove = true;
+
+		// additional lo/hires-only files
+		if(hires && it->second.name && lores_only.count(it->second.name))
+			remove = true;
+		else if(!hires && it->second.name && hires_only.count(it->second.name))
 			remove = true;
 
 		// video and palette table for a large video not referenced by the game
