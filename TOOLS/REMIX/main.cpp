@@ -67,7 +67,13 @@ static std::set<std::string> hires_only
 	"HISC1-HR.SHP",
 	"HISC2-HR.SHP",
 	"SOVBACKH.PCX",
-	"TIMEHR.SHP",	
+	"TIMEHR.SHP",
+
+	// extra interp table in EXPAND2
+	"BMAP.VQP",
+
+	// new title screen in EXPAND2
+	"TITLE.PCX",
 };
 
 static std::set<std::string> lores_only
@@ -82,6 +88,9 @@ static std::set<std::string> lores_only
 	"HISCORE2.SHP",	
 	"SOV-TRAN.WSA",
 	"TIME.SHP",
+
+	// new title screen in EXPAND2
+	"TITLE.CPS",
 };
 
 static PKey *key;
