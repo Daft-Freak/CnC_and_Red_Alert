@@ -57,6 +57,7 @@ add_library(tech STATIC
 	crc.cpp
 	sendfile.cpp
 	lcwuncmp.cpp
+	compress.cpp
 )
 target_link_libraries(tech port vqa32)
 target_compile_definitions(tech PUBLIC WINSOCK_IPX=1)

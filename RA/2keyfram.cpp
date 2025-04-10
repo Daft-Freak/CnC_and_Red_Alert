@@ -40,6 +40,7 @@
 
 
 #include "function.h"
+#include "compress.h"
 
 #define SUBFRAMEOFFS			7	// 3 1/2 frame offsets loaded (2 offsets/frame)
 
@@ -325,6 +326,8 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 	// calc buff size
 	buffsize = keyfr->width * keyfr->height;
 
+	bool isshapelz = (keyfr->flags >> 8) == 0x55;
+
 	// get offset into data
 	ptr = (char *)Add_Long_To_Pointer( dataptr, (((unsigned long)framenumber << 3) + sizeof(KeyFrameHeaderType)) );
 	Mem_Copy( ptr, &offset[0], 12L );
@@ -338,7 +341,10 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 		if (keyfr->flags & 1 ) {
 			ptr = (char *)Add_Long_To_Pointer( ptr, 768L );
 		}
-		length = LCW_Uncompress( ptr, buffptr, buffsize );
+		if(isshapelz)
+			ShapeLZ_Decompress((uint8_t *)ptr, (uint8_t *)buffptr, buffsize);
+		else
+			length = LCW_Uncompress( ptr, buffptr, buffsize );
 	} else {	// key delta or delta
 
 		if ( (frameflags & KF_DELTA) ) {
@@ -363,11 +369,17 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 #ifndef FIXIT_SCORE_CRASH
 		off16 = (unsigned long)lockptr & 0x00003FFFL;
 #endif
+		if(isshapelz)
+		{
+			ShapeLZ_Decompress((uint8_t *)ptr, (uint8_t *)buffptr, buffsize);
+		}
+		else
+		{
+			length = LCW_Uncompress( ptr, buffptr, buffsize );
 
-		length = LCW_Uncompress( ptr, buffptr, buffsize );
-
-		if (length > buffsize) {
-			return(0);
+			if (length > buffsize) {
+				return(0);
+			}
 		}
 
 #ifndef FIXIT_SCORE_CRASH
@@ -382,10 +394,15 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 #endif
 
 		length = buffsize;
-		Apply_Delta(buffptr, Add_Long_To_Pointer(ptr, offdiff));
+		if(isshapelz)
+			ShapeLZ_Decompress_Xor((uint8_t *)Add_Long_To_Pointer(ptr, offdiff), (uint8_t *)buffptr, buffsize);
+		else
+			Apply_Delta(buffptr, Add_Long_To_Pointer(ptr, offdiff));
 
 		if ( (frameflags & KF_DELTA) ) {
 			// adjust to delta after the keydelta
+
+			// (shapelz should not reach here)
 
 			currframe++;
 			subframe = 2;
