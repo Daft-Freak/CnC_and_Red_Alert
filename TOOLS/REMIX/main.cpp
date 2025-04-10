@@ -19,6 +19,7 @@
 
 #include "mixwriter.h"
 #include "names.h"
+#include "shape.h"
 
 using CCMixFile = MixFileClass<CCFileClass>;
 
@@ -174,6 +175,58 @@ static void mix_file_callback(CCMixFile *mix, CCMixFile::SubBlock *entry)
 	FileEntry file{filename, mix, entry};
 
 	all_files.emplace(entry->CRC, file);
+}
+
+static uint8_t *recompress_shp(const char *filename, uint8_t *data, uint32_t length, uint32_t &new_length)
+{
+	SHPFile shp;
+
+	if(!shp.load(data, length))
+		return nullptr;
+
+	// can't compress 0
+	if(shp.get_frame_size() == 0)
+		return nullptr;
+
+	int num_frames = shp.get_num_frames();
+	int frame_size = shp.get_frame_size();
+
+	int raw_size = sizeof(SHPFile::Header) + num_frames * 8 + num_frames * frame_size;
+	new_length = raw_size;
+
+	auto out_buffer = new uint8_t[raw_size * 2]; // sometimes the result is slightly bigger, but we'll just keep the old data in that case
+
+	shp.save_lz(out_buffer, new_length);
+
+	return out_buffer;
+}
+
+static bool is_shp(const char *filename, const uint8_t *data)
+{
+	if(!filename)
+		return false;
+
+	// this is a different format
+	if(strcmp(filename, "MOUSE.SHP") == 0)
+		return false;
+
+	auto ext = strrchr(filename, '.');
+
+	if(strcmp(ext, ".SHP") == 0)
+		return true;
+
+	// some od the theater files are shapes
+	if(strcmp(ext, ".TEM") == 0 || strcmp(ext, ".SNO") == 0 || strcmp(ext, ".INT") == 0)
+	{
+		auto header = (const SHPFile::Header *)data;
+
+		if(header->width == 0) // this would be the allocated field in an icon set
+			return false;
+
+		return true;
+	}
+
+	return false;
 }
 
 int main(int argc, char *argv[])
@@ -387,12 +440,30 @@ int main(int argc, char *argv[])
 		}
 
 		// read ALL the data
-		auto data = new uint8_t[it->second.block->Size];
+		auto size = it->second.block->Size;
+		auto data = new uint8_t[size];
 		std::ifstream file(mix_filename, std::ios::binary);
 
 		file.seekg(offset);
-		file.read((char *)data, it->second.block->Size);
-		output_mixes[orig_mix_filename].addEntry(it->second.block->CRC, it->second.block->Size, data);
+		file.read((char *)data, size);
+
+		// recompression
+		if(is_shp(filename, data))
+		{
+			uint32_t new_size;
+			auto new_data = recompress_shp(filename, data, size, new_size);
+
+			if(new_data && new_size < size)
+			{
+				delete[] data;
+				data = new_data;
+				size = new_size;
+			}
+			else if(new_data)
+				delete[] new_data;
+		}
+
+		output_mixes[orig_mix_filename].addEntry(it->second.block->CRC, size, data);
 	}
 
 	if(!create_directory("./remixed"))

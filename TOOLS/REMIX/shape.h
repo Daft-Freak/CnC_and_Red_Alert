@@ -24,6 +24,8 @@ public:
 
 	bool load(const uint8_t *data, uint32_t length);
 
+    void save_lz(uint8_t *data, uint32_t &length);
+
 	unsigned get_width() const {return width;}
 	unsigned get_height() const {return height;}
 	unsigned get_frame_size() const {return width * height;}
