@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <fstream>
 #include <list>
 #include <set>
@@ -268,10 +269,19 @@ int main(int argc, char *argv[])
 			for(auto it2 = it; it2 != next_key; ++it2)
 			{
 				// calc priority
+
+				// use uppercased basename for compare
+				std::string mix_name = it2->second.mix->Filename;
+				auto last_slash = mix_name.find_last_of("/\\");
+				if(last_slash != std::string::npos)
+					mix_name = mix_name.substr(last_slash + 1);
+
+				std::transform(mix_name.begin(), mix_name.end(), mix_name.begin(), ::toupper);
+
 				int prio = 0;
-				for(auto &mix_name : mix_priority)
+				for(auto &prio_mix_name : mix_priority)
 				{
-					if(strcmp(mix_name, it2->second.mix->Filename) == 0)
+					if(strcmp(prio_mix_name, mix_name.c_str()) == 0)
 						break;
 					prio++;
 				}
