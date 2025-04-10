@@ -115,7 +115,7 @@ void SHPFile::save_lz(uint8_t *data, uint32_t &length)
 		int size = 0;
 		int delta_from = 0;
 
-		const bool operator<(const SizeData &other)
+		const bool operator<(const SizeData &other) const
 		{
 			// prefer earlier frame
 			if(size == other.size)
@@ -167,7 +167,7 @@ void SHPFile::save_lz(uint8_t *data, uint32_t &length)
 		int uses = 0;
 		int saving_self = 0; // how much this frame saves by encoding itself as a delta (vs raw)
 
-		bool operator<(const DeltaInfo &other)
+		bool operator<(const DeltaInfo &other) const
 		{
 			return other.uses < uses;
 		}
