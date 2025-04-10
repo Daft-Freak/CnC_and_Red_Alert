@@ -4695,7 +4695,7 @@ void TechnoClass::Base_Is_Attacked(TechnoClass const * enemy)
 			**	Never recruit sticky guard units to defend a base.
 			*/
 			if (!infantry->Is_Weapon_Equipped() ||
-					(!MissionControl[infantry->Mission].IsRecruitable && Session.Type == GAME_NORMAL)) continue;
+					(infantry->Mission != MISSION_NONE && !MissionControl[infantry->Mission].IsRecruitable && Session.Type == GAME_NORMAL)) continue;
 //					(Mission != MISSION_GUARD_AREA || Session.Type == GAME_NORMAL)) continue;
 
 			/*
