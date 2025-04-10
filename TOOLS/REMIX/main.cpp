@@ -383,7 +383,15 @@ int main(int argc, char *argv[])
 	}
 
 	for(auto &file : output_mixes)
-		file.second.write(std::string("./remixed/").append(file.first).c_str());
+	{
+		// remove path
+		auto name = file.first;
+		auto last_slash = name.find_last_of("/\\");
+		if(last_slash != std::string::npos)
+			name = name.substr(last_slash + 1);
+
+		file.second.write(std::string("./remixed/").append(name).c_str());
+	}
 
 	// build the "container" mixes
 	std::list<const char *> redalert_files{"LOCAL.MIX", "SPEECH.MIX"};
