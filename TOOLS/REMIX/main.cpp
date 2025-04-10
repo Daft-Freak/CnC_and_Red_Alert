@@ -480,7 +480,8 @@ int main(int argc, char *argv[])
 		if(last_slash != std::string::npos)
 			name = name.substr(last_slash + 1);
 
-		file.second.write(std::string("./remixed/").append(name).c_str());
+		auto new_size = file.second.write(std::string("./remixed/").append(name).c_str());
+		printf("new %-12s: %9i\n", name.c_str(), new_size);
 	}
 
 	// build the "container" mixes
