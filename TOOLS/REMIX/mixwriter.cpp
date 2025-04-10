@@ -13,7 +13,7 @@ void MixWriter::addEntry(int32_t crc, int32_t length, uint8_t *data)
 	entries.emplace_back(Entry{crc, length, data});
 }
 
-void MixWriter::write(const char *filename)
+uint32_t MixWriter::write(const char *filename)
 {
 	std::ofstream file(filename, std::ios::binary);
 
@@ -51,4 +51,6 @@ void MixWriter::write(const char *filename)
 
 	for(auto &ent : entries)
 		file.write((char *)ent.data, ent.length);
+
+	return total_size;
 }
