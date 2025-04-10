@@ -300,7 +300,10 @@ bool INIClass::Load(Straw & file)
 			strtrim(divider);
 			if (!strlen(divider)) continue;
 
-			INIEntry * entryptr = new INIEntry(Make_Pool_String_Index(buffer), Make_Pool_String_Index(divider));
+			int entryindex = Make_Pool_String_Index(buffer);
+			int valueindex = Make_Pool_String_Index(divider);
+
+			INIEntry * entryptr = new INIEntry(entryindex, valueindex);
 			if (entryptr == NULL) {
 				delete secptr;
 				Clear();
