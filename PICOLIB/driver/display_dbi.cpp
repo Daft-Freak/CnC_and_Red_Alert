@@ -395,9 +395,6 @@ void init_display() {
   dma_channel_configure(
     dma_channel, &config, &pio->txf[pio_sm], frame_buffer, DISPLAY_WIDTH * DISPLAY_HEIGHT, false);
 
-  irq_set_exclusive_handler(DMA_IRQ_0, palette_dma_irq_handler);
-  irq_set_enabled(DMA_IRQ_0, true);
-
   dma_channel_acknowledge_irq0(dma_channel);
   dma_channel_set_irq0_enabled(dma_channel, true);
 
@@ -413,6 +410,8 @@ void init_display() {
 }
 
 void init_display_core1(){
+  irq_set_exclusive_handler(DMA_IRQ_0, palette_dma_irq_handler);
+  irq_set_enabled(DMA_IRQ_0, true);
 }
 
 void update_display(uint32_t time) {
