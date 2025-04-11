@@ -1,4 +1,5 @@
 #include <cstdlib>
+#include <cstring>
 #include <math.h>
 
 #include "display.h"
@@ -21,6 +22,11 @@
 
 static uint16_t screen_palette565[256];
 static uint8_t frame_buffer[320 * 200];
+
+// cursor overlay
+static uint8_t cursor_data[30 * 24];
+static uint16_t cursor_x = 0, cursor_y = 200;
+static uint8_t cursor_w = 0, cursor_h = 0;
 
 // double buffering for lores
 static volatile int buf_index = 0;
@@ -97,6 +103,28 @@ static inline void convert_paletted(const uint8_t *in, uint16_t *out, int count)
     *out++ = screen_palette565[*in++];
 }
 
+static inline void convert_paletted_cursor(const uint8_t *in, uint16_t *out, int count, int scanline) {
+  auto cursor_in = cursor_data + (scanline - cursor_y) * cursor_w;
+
+  int i = 0;
+  for(; i < cursor_x; i++)
+    *out++ = screen_palette565[*in++];
+
+  // overlay cursor
+  int cursor_end = cursor_x + cursor_w;
+  if(cursor_end > count)
+    cursor_end = count;
+
+  for(;i < cursor_end; i++) {
+    auto cursor_v = *cursor_in++;
+    auto v = *in++;
+    *out++ = screen_palette565[cursor_v ? cursor_v : v];
+  }
+
+  for(; i < count; i++)
+    *out++ = screen_palette565[*in++];
+}
+
 static void __not_in_flash_func(palette_dma_irq_handler)() {
   if(dma_channel_get_irq0_status(dma_channel)) {
     dma_channel_acknowledge_irq0(dma_channel);
@@ -116,7 +144,11 @@ static void __not_in_flash_func(palette_dma_irq_handler)() {
 
     auto in = (uint8_t *)frame_buffer + (cur_scanline) * win_w;
     auto out = (uint16_t *)temp_buffer + (palette_buf_idx ^ 1) * win_w;
-    convert_paletted(in, out, win_w);
+
+    if(cur_scanline >= cursor_y && cur_scanline < cursor_y + cursor_h)
+      convert_paletted_cursor(in, out, win_w, cur_scanline);
+    else
+      convert_paletted(in, out, win_w);
   }
 }
 
@@ -249,7 +281,18 @@ static void update() {
   // paletted needs conversion
 
   // first two lines
-  convert_paletted((uint8_t *)frame_buffer, (uint16_t *)temp_buffer, win_w * 2);
+  auto in = (uint8_t *)frame_buffer;
+  auto out = (uint16_t *)temp_buffer;
+  if(cursor_y == 0) {
+    convert_paletted_cursor(in, out, win_w, 0);
+    convert_paletted_cursor(in + win_w, out + win_w, win_w, 1);
+  }
+  else if(cursor_y == 1) {
+    convert_paletted(in, out, win_w);
+    convert_paletted_cursor(in + win_w, out + win_w, win_w, 1);
+  } else
+    convert_paletted(in, out, win_w * 2);
+
   cur_scanline = 1;
 
   int count = win_w;
@@ -451,4 +494,16 @@ void set_screen_palette(const uint8_t *colours, int num_cols) {
 
 uint8_t *get_framebuffer() {
   return frame_buffer;
+}
+
+void display_set_cursor(uint8_t *data, int w, int h) {
+  memcpy(cursor_data, data, w * h);
+  cursor_w = w;
+  cursor_h = h;
+}
+
+void display_set_cursor_pos(int x, int y) {
+  // FIXME: ideally we would wait until end of frame
+  cursor_x = x;
+  cursor_y = y;
 }
