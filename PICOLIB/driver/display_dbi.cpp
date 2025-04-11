@@ -99,7 +99,7 @@ static inline void convert_paletted(const uint8_t *in, uint16_t *out, int count)
     *out++ = screen_palette565[*in++];
 }
 
-static void __isr palette_dma_irq_handler() {
+static void __not_in_flash_func(palette_dma_irq_handler)() {
   if(dma_channel_get_irq0_status(dma_channel)) {
     dma_channel_acknowledge_irq0(dma_channel);
 
