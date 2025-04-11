@@ -1,3 +1,4 @@
+#include <cstring>
 
 #include "hardware/clocks.h"
 #include "hardware/dma.h"
@@ -153,11 +154,42 @@ static uint16_t temp_buffer[(DPI_MODE_H_ACTIVE_PIXELS / DPI_SCALE) * DPI_NUM_DMA
 #endif
 static uint32_t zero;
 
+// cursor overlay
+#ifdef DPI_SCALE_1_5
+static uint8_t cursor_data[32 * 26]; // extra border
+#else
+static uint8_t cursor_data[30 * 24];
+#endif
+static int16_t cursor_x = 0, cursor_y = 200;
+static uint8_t cursor_w = 0, cursor_h = 0;
+
 static void pio_timing_irq_handler();
 
 // palette lookup
 static inline void convert_paletted(const uint8_t *in, uint16_t *out, int count) {
   for(int i = 0; i < count; i++)
+    *out++ = screen_palette565[*in++];
+}
+
+static inline void convert_paletted_cursor(const uint8_t *in, uint16_t *out, int count, int scanline) {
+  auto cursor_in = cursor_data + (scanline - cursor_y) * cursor_w;
+
+  int i = 0;
+  for(; i < cursor_x; i++)
+    *out++ = screen_palette565[*in++];
+
+  // overlay cursor
+  int cursor_end = cursor_x + cursor_w;
+  if(cursor_end > count)
+    cursor_end = count;
+
+  for(;i < cursor_end; i++) {
+    auto cursor_v = *cursor_in++;
+    auto v = *in++;
+    *out++ = screen_palette565[cursor_v ? cursor_v : v];
+  }
+
+  for(; i < count; i++)
     *out++ = screen_palette565[*in++];
 }
 
@@ -171,12 +203,7 @@ static inline uint16_t blend565(uint16_t a, uint16_t b) {
   return (res & 0xF81F) | ((res >> 16) & 0x07E0);
 }
 
-static inline void convert_paletted_1_5x(const uint8_t *in, uint16_t *out, int count) {
-  auto in2 = in + 320;
-  auto out2 = out + DPI_MODE_H_ACTIVE_PIXELS;
-  auto out3 = out2 + DPI_MODE_H_ACTIVE_PIXELS;
-
-  for(int i = 0; i < count; i += 2) {
+static inline void blend_2x2_3x3(const uint8_t *&in, const uint8_t *&in2, uint16_t *&out, uint16_t *&out2, uint16_t *&out3) {
     // get four original pixels
     auto col0_0 = screen_palette565[*in++];
     auto col2_0 = screen_palette565[*in++];
@@ -199,7 +226,68 @@ static inline void convert_paletted_1_5x(const uint8_t *in, uint16_t *out, int c
     *out2++ = blend565(col0_0, col0_2);
     *out2++ = blend565(col1_0, col1_2);
     *out2++ = blend565(col2_0, col2_2);
+}
+
+static inline void convert_paletted_1_5x(const uint8_t *in, uint16_t *out, int count) {
+  auto in2 = in + 320;
+  auto out2 = out + DPI_MODE_H_ACTIVE_PIXELS;
+  auto out3 = out2 + DPI_MODE_H_ACTIVE_PIXELS;
+
+  for(int i = 0; i < count; i += 2)
+    blend_2x2_3x3(in, in2, out, out2, out3);
+}
+
+static inline void convert_paletted_cursor_1_5x(const uint8_t *in, uint16_t *out, int count, int scanline) {
+  auto in2 = in + 320;
+  auto out2 = out + DPI_MODE_H_ACTIVE_PIXELS;
+  auto out3 = out2 + DPI_MODE_H_ACTIVE_PIXELS;
+
+  // FIXME: if cursor is at odd x, we miss the first pixel
+
+  int i = 0;
+  for(; i < cursor_x; i += 2)
+    blend_2x2_3x3(in, in2, out, out2, out3);
+
+  // overlay cursor
+  int cursor_end = cursor_x + cursor_w;
+  if(cursor_end > count)
+    cursor_end = count;
+
+  auto cursor_in = cursor_data + (scanline - cursor_y) * cursor_w;
+  auto cursor_in2 = cursor_in + cursor_w;
+
+  for(;i < cursor_end; i+=2) {
+    // get four original pixels
+    auto col0_0 = screen_palette565[cursor_in[0] ? cursor_in[0] : in[0]];
+    auto col2_0 = screen_palette565[cursor_in[1] ? cursor_in[1] : in[1]];
+    auto col0_2 = screen_palette565[cursor_in2[0] ? cursor_in2[0] : in2[0]];
+    auto col2_2 = screen_palette565[cursor_in2[1] ? cursor_in2[1] : in2[1]];
+
+    in += 2;
+    in2 += 2;
+    cursor_in += 2;
+    cursor_in2 += 2;
+
+    // blend horizontally
+    auto col1_0 = blend565(col0_0, col2_0);
+    auto col1_2 = blend565(col0_2, col2_2);
+
+    *out++ = col0_0;
+    *out++ = col1_0;
+    *out++ = col2_0;
+  
+    *out3++ = col0_2;
+    *out3++ = col1_2;
+    *out3++ = col2_2;
+
+    // blend vertically
+    *out2++ = blend565(col0_0, col0_2);
+    *out2++ = blend565(col1_0, col1_2);
+    *out2++ = blend565(col2_0, col2_2);
   }
+
+  for(; i < count; i += 2)
+    blend_2x2_3x3(in, in2, out, out2, out3);
 }
 
 // assumes data SM is idle
@@ -261,8 +349,12 @@ static void __not_in_flash_func(dma_irq_handler)() {
   const int margin = ((DPI_MODE_V_ACTIVE_LINES * 2 / 3) - 200) / 2;
 
   if(display_line >= margin && display_line < 200 + margin) {
+    display_line -= margin;
     ch->al1_ctrl |= DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
-    convert_paletted_1_5x(cur_display_buffer + (display_line - margin) * 320, temp_buffer + palette_buf_idx * w * 3, 320);
+    if(display_line >= cursor_y && display_line < cursor_y + cursor_h)
+      convert_paletted_cursor_1_5x(cur_display_buffer + display_line * 320, temp_buffer + palette_buf_idx * w * 3, 320, display_line);
+    else
+      convert_paletted_1_5x(cur_display_buffer + display_line * 320, temp_buffer + palette_buf_idx * w * 3, 320);
   } else {
     ch->read_addr = uintptr_t(&zero);
     ch->al1_ctrl &= ~DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
@@ -286,8 +378,14 @@ static void __not_in_flash_func(dma_irq_handler)() {
 
   if(display_line >= margin && display_line < 200 + margin) {
     ch->al1_ctrl |= DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
-    if (display_line * DPI_SCALE == data_scanline)
-      convert_paletted(cur_display_buffer + (display_line - margin) * 320, temp_buffer + palette_buf_idx * w, 320);
+
+    if(display_line * DPI_SCALE == data_scanline) {
+      display_line -= margin;
+      if(display_line >= cursor_y && display_line < cursor_y + cursor_h)
+        convert_paletted_cursor(cur_display_buffer + display_line * 320, temp_buffer + palette_buf_idx * w, 320, display_line);
+      else
+        convert_paletted(cur_display_buffer + display_line * 320, temp_buffer + palette_buf_idx * w, 320);
+    }
   } else {
     ch->read_addr = uintptr_t(&zero);
     ch->al1_ctrl &= ~DMA_CH0_CTRL_TRIG_INCR_READ_BITS;
@@ -634,4 +732,32 @@ void set_screen_palette(const uint8_t *colours, int num_cols) {
 
 uint8_t *get_framebuffer() {
   return frame_buffer;
+}
+
+void display_set_cursor(uint8_t *data, int w, int h) {
+#ifdef DPI_SCALE_1_5
+  // we add an extra border so that the scaling code needs less checks to handle odd x/y
+  for(int y = 0; y < h; y++)
+    memcpy(cursor_data + (y + 1) * (w + 1) + 1, data + y * w, w);
+
+  w++;
+  h++;
+#else
+  memcpy(cursor_data, data, w * h);
+#endif
+
+  cursor_w = w;
+  cursor_h = h;
+}
+
+void display_set_cursor_pos(int x, int y) {
+  // FIXME: ideally we would wait until end of frame
+  
+#ifdef DPI_SCALE_1_5
+  cursor_x = x - 1;
+  cursor_y = y - 1;
+#else
+  cursor_x = x;
+  cursor_y = y;
+#endif
 }
