@@ -18,7 +18,7 @@
 #define LCD_VSYNC_PIN     21
 
 #define LCD_ROTATION 90
-#define LCD_MAX_CLOCK 62500000
+#define LCD_MAX_CLOCK 75000000 // should be 62500000, but can't get that from 150MHz so overclock
 
 #elif EXTRA_BOARD_PRESTO
 
