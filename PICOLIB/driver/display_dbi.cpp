@@ -70,8 +70,6 @@ static uint32_t temp_buffer[DISPLAY_WIDTH];
 // pixel double scanline counter
 static volatile int cur_scanline = DISPLAY_HEIGHT;
 
-static irq_handler_t cur_irq_handler = nullptr;
-
 // PIO helpers
 static void pio_put_byte(PIO pio, uint sm, uint8_t b) {
   while (pio_sm_is_tx_fifo_full(pio, sm));
@@ -120,24 +118,6 @@ static void __not_in_flash_func(palette_dma_irq_handler)() {
     auto out = (uint16_t *)temp_buffer + (palette_buf_idx ^ 1) * win_w;
     convert_paletted(in, out, win_w);
   }
-}
-
-// set DMA irq handler for pixel doubling/palette lookup
-static void update_irq_handler() {
-  irq_handler_t new_handler;
-
-  new_handler = palette_dma_irq_handler;
-
-  if(cur_irq_handler == new_handler)
-    return;
-
-  if(cur_irq_handler)
-    irq_remove_handler(DMA_IRQ_0, cur_irq_handler);
-
-  irq_add_shared_handler(DMA_IRQ_0, new_handler, PICO_SHARED_IRQ_HANDLER_DEFAULT_ORDER_PRIORITY);
-  cur_irq_handler = new_handler;
-
-  cur_scanline = win_h; // probably switching mode, set to max so that dma_is_busy thinks we're finished
 }
 
 static void command(uint8_t command, size_t len = 0, const char *data = nullptr) {
@@ -415,7 +395,7 @@ void init_display() {
   dma_channel_configure(
     dma_channel, &config, &pio->txf[pio_sm], frame_buffer, DISPLAY_WIDTH * DISPLAY_HEIGHT, false);
 
-  update_irq_handler();
+  irq_set_exclusive_handler(DMA_IRQ_0, palette_dma_irq_handler);
   irq_set_enabled(DMA_IRQ_0, true);
 
   dma_channel_acknowledge_irq0(dma_channel);
