@@ -1583,7 +1583,7 @@ bool DisplayClass::Map_Cell(CELL cell, HouseClass * house)
 		c = Adjacent_Cell(cell, dir);
 
 		// don't crash
-		if(c >= Size)
+		if(c < 0 || c >= Size)
 			continue;
 
 		if (c != cell && !(*this)[c].IsMapped) {
