@@ -247,7 +247,7 @@ ObjectClass * CellClass::Cell_Find_Object(RTTIType rtti) const
 	ObjectClass * object = Cell_Occupier();
 
 	while (object) {
-		if (object->What_Am_I() == rtti) {
+		if (object->IsActive && object->What_Am_I() == rtti) {
 			return(object);
 		}
 		object = object->Next;
@@ -386,8 +386,11 @@ void CellClass::Redraw_Objects(bool forced)
 		*/
 		if (Cell_Occupier()) {
 			ObjectClass * optr = Cell_Occupier();
-			while (optr) {
+			while (optr && optr->IsActive) {
 				optr->Mark(MARK_CHANGE);
+				if (optr->Next != NULL && !optr->Next->IsActive) {
+					optr->Next = NULL;
+				}
 				optr = optr->Next;
 			}
 		}
@@ -396,8 +399,12 @@ void CellClass::Redraw_Objects(bool forced)
 		**	Flag any overlapping object in this cell to be redrawn.
 		*/
 		for (int index = 0; index < sizeof(Overlapper)/sizeof(Overlapper[0]); index++) {
-			if (Overlapper[index] && Overlapper[index]->IsActive) {
-				Overlapper[index]->Mark(MARK_CHANGE);
+			if (Overlapper[index]) {
+				if (!Overlapper[index]->IsActive) {
+					Overlapper[index] = NULL;
+				} else {
+					Overlapper[index]->Mark(MARK_CHANGE);
+				}
 			}
 		}
 	}
