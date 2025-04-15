@@ -876,7 +876,7 @@ void Buffer_Draw_Line(void *thisptr, int sx, int sy, int dx, int dy, unsigned ch
     // not vertical
     if(x_dist == 0 || dx < sx)
     {
-        y_dist = -y_dist;
+        x_dist = -x_dist;
         step = -1;
     }
 
