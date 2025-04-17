@@ -149,7 +149,7 @@ void Shorten_Attached_Anims(ObjectClass * obj)
 COORDINATE AnimClass::Sort_Y(void) const
 {
 	Validate();
-	if (Object) {
+	if (Object && Object->IsActive) {
 		return(Coord_Add(Object->Sort_Y(), 0x00010000L));
 	}
 	if (*this == ANIM_MOVE_FLASH) {
