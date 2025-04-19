@@ -76,6 +76,28 @@ static inline void convert_paletted(const uint8_t *in, uint32_t *out, int count)
     *out++ = screen_palette565[*in++] * 0x10001;
 }
 
+static inline void convert_paletted_cursor(const uint8_t *in, uint32_t *out, int count, int scanline) {
+  auto cursor_in = cursor_data + (scanline - cursor_y) * cursor_w;
+
+  int i = 0;
+  for(; i < cursor_x; i++)
+    *out++ = screen_palette565[*in++] * 0x10001;
+
+  // overlay cursor
+  int cursor_end = cursor_x + cursor_w;
+  if(cursor_end > count)
+    cursor_end = count;
+
+  for(;i < cursor_end; i++) {
+    auto cursor_v = *cursor_in++;
+    auto v = *in++;
+    *out++ = screen_palette565[cursor_v ? cursor_v : v] * 0x10001;
+  }
+
+  for(; i < count; i++)
+    *out++ = screen_palette565[*in++] * 0x10001;
+}
+
 static void __no_inline_not_in_flash_func(palette_dma_irq_handler)() {
     // ch_num indicates the channel that just finished, which is the one
     // we're about to reload.
@@ -110,7 +132,11 @@ static void __no_inline_not_in_flash_func(palette_dma_irq_handler)() {
             else {
                 uint32_t* dst_ptr = &line_buffers[line_num * line_buf_total_len + 7 + (DISPLAY_WIDTH - 320) / 2];
                 uint8_t* src_ptr = &frame_buffer_display[y * 320];
-                convert_paletted(src_ptr, dst_ptr, 320);
+
+                if(y >= cursor_y && y < cursor_y + cursor_h)
+                  convert_paletted_cursor(src_ptr, dst_ptr, 320, y);
+                else
+                  convert_paletted(src_ptr, dst_ptr, 320);
             }
         }
     }
