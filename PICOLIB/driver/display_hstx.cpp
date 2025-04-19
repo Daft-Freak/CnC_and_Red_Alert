@@ -112,7 +112,7 @@ static void __no_inline_not_in_flash_func(palette_dma_irq_handler)() {
 
             if (blank) {
                 uint32_t* dst_ptr = &line_buffers[line_num * line_buf_total_len + 7];
-                memset(dst_ptr, 0, line_len);
+                //memset(dst_ptr, 0, line_len);
             }
             else {
                 uint32_t* dst_ptr = &line_buffers[line_num * line_buf_total_len + 7 + (DISPLAY_WIDTH - 320) / 2];
