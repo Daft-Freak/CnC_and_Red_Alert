@@ -23,6 +23,7 @@ jobs:
         include:
           # unique board/extra combo
           - os: ubuntu-latest
+            build_type: Release
             board: solderparty_rp2350_stamp_xl
 
     steps:
