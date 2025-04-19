@@ -20,6 +20,21 @@
 #define LCD_ROTATION 90
 #define LCD_MAX_CLOCK 75000000 // should be 62500000, but can't get that from 150MHz so overclock
 
+#elif EXTRA_BOARD_STAMP_CARRIER
+#define DISPLAY_WIDTH  360
+#define DISPLAY_HEIGHT 200
+
+#define DVI_CLK_P 14
+#define DVI_D0_P  12
+#define DVI_D1_P  18
+#define DVI_D2_P  16
+
+// these are not the slot on the carrier, it conflicts with the PSRAM CS
+#define SD_SCK    39
+#define SD_MOSI   37
+#define SD_MISO   38
+#define SD_CS     36
+
 #elif EXTRA_BOARD_PRESTO
 
 #define DPI_DATA_PIN_BASE  1

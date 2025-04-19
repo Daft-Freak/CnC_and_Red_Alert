@@ -41,8 +41,12 @@ add_library(picolib STATIC
 
 # "extra" board config (the thing the pico is plugged into)
 if(NOT EXTRA_BOARD)
-    message("No EXTRA_BOARD set, assuming Display Pack")
-    set(EXTRA_BOARD display_pack)
+    if(PICO_BOARD STREQUAL "solderparty_rp2350_stamp_xl")
+        set(EXTRA_BOARD stamp_carrier)
+    else()
+        set(EXTRA_BOARD display_pack)
+    endif()
+    message("No EXTRA_BOARD set, assuming ${EXTRA_BOARD}")
 endif()
 
 string(TOUPPER ${EXTRA_BOARD} EXTRA_BOARD_UPPER)
@@ -57,6 +61,10 @@ endif()
 # but it doesn't have a config header in the SDK and there isn't a generic config to use for RP2350B either
 if(EXTRA_BOARD STREQUAL "presto")
     set(DISPLAY_DRIVER "dpi")
+endif()
+
+if(EXTRA_BOARD STREQUAL "stamp_carrier")
+    set(DISPLAY_DRIVER "hstx")
 endif()
 
 if(EXTRA_BOARD STREQUAL "vgaboard")
