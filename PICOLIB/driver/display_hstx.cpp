@@ -37,6 +37,11 @@ extern "C" {
 static uint16_t screen_palette565[256];
 static uint8_t frame_buffer[320 * 200];
 
+// cursor overlay
+static uint8_t cursor_data[30 * 24];
+static uint16_t cursor_x = 0, cursor_y = 200;
+static uint8_t cursor_w = 0, cursor_h = 0;
+
 // For now no back buffer - maybe we can put it in PSRAM?
 #define frame_buffer_display frame_buffer
 #define frame_buffer_back frame_buffer
@@ -474,4 +479,16 @@ void set_screen_palette(const uint8_t *colours, int num_cols) {
 
 uint8_t *get_framebuffer() {
   return frame_buffer;
+}
+
+void display_set_cursor(uint8_t *data, int w, int h) {
+  memcpy(cursor_data, data, w * h);
+  cursor_w = w;
+  cursor_h = h;
+}
+
+void display_set_cursor_pos(int x, int y) {
+  // FIXME: ideally we would wait until end of frame
+  cursor_x = x;
+  cursor_y = y;
 }
