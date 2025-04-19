@@ -20,6 +20,11 @@ jobs:
           # presto is a bit of a hack, but don't bother with a non-wifi version
           - board: pimoroni_pico_plus2_rp2350
             extra_board: presto
+        include:
+          # unique board/extra combo
+          - os: ubuntu-latest
+            build_type: Release
+            board: solderparty_rp2350_stamp_xl
 
     steps:
     - uses: actions/checkout@v4
