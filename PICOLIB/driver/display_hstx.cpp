@@ -49,11 +49,6 @@ static uint8_t cursor_w = 0, cursor_h = 0;
 #define NUM_CHANS 3
 #define NUM_FRAME_LINES 2
 
-// double buffering for lores
-static volatile int buf_index = 0;
-
-static volatile bool do_render = true;
-
 static uint32_t vblank_line_vsync_off[6];
 static uint32_t vblank_line_vsync_on[6];
 
@@ -61,7 +56,6 @@ static const struct dvi_timing* timing_mode;
 static int v_inactive_total;
 static int v_total_active_lines;
 static const int v_repeat_shift = 1;
-static const int h_repeat_shift = 1;
 
 // three scanlines.  7 word header plus one word per pixel (because they are pixel doubled)
 static uint32_t line_buffers[2 * (7 + DISPLAY_WIDTH)];
@@ -77,10 +71,9 @@ static volatile int last_frame = 0;
 static irq_handler_t cur_irq_handler = nullptr;
 
 // palette lookup
-static inline void convert_paletted(const uint8_t *in, uint16_t *out, int count) {
-  for(int i = 0; i < count; i++) {
-    *out++ = screen_palette565[*in++];
-  }
+static inline void convert_paletted(const uint8_t *in, uint32_t *out, int count) {
+  for(int i = 0; i < count; i++)
+    *out++ = screen_palette565[*in++] * 0x10001;
 }
 
 static void __no_inline_not_in_flash_func(palette_dma_irq_handler)() {
@@ -117,12 +110,7 @@ static void __no_inline_not_in_flash_func(palette_dma_irq_handler)() {
             else {
                 uint32_t* dst_ptr = &line_buffers[line_num * line_buf_total_len + 7 + (DISPLAY_WIDTH - 320) / 2];
                 uint8_t* src_ptr = &frame_buffer_display[y * 320];
-                //if (h_repeat_shift == 1) {
-                    for (int i = 0; i < 320; ++i) {
-                        uint32_t val = (uint32_t)(screen_palette565[*src_ptr++]) * 0x10001;
-                        *dst_ptr++ = val;
-                    }
-                //}
+                convert_paletted(src_ptr, dst_ptr, 320);
             }
         }
     }
@@ -133,10 +121,6 @@ static void __no_inline_not_in_flash_func(palette_dma_irq_handler)() {
         ++frame_num;
         __sev();
     }
-}
-
-static void update() {
-  // TODO something something back buffer
 }
 
 // ----------------------------------------------------------------------------
@@ -275,8 +259,6 @@ void init_display_core1() {
 
     v_inactive_total = timing_mode->v_front_porch + timing_mode->v_sync_width + timing_mode->v_back_porch;
     v_total_active_lines = v_inactive_total + timing_mode->v_active_lines;
-    const int v_repeat = 1 << v_repeat_shift;
-    const int h_repeat = 1 << h_repeat_shift;
 
     uint32_t sync_v0_h0 = timing_mode->h_sync_polarity ? (timing_mode->v_sync_polarity ? SYNC_V0_H0 : SYNC_V1_H0) :
                                                          (timing_mode->v_sync_polarity ? SYNC_V0_H1 : SYNC_V1_H1);
@@ -441,26 +423,6 @@ void init_display_core1() {
 void update_display(uint32_t time) {
   blank = false;
   last_frame = frame_num;
-#if 0
-  if((do_render || (!have_vsync && time - last_render >= 20)) && !dma_is_busy()) {
-
-    //::render(time);
-
-    if(!have_vsync) {
-      while(dma_is_busy()) {} // may need to wait for lores.
-      ::update();
-    }
-
-    if(last_render && !backlight_enabled) {
-      // the first render should have made it to the screen at this point
-      set_backlight(255);
-      backlight_enabled = true;
-    }
-
-    last_render = time;
-    do_render = false;
-  }
-#endif
 }
 
 
