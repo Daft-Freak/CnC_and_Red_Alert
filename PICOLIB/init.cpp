@@ -32,6 +32,7 @@ extern const uint8_t asset_tall_font[];
 static void __not_in_flash_func(Core1_Main)()
 {
     init_display_core1();
+    multicore_fifo_push_blocking(0);
     while(true) __wfe();
 }
 
@@ -136,6 +137,7 @@ void Pico_Init()
     init_audio();
 
     multicore_launch_core1(Core1_Main);
+    multicore_fifo_pop_blocking();
 
     Display_Loading_Message();
 }
