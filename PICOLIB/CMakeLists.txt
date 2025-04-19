@@ -87,12 +87,17 @@ target_link_libraries(picolib PUBLIC
 )
 
 target_compile_definitions(picolib PUBLIC
-    # Using a Qw/ST connector as a UART...
-    PICO_DEFAULT_UART=1
-    PICO_DEFAULT_UART_TX_PIN=4
-    PICO_DEFAULT_UART_RX_PIN=5
     PICO_CORE1_STACK_SIZE=0x200
 )
+
+if(EXTRA_BOARD STREQUAL "display_pack")
+    target_compile_definitions(picolib PUBLIC
+        # Using a Qw/ST connector as a UART...
+        PICO_DEFAULT_UART=1
+        PICO_DEFAULT_UART_TX_PIN=4
+        PICO_DEFAULT_UART_RX_PIN=5
+    )
+endif()
 
 if(PICO_CYW43_SUPPORTED)
     target_link_libraries(picolib PUBLIC pico_cyw43_arch_lwip_threadsafe_background)
