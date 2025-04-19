@@ -22,7 +22,8 @@ jobs:
             extra_board: presto
         include:
           # unique board/extra combo
-          - board: solderparty_rp2350_stamp_xl
+          - os: ubuntu-latest
+            board: solderparty_rp2350_stamp_xl
 
     steps:
     - uses: actions/checkout@v4
