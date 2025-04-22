@@ -3094,7 +3094,9 @@ static void Init_Secondary_Mixfiles(void)
 
 	if (CCFileClass("MOVIES1.MIX").Is_Available()) {
 		MoviesMix = new MFCD("MOVIES1.MIX", &FastKey);			// Never cached.
-	} else {
+	}
+	// load both sets of movies if possible
+	if (CCFileClass("MOVIES2.MIX").Is_Available()) {
 		MoviesMix = new MFCD("MOVIES2.MIX", &FastKey);			// Never cached.
 	}
 	assert(MoviesMix != NULL);
