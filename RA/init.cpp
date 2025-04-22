@@ -3047,18 +3047,35 @@ static void Init_Bootstrap_Mixfiles(void)
  *   06/03/1996 JLB : Created.                                                                 *
  *=============================================================================================*/
 //#define DENZIL_MIXEXTRACT
-#ifdef DENZIL_MIXEXTRACT
 void Extract(char* filename, char* outfile);
-#endif
  
 static void Init_Secondary_Mixfiles(void)
 {
 	if(CCFileClass("MAIN1.MIX").Is_Available()) {
 		// MAIN1-4 from steam
+		
+		// extract the extra missions from the expansion "discs"
+		// (they don't contain the base missions)
+		if(CCFileClass("MAIN3.MIX").Is_Available() && !CCFileClass("GENERAL3.MIX").Is_Available()) {
+			MFCD *tmp = new MFCD("MAIN3.MIX", &FastKey);
+			Extract("GENERAL.MIX", "GENERAL3.MIX");
+			delete tmp;
+		}
+
+		if(CCFileClass("MAIN4.MIX").Is_Available() && !CCFileClass("GENERAL4.MIX").Is_Available()) {
+			MFCD *tmp = new MFCD("MAIN4.MIX", &FastKey);
+			Extract("GENERAL.MIX", "GENERAL4.MIX");
+			Extract("SCORES.MIX", "SCORES.MIX"); // also extract scores
+			delete tmp;
+		}
+
 		// load the first two to get both movies
-		// (loading 3/4 would only load the expansion missions)
 		new MFCD("MAIN2.MIX", &FastKey);
 		new MFCD("MAIN1.MIX", &FastKey);
+
+		// load extra missions
+		new MFCD("GENERAL4.MIX", &FastKey);
+		new MFCD("GENERAL3.MIX", &FastKey);
 	} else {
 		// assume regular/TFD files
 		MainMix = new MFCD("MAIN.MIX", &FastKey);
@@ -3569,7 +3586,6 @@ void __PRO(void) {
 }
 }
 
-#ifdef DENZIL_MIXEXTRACT
 void Extract(char* filename, char* outname)
 	{
 	CCFileClass inFile(filename);
@@ -3595,7 +3611,6 @@ void Extract(char* filename, char* outname)
 		free(buffer);
 		}
 	}
-#endif
 
 
 #ifdef FIXIT_VERSION_3
