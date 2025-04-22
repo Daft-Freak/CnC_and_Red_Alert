@@ -3050,8 +3050,17 @@ void Extract(char* filename, char* outfile);
  
 static void Init_Secondary_Mixfiles(void)
 {
-	MainMix = new MFCD("MAIN.MIX", &FastKey);
-	assert(MainMix != NULL);
+	if(CCFileClass("MAIN1.MIX").Is_Available()) {
+		// MAIN1-4 from steam
+		// load the first two to get both movies
+		// (loading 3/4 would only load the expansion missions)
+		new MFCD("MAIN2.MIX", &FastKey);
+		new MFCD("MAIN1.MIX", &FastKey);
+	} else {
+		// assume regular/TFD files
+		MainMix = new MFCD("MAIN.MIX", &FastKey);
+		assert(MainMix != NULL);
+	}
 
 	//Denzil extract mixfile
 	#ifdef DENZIL_MIXEXTRACT
