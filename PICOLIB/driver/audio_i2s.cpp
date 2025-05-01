@@ -53,8 +53,13 @@ static void alarm_callback(uint alarm_num) {
 }
 
 void init_audio() {
-  // setup PIO
+#ifdef AUDIO_I2S_MUTE_PIN
+  gpio_set_dir(AUDIO_I2S_MUTE_PIN, GPIO_OUT);
+  gpio_put(AUDIO_I2S_MUTE_PIN, 1);
+  gpio_set_function(AUDIO_I2S_MUTE_PIN, GPIO_FUNC_SIO);
+#endif
 
+  // setup PIO
 #if AUDIO_I2S_DATA_PIN >= 32 || AUDIO_I2S_CLOCK_PIN_BASE >= 31
     // this assumes anything else using this PIO can also deal with the base
     static_assert(AUDIO_I2S_DATA_PIN >= 16 && AUDIO_I2S_CLOCK_PIN_BASE >= 16);
