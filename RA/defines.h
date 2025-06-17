@@ -69,8 +69,9 @@
 
 
 // Enable 640x400 VQ movie capability in WIN32 mode
+#ifndef LORES
 #define MOVIE640
-
+#endif
 
 //#if (GERMAN | FRENCH)
 //#define	BOGUSCD
