@@ -430,6 +430,13 @@ int main(int argc, char * argv[])
 #endif
 		}
 
+#ifdef PORTABLE
+		if (!cfile.Is_Available()) {
+			// just create an empty config, we don't care about most of it anyway
+			cfile.Create();
+		}
+#endif
+
 		if (cfile.Is_Available()) {
 
 			Read_Private_Config_Struct(cfile, &NewConfig);
