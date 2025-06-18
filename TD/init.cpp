@@ -2089,7 +2089,7 @@ bool Parse_Command_Line(int argc, char *argv[])
 
 
 		bool processed = true;
-		switch (Obfuscate(string)) {
+		switch ((unsigned long)Obfuscate(string)) {
 
 			/*
 			**	Signal that easy mode is active.
