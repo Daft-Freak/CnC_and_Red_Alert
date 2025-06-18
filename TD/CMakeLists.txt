@@ -185,3 +185,14 @@ target_include_directories(tdsdl PRIVATE ../RA) # should probably structure this
 target_link_libraries(tdsdl PRIVATE port sdllib vqa32)
 
 install(TARGETS tdsdl)
+
+if(EMSCRIPTEN)
+	set_target_properties(tdsdl PROPERTIES
+		SUFFIX ".html"
+		LINK_FLAGS "-sENVIRONMENT=web -sASYNCIFY -sASYNCIFY_STACK_SIZE=8192 -sFORCE_FILESYSTEM -sINITIAL_MEMORY=128mb"
+	)
+	# this does not include the files, that would require something like
+	# file_packager files.data --js-output=files.js --preload *.mix
+	# (which is huge if you include the movies)
+	# and adding files.js to the shell html
+endif()
