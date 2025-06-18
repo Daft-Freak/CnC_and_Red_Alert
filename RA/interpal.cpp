@@ -44,6 +44,8 @@
 
 #include "function.h"
 
+#ifndef LORES
+
 bool	InterpolationPaletteChanged = FALSE;
 extern "C" {
 extern void __cdecl Asm_Interpolate (unsigned char* src_ptr ,
@@ -240,7 +242,7 @@ void Create_Palette_Interpolation_Table( void )
 
 }
 
-
+#endif
 
 
 
@@ -309,7 +311,7 @@ void Increase_Palette_Luminance (unsigned char * palette , int red_percentage , 
 
 int	CopyType	=0;
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(LORES)
 /***************************************************************************
  * INTERPOLATE_2X_SCALE                                                    *
  *                                                                         *
@@ -457,8 +459,5 @@ void Interpolate_2X_Scale( GraphicBufferClass * source, GraphicViewPortClass * d
 //BG	Mono_Printf("Clock cycles: %08x\n",*longptr);
 }
 #endif
-
-
-
 
 

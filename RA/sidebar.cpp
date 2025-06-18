@@ -320,7 +320,7 @@ void SidebarClass::Init_IO(void)
 
 		Upgrade.IsSticky = true;
 		Upgrade.ID = BUTTON_UPGRADE;
-#ifdef WIN32
+#if RESFACTOR == 2
 		Upgrade.X = 0x21f;
 #else
 		Upgrade.X = ((0x21f/2)+1)*RESFACTOR;

@@ -69,8 +69,9 @@
 
 
 // Enable 640x400 VQ movie capability in WIN32 mode
+#ifndef LORES
 #define MOVIE640
-
+#endif
 
 //#if (GERMAN | FRENCH)
 //#define	BOGUSCD
@@ -227,7 +228,7 @@
 ** This is the multiplier factor to convert low resution coordinates
 **	into their actual resolution counterparts.
 */
-#ifdef WIN32
+#if defined(WIN32) && !defined(LORES)
 #define RESFACTOR	2
 #else
 //#undef SCENARIO_EDITOR

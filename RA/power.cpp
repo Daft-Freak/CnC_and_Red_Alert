@@ -186,7 +186,7 @@ void PowerClass::Draw_It(bool complete)
 //				LogicPage->Fill_Rect(POWER_X, POWER_Y, POWER_X+POWER_WIDTH-1, POWER_Y+POWER_HEIGHT-1, LTGREY);
 				CC_Draw_Shape(PowerBarShape, 0, 240 * RESFACTOR, 88 * RESFACTOR, WINDOW_MAIN, flags | SHAPE_NORMAL | SHAPE_WIN_REL, remap);
 
-#ifdef WIN32
+#if RESFACTOR == 2
 				/*
 				** Hires power strip is too big to fit into a shape so it is in two parts
 				*/
@@ -225,7 +225,7 @@ void PowerClass::Draw_It(bool complete)
 					**
 					** ST - 5/2/96 11:23AM
 					*/
-#ifdef WIN32
+#if RESFACTOR == 2
 					power_height = (power_height*(76*RESFACTOR+1)) / (53*RESFACTOR+1);
 					drain_height = (drain_height*(76*RESFACTOR+1)) / (53*RESFACTOR+1);
 #endif

@@ -833,7 +833,7 @@ void Do_Win(void)
 		Set_Logic_Page(SeenBuff);
 		Map.Flag_To_Redraw (true);
 		Map.Render();
-#ifdef WIN32
+#if RESFACTOR == 2
 		Fancy_Text_Print(TXT_SCENARIO_WON, x, 90*RESFACTOR, &ColorRemaps[PCOLOR_RED], TBLACK, TPF_CENTER|TPF_VCR|TPF_USE_GRAD_PAL|TPF_DROPSHADOW);
 #else
 		Fancy_Text_Print(TXT_MISSION, x, 90*RESFACTOR, &ColorRemaps[PCOLOR_RED], TBLACK, TPF_CENTER|TPF_VCR|TPF_USE_GRAD_PAL|TPF_DROPSHADOW);
@@ -1354,7 +1354,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 		b3txt = "";
 	}
 
-#ifdef WIN32
+#if defined(WIN32) && !defined(PORTABLE)
 	GraphicBufferClass seen_buff_save(VisiblePage.Get_Width(), VisiblePage.Get_Height(), (void*)NULL);
 #endif
 
@@ -1498,7 +1498,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 	Hide_Mouse();
 
 	PaletteClass temp;
-#ifdef WIN32
+#if RESFACTOR == 2
 	char *filename = "SOVPAPER.PCX";
 	if (PlayerPtr->Class->House != HOUSE_USSR && PlayerPtr->Class->House != HOUSE_UKRAINE) {
 		filename = "ALIPAPER.PCX";
@@ -1509,11 +1509,12 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 	if (PlayerPtr->Class->House != HOUSE_USSR && PlayerPtr->Class->House != HOUSE_UKRAINE) {
 		filename = "ALIPAPER.CPS";
 	}
-	Load_Uncompress(CCFileClass(filename), HidPage, HidPage, temp);
+	CCFileClass fc(filename);
+	Load_Uncompress(fc, *HidPage.Get_Graphic_Buffer(), *HidPage.Get_Graphic_Buffer(), temp);
 #endif
 	HidPage.Blit(SeenPage);
 
-	#ifdef WIN32
+	#if defined(WIN32) && !defined(PORTABLE)
 	VisiblePage.Blit(seen_buff_save);
 	#endif
 
@@ -1533,7 +1534,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 	int xprint = x + 20;
 	int yprint = y + 25;
 	do {
-		#ifdef WIN32
+		#if defined(WIN32) && !defined(PORTABLE)
 		/*
 		** If we have just received input focus again after running in the background then
 		** we need to redraw.
@@ -1556,7 +1557,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 		} else {
 			if (bufprint[0] != 20) {
 				SeenPage.Print(bufprint, xprint, yprint, TBLACK, TBLACK);
-#ifdef WIN32
+#if defined(WIN32) && !defined(PORTABLE)
 				seen_buff_save.Print(bufprint, xprint, yprint, TBLACK, TBLACK);
 #endif
 				xprint += Char_Pixel_Width(bufprint[0]);
@@ -1583,7 +1584,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 		process = true;
 		pressed = false;
 		while (process) {
-			#ifdef WIN32
+			#if defined(WIN32) && !defined(PORTABLE)
 			/*
 			** If we have just received input focus again after running in the background then
 			** we need to redraw.

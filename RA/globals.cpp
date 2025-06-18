@@ -181,10 +181,17 @@ fixed EngineerCaptureLevel=0x40;	// Building damage level before engineer can ca
 #ifdef WIN32
 unsigned short			Hard_Error_Occured = 0;
 WWMouseClass *			WWMouse = NULL;
+#ifndef LORES
 GraphicBufferClass	SysMemPage(DEFAULT_SCREEN_WIDTH, 200, (void*)NULL);
+#endif
 WinTimerClass *		WindowsTimer=NULL;
+#ifdef LORES
+int						ScreenWidth=320;
+int						ScreenHeight=200;
+#else
 int						ScreenWidth=640;
 int						ScreenHeight=400;
+#endif
 GraphicBufferClass	ModeXBuff;
 bool						InMovie = FALSE;	//Are we currently playing a VQ movie?
 #ifndef PORTABLE

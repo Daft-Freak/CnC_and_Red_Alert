@@ -1635,7 +1635,7 @@ static void Play_Intro(bool sequenced)
 		Hide_Mouse();
 		VisiblePage.Clear();
 		Show_Mouse();
-#ifdef WIN32
+#if RESFACTOR == 2
 		Play_Movie(VQ_REDINTRO, THEME_NONE, false);
 #else
 		Play_Movie(VQ_TITLE, THEME_NONE, false);
@@ -1683,7 +1683,11 @@ void Anim_Init(void)
 	AnimControl.EventHandler = VQ_Event_Handler;
 	AnimControl.ImageWidth = 320;
 	AnimControl.ImageHeight = 200;
+#ifdef LORES
+	AnimControl.ImageBuf = (unsigned char *)HidPage.Get_Offset();
+#else
 	AnimControl.ImageBuf = (unsigned char *)SysMemPage.Get_Offset();
+#endif
 #ifdef MOVIE640
 	if(IsVQ640) {
 		AnimControl.ImageWidth = 640;
@@ -2537,17 +2541,15 @@ void Init_Random(void)
  *=============================================================================================*/
 void Load_Title_Page(bool visible)
 {
-#ifdef WIN32
+#if RESFACTOR == 2
 	Load_Title_Screen("TITLE.PCX", &HidPage, CCPalette);
-	if (visible) {
-		HidPage.Blit(SeenPage);
-	}
 #else
-	Load_Picture("TITLE.CPS", HidPage, HidPage, CCPalette, BM_DEFAULT);
+	Load_Picture("TITLE.CPS", *HidPage.Get_Graphic_Buffer(), *HidPage.Get_Graphic_Buffer(), CCPalette, BM_DEFAULT);
+#endif
+
 	if (visible) {
 		HidPage.Blit(SeenPage);
 	}
-#endif
 }
 
 
@@ -2577,10 +2579,13 @@ static void Init_Color_Remaps(void)
 	*/
 
 #ifdef WIN32
-
+#if RESFACTOR == 2
 	SysMemPage.Clear();
 	Load_Picture("PALETTE.CPS", SysMemPage, SysMemPage, NULL, BM_DEFAULT);
 	SysMemPage.Blit(HidPage);
+#else
+	Load_Picture("PALETTE.CPS", HiddenPage, HiddenPage, NULL, BM_DEFAULT);
+#endif
 #else
 	Load_Picture("PALETTE.CPS", HidPage, HidPage, NULL, BM_DEFAULT);
 #endif
@@ -2984,7 +2989,7 @@ static void Init_Bootstrap_Mixfiles(void)
 		bool ok = MFCD::Cache("EXPAND2.MIX");
 		assert(ok);
 
- #ifdef WIN32
+ #if RESFACTOR == 2
 		new MFCD("HIRES1.MIX", &FastKey);
 		ok = MFCD::Cache("HIRES1.MIX");
 		assert(ok);
@@ -3015,7 +3020,7 @@ static void Init_Bootstrap_Mixfiles(void)
 	bool ok = MFCD::Cache("LOCAL.MIX");
 	assert(ok);
 
-#ifdef WIN32
+#if RESFACTOR == 2
 	new MFCD("HIRES.MIX", &FastKey);
 	ok = MFCD::Cache("HIRES.MIX");
 	assert(ok);

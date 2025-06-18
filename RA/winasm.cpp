@@ -1,6 +1,8 @@
 #include <stdint.h>
 #include "gbuffer.h"
 
+#ifndef LORES
+
 #define SIZE_OF_PALETTE	256
 extern "C"{
 	extern unsigned char PaletteInterpolationTable[SIZE_OF_PALETTE][SIZE_OF_PALETTE];
@@ -106,3 +108,5 @@ extern "C" void Asm_Interpolate_Line_Interpolate(unsigned char* src_ptr, unsigne
 {
 	printf("%s\n", __func__);
 }
+
+#endif

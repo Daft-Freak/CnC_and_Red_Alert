@@ -774,12 +774,14 @@ bool InitDDraw(void)
 		return false;
 		}
 
+#ifndef PORTABLE
 	if (ScreenWidth == 320)
 		{
 		VisiblePage.Init(ScreenWidth, ScreenHeight, NULL, 0, (GBC_Enum)0);
 		ModeXBuff.Init(ScreenWidth, ScreenHeight, NULL, 0, (GBC_Enum)(GBC_VISIBLE|GBC_VIDEOMEM));
 		}
 	else
+#endif
 		{
 		VisiblePage.Init(ScreenWidth, ScreenHeight, NULL, 0, (GBC_Enum)(GBC_VISIBLE|GBC_VIDEOMEM));
 #ifdef PORTABLE
@@ -845,18 +847,13 @@ bool InitDDraw(void)
 #endif
 		}
 
-	ScreenHeight = 400;
+	if(ScreenHeight	== 480)
+		ScreenHeight = 400;
 
-	if (VisiblePage.Get_Height() == 480)
-		{
-		SeenBuff.Attach(&VisiblePage, 0, 40, 640, 400);
-		HidPage.Attach(&HiddenPage, 0, 40, 640, 400);
-		}
-	else
-		{
-		SeenBuff.Attach(&VisiblePage, 0, 0, 640, 400);
-		HidPage.Attach(&HiddenPage, 0, 0, 640, 400);
-		}
+	int yoff = VisiblePage.Get_Height() == 480 ? 40 : 0;
+
+	SeenBuff.Attach(&VisiblePage, 0, yoff, ScreenWidth, ScreenHeight);
+	HidPage.Attach(&HiddenPage, 0, yoff, ScreenWidth, ScreenHeight);
 
 	return true;
 	}
@@ -1029,7 +1026,10 @@ void Read_Setup_Options( RawFileClass *config_file )
 		*/
 		VideoBackBufferAllowed = ini.Get_Bool("Options", "VideoBackBuffer", true);
 		AllowHardwareBlitFills = ini.Get_Bool("Options", "HardwareFills", true);
+
+#ifndef LORES
 		ScreenHeight = ini.Get_Bool("Options", "Resolution", false) ? 480 : 400;
+#endif
 
 		/*
 		** See if an alternative socket number has been specified
