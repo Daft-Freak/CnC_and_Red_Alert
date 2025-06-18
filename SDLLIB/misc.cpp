@@ -142,6 +142,10 @@ int Confine_Rect(int *x, int *y, int dw, int dh, int width, int height)
     else if(*x + dw > width)
     {
         *x -= (*x + dw) - width;
+
+        if(*x < 0)
+            *x = 0;
+
         ret = 1;
     }
 
@@ -153,6 +157,10 @@ int Confine_Rect(int *x, int *y, int dw, int dh, int width, int height)
     else if(*y + dh > height)
     {
         *y -= (*y + dh) - height;
+
+        if(*y < 0)
+            *y = 0;
+
         ret = 1;
     }
 
