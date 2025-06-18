@@ -366,6 +366,13 @@ int main(int argc, char * argv[])
 
 		CDFileClass::Set_CD_Drive (CDList.Get_First_CD_Drive());
 
+#ifdef PORTABLE
+		if (!cfile.Is_Available()) {
+			// just create an empty config, we don't care about most of it anyway
+			cfile.Create();
+		}
+#endif
+
 		if (cfile.Is_Available()) {
 
 #ifndef NOMEMCHECK
