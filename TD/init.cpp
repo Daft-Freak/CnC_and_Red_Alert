@@ -397,6 +397,10 @@ bool Init_Game(int , char *[])
 	if (Find_First_File("SC*.MIX", state)) {
 		char * ptr;
 		do {
+			// don't cache scores
+			if (stricmp(state.name, "scores.mix") == 0)
+				continue;
+
 			ptr = strdup(state.name);
 			new MixFileClass(ptr);
 			MixFileClass::Cache(ptr);
