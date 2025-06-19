@@ -1020,8 +1020,13 @@ int					Argc;				//Command line argument count
 
 
 WWKeyboardClass	Kbd;
-int					ScreenWidth=640;
-int					ScreenHeight=400;
+#ifdef LORES
+int						ScreenWidth=320;
+int						ScreenHeight=200;
+#else
+int						ScreenWidth=640;
+int						ScreenHeight=400;
+#endif
 WWMouseClass		*WWMouse = NULL;
 #ifndef PORTABLE
 HANDLE hInstance;
