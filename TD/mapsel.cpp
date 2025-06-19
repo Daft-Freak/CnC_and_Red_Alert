@@ -316,22 +316,30 @@ void Map_Selection(void)
 	PseudoSeenBuff->Clear();
 	WWMouse->Erase_Mouse(&HidPage, TRUE);
 	HiddenPage.Clear();
+
+#ifndef LORES
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = Palette;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP1.PAL");
+#endif
 //	SeenBuff.Blit(HidPage);
 	Animate_Frame(greyearth, SysMemPage, 0);
 
 	Bit_It_In_Scale(0, 0, 320, 200, &SysMemPage, PseudoSeenBuff , &SeenBuff);
 	PseudoSeenBuff->Put_Pixel(237,92,TBLACK);
 	PseudoSeenBuff->Put_Pixel(237,93,TBLACK);
+
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff,"MAP1.PAL");
+
 
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = localpalette;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP_LOCL.PAL");
+#endif
+
 	Play_Sample(appear1, 255, Options.Normalize_Sound(110));
 	Fade_Palette_To(localpalette, FADE_PALETTE_MEDIUM, Call_Back);
 	for (int i = 1; i < Get_Animation_Frame_Count(greyearth); i++) {
@@ -339,15 +347,21 @@ void Map_Selection(void)
 		Animate_Frame(greyearth, *PseudoSeenBuff, i);
 	}
 	Close_Animation(greyearth);
+
+#ifndef LORES
 	Write_Interpolation_Palette("MAP_LOCL.PAL");
+#endif
 
 	Call_Back_Delay(4);
 	SysMemPage.Clear();
 	Animate_Frame(greyearth2, SysMemPage, 0);
+
+#ifndef LORES
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = grey2palette;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP_GRY2.PAL");
+#endif
 	Wait_Vert_Blank();
 	Set_Palette(grey2palette);
 	SysMemPage.Blit(*PseudoSeenBuff);
@@ -357,7 +371,10 @@ void Map_Selection(void)
 		Call_Back_Delay(4);
 	}
 	Close_Animation(greyearth2);
+
+#ifndef LORES
 	Write_Interpolation_Palette("MAP_GRY2.PAL");
+#endif
 
 	/*
 	** Copy the first frame up to the seenpage (while screen is black)
@@ -365,7 +382,10 @@ void Map_Selection(void)
 	SysMemPage.Clear();
 	Animate_Frame(anim, SysMemPage, 1);//, 0,0, (WSAType)0,0,0);
 	SysMemPage.Blit(*PseudoSeenBuff);
+
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff ,NULL);
+#endif
 
 	Stop_Speaking();
 
@@ -380,7 +400,9 @@ void Map_Selection(void)
 	** now make the grid appear
 	*/
 	SysMemPage.Blit(*PseudoSeenBuff);
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff, NULL);
+#endif
 	Play_Sample(sfx4, 255, Options.Normalize_Sound(130));
 	Play_Sample(text2, 255, Options.Normalize_Sound(90));
 
@@ -463,10 +485,13 @@ void Map_Selection(void)
 	SysMemPage.Clear();
 	Animate_Frame(progress,SysMemPage,0);
 	SysMemPage.Blit(*PseudoSeenBuff);
+
+	#ifndef LORES
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = progresspalette;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP_PROG.PAL");
+#endif
 
 	GraphicBufferClass *europe = new GraphicBufferClass(SysMemPage.Get_Width(),SysMemPage.Get_Height());
 	SysMemPage.Blit(*europe);
@@ -512,7 +537,9 @@ void Map_Selection(void)
 	PseudoSeenBuff->Fill_Rect(xcoord,0,xcoord + 6*16,8,BLACK);
 	TextPrintBuffer->Fill_Rect(2*xcoord,0,2*(xcoord + 6*16),2*8,BLACK);
 #endif
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff,NULL);
+#endif
 	SysMemPage.Blit(backpage, xcoord,1, 0,0, 20*6,8);
 	if (!lastscenario) {
 		Play_Sample(text2, 255, Options.Normalize_Sound(90));
@@ -537,7 +564,10 @@ void Map_Selection(void)
 	PseudoSeenBuff->Fill_Rect(xcoord,12,xcoord+6*16,20,BLACK);
 	TextPrintBuffer->Fill_Rect(2*xcoord,2*12,2*(xcoord+6*16),2*20,BLACK);
 #endif
+
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff,NULL);
+#endif
 
 	startframe = CountryArray[scenario].ContAnim[ScenDir];
 
@@ -579,6 +609,7 @@ void Map_Selection(void)
 	** Fix up the palette that seems different for the last scenario
 	*/
 	if (lastscenario){
+#ifndef LORES
 		InterpolationPaletteChanged = TRUE;
 		InterpolationPalette = CurrentPalette;
 		if (house == HOUSE_GOOD){
@@ -588,6 +619,7 @@ void Map_Selection(void)
 			Read_Interpolation_Palette("LASTSCNB.PAL");
 			Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff, "LASTSCNB.PAL");
 		}
+#endif
 	}
 
 
@@ -662,7 +694,10 @@ void Map_Selection(void)
 		TextPrintBuffer->Fill_Rect(0,2*160, 2*20*6,2*176, BLACK);
 #endif
 	}
+
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff, NULL);
+#endif
 
 	/*
 	** Now the crosshairs are over the target countries - loop until a
@@ -735,7 +770,10 @@ void Map_Selection(void)
 		PseudoSeenBuff->Fill_Rect(attackxcoord+(17*6),160, attackxcoord+(21*6),178,BLACK);
 		TextPrintBuffer->Fill_Rect(2*attackxcoord+(17*6*2),2*160, 2*(attackxcoord+(21*6)),2*178,BLACK);
 #endif	//GERMAN
+
+#ifndef LORES
 		Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff ,NULL);
+#endif
 
 		/*
 		** Draw the country's shape in non-fading colors
@@ -749,7 +787,9 @@ void Map_Selection(void)
 					 _countryx[xyindex],_countryy[xyindex],
 					 WINDOW_MAIN, SHAPE_WIN_REL | SHAPE_CENTER, 0,0);
 		SysMemPage.Blit(*PseudoSeenBuff);
+#ifndef LORES
 		Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff ,NULL);
+#endif
 
 		/*
 		** Now clear the palette of all but the country's colors, and fade
@@ -757,11 +797,13 @@ void Map_Selection(void)
 		*/
 		CCFileClass("DARK_E.PAL").Read(localpalette, 768);
 //		Load_Data("DARK_E.PAL", localpalette, 768);
+#ifndef LORES
 		InterpolationPaletteChanged = TRUE;
 		InterpolationPalette = localpalette;
 		Increase_Palette_Luminance(localpalette , 30,30,30,63);
 		Read_Interpolation_Palette("MAP_LOC2.PAL");
 		Interpolate_2X_Scale(PseudoSeenBuff , &SeenBuff , "MAP_LOC2.PAL");
+#endif
 		Fade_Palette_To(localpalette, FADE_PALETTE_MEDIUM, Call_Back);
 
 		countryshape = 0;
@@ -769,11 +811,13 @@ void Map_Selection(void)
 		Print_Statistics(color & 0x7F, _countryx[xyindex], _countryy[xyindex]);
 	} else {
 		CCFileClass(house == HOUSE_GOOD ? "DARK_B.PAL" : "DARK_SA.PAL").Read(localpalette, 768);
+#ifndef LORES
 		InterpolationPaletteChanged = TRUE;
 		InterpolationPalette = localpalette;
 		Increase_Palette_Luminance(localpalette , 30,30,30,63);
 		Read_Interpolation_Palette("MAP_LOC3.PAL");
 		Interpolate_2X_Scale(PseudoSeenBuff , &SeenBuff , "MAP_LOC3.PAL");
+#endif
 		Set_Palette(localpalette);
 //		Load_Data(house == HOUSE_GOOD ? "DARK_B.PAL" : "DARK_SA.PAL", localpalette, 768);
 
@@ -785,7 +829,9 @@ void Map_Selection(void)
 		PseudoSeenBuff->Fill_Rect(attackxcoord, 160, attackxcoord + (17*6), 199, BLACK);	// erase "Select country to attack"
 		TextPrintBuffer->Fill_Rect(2*attackxcoord, 2*160, 2*(attackxcoord + (17*6)), 2*199, BLACK);	// erase "Select country to attack"
 #endif
+#ifndef LORES
 		Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff, NULL);
+#endif
 		Animate_Frame(progress, *PseudoSeenBuff, Get_Animation_Frame_Count(progress)-1);
 		Set_Palette(localpalette);
 		Close_Animation(progress);

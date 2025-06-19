@@ -1931,7 +1931,11 @@ void Anim_Init(void)
 	AnimControl.ImageWidth = 320;
 	AnimControl.ImageHeight = 200;
 	AnimControl.Vmode = 0;
+#ifdef LORES
+	AnimControl.ImageBuf = (unsigned char *)HidPage.Get_Offset();
+#else
 	AnimControl.ImageBuf = (unsigned char *)SysMemPage.Get_Offset();
+#endif
 	//AnimControl.VBIBit = VertBlank;
 	//AnimControl.DrawFlags |= VQACFGF_TOPLEFT;
 	AnimControl.OptionFlags |= VQAOPTF_CAPTIONS|VQAOPTF_EVA;

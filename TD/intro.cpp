@@ -138,15 +138,22 @@ void Choose_Side(void)
 	//anim = Open_Animation("CHOOSE.WSA",NULL,0L,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),Palette);
 	anim = Open_Animation("CHOOSE.WSA",NULL,0L,(WSAOpenType)(WSA_OPEN_FROM_DISK | WSA_OPEN_TO_PAGE),Palette);
 	Call_Back();
+
+#ifndef LORES
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = Palette;
 	Read_Interpolation_Palette("SIDES.PAL");
+#endif
 
 	nodbrief = Open_Movie("NOD1PRE.VQA");
+#ifndef LORES
 	gdi_start_palette = Load_Interpolated_Palettes("NOD1PRE.VQP");
+#endif
 	Call_Back();
 	gdibrief = Open_Movie("GDI1.VQA");
+#ifndef LORES
 	Load_Interpolated_Palettes("GDI1.VQP" , TRUE);
+#endif
 
 	WWMouse->Erase_Mouse(&HidPage, TRUE);
 	HiddenPage.Clear();
@@ -241,9 +248,11 @@ void Choose_Side(void)
 	Close_Animation(anim);
 
 	// erase the "choose side" text
+#ifndef LORES
 	PseudoSeenBuff->Fill_Rect(0,180,319,199,0);
 	SeenBuff.Fill_Rect(0,180*2, 319*2, 199*2, 0);
 	Interpolate_2X_Scale (PseudoSeenBuff , &SeenBuff ,"SIDES.PAL");
+#endif
 	Keyboard::Clear();
 	SysMemPage.Clear();
 

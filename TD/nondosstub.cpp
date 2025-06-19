@@ -114,9 +114,12 @@ void __cdecl SetPalette(unsigned char *palette, long, unsigned long)
 	}
 	Increase_Palette_Luminance(palette , 15 , 15 , 15 ,63);
 
+#ifndef LORES
 	if (PalettesRead) {
 		memcpy (&PaletteInterpolationTable[0][0] , InterpolatedPalettes[PaletteCounter++] , 65536);
 	}
+#endif
+
 	Set_Palette(palette);
 }
 
