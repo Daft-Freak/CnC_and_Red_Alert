@@ -454,72 +454,72 @@ int Do_Menu(char const **strings, bool blue)
 int Main_Menu(unsigned long timeout)
 {
 	enum {
-		D_DIALOG_W = 152*2,
-		D_DIALOG_H = 136*2,
-		D_DIALOG_X = 85*2,
+		D_DIALOG_W = 152 * RESFACTOR,
+		D_DIALOG_H = 136 * RESFACTOR,
+		D_DIALOG_X = 85 * RESFACTOR,
 		D_DIALOG_Y = 0,
 		D_DIALOG_CX = D_DIALOG_X + (D_DIALOG_W / 2),
 
-		D_START_W = 125*2,
-		D_START_H = 9*2,
-		D_START_X = 98*2,
-		D_START_Y = 35*2,
+		D_START_W = 125 * RESFACTOR,
+		D_START_H = 9 * RESFACTOR,
+		D_START_X = 98 * RESFACTOR,
+		D_START_Y = 35 * RESFACTOR,
 
 #ifdef BONUS_MISSIONS
-		D_BONUS_W = 125*2,
-		D_BONUS_H = 9*2,
-		D_BONUS_X = 98*2,
+		D_BONUS_W = 125 * RESFACTOR,
+		D_BONUS_H = 9 * RESFACTOR,
+		D_BONUS_X = 98 * RESFACTOR,
 		D_BONUS_Y = 0,
 #endif	//BONUS_MISSIONS
 
-		D_INTERNET_W = 125*2,
-		D_INTERNET_H = 9*2,
-		D_INTERNET_X = 98*2,
-		D_INTERNET_Y = 36*2,
+		D_INTERNET_W = 125 * RESFACTOR,
+		D_INTERNET_H = 9 * RESFACTOR,
+		D_INTERNET_X = 98 * RESFACTOR,
+		D_INTERNET_Y = 36 * RESFACTOR,
 
-		D_LOAD_W = 125*2,
-		D_LOAD_H = 9*2,
-		D_LOAD_X = 98*2,
-		D_LOAD_Y = 53*2,
+		D_LOAD_W = 125 * RESFACTOR,
+		D_LOAD_H = 9 * RESFACTOR,
+		D_LOAD_X = 98 * RESFACTOR,
+		D_LOAD_Y = 53 * RESFACTOR,
 
-		D_MULTI_W = 125*2,
-		D_MULTI_H = 9*2,
-		D_MULTI_X = 98*2,
-		D_MULTI_Y = 71*2,
+		D_MULTI_W = 125 * RESFACTOR,
+		D_MULTI_H = 9 * RESFACTOR,
+		D_MULTI_X = 98 * RESFACTOR,
+		D_MULTI_Y = 71 * RESFACTOR,
 
-		D_INTRO_W = 125*2,
-		D_INTRO_H = 9*2,
-		D_INTRO_X = 98*2,
-		D_INTRO_Y = 89*2,
+		D_INTRO_W = 125 * RESFACTOR,
+		D_INTRO_H = 9 * RESFACTOR,
+		D_INTRO_X = 98 * RESFACTOR,
+		D_INTRO_Y = 89 * RESFACTOR,
 #if (GERMAN | FRENCH)
-		D_EXIT_W = 83*2,
+		D_EXIT_W = 83 * RESFACTOR,
 #else
-		D_EXIT_W = 63*2,
+		D_EXIT_W = 63 * RESFACTOR,
 #endif
-		D_EXIT_H = 9*2,
+		D_EXIT_H = 9 * RESFACTOR,
 #if (GERMAN | FRENCH)
-		D_EXIT_X = 118*2,
+		D_EXIT_X = 118 * RESFACTOR,
 #else
-		D_EXIT_X = 128*2,
+		D_EXIT_X = 128 * RESFACTOR,
 #endif
-		D_EXIT_Y = 111*2,
+		D_EXIT_Y = 111 * RESFACTOR,
 
 	};
 
 #ifdef NEWMENU
-	int starty = 25*2;
+	int starty = 25 * RESFACTOR;
 #endif
 
 	enum {
 #ifdef NEWMENU
-		BUTTON_EXPAND=100*2,
+		BUTTON_EXPAND=100,
 		BUTTON_START,
 #ifdef BONUS_MISSIONS
 		BUTTON_BONUS,
 #endif	//BONUS_MISSIONS
 		BUTTON_INTERNET,
 #else
-		BUTTON_START=100*2,
+		BUTTON_START=100,
 #endif
 		BUTTON_LOAD,
 		BUTTON_MULTI,
@@ -548,12 +548,12 @@ int Main_Menu(unsigned long timeout)
 
 #ifdef NEWMENU
 #ifdef BONUS_MISSIONS
-	int ystep = 13*2;
+	int ystep = 13 * RESFACTOR;
 #else
-	int ystep = 15*2;
+	int ystep = 15 * RESFACTOR;
 #endif	//BONUS_MISSIONS
 
-	if (expansions) ystep -= 2*2;
+	if (expansions) ystep -= 2 * RESFACTOR;
 	TextButtonClass expandbtn (BUTTON_EXPAND, TXT_NEW_MISSIONS,
 		TPF_CENTER | TPF_6PT_GRAD | TPF_USE_GRAD_PAL | TPF_NOSHADOW,
 		D_START_X, starty, D_START_W, D_START_H);
@@ -769,17 +769,17 @@ int Main_Menu(unsigned long timeout)
 #ifdef VIRGIN_CHEAT_KEYS
 #ifdef DEMO
 			Version_Number();
-			Fancy_Text_Print("Demo%s", D_DIALOG_X+D_DIALOG_W-5*2, D_DIALOG_Y+D_DIALOG_H-10*2, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, VersionText);
+			Fancy_Text_Print("Demo%s", D_DIALOG_X+D_DIALOG_W-5 * RESFACTOR, D_DIALOG_Y+D_DIALOG_H-10 * RESFACTOR, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, VersionText);
 #else
-			Fancy_Text_Print("V.%d%s", D_DIALOG_X+D_DIALOG_W-5*2, D_DIALOG_Y+D_DIALOG_H-10*2, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, Version_Number(), VersionText, FOREIGN_VERSION_NUMBER);
+			Fancy_Text_Print("V.%d%s", D_DIALOG_X+D_DIALOG_W-5 * RESFACTOR, D_DIALOG_Y+D_DIALOG_H-10 * RESFACTOR, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, Version_Number(), VersionText, FOREIGN_VERSION_NUMBER);
 #endif
 //			Fancy_Text_Print("V.%d%s%02d", D_DIALOG_X+D_DIALOG_W-5, D_DIALOG_Y+D_DIALOG_H-10, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, Version_Number(), VersionText, FOREIGN_VERSION_NUMBER);
 #else
 #ifdef DEMO
 			Version_Number();
-			Fancy_Text_Print("Demo%s", D_DIALOG_X+D_DIALOG_W-5*2, D_DIALOG_Y+D_DIALOG_H-10*2, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, VersionText);
+			Fancy_Text_Print("Demo%s", D_DIALOG_X+D_DIALOG_W-5 * RESFACTOR, D_DIALOG_Y+D_DIALOG_H-10 * RESFACTOR, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, VersionText);
 #else
-			Fancy_Text_Print("V.%d%s", D_DIALOG_X+D_DIALOG_W-5*2, D_DIALOG_Y+D_DIALOG_H-10*2, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, Version_Number(), VersionText);
+			Fancy_Text_Print("V.%d%s", D_DIALOG_X+D_DIALOG_W-5 * RESFACTOR, D_DIALOG_Y+D_DIALOG_H-10 * RESFACTOR, DKGREY, TBLACK, TPF_6POINT|TPF_FULLSHADOW|TPF_RIGHT, Version_Number(), VersionText);
 #endif
 #endif
 
