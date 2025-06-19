@@ -275,8 +275,7 @@ int Test_Null_Modem( void )
 	............................ Draw the dialog .............................
 	*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 
 	Dialog_Box(x, y, width, height);
 	Draw_Caption(TXT_NONE, x, y, width);
@@ -1058,8 +1057,7 @@ Debug_Smart_Print = true;
 				/*
 				..................... Refresh the backdrop ......................
 				*/
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				/*
 				..................... Draw the background .......................
 				*/
@@ -1500,8 +1498,7 @@ void Advanced_Modem_Settings (SerialSettingsType *settings)
 			.................. Redraw backgound & dialog box ...................
 			*/
 			if (display >= REDRAW_BACKGROUND) {
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				Set_Palette(Palette);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
@@ -2333,8 +2330,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 			.................. Redraw backgound & dialog box ...................
 			*/
 			if (display >= REDRAW_BACKGROUND) {
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				Set_Palette(Palette);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
@@ -2934,8 +2930,7 @@ static int Com_Settings_Dialog( SerialSettingsType *settings )
 	Restore screen
 	------------------------------------------------------------------------*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Show_Mouse();
 
 	/*------------------------------------------------------------------------
@@ -3481,8 +3476,7 @@ int Com_Scenario_Dialog(void)
 	........................................................................*/
 	Messages.Init (d_message_x + 2*factor, d_message_y + 2*factor, 4, MAX_MESSAGE_LENGTH, d_txt6_h);
 
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Set_Palette(Palette);
 
 	extern char ModemRXString[];
@@ -4498,8 +4492,7 @@ CCDebugString (flip);
 	Restore screen
 	------------------------------------------------------------------------*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Show_Mouse();
 
 	/*------------------------------------------------------------------------
@@ -4749,8 +4742,7 @@ int Com_Show_Scenario_Dialog(void)
 	........................................................................*/
 	Messages.Init (d_message_x + 2*factor, d_message_y + 2*factor, 4, MAX_MESSAGE_LENGTH, d_txt6_h);
 
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Set_Palette(Palette);
 
 	extern char ModemRXString[];
@@ -5666,8 +5658,7 @@ CCDebugString (flip);
 	Restore screen
 	------------------------------------------------------------------------*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Show_Mouse();
 
 	/*------------------------------------------------------------------------
@@ -5901,8 +5892,7 @@ static int Phone_Dialog (void)
 			.................. Redraw backgound & dialog box ...................
 			*/
 			if (display >= REDRAW_BACKGROUND) {
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				Set_Palette(Palette);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
@@ -6506,8 +6496,7 @@ static int Edit_Phone_Dialog (PhoneEntryClass *phone)
 			.................. Redraw backgound & dialog box ...................
 			*/
 			if (display >= REDRAW_BACKGROUND) {
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				Set_Palette(Palette);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
@@ -7277,8 +7266,7 @@ int Com_Fake_Scenario_Dialog(void)
 		*/
 		if (display) {
 			Hide_Mouse();
-			Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-			HidPage.Blit(SeenBuff);
+			Load_Title_Page(true);
 			Set_Palette(Palette);
 			/*
 			..................... Draw the background .......................
@@ -7636,8 +7624,7 @@ int Com_Fake_Scenario_Dialog(void)
 	Restore screen
 	------------------------------------------------------------------------*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Show_Mouse();
 
 	/*------------------------------------------------------------------------
@@ -7786,8 +7773,7 @@ int Com_Show_Fake_Scenario_Dialog(void)
 			/*
 			.................. Redraw backgound & dialog box ...................
 			*/
-			Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-			HidPage.Blit(SeenBuff);
+			Load_Title_Page(true);
 			Set_Palette(Palette);
 			/*
 			..................... Draw the background .......................

@@ -1226,8 +1226,7 @@ int NullModemClass::Detect_Modem( SerialSettingsType *settings, bool reconnect )
 	*/
 	Hide_Mouse();
 	if ( !reconnect ) {
-		Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-		HidPage.Blit(SeenBuff);
+		Load_Title_Page(true);
 	}
 
 	Dialog_Box(x, y, width, height);
@@ -1533,8 +1532,7 @@ DialStatusType NullModemClass::Dial_Modem( char *string, DialMethodType method, 
 	*/
 	Hide_Mouse();
 	if ( !reconnect ) {
-		Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-		HidPage.Blit(SeenBuff);
+		Load_Title_Page(true);
 	}
 
 
@@ -1825,8 +1823,7 @@ DialStatusType NullModemClass::Answer_Modem( bool reconnect )
 				..................... Refresh the backdrop ......................
 				*/
 				if ( !reconnect ) {
-					Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-					HidPage.Blit(SeenBuff);
+					Load_Title_Page(true);
 				}
 				/*
 				..................... Draw the background .......................

@@ -540,8 +540,7 @@ bool Init_Game(int , char *[])
 	memset(CurrentPalette, 0x01, 768);
 
 	if (!Special.IsFromInstall) {
-		Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-		HidPage.Blit(SeenBuff);
+		Load_Title_Page(true);
 	}
 
 	Hide_Mouse();
@@ -917,9 +916,8 @@ bool Select_Game(bool fade)
 				**	Display the title page; fade it in if this is the first time
 				**	through the loop, and the 'fade' flag is true
 				*/
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
+				Load_Title_Page(true);
 				memcpy (GamePalette, Palette, 768);
-				HidPage.Blit(SeenBuff);
 
 				if (fade) {
 					Fade_Palette_To(Palette, FADE_PALETTE_SLOW, Call_Back);
@@ -3019,4 +3017,33 @@ long Obfuscate(char const * string)
 	**	Return the final code value.
 	*/
 	return((uint32_t)code);
+}
+
+/***********************************************************************************************
+ * Load_Title_Page -- Load the background art for the title page.                              *
+ *                                                                                             *
+ *    This routine will load the background art in a machine independent format. There is      *
+ *    different art required for the hi-res and lo-res versions of the game.                   *
+ *                                                                                             *
+ * INPUT:   visible  -- Should the title page art be copied to the visible page by this        *
+ *                      routine?                                                               *
+ *                                                                                             *
+ * OUTPUT:  none                                                                               *
+ *                                                                                             *
+ * WARNINGS:   Be sure the mouse is hidden if the image is to be copied to the visible page.   *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   06/03/1996 JLB : Created.                                                                 *
+ *=============================================================================================*/
+void Load_Title_Page(bool visible)
+{
+#if RESFACTOR == 2
+	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
+#else
+	Load_Picture("TITLE.CPS", *HidPage.Get_Graphic_Buffer(), *HidPage.Get_Graphic_Buffer(), Palette, BM_DEFAULT);
+#endif
+
+	if (visible) {
+		HidPage.Blit(SeenBuff);
+	}
 }

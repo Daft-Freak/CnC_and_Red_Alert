@@ -265,6 +265,11 @@ long Load_Uncompress(FileClass &file, BuffType &uncomp_buff, BuffType &dest_buff
 	return((long)size);
 }
 
+int Load_Picture(char const * filename, BufferClass& scratchbuf, BufferClass& destbuf, unsigned char * palette, PicturePlaneType )
+{
+	CCFileClass fc(filename);
+	return(Load_Uncompress(fc, scratchbuf, destbuf,  palette ) / 8000);
+}
 
 /***********************************************************************************************
  * Load_Alloc_Data -- Allocates a buffer and loads the file into it.                           *
