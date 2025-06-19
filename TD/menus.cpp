@@ -758,8 +758,7 @@ int Main_Menu(unsigned long timeout)
 			/*
 			**	Load the background picture.
 			*/
-			Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-			HidPage.Blit(SeenBuff);
+			Load_Title_Page(true);
 
 			/*
 			**	Display the title and text overlay for the menu.

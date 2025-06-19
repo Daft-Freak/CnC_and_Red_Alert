@@ -243,8 +243,7 @@ GameType Select_MPlayer_Game (void)
 				/*
 				..................... Refresh the backdrop ......................
 				*/
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				/*
 				..................... Draw the background .......................
 				*/
@@ -358,8 +357,7 @@ GameType Select_MPlayer_Game (void)
 					Call_Back();
 					Show_Internet_Connection_Progress();		//changed to do nothing
 					Hide_Mouse();
-					Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-					HidPage.Blit(SeenBuff);
+					Load_Title_Page(true);
 					Show_Mouse();
 					Call_Back();
 					CCMessageBox().Process("Error! - Unable to ping KANE.WESTWOOD.COM");

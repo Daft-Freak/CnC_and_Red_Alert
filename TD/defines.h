@@ -175,6 +175,12 @@
 
 #define	FOREIGN_VERSION_NUMBER	6
 
+#if !defined(LORES)
+#define RESFACTOR 2
+#else
+#define RESFACTOR 1
+#endif
+
 
 /**********************************************************************
 **	These enumerations are used to implement RTTI.

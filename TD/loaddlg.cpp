@@ -349,8 +349,7 @@ int LoadOptionsClass::Process(void)
 				Map.Render();
 			}else{
 				HiddenPage.Clear();
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 			}
 
 

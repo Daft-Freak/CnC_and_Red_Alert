@@ -489,6 +489,7 @@ int Scan_Place_Object(ObjectClass *obj, CELL cell);
 **	INIT.CPP
 */
 void Uninit_Game(void);
+void Load_Title_Page(bool visible=false);
 long Obfuscate(char const * string);
 void Anim_Init(void);
 bool Init_Game(int argc, char *argv[]);
@@ -502,6 +503,7 @@ void Load_Recording_Values(void);
 /*
 ** JSHELL.CPP
 */
+int Load_Picture(char const *filename, BufferClass& scratchbuf, BufferClass& destbuf, unsigned char *palette, PicturePlaneType format);
 void * Small_Icon(void const * iconptr, int iconnum);
 void Set_Window(int window, int x, int y, int w, int h);
 void * Load_Alloc_Data(FileClass &file);

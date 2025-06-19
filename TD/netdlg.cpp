@@ -987,8 +987,7 @@ static int Net_Join_Dialog(void)
 	*/
 	Send_Join_Queries (game_index, 1, 0);
 
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Set_Palette(Palette);
 
 	/*
@@ -1027,8 +1026,7 @@ static int Net_Join_Dialog(void)
 			.................. Redraw backgound & dialog box ...................
 			*/
 			if (display >= REDRAW_BACKGROUND) {
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				Set_Palette(Palette);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
@@ -1926,8 +1924,7 @@ static int Net_Join_Dialog(void)
 	Restore screen
 	------------------------------------------------------------------------*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Show_Mouse();
 
 	return(rc);
@@ -3041,8 +3038,7 @@ static int Net_New_Dialog(void)
 	}
 	playerlist.Add_Item(item, MPlayerTColors[MPlayerColorIdx]);
 
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Set_Palette(Palette);
 	while (Get_Mouse_State() > 0) Show_Mouse();
 
@@ -3093,8 +3089,7 @@ static int Net_New_Dialog(void)
 				/*
 				** Reload and draw the title page
 				*/
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				Set_Palette(Palette);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
@@ -3753,8 +3748,7 @@ static int Net_New_Dialog(void)
 	Restore screen
 	------------------------------------------------------------------------*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Show_Mouse();
 
 	return(rc);
@@ -4332,8 +4326,7 @@ static int Net_Fake_New_Dialog(void)
 	Wait_For_Focus();
 
 	CCDebugString ("C&C95 - About to uncompress title page.\n");
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	CCDebugString ("C&C95 - About to set the palette.\n");
 	Set_Palette(Palette);
 	CCDebugString ("C&C95 - Palette was set OK.\n");
@@ -4388,8 +4381,7 @@ static int Net_Fake_New_Dialog(void)
 			*/
 			if (display >= REDRAW_BACKGROUND) {
 
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				Set_Palette(Palette);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
@@ -4716,8 +4708,7 @@ CCDebugString ("C&C95 - Creating connection to the VSS\n");
 	Restore screen
 	------------------------------------------------------------------------*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Show_Mouse();
 
 	if (rc){
@@ -4906,8 +4897,7 @@ static int Net_Fake_Join_Dialog(void)
 	Wait_For_Focus();
 
 	CCDebugString ("C&C95 - About to uncompress title page.\n");
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	CCDebugString ("C&C95 - About to set the palette.\n");
 	Set_Palette(Palette);
 	CCDebugString ("C&C95 - Palette was set OK.\n");
@@ -4952,8 +4942,7 @@ static int Net_Fake_Join_Dialog(void)
 			.................. Redraw backgound & dialog box ...................
 			*/
 			if (display >= REDRAW_BACKGROUND) {
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-				HidPage.Blit(SeenBuff);
+				Load_Title_Page(true);
 				Set_Palette(Palette);
 
 				Dialog_Box(d_dialog_x, d_dialog_y, d_dialog_w, d_dialog_h);
@@ -5422,8 +5411,7 @@ CCDebugString ("C&C95 - Received 'GO' packet\n");
 	Restore screen
 	------------------------------------------------------------------------*/
 	Hide_Mouse();
-	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-	HidPage.Blit(SeenBuff);
+	Load_Title_Page(true);
 	Show_Mouse();
 
 	if (rc != -1){
