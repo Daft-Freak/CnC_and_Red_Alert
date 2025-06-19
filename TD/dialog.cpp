@@ -125,7 +125,7 @@ void Draw_Box(int x, int y, int w, int h, BoxStyleEnum up, bool filled)
 	BoxStyleType const &style = ButtonColors[up];
 
 	if (filled) {
-		if (style.Filler == CC_GREEN_BKGD){
+		if (style.Filler == CC_GREEN_BKGD && RESFACTOR == 2){
 			CC_Texture_Fill (MixFileClass::Retrieve("BTEXTURE.SHP"), InMainLoop, x, y, w, h);
 		}else{
 			LogicPage->Fill_Rect( x, y, x+w, y+h, style.Filler);
