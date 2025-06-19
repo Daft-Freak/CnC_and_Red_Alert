@@ -158,11 +158,13 @@ void Nod_Ending(void)
 #endif	//NOT_FOR_WIN95
 	Show_Mouse();
 
+#ifndef LORES // FIXME
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = (unsigned char*)localpal;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("SATSELIN.PAL");
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff,"SATSELIN.PAL");
+#endif
 
 	Keyboard::Clear();
 	Play_Sample(kanefinl,255,128);

@@ -493,7 +493,9 @@ extern bool CanVblankSync;
  *=============================================================================================*/
 void GScreenClass::Blit_Display(void)
 {
+#ifndef PORTABLE
 	if (SeenBuff.Get_Width()!=320){
+#endif
 #if (0)
 		if (HidPage.Get_IsDirectDraw() && (Options.GameSpeed >1 || Options.ScrollRate==6 && CanVblankSync) ){
 			WWMouse->Draw_Mouse(&HidPage);
@@ -517,10 +519,11 @@ void GScreenClass::Blit_Display(void)
 		}
 #endif	//(0)
 
+#ifndef PORTABLE
 	} else {
 		ModeX_Blit (&HiddenPage);
 	}
-
+#endif
 }
 
 

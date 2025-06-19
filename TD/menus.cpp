@@ -793,9 +793,11 @@ int Main_Menu(unsigned long timeout)
 
 			Set_Logic_Page(SeenBuff);
 			startbtn.Draw_All();
+#ifndef PORTABLE
 			if (ScreenWidth==320){
 				ModeX_Blit (SeenBuff.Get_Graphic_Buffer());
 			}
+#endif
 			display = false;
 		}
 
