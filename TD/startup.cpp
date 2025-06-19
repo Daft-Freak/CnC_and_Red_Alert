@@ -429,10 +429,13 @@ int main(int argc, char * argv[])
 
 			CCDebugString ("C&C95 - Initialising video surfaces.\n");
 
+#ifndef PORTABLE
 			if (ScreenWidth==320){
 				VisiblePage.Init( ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
 				ModeXBuff.Init( ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)(GBC_VISIBLE | GBC_VIDEOMEM));
-			} else {
+			} else
+#endif
+			{
 				VisiblePage.Init( ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)(GBC_VISIBLE | GBC_VIDEOMEM));
 #ifdef PORTABLE
 				HiddenPage.Init (ScreenWidth , ScreenHeight , NULL , 0 , (GBC_Enum)0);
@@ -496,15 +499,14 @@ int main(int argc, char * argv[])
 #endif
 			}
 
-			ScreenHeight = 400;
+			if(ScreenHeight	== 480)
+				ScreenHeight = 400;
 
-			if (VisiblePage.Get_Height() == 480){
-				SeenBuff.Attach(&VisiblePage,0, 40, 640, 400);
-				HidPage.Attach(&HiddenPage, 0, 40, 640, 400);
-			}else{
-				SeenBuff.Attach(&VisiblePage,0, 0, 640, 400);
-				HidPage.Attach(&HiddenPage, 0, 0, 640, 400);
-			}
+			int yoff = VisiblePage.Get_Height() == 480 ? 40 : 0;
+
+			SeenBuff.Attach(&VisiblePage, 0, yoff, ScreenWidth, ScreenHeight);
+			HidPage.Attach(&HiddenPage, 0, yoff, ScreenWidth, ScreenHeight);
+
 			CCDebugString ("C&C95 - Adjusting variables for resolution.\n");
 			Options.Adjust_Variables_For_Resolution();
 
@@ -787,7 +789,9 @@ void Read_Setup_Options( RawFileClass *config_file )
 
 		VideoBackBufferAllowed = WWGetPrivateProfileInt ("Options", "VideoBackBuffer", 1, buffer);
 		AllowHardwareBlitFills = WWGetPrivateProfileInt ("Options", "HardwareFills", 1, buffer);
+#ifndef LORES
 		ScreenHeight = WWGetPrivateProfileInt ("Options", "Resolution", 0, buffer) ? 480 : 400;
+#endif
 		IsV107 = WWGetPrivateProfileInt ("Options", "Compatibility", 0, buffer);
 
 		/*
