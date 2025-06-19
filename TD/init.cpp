@@ -190,6 +190,12 @@ bool Init_Game(int , char *[])
 #else
 	int temp = RequiredCD;
 	RequiredCD = -2;
+
+#ifdef LORES
+	// has less fonts, but includes the title image
+	new MixFileClass("LOCAL.MIX");			// Cached.
+	MixFileClass::Cache("LOCAL.MIX");
+#else
 	new MixFileClass("CCLOCAL.MIX");			// Cached.
 	MixFileClass::Cache("CCLOCAL.MIX");
 	CCDebugString ("C&C95 - About to register UPDATE.MIX\n");
@@ -197,6 +203,8 @@ bool Init_Game(int , char *[])
 	CCDebugString ("C&C95 - About to register UPDATEC.MIX\n");
 	new MixFileClass("UPDATEC.MIX");			// Cached.
 	MixFileClass::Cache("UPDATEC.MIX");
+#endif
+
 #ifdef JAPANESE
 	CCDebugString ("C&C95 - About to register LANGUAGE.MIX\n");
 	new MixFileClass("LANGUAGE.MIX");
