@@ -228,7 +228,12 @@ bool Init_Game(int , char *[])
 	f.Open("6POINT.FNT");
    	 Font6Ptr = Load_Alloc_Data(f);
 	//ScoreFontPtr = MixFileClass::Retrieve("12GRNGRD.FNT");	//GRAD12FN");	//("SCOREFNT.FNT");
+#ifdef LORES
+	// 12GRNGRD is in UPDATE.MIX
+	f.Open("SCOREFNT.FNT");
+#else
 	f.Open("12GRNGRD.FNT");
+#endif
 	ScoreFontPtr = Load_Alloc_Data(f);
 	FontLEDPtr = MixFileClass::Retrieve("LED.FNT");
 	VCRFontPtr = MixFileClass::Retrieve("VCR.FNT");
