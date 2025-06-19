@@ -76,14 +76,15 @@ VQAHandle *Open_Movie(char *name)
  *=============================================================================================*/
 void Choose_Side(void)
 {
-	//static char const _yellowpal[]={0x0,0x0,0xC9,0x0,0xBA,0x0,0x93,0x0,0x61,0x0,0x0,0x0,0x0,0x0,0xEE,0x0};
-	//static char const _redpal[]   ={0x0,0x0,0xA8,0x0,0xD9,0x0,0xDA,0x0,0xE1,0x0,0x0,0x0,0x0,0x0,0xD4,0x0};
-	//static char const _graypal[]  ={0x0,0x0,0x17,0x0,0x10,0x0,0x12,0x0,0x14,0x0,0x0,0x0,0x0,0x0,0x1C,0x0};
-
+#ifdef LORES
+	static unsigned char const _yellowpal[]={0x0,0x0,0xC9,0x0,0xBA,0x0,0x93,0x0,0x61,0x0,0x0,0x0,0x0,0x0,0xEE,0x0};
+	static unsigned char const _redpal[]   ={0x0,0x0,0xA8,0x0,0xD9,0x0,0xDA,0x0,0xE1,0x0,0x0,0x0,0x0,0x0,0xD4,0x0};
+	static unsigned char const _graypal[]  ={0x0,0x0,0x17,0x0,0x10,0x0,0x12,0x0,0x14,0x0,0x0,0x0,0x0,0x0,0x1C,0x0};
+#else
 	static unsigned char const _yellowpal[]={0x0,0xC9,0xBA,0x93,0x61,0xEE,0xee,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0,0x0};
 	static unsigned char const _redpal[]   ={0x0,0xa8,0xd9,0xda,0xe1,0xd4,0xDA,0x0,0xE1,0x0,0x0,0x0,0x0,0x0,0xD4,0x0};
 	static unsigned char const _graypal[]  ={0x0,0x17,0x10,0x12,0x14,0x1c,0x12,0x1c,0x14,0x0,0x0,0x0,0x0,0x0,0x1C,0x0};
-
+#endif
 
 	void *anim;
 	VQAHandle *gdibrief=0, *nodbrief=0;
@@ -103,7 +104,9 @@ void Choose_Side(void)
 	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), (void*)NULL);
 	TextPrintBuffer->Clear();
 	BlitList.Clear();
+#ifndef LORES
 	PseudoSeenBuff = new GraphicBufferClass(320,200,(void*)NULL);
+#endif
 	int frame = 0, endframe = 255, selection = 0, lettersdone = 0;
 
 	Hide_Mouse();
@@ -157,8 +160,10 @@ void Choose_Side(void)
 
 	WWMouse->Erase_Mouse(&HidPage, TRUE);
 	HiddenPage.Clear();
+#ifndef LORES
 	PseudoSeenBuff->Clear();
 	SysMemPage.Clear();
+#endif
 	//if (!Special.IsFromInstall) {
 		VisiblePage.Clear();
 		Set_Palette(Palette);
@@ -189,13 +194,21 @@ void Choose_Side(void)
 	while (Get_Mouse_State()) Show_Mouse();
 
 	while (endframe != frame || (speechplaying && Is_Sample_Playing(speech)) ) {
+#ifdef LORES
+		Animate_Frame(anim, HidPage, frame++);
+#else
 		Animate_Frame(anim, SysMemPage, frame++);
+#endif
 		if (setpalette) {
 			Wait_Vert_Blank();
 			Set_Palette(Palette);
 			setpalette = 0;
 		}
+#ifdef LORES
+		//SysMemPage.Blit(HidPage,0,22, 0,22, 320,156);
+#else
 		SysMemPage.Blit(*PseudoSeenBuff,0,22, 0,22, 320,156);
+#endif
 
 		/*
 		** If the sample has stopped or is about to then restart it
@@ -218,8 +231,8 @@ void Choose_Side(void)
 		if (frame >= Get_Animation_Frame_Count(anim)) frame = 0;
 		if (Keyboard::Check() && endframe == 255) {
 			if ((Keyboard::Get() & 0x10FF) == KN_LMOUSE) {
-				if ((_Kbd->MouseQY > 48*2) && (_Kbd->MouseQY < 150*2)) {
-					if ((_Kbd->MouseQX > 18*2) && (_Kbd->MouseQX < 148*2)) {
+				if ((_Kbd->MouseQY > 48 * RESFACTOR) && (_Kbd->MouseQY < 150 * RESFACTOR)) {
+					if ((_Kbd->MouseQX > 18 * RESFACTOR) && (_Kbd->MouseQX < 148 * RESFACTOR)) {
 
 					// Chose GDI
 						Whom = HOUSE_GOOD;
@@ -229,7 +242,7 @@ void Choose_Side(void)
 						speechplaying = true;
 						speech = speechg;
 
-					} else if ((_Kbd->MouseQX > 160*2) && (_Kbd->MouseQX < 300*2)) {
+					} else if ((_Kbd->MouseQX > 160 * RESFACTOR) && (_Kbd->MouseQX < 300 * RESFACTOR)) {
 					// Chose Nod
 						selection = 1;
 						endframe = 14;
@@ -248,13 +261,17 @@ void Choose_Side(void)
 	Close_Animation(anim);
 
 	// erase the "choose side" text
-#ifndef LORES
+#ifdef LORES
+	HidPage.Fill_Rect(0,180, 319, 199, 0);
+	SeenBuff.Fill_Rect(0,180, 319, 199, 0);
+#else
 	PseudoSeenBuff->Fill_Rect(0,180,319,199,0);
 	SeenBuff.Fill_Rect(0,180*2, 319*2, 199*2, 0);
 	Interpolate_2X_Scale (PseudoSeenBuff , &SeenBuff ,"SIDES.PAL");
-#endif
-	Keyboard::Clear();
 	SysMemPage.Clear();
+#endif
+
+	Keyboard::Clear();
 
 	/*
 	** Skip the briefings if we're in special mode.
@@ -325,7 +342,9 @@ void Choose_Side(void)
 	Set_Font(oldfont);
 	FontXSpacing = oldfontxspacing;
 
+#ifndef LORES
 	delete PseudoSeenBuff;
+#endif
 	delete TextPrintBuffer;
 	TextPrintBuffer = NULL;
 	BlitList.Clear();
