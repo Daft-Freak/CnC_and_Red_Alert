@@ -208,7 +208,7 @@ ScoreAnimClass *ScoreObjs[MAXSCOREOBJS];
 
 ScoreAnimClass::ScoreAnimClass(int x, int y, void const * data)
 {
-	BlitList.Add (x * RESFACTOR, y * RESFACTOR, x * RESFACTOR, y * RESFACTOR, RESFACTOR * String_Pixel_Width ( (char*)data ) , 16);
+	BlitList.Add (x * RESFACTOR, y * RESFACTOR, x * RESFACTOR, y * RESFACTOR, RESFACTOR * String_Pixel_Width ( (char*)data ) , 8 * RESFACTOR);
 	XPos = x;
 	YPos = y;
 	Timer.Set(0);
