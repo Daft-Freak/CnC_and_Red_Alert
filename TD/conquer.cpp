@@ -2422,7 +2422,11 @@ void Play_Movie(char const * name, ThemeType theme, bool clrscrn)
 
 				Load_Interpolated_Palettes(palname);
 				//Set_Palette(BlackPalette);
+#ifdef LORES
+				HidPage.Clear();
+#else
 				SysMemPage.Clear();
+#endif
 				InMovie = TRUE;
 				VQA_Play(vqa, VQAMODE_RUN);
 				VQA_Close(vqa);
