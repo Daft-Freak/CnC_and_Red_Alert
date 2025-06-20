@@ -427,7 +427,11 @@ void Simple_Text_Print(char const *text, unsigned x, unsigned y, unsigned fore, 
 	**	Change the current font if it differs from the font desired.
 	*/
 	point = (flag & (TextPrintType)0x000F);
+#ifdef LORES
+	xspace = 0;
+#else
 	xspace = 1;
+#endif
 	yspace = 0;
 
 	switch (point) {
