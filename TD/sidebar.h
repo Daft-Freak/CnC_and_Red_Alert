@@ -375,9 +375,15 @@ class SidebarClass: public PowerClass
 		**	This is the button that is used to collapse and expand the sidebar.
 		** These buttons must be available to derived classes, for Save/Load.
 		*/
+#ifdef LORES
+		static TextButtonClass Repair;
+		static TextButtonClass Upgrade;
+		static TextButtonClass Zoom;
+#else
 		static ShapeButtonClass Repair;
 		static ShapeButtonClass Upgrade;
 		static ShapeButtonClass Zoom;
+#endif
 		static SBGadgetClass Background;
 
 		/*

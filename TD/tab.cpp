@@ -111,8 +111,13 @@ void TabClass::Draw_It(bool complete)
 			Draw_Credits_Tab();
 			LogicPage->Draw_Line(0, Tab_Height-1, rightx, Tab_Height-1, BLACK);
 
+#ifdef LORES
+			Fancy_Text_Print(TXT_TAB_BUTTON_CONTROLS, Eva_Width/2, 0, WHITE, TBLACK, TPF_6POINT|TPF_CENTER);
+			Fancy_Text_Print(TXT_TAB_SIDEBAR, width-(Eva_Width/2), 0, WHITE, TBLACK, TPF_6POINT|TPF_CENTER);
+#else
 			Fancy_Text_Print(TXT_TAB_BUTTON_CONTROLS, Eva_Width/2, 0, 11, TBLACK, TPF_GREEN12_GRAD|TPF_CENTER | TPF_USE_GRAD_PAL);
 			Fancy_Text_Print(TXT_TAB_SIDEBAR, width-(Eva_Width/2), 0, 11, TBLACK, TPF_GREEN12_GRAD|TPF_CENTER | TPF_USE_GRAD_PAL);
+#endif
 		}
 		LogicPage->Unlock();
 	}
@@ -124,7 +129,7 @@ void TabClass::Draw_It(bool complete)
 
 void TabClass::Draw_Credits_Tab(void)
 {
-	CC_Draw_Shape(TabShape, 0, 320, 0, WINDOW_MAIN, SHAPE_NORMAL);
+	CC_Draw_Shape(TabShape, 0, 160 * RESFACTOR, 0, WINDOW_MAIN, SHAPE_NORMAL);
 }
 
 
@@ -148,9 +153,10 @@ void TabClass::Hilite_Tab(int tab)
 	int xpos = 0;
 	int text = TXT_TAB_BUTTON_CONTROLS;
 	tab = tab;
-
+#ifndef LORES
 	CC_Draw_Shape(TabShape, 1 , xpos, 0, WINDOW_MAIN, SHAPE_NORMAL);
 	Fancy_Text_Print(TXT_TAB_BUTTON_CONTROLS, 80, 0, 11, TBLACK, TPF_GREEN12|TPF_CENTER | TPF_USE_GRAD_PAL);
+#endif
 }
 
 

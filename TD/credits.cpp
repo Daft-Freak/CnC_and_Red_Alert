@@ -109,7 +109,11 @@ void CreditClass::Graphic_Logic(bool forced)
 		*/
 		//LogicPage->Fill_Rect(xx-(20 << factor), 1 << factor, xx+(20 << factor), 6 << factor, LTGREY);
 		TabClass::Draw_Credits_Tab();
+#ifdef LORES
+		Fancy_Text_Print("%ld", xx, 0, WHITE, TBLACK, TPF_6POINT|TPF_CENTER, Current);
+#else
 		Fancy_Text_Print("%ld", xx, 0, 11, TBLACK, TPF_GREEN12_GRAD|TPF_CENTER | TPF_USE_GRAD_PAL, Current);
+#endif
 
 		IsToRedraw = false;
 		IsAudible = false;
