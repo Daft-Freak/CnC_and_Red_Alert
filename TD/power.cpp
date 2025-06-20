@@ -204,9 +204,23 @@ void PowerClass::Draw_It(bool complete)
 				/*
 				** Draw the unfilled section
 				*/
+#ifdef LORES
+				LogicPage->Fill_Rect(PowX, PowY, PowX + PowWidth - 1, PowY + PowHeight, LTGREY);
+				LogicPage->Draw_Rect(PowX, PowY, PowX + PowWidth - 2, PowY + PowHeight - 2, WHITE);
+
+				LogicPage->Draw_Line(PowX + 1, PowY + 1, PowX + PowWidth - 3, PowY + 1, DKGRAY);
+				LogicPage->Draw_Line(PowX, PowY + PowHeight - 1, PowX + PowWidth - 2, PowY + PowHeight - 1, DKGRAY);
+
+				LogicPage->Draw_Line(PowX + 1, PowY + 2, PowX + 1, PowY + PowHeight - 3, DKGRAY);
+				LogicPage->Draw_Line(PowX + PowWidth - 1, PowY, PowX + PowWidth - 1, PowY + PowHeight, DKGRAY);
+
+				for(int y = PowY + 5; y < PowY + PowHeight; y += 5) {
+					LogicPage->Draw_Line(PowX + 2, y, PowX + 4, y, 196);
+				}
+#else
 				CC_Draw_Shape(PowerBarShape, 0, PowX, PowY, WINDOW_CUSTOM, SHAPE_WIN_REL);
 				CC_Draw_Shape(PowerBarShape, 1 ,PowX, PowY+100, WINDOW_CUSTOM, SHAPE_WIN_REL);
-
+#endif
 
 				/*
 				** Set up the clip region for the filled section
@@ -230,6 +244,15 @@ void PowerClass::Draw_It(bool complete)
 					/*
 					** Draw the filled section
 					*/
+#ifdef LORES
+					void *remap = DisplayClass::FadingGreen;
+					if(power_color == 2)
+						remap = DisplayClass::FadingYellow;
+					else if(power_color == 4)
+						remap = DisplayClass::FadingRed;
+
+					LogicPage->Remap(PowX + 1, bottom-power_height, PowWidth - 3, power_height, remap);
+#else
 					CC_Draw_Shape(PowerBarShape, 2+power_color,
 															PowX,
 															PowY - WindowList[WINDOW_CUSTOM][WINDOWY],
@@ -241,6 +264,7 @@ void PowerClass::Draw_It(bool complete)
 															PowY - WindowList[WINDOW_CUSTOM][WINDOWY] + 100,
 															WINDOW_CUSTOM,
 															SHAPE_WIN_REL);
+#endif
 				}
 
 				/*
