@@ -455,7 +455,7 @@ void Simple_Text_Print(char const * text, unsigned x, unsigned y, RemapControlTy
 	/*
 	**	Change the current font if it differs from the font desired.
 	*/
-#ifdef WIN32
+#if RESFACTOR == 2
 	xspace = 1;
 #else
 	xspace = 0;
@@ -499,7 +499,7 @@ void Simple_Text_Print(char const * text, unsigned x, unsigned y, RemapControlTy
 
 		case TPF_EFNT:
 			font = EditorFont;
-#ifdef WIN32
+#if RESFACTOR == 2
 			yspace += 1;
 			xspace -= 1;
 #endif
@@ -508,7 +508,7 @@ void Simple_Text_Print(char const * text, unsigned x, unsigned y, RemapControlTy
 
 		case TPF_8POINT:
 			font = Font8Ptr;
-#ifdef WIN32
+#if RESFACTOR == 2
 			xspace -= 2;
 			yspace -= 4;
 #else
@@ -518,7 +518,7 @@ void Simple_Text_Print(char const * text, unsigned x, unsigned y, RemapControlTy
 			break;
 
 		case TPF_LED:
-#ifdef WIN32
+#if RESFACTOR == 2
 			xspace -= 4;
 #else
 			xspace -= 2;
