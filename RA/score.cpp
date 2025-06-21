@@ -413,10 +413,10 @@ void ScoreClass::Presentation(void)
 
 #ifdef WIN32
 	VisiblePage.Clear();
-	SysMemPage.Clear();
+	//SysMemPage.Clear();
 	WWMouse->Erase_Mouse(&HidPage, TRUE);
 	HiddenPage.Clear();
-	Set_Logic_Page(SysMemPage);
+	//Set_Logic_Page(SysMemPage);
 #else
 	SeenPage.Clear();
 	HidPage.Clear();
