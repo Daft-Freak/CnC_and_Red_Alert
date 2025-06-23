@@ -716,13 +716,51 @@ AudioCallback *Get_Audio_Callback_Ptr()
 }
 
 // TD
+// used for nod ending
+static long Sample_Read(int fh, void *buffer, long size)
+{
+	AUDHeaderType RawHeader;
+	void *outbuffer;				// Pointer to start of raw data.
+	long actual_bytes_read;	// Actual bytes read in, including header
+
+	if (!buffer || fh == WW_ERROR || size <= sizeof(RawHeader))
+        return 0;
+
+	size -= sizeof(RawHeader);
+	outbuffer = Add_Long_To_Pointer(buffer, sizeof(RawHeader));
+  	actual_bytes_read = Read_File(fh, &RawHeader, sizeof(RawHeader));
+	actual_bytes_read += Read_File(fh, outbuffer, MIN(size, RawHeader.Size));
+	Mem_Copy(&RawHeader, buffer, sizeof(RawHeader));
+	return actual_bytes_read;
+}
+
 void *Load_Sample(char const *filename)
 {
-    printf("%s\n", __func__);
-    return NULL;
+	void *buffer = NULL;
+	long size;
+	int fh;
+
+	if(!filename || !Find_File(filename))
+		return NULL;
+
+	fh = Open_File(filename, READ);
+	if(fh != WW_ERROR) {
+		size = File_Size(fh) + sizeof(AUDHeaderType);
+		buffer = Alloc(size, MEM_NORMAL);
+
+		if(buffer)
+			Sample_Read(fh, buffer, size);
+
+		Close_File(fh);
+	}
+	return buffer;
 }
 
 void Free_Sample(void const *sample)
 {
-
+    if(sample)
+    {
+        Stop_Sample_Playing(sample);
+        Free(sample);
+    }    
 }
