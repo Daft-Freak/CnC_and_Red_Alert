@@ -260,7 +260,7 @@ void Nod_Ending(void)
 
 	Play_Movie("CC2TEASE");
 
-	delete [] localpal;
+	delete [] (char *)localpal;
 	delete TextPrintBuffer;
 	BlitList.Clear();
 }
