@@ -1407,7 +1407,7 @@ int RadarClass::TacticalClass::Action(unsigned flags, KeyNumType & key)
 
 	if (result == 1) {
 		cell = Map.RadarClass::Click_Cell_Calc(x, y);
-		if (cell != -1) {
+		if (cell != -1 && Map.In_Radar(cell)) {
 			shadow	= (!Map[cell].IsVisible && !Debug_Unshroud);
 			cellx	   = 12;
 			celly	   = 12;
