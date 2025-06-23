@@ -1111,7 +1111,9 @@ void ScoreClass::Do_Nod_Buildings_Graph(void)
 	/*
 	** Print the # of buildings on the hidpage so we only need to do it once
 	*/
+#ifndef LORES
 	PseudoSeenBuff->Blit(SysMemPage);
+#endif
 	Set_Logic_Page(SysMemPage);
 	Call_Back_Delay(30);
 	BlitList.Add (RESFACTOR * (BUILDING_X + 8), RESFACTOR * (BUILDING_Y), RESFACTOR * (BUILDING_X+8), RESFACTOR * (BUILDING_Y), 5*12 , 12);
@@ -1175,7 +1177,11 @@ void ScoreClass::Do_Nod_Buildings_Graph(void)
 						  i+32, 40, WINDOW_MAIN,
 						  SHAPE_FADING|SHAPE_CENTER|SHAPE_WIN_REL,//|SHAPE_GHOST,
 						  ScoreRemapYellow,Map.UnitShadow);
+#ifdef LORES
+		SysMemPage.Blit(HidPage, 0, 0, BUILDING_X, BUILDING_Y, 320-BUILDING_X,48);
+#else
 		SysMemPage.Blit(*PseudoSeenBuff, 0, 0, BUILDING_X, BUILDING_Y, 320-BUILDING_X,48);
+#endif
 
 		/*
 		** Extra font related stuff. ST - 7/29/96 2:22PM
@@ -1365,8 +1371,10 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 	** Draw the infantrymen and pause briefly before running the graph
 	*/
 	Draw_InfantryMen();
+#ifndef LORES
 	SysMemPage.Blit(*PseudoSeenBuff, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
 	//Interpolate_2X_Scale( PseudoSeenBuff , &SeenBuff, NULL);
+#endif
 	/*
 	** Extra font related stuff. ST - 7/29/96 2:22PM
 	*/
@@ -1389,8 +1397,11 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 		for (int q = 0; q < 3; q++) {
 			Draw_InfantryMen();
 			Draw_Bar_Graphs(i, gdikilled, nodkilled, civkilled);
+#ifdef LORES
+			SysMemPage.Blit(HidPage, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
+#else
 			SysMemPage.Blit(*PseudoSeenBuff, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
-
+#endif
 			Count_Up_Print("%d", (i*GKilled) / max, GKilled, SCORETEXT_X+64, CASUALTY_Y +  2);
 			Count_Up_Print("%d", (i*NKilled) / max, NKilled, SCORETEXT_X+64, CASUALTY_Y + 14);
 			Count_Up_Print("%d", (i*CKilled) / max, CKilled, SCORETEXT_X+64, CASUALTY_Y + 26);
@@ -1415,7 +1426,11 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 		for (i=k=0; i<NUMINFANTRYMEN; i++) if (InfantryMan[i].anim >= DO_GUN_DEATH) k=1;
 		if (k) Draw_InfantryMen();
 		Draw_Bar_Graphs(max, gdikilled, nodkilled, civkilled);
+#ifdef LORES
+		SysMemPage.Blit(HidPage, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
+#else
 		SysMemPage.Blit(*PseudoSeenBuff, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
+#endif
 		Call_Back_Delay(1);
 	}
 }
