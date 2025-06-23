@@ -69,8 +69,13 @@ void GDI_Ending(void)
 	if (CCFileClass("TRAILER.VQA").Is_Available()) {
 		Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 		CCFileClass f("ATTRACT2.CPS");
+#ifdef LORES
+		Load_Uncompress(f, HiddenPage, HiddenPage, Palette);
+		HidPage.Blit(SeenBuff);
+#else
 		Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 		SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
+#endif
 		Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 		Clear_KeyBuffer();
 		count.Set(TIMER_SECOND*3);
@@ -84,8 +89,13 @@ void GDI_Ending(void)
 
 	Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 	CCFileClass f("ATTRACT2.CPS");
+#ifdef LORES
+	Load_Uncompress(f, HiddenPage, HiddenPage, Palette);
+	HidPage.Blit(SeenBuff);
+#else
 	Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 	SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
+#endif
 	Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 	Clear_KeyBuffer();
 //	CountDownTimerClass count;
