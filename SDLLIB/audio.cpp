@@ -553,7 +553,7 @@ void Stop_Sample_Playing(void const * sample)
     for(int i = 0; i < MAX_SFX; i++)
     {
         if(Channels[i].sample == sample)
-            return Stop_Sample(i);
+            Stop_Sample(i);
     }
 }
 
@@ -579,6 +579,8 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
         printf("\trate %i size %i/%i channels %i bits %i comp %i\n", header->Rate, header->Size, header->UncompSize, channels, bits, header->Compression);
         return -1;
     }
+
+    Stop_Sample(id);
 
     // setup channel
     SDL_LockAudioDevice(AudioDevice);
