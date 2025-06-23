@@ -692,7 +692,7 @@ void Map_Selection(void)
 		if (frame == 2) Play_Sample(beepy3, 255, Options.Normalize_Sound(90));
 		if (frame == 6) Play_Sample(newtarg1, 255, Options.Normalize_Sound(90));
 
-
+#ifndef LORES
 		if (lastscenario){
 			switch ( frame ){
 
@@ -733,6 +733,7 @@ void Map_Selection(void)
 					break;
 			}
 		}
+#endif
 
 #ifdef LORES
 		Animate_Frame(progress,HidPage,startframe + frame);
