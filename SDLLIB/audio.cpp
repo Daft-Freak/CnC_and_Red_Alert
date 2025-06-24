@@ -6,6 +6,7 @@
 
 #include "audio.h"
 #include "file.h"
+#include "memflag.h"
 
 // original code has 5 for windows, 4 for dos
 // effectively one less as one is used to track streaming from disk
