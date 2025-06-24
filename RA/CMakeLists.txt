@@ -280,9 +280,6 @@ if(PICO_SDK_PATH)
 	set_target_properties(raspberry-alert PROPERTIES PICO_TARGET_LINKER_SCRIPT ${CMAKE_CURRENT_LIST_DIR}/../PICOLIB/memmap.ld)
 	pico_add_link_depend(raspberry-alert ${CMAKE_CURRENT_LIST_DIR}/../PICOLIB/memmap.ld)
 
-	set_target_properties(raspberry-alert PROPERTIES PICO_TARGET_LINKER_SCRIPT ${CMAKE_CURRENT_LIST_DIR}/../PICOLIB/memmap.ld)
-	pico_add_link_depend(raspberry-alert ${CMAKE_CURRENT_LIST_DIR}/../PICOLIB/memmap.ld)
-
 	pico_enable_stdio_uart(raspberry-alert 1)
 	pico_add_extra_outputs(raspberry-alert)
 
