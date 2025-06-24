@@ -116,7 +116,7 @@ static void Display_Loading_Message()
     update_display(to_ms_since_boot(get_absolute_time()));
 }
 
-void Pico_Init()
+void Pico_Init(const char *basedir)
 {
     pre_init_display();
 
@@ -127,7 +127,10 @@ void Pico_Init()
     PSRAM_Alloc_Init();
 
     f_mount(&fs, "", 0);
-    f_chdir("/CnC/");
+
+    char buf[10];
+    snprintf(buf, sizeof(buf), "/%s/", basedir);
+    f_chdir(buf);
 
     Pico_Flash_Cache_Init();
 
