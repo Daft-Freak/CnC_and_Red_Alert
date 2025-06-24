@@ -62,12 +62,17 @@
 #ifdef _WIN32
 typedef int socklen_t;
 #else
+#ifdef PICO_BUILD
+#include "picosock.h"
+#else
 #include <arpa/inet.h>
 #include <netinet/in.h>
 #include <netinet/tcp.h>
 #include <unistd.h>
 
 #define closesocket close
+#endif
+
 #define INVALID_SOCKET -1
 #define SOCKET_ERROR -1
 #endif
