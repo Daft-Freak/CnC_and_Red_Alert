@@ -250,7 +250,7 @@ int main(int argc, char * argv[])
 	} while ( command_char != 0 && command_char != 13 && argc<20 );
 #endif
 
-
+#ifndef PICO_BUILD
 	/*
 	**	Change directory to the where the executable is located. Handle the
 	**	case where there is no path attached to argv[0].
@@ -275,6 +275,7 @@ int main(int argc, char * argv[])
 		path[strlen(path)-1] = '\0';
 	}
 	chdir(path);
+#endif
 
 #ifdef JAPANESE
 	ForceEnglish = false;
