@@ -66,7 +66,8 @@ void Close_File(int handle);
 long Read_File(int handle, void *buf, unsigned long bytes);
 long Write_File(int handle, void const *buf, unsigned long bytes);
 unsigned long Seek_File(int handle, long offset, int starting);
-
+unsigned long File_Size(int handle);
+int Find_File(char const *file_name);
 
 // low level IO implemented here
 void *IO_Open_File(const char *filename, int mode);
