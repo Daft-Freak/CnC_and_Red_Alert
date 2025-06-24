@@ -271,7 +271,10 @@ void Map_Selection(void)
 	if (CountryArray[scenario].Choices[ScenDir]==0) return;
 
 	Theme.Queue_Song(THEME_MAP1);
+
+#ifndef LORES
 	PseudoSeenBuff = new GraphicBufferClass(320,200,(void*)NULL);
+#endif
 
 	/*
 	** Extra graphic buffer to draw text into
@@ -322,7 +325,9 @@ void Map_Selection(void)
 	void const * scold1 = MixFileClass::Retrieve("SCOLD1.AUD");
 
 	SysMemPage.Clear();
+#ifndef LORES
 	PseudoSeenBuff->Clear();
+#endif
 	WWMouse->Erase_Mouse(&HidPage, TRUE);
 	HiddenPage.Clear();
 
@@ -584,10 +589,14 @@ void Map_Selection(void)
 	** Now dissolve in second advance of territories
 	*/
 #ifdef FRENCH
+#ifndef LORES
 	PseudoSeenBuff->Fill_Rect(xcoord,0,xcoord + 6*16 + 10,8,BLACK);
+#endif
 	TextPrintBuffer->Fill_Rect(xcoord * RESFACTOR,0,RESFACTOR * (xcoord + 6*16 + 10),RESFACTOR * 8,BLACK);
 #else
+#ifndef LORES
 	PseudoSeenBuff->Fill_Rect(xcoord,0,xcoord + 6*16,8,BLACK);
+#endif
 	TextPrintBuffer->Fill_Rect(RESFACTOR * xcoord,0,RESFACTOR * (xcoord + 6*16),RESFACTOR * 8,BLACK);
 #endif
 
@@ -617,10 +626,14 @@ void Map_Selection(void)
 	if (!lastscenario) Call_Back_Delay(85);
 //	Set_Font(oldfont);
 #ifdef FRENCH
+#ifndef LORES
 	PseudoSeenBuff->Fill_Rect(xcoord,12,xcoord+6*16+10,20,BLACK);
+#endif
 	TextPrintBuffer->Fill_Rect(RESFACTOR * xcoord,RESFACTOR * 12,RESFACTOR * (xcoord+6*16+10),RESFACTOR * 20,BLACK);
 #else
+#ifndef LORES
 	PseudoSeenBuff->Fill_Rect(xcoord,12,xcoord+6*16,20,BLACK);
+#endif
 	TextPrintBuffer->Fill_Rect(RESFACTOR * xcoord,RESFACTOR * 12,RESFACTOR * (xcoord+6*16),RESFACTOR * 20,BLACK);
 #endif
 
@@ -649,13 +662,17 @@ void Map_Selection(void)
 	if (lastscenario) {
 #if (GERMAN | FRENCH)
 		SysMemPage.Fill_Rect(0,160, 20*6,186, TBLACK);
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(0,160, 20*6,186, TBLACK);
+#endif
 		TextPrintBuffer->Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 186, BLACK);
 		SeenBuff.Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 186, TBLACK);
 		HidPage.Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 186, TBLACK);
 #else
 		SysMemPage.Fill_Rect(0,160, 20*6,176, TBLACK);
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(0,160, 20*6,176, TBLACK);
+#endif
 		TextPrintBuffer->Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 176, BLACK);
 		SeenBuff.Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 176, TBLACK);
 		HidPage.Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 176, TBLACK);
@@ -754,11 +771,15 @@ void Map_Selection(void)
 	if (!lastscenario) {
 #if (GERMAN | FRENCH)
 		SysMemPage.Fill_Rect( 0,160, 20*6,186, TBLACK);
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(0,160, 20*6,186, TBLACK);
+#endif
 		TextPrintBuffer->Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 186, BLACK);
 #else
 		SysMemPage.Fill_Rect( 0,160, 20*6,176, TBLACK);
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(0,160, 20*6,176, TBLACK);
+#endif
 		TextPrintBuffer->Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 176, BLACK);
 #endif
 	}
@@ -832,10 +853,14 @@ void Map_Selection(void)
 
 		Hide_Mouse();
 		// erase "Select country to attack"
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(attackxcoord,160, attackxcoord+(17*6),178,BLACK);
+#endif
 		TextPrintBuffer->Fill_Rect(RESFACTOR * attackxcoord,RESFACTOR * 160, RESFACTOR * (attackxcoord+(17*6)),2*178,BLACK);
 #if (GERMAN | FRENCH)
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(attackxcoord+(17*6),160, attackxcoord+(21*6),178,BLACK);
+#endif
 		TextPrintBuffer->Fill_Rect(RESFACTOR * attackxcoord+(17*6*2),RESFACTOR * 160, RESFACTOR * (attackxcoord+(21*6)),2*178,BLACK);
 #endif	//GERMAN
 
@@ -897,10 +922,14 @@ void Map_Selection(void)
 
 		Hide_Mouse();
 #if (GERMAN | FRENCH)
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(attackxcoord, 160, 319, 178, BLACK);	// erase "Select country to attack"
+#endif
 		TextPrintBuffer->Fill_Rect(RESFACTOR * attackxcoord, RESFACTOR * 160, 639, RESFACTOR * 178, BLACK);	// erase "Select country to attack"
 #else
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(attackxcoord, 160, attackxcoord + (17*6), 199, BLACK);	// erase "Select country to attack"
+#endif
 		TextPrintBuffer->Fill_Rect(RESFACTOR * attackxcoord, RESFACTOR * 160, RESFACTOR * (attackxcoord + (17*6)), RESFACTOR * 199, BLACK);	// erase "Select country to attack"
 #endif
 #ifndef LORES // FIXME?
