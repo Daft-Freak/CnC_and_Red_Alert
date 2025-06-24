@@ -41,6 +41,4 @@ add_subdirectory(WINVQ)
 
 add_subdirectory(RA)
 
-if(NOT PICO_SDK_PATH)
-    add_subdirectory(TD)
-endif()
+add_subdirectory(TD)

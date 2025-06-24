@@ -1,4 +1,5 @@
-add_executable(tdsdl WIN32
+
+set(TD_SOURCES
     super.cpp
 	aadata.cpp
 	#winstub.cpp
@@ -164,35 +165,58 @@ add_executable(tdsdl WIN32
     ipxstub.cpp
     nondosstub.cpp
     palette.cpp
-    sdlstub.cpp
     support.cpp
 )
 
-if(WIN32)
-	target_sources(tdsdl PRIVATE
-		../RA/dde.cpp
-		ccdde.cpp
-		cc_icon.rc
+if(PICO_SDK_PATH)
+	add_executable(raspberrian-dawn ${TD_SOURCES} picostub.cpp)
+
+	target_compile_definitions(raspberrian-dawn PRIVATE
+		PORTABLE=1 # to indicate not windows or dos sometimes8
+		TD=1
+		LORES=1
 	)
-	target_link_libraries(tdsdl PRIVATE wsock32)
-endif()
+	target_include_directories(raspberrian-dawn PRIVATE ../RA) # should probably structure this better
+	target_link_libraries(raspberrian-dawn PRIVATE port picolib vqa32)
+	
+	set_target_properties(raspberrian-dawn PROPERTIES PICO_TARGET_LINKER_SCRIPT ${CMAKE_CURRENT_LIST_DIR}/../PICOLIB/memmap.ld)
+	pico_add_link_depend(raspberrian-dawn ${CMAKE_CURRENT_LIST_DIR}/../PICOLIB/memmap.ld)
 
-target_compile_definitions(tdsdl PRIVATE
-	PORTABLE=1 # to indicate not windows or dos sometimes
-    TD=1
-)
-target_include_directories(tdsdl PRIVATE ../RA) # should probably structure this better
-target_link_libraries(tdsdl PRIVATE port sdllib vqa32)
+	pico_enable_stdio_uart(raspberrian-dawn 1)
+	pico_add_extra_outputs(raspberrian-dawn)
 
-install(TARGETS tdsdl)
-
-if(EMSCRIPTEN)
-	set_target_properties(tdsdl PROPERTIES
-		SUFFIX ".html"
-		LINK_FLAGS "-sENVIRONMENT=web -sASYNCIFY -sASYNCIFY_STACK_SIZE=8192 -sFORCE_FILESYSTEM -sINITIAL_MEMORY=32mb"
+	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/raspberrian-dawn.uf2
+		DESTINATION bin
 	)
-	# this does not include the files, that would require something like
-	# file_packager files.data --js-output=files.js --preload *.mix
-	# (which is huge if you include the movies)
-	# and adding files.js to the shell html
+else()
+	add_executable(tdsdl WIN32 ${TD_SOURCES} sdlstub.cpp)
+
+	if(WIN32)
+		target_sources(tdsdl PRIVATE
+			../RA/dde.cpp
+			ccdde.cpp
+			cc_icon.rc
+		)
+		target_link_libraries(tdsdl PRIVATE wsock32)
+	endif()
+
+	target_compile_definitions(tdsdl PRIVATE
+		PORTABLE=1 # to indicate not windows or dos sometimes
+		TD=1
+	)
+	target_include_directories(tdsdl PRIVATE ../RA) # should probably structure this better
+	target_link_libraries(tdsdl PRIVATE port sdllib vqa32)
+
+	install(TARGETS tdsdl)
+
+	if(EMSCRIPTEN)
+		set_target_properties(tdsdl PROPERTIES
+			SUFFIX ".html"
+			LINK_FLAGS "-sENVIRONMENT=web -sASYNCIFY -sASYNCIFY_STACK_SIZE=8192 -sFORCE_FILESYSTEM -sINITIAL_MEMORY=32mb"
+		)
+		# this does not include the files, that would require something like
+		# file_packager files.data --js-output=files.js --preload *.mix
+		# (which is huge if you include the movies)
+		# and adding files.js to the shell html
+	endif()
 endif()
