@@ -329,6 +329,13 @@ bool MixFileClass::Cache(void)
 {
 	if (Data) return(true);
 
+#ifdef PICO_BUILD
+	// no nesting or buffers here, unlike RA
+	uint32_t start = sizeof(SubBlock) * Count + sizeof(FileHeader);
+	Data = (void *)Pico_Flash_Cache(Filename, start, DataSize);
+	return Data != NULL;
+#endif
+
 	Data = new char [DataSize];
 	if (Data) {
 		CCFileClass file(Filename);
