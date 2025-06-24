@@ -111,9 +111,15 @@ typedef enum ButtonNumberType {
 ** Sidebar buttons
 */
 SidebarClass::SBGadgetClass SidebarClass::Background;
+#ifdef LORES
+TextButtonClass SidebarClass::Repair;
+TextButtonClass SidebarClass::Upgrade;
+TextButtonClass SidebarClass::Zoom;
+#else
 ShapeButtonClass SidebarClass::Repair;
 ShapeButtonClass SidebarClass::Upgrade;
 ShapeButtonClass SidebarClass::Zoom;
+#endif
 ShapeButtonClass SidebarClass::StripClass::UpButton[COLUMNS];
 ShapeButtonClass SidebarClass::StripClass::DownButton[COLUMNS];
 SidebarClass::StripClass::SelectClass
@@ -184,7 +190,7 @@ void SidebarClass::One_Time(void)
 	int factor			= (SeenBuff.Get_Width() == 320) ? 1 : 2;
 	SideBarWidth		= SIDEBARWIDTH * factor;
 	SideX 				= SeenBuff.Get_Width() - SideBarWidth;
-	SideY 				= Map.RadY + Map.RadHeight + 1;
+	SideY 				= Map.RadY + Map.RadHeight + (factor - 1);
 	SideWidth 			= SeenBuff.Get_Width() - SideX;
 	SideHeight			= SeenBuff.Get_Height() - SideY;
 	MaxVisible			= 4;
@@ -214,7 +220,7 @@ void SidebarClass::One_Time(void)
 
 	Column[0].X = SideX + PowWidth + spacing;
 	Column[0].Y = SideY + TopHeight + 1;
-	Column[1].X = Column[0].X + (StripClass::STRIP_WIDTH * factor) + spacing -1;
+	Column[1].X = Column[0].X + (StripClass::STRIP_WIDTH * factor) + spacing - (factor - 1);
 	Column[1].Y = SideY + TopHeight + 1;
 
 	Column[0].One_Time(0);
@@ -288,15 +294,21 @@ void SidebarClass::Init_IO(void)
 		FontXSpacing = -1;
 		Fancy_Text_Print(TXT_NONE, 0, 0, TBLACK, TBLACK, TPF_6POINT | TPF_NOSHADOW);
 
+#ifdef LORES
+		Repair.Width = String_Pixel_Width(Text_String(TXT_REPAIR_BUTTON)) + 4;
+		Upgrade.Width = String_Pixel_Width(Text_String(TXT_BUTTON_SELL)) + 4;
+		Zoom.Width = String_Pixel_Width(Text_String(TXT_MAP)) + 4;
+
+		Repair.Height = Upgrade.Height = Zoom.Height = 9;
+#else
 		int maxwidth = String_Pixel_Width(Text_String(TXT_REPAIR_BUTTON)) + 8;
 		maxwidth = MAX(maxwidth, String_Pixel_Width(Text_String(TXT_BUTTON_SELL)) + 8);
 		maxwidth = MAX(maxwidth, String_Pixel_Width(Text_String(TXT_MAP)) + 8);
 		Repair.Width = maxwidth;
 		Upgrade.Width = maxwidth;
 		Zoom.Width = maxwidth;
-//		Repair.Width = String_Pixel_Width(Text_String(TXT_REPAIR_BUTTON)) + 8;
-//		Upgrade.Width = String_Pixel_Width(Text_String(TXT_BUTTON_SELL)) + 8;
-//		Zoom.Width = String_Pixel_Width(Text_String(TXT_MAP)) + 8;
+#endif
+
 		/*
 		** find the spacing between buttons by getting remaining width
 		** and dividing it between the buttons.
@@ -305,10 +317,15 @@ void SidebarClass::Init_IO(void)
 
 		Repair.IsSticky = true;
 		Repair.ID = BUTTON_REPAIR;
-		Repair.X = 484;
-		Repair.Y = 160;
+		Repair.X = 242 * RESFACTOR;
+		Repair.Y = 80 * RESFACTOR;
 		Repair.IsPressed = false;
 		Repair.IsToggleType = true;
+		
+#ifdef LORES
+		Repair.Set_Text(TXT_REPAIR_BUTTON);
+		Repair.Set_Style(TPF_6POINT | TPF_NOSHADOW);
+#else
 		Repair.ReflectButtonState = true;
 #if (FRENCH)
 		Repair.Set_Shape(Hires_Retrieve("REPAIRF.SHP"));
@@ -319,13 +336,23 @@ void SidebarClass::Init_IO(void)
 		Repair.Set_Shape(Hires_Retrieve("REPAIR.SHP"));
 #endif
 #endif
+#endif
 
 		Upgrade.IsSticky = true;
 		Upgrade.ID = BUTTON_UPGRADE;
+#ifdef LORES
+		Upgrade.X = 275;
+#else
 		Upgrade.X = 480+57;
-		Upgrade.Y = 160;
+#endif
+		Upgrade.Y = 80 * RESFACTOR;
 		Upgrade.IsPressed = false;
 		Upgrade.IsToggleType = true;
+
+#ifdef LORES
+		Upgrade.Set_Text(TXT_BUTTON_SELL);
+		Upgrade.Set_Style(TPF_6POINT | TPF_NOSHADOW);
+#else
 		Upgrade.ReflectButtonState = true;
 #if (FRENCH)
 		Upgrade.Set_Shape(Hires_Retrieve("SELLF.SHP"));
@@ -336,12 +363,22 @@ void SidebarClass::Init_IO(void)
 		Upgrade.Set_Shape(Hires_Retrieve("SELL.SHP"));
 #endif
 #endif
+#endif
 
 		Zoom.IsSticky = true;
 		Zoom.ID = BUTTON_ZOOM;
+#ifdef LORES
+		Zoom.X = 298;
+#else
 		Zoom.X = 480 + 110;
-		Zoom.Y = 160;
+#endif
+		Zoom.Y = 80 * RESFACTOR;
 		Zoom.IsPressed = false;
+
+#ifdef LORES
+		Zoom.Set_Text(TXT_MAP);
+		Zoom.Set_Style(TPF_6POINT | TPF_NOSHADOW);
+#else
 #if (FRENCH)
 		Zoom.Set_Shape(Hires_Retrieve("MAPF.SHP"));
 #else
@@ -349,6 +386,7 @@ void SidebarClass::Init_IO(void)
 		Zoom.Set_Shape(Hires_Retrieve("MAPG.SHP"));
 #else
 		Zoom.Set_Shape(Hires_Retrieve("MAP.SHP"));
+#endif
 #endif
 #endif
 
@@ -715,19 +753,22 @@ void SidebarClass::Draw_It(bool complete)
 			/*
 			**	Draw the outline box around the sidebar buttons.
 			*/
+
+#ifdef LORES
+			if ( complete ) {
+				LogicPage->Fill_Rect(SideX+Map.PowWidth, SideY, SideX+SideWidth-1, SideY+SideHeight-1, LTGREY);
+			}
+			LogicPage->Fill_Rect(SideX, SideY, SideX+SideWidth-1, SideY+TopHeight-1, LTGREY);
+			Draw_Box(SideX+Map.PowWidth, SideY+TopHeight, SideWidth-Map.PowWidth, SideHeight-TopHeight, BOXSTYLE_RAISED, false);
+#else
 			//CC_Draw_Shape(SidebarShape1, (int)complete, SideX, 158, WINDOW_MAIN, SHAPE_WIN_REL);
 			//CC_Draw_Shape(SidebarShape2, (int)complete, SideX, 158+118, WINDOW_MAIN, SHAPE_WIN_REL);
 			LogicPage->Draw_Line(SideX, 157, SeenBuff.Get_Width()-1, 157, 0);
 			CC_Draw_Shape(SidebarShape1, 0, SideX, 158, WINDOW_MAIN, SHAPE_WIN_REL);
 			CC_Draw_Shape(SidebarShape2, 0, SideX, 158+118, WINDOW_MAIN, SHAPE_WIN_REL);
 
-	#if (0)
-			if ( complete ) {
-				LogicPage->Fill_Rect(SideX+Map.PowWidth, SideY, SideX+SideWidth-1, SideY+SideHeight-1, LTGREY);
-			}
-			LogicPage->Fill_Rect(SideX, SideY, SideX+SideWidth-1, SideY+TopHeight-1, LTGREY);
-			Draw_Box(SideX+Map.PowWidth, SideY+TopHeight, SideWidth-Map.PowWidth, SideHeight-TopHeight, BOXSTYLE_RAISED, false);
-	#endif	//(0)
+#endif	//(0)
+
 			//Repair.Draw_Me(true);
 			//Upgrade.Draw_Me(true);
 			//Zoom.Draw_Me(true);
@@ -1090,6 +1131,10 @@ void SidebarClass::StripClass::One_Time(int )
 	LeftEdgeOffset			= (StripWidth - ObjectWidth) >> 1;
 	ButtonSpacingOffset	= (StripWidth - ((BUTTON_WIDTH << factor) << 1)) / 3;
 
+#ifdef LORES
+	LeftEdgeOffset++;
+#endif
+
 	LogoShapes = Hires_Retrieve("STRIP.SHP");
 	ClockShapes = Hires_Retrieve("CLOCK.SHP");
 
@@ -1185,14 +1230,14 @@ void SidebarClass::StripClass::Init_IO(int id)
 	UpButton[ID].IsSticky = true;
 	UpButton[ID].ID = BUTTON_UP+id;
 	UpButton[ID].X = X+ButtonSpacingOffset+1;
-	UpButton[ID].Y = Y+MAX_VISIBLE*ObjectHeight-1;
+	UpButton[ID].Y = Y+MAX_VISIBLE*ObjectHeight-(RESFACTOR - 1);
 
 	UpButton[ID].Set_Shape(Hires_Retrieve("STRIPUP.SHP"));
 
 	DownButton[ID].IsSticky = true;
 	DownButton[ID].ID = BUTTON_DOWN+id;
-	DownButton[ID].X = UpButton[ID].X + UpButton[ID].Width + ButtonSpacingOffset-2;
-	DownButton[ID].Y = Y+MAX_VISIBLE*ObjectHeight-1;
+	DownButton[ID].X = UpButton[ID].X + UpButton[ID].Width + ButtonSpacingOffset - RESFACTOR;
+	DownButton[ID].Y = Y+MAX_VISIBLE*ObjectHeight-(RESFACTOR - 1);
 
 	DownButton[ID].Set_Shape(Hires_Retrieve("STRIPDN.SHP"));
 
@@ -1709,9 +1754,11 @@ void SidebarClass::StripClass::Draw_It(bool complete)
 		**	Fills the background to the side strip. We shouldnt need to do this if the strip
 		** has a full complement of icons.	ST - 10/7/96 6:03PM
 		*/
+#ifndef LORES
 		if (BuildableCount < MAX_VISIBLE){
 			CC_Draw_Shape(LogoShapes, ID,	X+3,	Y-1,	WINDOW_MAIN, SHAPE_WIN_REL|SHAPE_NORMAL,	0);
 		}
+#endif
 
 		/*
 		**	Redraw the scroll buttons.
@@ -1865,7 +1912,7 @@ void SidebarClass::StripClass::Draw_It(bool complete)
 			**
 			** Dont draw blank shapes over the new 640x400 sidebar art - ST 5/1/96 6:01PM
 			*/
-			if (shapenum != SB_BLANK || shapefile != LogoShapes){
+			if (shapenum != SB_BLANK || shapefile != LogoShapes || RESFACTOR == 1){
 				IsTheaterShape = true;	// This shape is theater specific
 				CC_Draw_Shape(shapefile, shapenum,
 					x-(WindowList[WINDOW_SIDEBAR][WINDOWX]*8)+LeftEdgeOffset,

@@ -43,6 +43,8 @@
 
 #include "function.h"
 
+#ifndef LORES
+
 bool	InterpolationPaletteChanged = FALSE;
 extern "C" {
 extern void __cdecl Asm_Interpolate (unsigned char* src_ptr ,
@@ -239,7 +241,7 @@ void Create_Palette_Interpolation_Table( void )
 }
 
 
-
+#endif
 
 
 
@@ -307,7 +309,7 @@ void Increase_Palette_Luminance (unsigned char *palette , int red_percentage , i
 
 int	CopyType	=0;
 
-#if( 1 )
+#ifndef LORES
 /***************************************************************************
  * INTERPOLATE_2X_SCALE                                                    *
  *                                                                         *

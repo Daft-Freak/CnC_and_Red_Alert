@@ -144,15 +144,15 @@ void ScrollClass::AI(KeyNumType &input, int x, int y)
 				**	can be scrolled in the direction indicated.
 				*/
 				static int _rate[9] = {
-					0x01C0,
-					0x0180,
-					0x0140,
-					0x0100,
-					0x00C0,
-					0x0080,
-					0x0040,
-					0x0020,
-					0x0010
+					0x00E0*RESFACTOR,
+					0x00C0*RESFACTOR,
+					0x00A0*RESFACTOR,
+					0x0080*RESFACTOR,
+					0x0060*RESFACTOR,
+					0x0040*RESFACTOR,
+					0x0020*RESFACTOR,
+					0x0010*RESFACTOR,
+					0x0008*RESFACTOR
 				};
 
 				int rate = 8-Inertia;

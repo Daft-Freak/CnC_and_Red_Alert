@@ -69,8 +69,13 @@ void GDI_Ending(void)
 	if (CCFileClass("TRAILER.VQA").Is_Available()) {
 		Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 		CCFileClass f("ATTRACT2.CPS");
+#ifdef LORES
+		Load_Uncompress(f, HiddenPage, HiddenPage, Palette);
+		HidPage.Blit(SeenBuff);
+#else
 		Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 		SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
+#endif
 		Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 		Clear_KeyBuffer();
 		count.Set(TIMER_SECOND*3);
@@ -84,8 +89,13 @@ void GDI_Ending(void)
 
 	Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 	CCFileClass f("ATTRACT2.CPS");
+#ifdef LORES
+	Load_Uncompress(f, HiddenPage, HiddenPage, Palette);
+	HidPage.Blit(SeenBuff);
+#else
 	Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 	SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
+#endif
 	Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 	Clear_KeyBuffer();
 //	CountDownTimerClass count;
@@ -127,14 +137,17 @@ void Nod_Ending(void)
 	Score.Presentation();
 
 	oldfont = Set_Font(ScoreFontPtr);
-
+#ifndef LORES
 	PseudoSeenBuff = new GraphicBufferClass(320,200,(void*)NULL);
+#endif
 	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), (void*)NULL);
 	TextPrintBuffer->Clear();
 	BlitList.Clear();
 	SeenBuff.Clear();
 	HidPage.Clear();
+#ifndef LORES
 	PseudoSeenBuff->Clear();
+#endif
 
 	CCFileClass f("SATSEL.PAL");
 	void * localpal = Load_Alloc_Data(f);
@@ -142,7 +155,7 @@ void Nod_Ending(void)
 	Load_Uncompress(f, SysMemPage, SysMemPage, NULL);
 #ifdef NOT_FOR_WIN95
 	memcpy(satpic, HidPage.Get_Buffer(), 64000);
-#else
+#elif !defined(LORES)
 	SysMemPage.Blit(*PseudoSeenBuff);
 #endif	//NOT_FOR_WIN95
 	void *kanefinl = Load_Sample("KANEFINL.AUD");
@@ -158,11 +171,16 @@ void Nod_Ending(void)
 #endif	//NOT_FOR_WIN95
 	Show_Mouse();
 
+#ifdef LORES
+	SysMemPage.Blit(SeenBuff);
+	SysMemPage.Blit(HidPage);
+#else
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = (unsigned char*)localpal;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("SATSELIN.PAL");
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff,"SATSELIN.PAL");
+#endif
 
 	Keyboard::Clear();
 	Play_Sample(kanefinl,255,128);
@@ -190,11 +208,11 @@ void Nod_Ending(void)
 				if ((key & 0x10FF) == KN_LMOUSE && !(key & KN_RLSE_BIT)) {
 					int mousex = _Kbd->MouseQX;
 					int mousey = _Kbd->MouseQY;
-					if (mousey >= 22*2 && mousey <= 177*2) {
+					if (mousey >= 22*RESFACTOR && mousey <= 177*RESFACTOR) {
 						done++;
-						if (mousex <  160*2 && mousey <  100*2) selection = 2;
-						if (mousex <  160*2 && mousey >= 100*2) selection = 3;
-						if (mousex >= 160*2 && mousey >= 100*2) selection = 4;
+						if (mousex <  160*RESFACTOR && mousey <  100*RESFACTOR) selection = 2;
+						if (mousex <  160*RESFACTOR && mousey >= 100*RESFACTOR) selection = 3;
+						if (mousex >= 160*RESFACTOR && mousey >= 100*RESFACTOR) selection = 4;
 					}
 				}
 			}
@@ -203,7 +221,7 @@ void Nod_Ending(void)
 	if (mouseshown) Hide_Mouse();
 #ifdef NOT_FOR_WIN95
 	delete satpic;
-#else
+#elif !defined(LORES)
 	delete PseudoSeenBuff;
 #endif //NOT_FOR_WIN95
 
@@ -213,8 +231,8 @@ void Nod_Ending(void)
 		ScoreObjs[i] = 0;
 	}
 	// erase the "choose a target" text
-	SeenBuff.Fill_Rect(0,180*2,319*2,199*2,0);
-	TextPrintBuffer->Fill_Rect(0,180*2,319*2,199*2,0);
+	SeenBuff.Fill_Rect(0,180*RESFACTOR,319*RESFACTOR,199*RESFACTOR,0);
+	TextPrintBuffer->Fill_Rect(0,180*RESFACTOR,319*RESFACTOR,199*RESFACTOR,0);
 
 	Hide_Mouse();
 	Keyboard::Clear();
@@ -232,8 +250,13 @@ void Nod_Ending(void)
 	if (CCFileClass("TRAILER.VQA").Is_Available()) {
 		Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 		CCFileClass f("ATTRACT2.CPS");
+#ifdef LORES
+		Load_Uncompress(f, HiddenPage, HiddenPage, Palette);
+		HidPage.Blit(SeenBuff);
+#else
 		Load_Uncompress(f, SysMemPage, SysMemPage, Palette);
 		SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
+#endif
 		Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 		Clear_KeyBuffer();
 		count.Set(TIMER_SECOND*3);
@@ -247,8 +270,13 @@ void Nod_Ending(void)
 
 	Fade_Palette_To(BlackPalette, FADE_PALETTE_MEDIUM, Call_Back);
 	CCFileClass f2("ATTRACT2.CPS");
+#ifdef LORES
+	Load_Uncompress(f2, HiddenPage, HiddenPage, Palette);
+	HidPage.Blit(SeenBuff);
+#else
 	Load_Uncompress(f2, SysMemPage, SysMemPage, Palette);
 	SysMemPage.Scale(SeenBuff, 0, 0, 0, 0, 320, 199, 640, 398);
+#endif
 	Fade_Palette_To(Palette, FADE_PALETTE_MEDIUM, Call_Back);
 	Clear_KeyBuffer();
 //	CountDownTimerClass count;

@@ -125,7 +125,7 @@ void Draw_Box(int x, int y, int w, int h, BoxStyleEnum up, bool filled)
 	BoxStyleType const &style = ButtonColors[up];
 
 	if (filled) {
-		if (style.Filler == CC_GREEN_BKGD){
+		if (style.Filler == CC_GREEN_BKGD && RESFACTOR == 2){
 			CC_Texture_Fill (MixFileClass::Retrieve("BTEXTURE.SHP"), InMainLoop, x, y, w, h);
 		}else{
 			LogicPage->Fill_Rect( x, y, x+w, y+h, style.Filler);
@@ -427,7 +427,11 @@ void Simple_Text_Print(char const *text, unsigned x, unsigned y, unsigned fore, 
 	**	Change the current font if it differs from the font desired.
 	*/
 	point = (flag & (TextPrintType)0x000F);
+#ifdef LORES
+	xspace = 0;
+#else
 	xspace = 1;
+#endif
 	yspace = 0;
 
 	switch (point) {

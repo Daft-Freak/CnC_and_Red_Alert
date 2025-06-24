@@ -240,8 +240,11 @@ void Map_Selection(void)
 											 88,106,115,139,
 											168,164,183,123,
 											154};
-	//static char const _greenpal[]={0,1,0x42,3,0x43,5,0x44,7,0x44,9,10,1,12,13,0x41,15};
+#ifdef LORES
+	static char const _greenpal[]={0,1,0x42,3,0x43,5,0x44,7,0x44,9,10,1,12,13,0x41,15};
+#else
 	static char const _greenpal[]={0,0x41,0x42,0x43,0x44,0x44,0x44,0x44,0x44,0x44,0x44,0x44,0x44,0x44,0x44,0x44};
+#endif
 	static char const _othergreenpal[]={0,0x21,0x22,0x23,0x24,0x25,0x26,0x26,0x26,0x26,0x26,0x26,0x26,0x26,0x26,0x26};
 	static char const _regpal[]={0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
 	GraphicBufferClass backpage(20*6,8);
@@ -268,7 +271,10 @@ void Map_Selection(void)
 	if (CountryArray[scenario].Choices[ScenDir]==0) return;
 
 	Theme.Queue_Song(THEME_MAP1);
+
+#ifndef LORES
 	PseudoSeenBuff = new GraphicBufferClass(320,200,(void*)NULL);
+#endif
 
 	/*
 	** Extra graphic buffer to draw text into
@@ -287,15 +293,21 @@ void Map_Selection(void)
 	** Load the spinning-globe anim
 	*/
 	if (house == HOUSE_GOOD) {
-		//anim     = Open_Animation("EARTH_E.WSA", NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),Palette);
+#ifdef LORES
+		anim     = Open_Animation("EARTH_E.WSA", NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),Palette);
+		progress = Open_Animation(lastscenario ? "BOSNIA.WSA" : "EUROPE.WSA",NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),progresspalette);
+#else
 		anim     = Open_Animation("HEARTH_E.WSA", NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),Palette);
-		//progress = Open_Animation(lastscenario ? "BOSNIA.WSA" : "EUROPE.WSA",NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),progresspalette);
 		progress = Open_Animation(lastscenario ? "HBOSNIA.WSA" : "EUROPE.WSA",NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),progresspalette);
+#endif
 	} else {
-		//anim     = Open_Animation("EARTH_A.WSA", NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),Palette);
+#ifdef LORES
+		anim     = Open_Animation("EARTH_A.WSA", NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),Palette);
+		progress = Open_Animation(lastscenario ? "S_AFRICA.WSA" : "AFRICA.WSA",NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),progresspalette);
+#else
 		anim     = Open_Animation("HEARTH_A.WSA", NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),Palette);
-		//progress = Open_Animation(lastscenario ? "S_AFRICA.WSA" : "AFRICA.WSA",NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),progresspalette);
 		progress = Open_Animation(lastscenario ? "HSAFRICA.WSA" : "AFRICA.WSA",NULL,0,(WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE),progresspalette);
+#endif
 	}
 
 	void const * appear1 = MixFileClass::Retrieve("APPEAR1.AUD");
@@ -313,59 +325,103 @@ void Map_Selection(void)
 	void const * scold1 = MixFileClass::Retrieve("SCOLD1.AUD");
 
 	SysMemPage.Clear();
+#ifndef LORES
 	PseudoSeenBuff->Clear();
+#endif
 	WWMouse->Erase_Mouse(&HidPage, TRUE);
 	HiddenPage.Clear();
+
+#ifdef LORES
+	Animate_Frame(greyearth, HidPage, 0);
+	Bit_It_In_Scale(0, 0, 320, 200, &HiddenPage, &VisiblePage , &SeenBuff);
+
+	SeenBuff.Put_Pixel(237,92,TBLACK);
+	SeenBuff.Put_Pixel(237,93,TBLACK);
+#else
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = Palette;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP1.PAL");
+
 //	SeenBuff.Blit(HidPage);
 	Animate_Frame(greyearth, SysMemPage, 0);
 
 	Bit_It_In_Scale(0, 0, 320, 200, &SysMemPage, PseudoSeenBuff , &SeenBuff);
 	PseudoSeenBuff->Put_Pixel(237,92,TBLACK);
 	PseudoSeenBuff->Put_Pixel(237,93,TBLACK);
+
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff,"MAP1.PAL");
 
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = localpalette;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP_LOCL.PAL");
+#endif
+
 	Play_Sample(appear1, 255, Options.Normalize_Sound(110));
 	Fade_Palette_To(localpalette, FADE_PALETTE_MEDIUM, Call_Back);
 	for (int i = 1; i < Get_Animation_Frame_Count(greyearth); i++) {
 		Call_Back_Delay(4);
+#ifdef LORES
+		Animate_Frame(greyearth, HidPage, i);
+#else
 		Animate_Frame(greyearth, *PseudoSeenBuff, i);
+#endif
 	}
 	Close_Animation(greyearth);
+
+#ifndef LORES
 	Write_Interpolation_Palette("MAP_LOCL.PAL");
+#endif
 
 	Call_Back_Delay(4);
+
+#ifdef LORES
+	Animate_Frame(greyearth2, HidPage, 0);
+#else
 	SysMemPage.Clear();
 	Animate_Frame(greyearth2, SysMemPage, 0);
+
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = grey2palette;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP_GRY2.PAL");
+#endif
 	Wait_Vert_Blank();
 	Set_Palette(grey2palette);
+
+#ifndef LORES
 	SysMemPage.Blit(*PseudoSeenBuff);
+#endif
+
 	Call_Back_Delay(4);
 	for (int i = 1; i < Get_Animation_Frame_Count(greyearth2); i++) {
+#ifdef LORES
+		Animate_Frame(greyearth2,HiddenPage,i);
+#else
 		Animate_Frame(greyearth2,*PseudoSeenBuff,i);
+#endif
 		Call_Back_Delay(4);
 	}
 	Close_Animation(greyearth2);
+
+#ifndef LORES
 	Write_Interpolation_Palette("MAP_GRY2.PAL");
+#endif
 
 	/*
 	** Copy the first frame up to the seenpage (while screen is black)
 	*/
 	SysMemPage.Clear();
 	Animate_Frame(anim, SysMemPage, 1);//, 0,0, (WSAType)0,0,0);
+#ifdef LORES
+	SysMemPage.Blit(HidPage);
+	HidPage.Blit(SeenBuff);
+#else
 	SysMemPage.Blit(*PseudoSeenBuff);
+
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff ,NULL);
+#endif
 
 	Stop_Speaking();
 
@@ -379,8 +435,11 @@ void Map_Selection(void)
 	/*
 	** now make the grid appear
 	*/
+#ifndef LORES
 	SysMemPage.Blit(*PseudoSeenBuff);
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff, NULL);
+#endif
+
 	Play_Sample(sfx4, 255, Options.Normalize_Sound(130));
 	Play_Sample(text2, 255, Options.Normalize_Sound(90));
 
@@ -395,44 +454,47 @@ void Map_Selection(void)
 		if (frame == 70 || frame == 72) Play_Sample(beepy2, 255, Options.Normalize_Sound(90));
 		if (frame == 74) Play_Sample(target2, 255, Options.Normalize_Sound(110));
 
+		// the HEARTH_* animations don't have the text, but the EARTH_* ones do
+		// (they're the same resolution, but the H are only available with UPDATE.MIX)
+#ifndef LORES
 		switch (frame){
 			case 1:
 				Alloc_Object(new MultiStagePrintClass(Text_String (TXT_READING_IMAGE_DATA), 0,10,_othergreenpal));
 				break;
 
 			case 16:
-				TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_READING_IMAGE_DATA)), 2*(10 + 12), BLACK);
+				TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_READING_IMAGE_DATA)), RESFACTOR * (10 + 12), BLACK);
 				break;
 
 			case 17:
-				TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_READING_IMAGE_DATA)), 2*(10 + 12), TBLACK);
+				TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_READING_IMAGE_DATA)), RESFACTOR * (10 + 12), TBLACK);
 				Alloc_Object(new MultiStagePrintClass("ANALYZING", 0,10,_othergreenpal));
 				break;
 
 			case 33:
-				TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_ANALYZING)), 2*(10 + 12), BLACK);
+				TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_ANALYZING)), RESFACTOR * (10 + 12), BLACK);
 				break;
 
 			case 34:
-				TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_ANALYZING)), 2*(10 + 12), TBLACK);
+				TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_ANALYZING)), RESFACTOR * (10 + 12), TBLACK);
 				Alloc_Object(new MultiStagePrintClass(Text_String (TXT_ENHANCING_IMAGE_DATA), 0,10,_othergreenpal));
 				break;
 
 			case 44:
-				TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE_DATA)), 2*(10 + 12), BLACK);
+				TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE_DATA)), RESFACTOR * (10 + 12), BLACK);
 				break;
 
 			case 45:
-				TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE_DATA)), 2*(10 + 12), TBLACK);
+				TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE_DATA)), RESFACTOR * (10 + 12), TBLACK);
 				Alloc_Object(new MultiStagePrintClass(Text_String(TXT_ISOLATING_OPERATIONAL_THEATER), 0,10,_othergreenpal));
 				break;
 
 			case 70:
-				TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String(TXT_ISOLATING_OPERATIONAL_THEATER)), 2*(10 + 12), BLACK);
+				TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String(TXT_ISOLATING_OPERATIONAL_THEATER)), RESFACTOR * (10 + 12), BLACK);
 				break;
 
 			case 71:
-				TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String(TXT_ISOLATING_OPERATIONAL_THEATER)), 2*(10 + 12), TBLACK);
+				TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String(TXT_ISOLATING_OPERATIONAL_THEATER)), RESFACTOR * (10 + 12), TBLACK);
 				Alloc_Object(new MultiStagePrintClass(Text_String (TXT_ESTABLISHING_TRADITIONAL_BOUNDARIES), 0,10,_othergreenpal));
 				break;
 
@@ -440,15 +502,20 @@ void Map_Selection(void)
 				Alloc_Object(new MultiStagePrintClass(Text_String (TXT_FOR_VISUAL_REFERENCE), 0,22,_othergreenpal));
 				break;
 		}
+#endif
 
-
+#ifdef LORES
+		Animate_Frame(anim, SysMemPage, frame++);
+		SysMemPage.Blit(HidPage);
+#else
 		Animate_Frame(anim, *PseudoSeenBuff, frame++);
+#endif
 		Call_Back_Delay(/*Keyboard::Check() ? 0 :*/ 3);
 	}
 
-	TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_ESTABLISHING_TRADITIONAL_BOUNDARIES)), 2*(10 + 24), BLACK);
+	TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_ESTABLISHING_TRADITIONAL_BOUNDARIES)), RESFACTOR * (10 + 24), BLACK);
 	Call_Back_Delay (1);
-	TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_ESTABLISHING_TRADITIONAL_BOUNDARIES)), 2*(10 + 24), TBLACK);
+	TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_ESTABLISHING_TRADITIONAL_BOUNDARIES)), RESFACTOR * (10 + 24), TBLACK);
 	Call_Back_Delay (1);
 
 	Close_Animation(anim);
@@ -462,11 +529,18 @@ void Map_Selection(void)
 
 	SysMemPage.Clear();
 	Animate_Frame(progress,SysMemPage,0);
+
+#ifdef LORES
+	SysMemPage.Blit(HidPage);
+	SysMemPage.Blit(SeenBuff);
+#else
 	SysMemPage.Blit(*PseudoSeenBuff);
+
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = progresspalette;
 	Increase_Palette_Luminance(InterpolationPalette , 30,30,30,63);
 	Read_Interpolation_Palette("MAP_PROG.PAL");
+#endif
 
 	GraphicBufferClass *europe = new GraphicBufferClass(SysMemPage.Get_Width(),SysMemPage.Get_Height());
 	SysMemPage.Blit(*europe);
@@ -477,7 +551,11 @@ void Map_Selection(void)
 	int startframe = CountryArray[scenario].Start[ScenDir];
 	if (startframe) {
 		Animate_Frame(progress,SysMemPage,startframe);
+#ifdef LORES
+		SysMemPage.Blit(HidPage);
+#else
 		SysMemPage.Blit(*PseudoSeenBuff);
+#endif
 	}
 	Set_Palette(progresspalette);
 	Call_Back_Delay(45);
@@ -498,7 +576,12 @@ void Map_Selection(void)
 
 	Play_Sample(country1, 255, Options.Normalize_Sound(90));
 	Animate_Frame(progress,SysMemPage,startframe+1);
+#ifdef LORES
+	Bit_It_In_Scale(0, 0, 320, 200, &SysMemPage, &HiddenPage,&SeenBuff,1,1);
+#else
+	Animate_Frame(progress,SysMemPage,startframe+1);
 	Bit_It_In_Scale(0, 0, 320, 200, &SysMemPage, PseudoSeenBuff,&SeenBuff,1,1);
+#endif
 	backpage.Blit(SysMemPage, 0,0, xcoord,1, 20*6,8);
 	Call_Back_Delay(85);
 
@@ -506,13 +589,21 @@ void Map_Selection(void)
 	** Now dissolve in second advance of territories
 	*/
 #ifdef FRENCH
+#ifndef LORES
 	PseudoSeenBuff->Fill_Rect(xcoord,0,xcoord + 6*16 + 10,8,BLACK);
-	TextPrintBuffer->Fill_Rect(xcoord*2,0,2*(xcoord + 6*16 + 10),2*8,BLACK);
-#else
-	PseudoSeenBuff->Fill_Rect(xcoord,0,xcoord + 6*16,8,BLACK);
-	TextPrintBuffer->Fill_Rect(2*xcoord,0,2*(xcoord + 6*16),2*8,BLACK);
 #endif
+	TextPrintBuffer->Fill_Rect(xcoord * RESFACTOR,0,RESFACTOR * (xcoord + 6*16 + 10),RESFACTOR * 8,BLACK);
+#else
+#ifndef LORES
+	PseudoSeenBuff->Fill_Rect(xcoord,0,xcoord + 6*16,8,BLACK);
+#endif
+	TextPrintBuffer->Fill_Rect(RESFACTOR * xcoord,0,RESFACTOR * (xcoord + 6*16),RESFACTOR * 8,BLACK);
+#endif
+
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff,NULL);
+#endif
+
 	SysMemPage.Blit(backpage, xcoord,1, 0,0, 20*6,8);
 	if (!lastscenario) {
 		Play_Sample(text2, 255, Options.Normalize_Sound(90));
@@ -526,18 +617,29 @@ void Map_Selection(void)
 
 	Play_Sample(country1, 255, Options.Normalize_Sound(90));
 	Animate_Frame(progress,SysMemPage,startframe+2);
+#ifdef LORES
+	Bit_It_In_Scale(0, 0, 320, 200, &SysMemPage, &HiddenPage,&SeenBuff,1,1);
+#else
 	Bit_It_In_Scale(0, 0, 320, 200, &SysMemPage, PseudoSeenBuff , &SeenBuff,1,1);
+#endif
 	backpage.Blit(SysMemPage, 0,0, xcoord,11, 20*6,8);
 	if (!lastscenario) Call_Back_Delay(85);
 //	Set_Font(oldfont);
 #ifdef FRENCH
+#ifndef LORES
 	PseudoSeenBuff->Fill_Rect(xcoord,12,xcoord+6*16+10,20,BLACK);
-	TextPrintBuffer->Fill_Rect(2*xcoord,2*12,2*(xcoord+6*16+10),2*20,BLACK);
-#else
-	PseudoSeenBuff->Fill_Rect(xcoord,12,xcoord+6*16,20,BLACK);
-	TextPrintBuffer->Fill_Rect(2*xcoord,2*12,2*(xcoord+6*16),2*20,BLACK);
 #endif
+	TextPrintBuffer->Fill_Rect(RESFACTOR * xcoord,RESFACTOR * 12,RESFACTOR * (xcoord+6*16+10),RESFACTOR * 20,BLACK);
+#else
+#ifndef LORES
+	PseudoSeenBuff->Fill_Rect(xcoord,12,xcoord+6*16,20,BLACK);
+#endif
+	TextPrintBuffer->Fill_Rect(RESFACTOR * xcoord,RESFACTOR * 12,RESFACTOR * (xcoord+6*16),RESFACTOR * 20,BLACK);
+#endif
+
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff,NULL);
+#endif
 
 	startframe = CountryArray[scenario].ContAnim[ScenDir];
 
@@ -560,25 +662,34 @@ void Map_Selection(void)
 	if (lastscenario) {
 #if (GERMAN | FRENCH)
 		SysMemPage.Fill_Rect(0,160, 20*6,186, TBLACK);
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(0,160, 20*6,186, TBLACK);
-		TextPrintBuffer->Fill_Rect(0,2*160, 2*20*6,2*186, BLACK);
-		SeenBuff.Fill_Rect(0,2*160, 2*20*6,2*186, TBLACK);
-		HidPage.Fill_Rect(0,2*160, 2*20*6,2*186, TBLACK);
+#endif
+		TextPrintBuffer->Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 186, BLACK);
+		SeenBuff.Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 186, TBLACK);
+		HidPage.Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 186, TBLACK);
 #else
 		SysMemPage.Fill_Rect(0,160, 20*6,176, TBLACK);
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(0,160, 20*6,176, TBLACK);
-		TextPrintBuffer->Fill_Rect(0,2*160, 2*20*6,2*176, BLACK);
-		SeenBuff.Fill_Rect(0,2*160, 2*20*6,2*176, TBLACK);
-		HidPage.Fill_Rect(0,2*160, 2*20*6,2*176, TBLACK);
+#endif
+		TextPrintBuffer->Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 176, BLACK);
+		SeenBuff.Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 176, TBLACK);
+		HidPage.Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 176, TBLACK);
 #endif
 		BlitList.Clear();
+#ifdef LORES
+		Bit_It_In_Scale(0, 0, 320, 200, &SysMemPage, &VisiblePage, &SeenBuff);
+#else
 		Bit_It_In_Scale(0, 0, 320, 200, &SysMemPage, PseudoSeenBuff , &SeenBuff);
+#endif
 	}
 
 	/*
 	** Fix up the palette that seems different for the last scenario
 	*/
 	if (lastscenario){
+#ifndef LORES
 		InterpolationPaletteChanged = TRUE;
 		InterpolationPalette = CurrentPalette;
 		if (house == HOUSE_GOOD){
@@ -588,6 +699,7 @@ void Map_Selection(void)
 			Read_Interpolation_Palette("LASTSCNB.PAL");
 			Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff, "LASTSCNB.PAL");
 		}
+#endif
 	}
 
 
@@ -597,7 +709,7 @@ void Map_Selection(void)
 		if (frame == 2) Play_Sample(beepy3, 255, Options.Normalize_Sound(90));
 		if (frame == 6) Play_Sample(newtarg1, 255, Options.Normalize_Sound(90));
 
-
+#ifndef LORES
 		if (lastscenario){
 			switch ( frame ){
 
@@ -615,31 +727,36 @@ void Map_Selection(void)
 
 				case 35:
 					if (house == HOUSE_GOOD){
-						TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE)), 2*(10 + 12), BLACK);
+						TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE)), RESFACTOR * (10 + 12), BLACK);
 					}else{
 #if (FRENCH)
-						TextPrintBuffer->Fill_Rect (2*180, 2*10, 2*(180+String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE))), 2*(10 + 12), BLACK);
+						TextPrintBuffer->Fill_Rect (RESFACTOR * 180, RESFACTOR * 10, RESFACTOR * (180+String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE))), RESFACTOR * (10 + 12), BLACK);
 #else
-						TextPrintBuffer->Fill_Rect (2*210, 2*10, 2*(210+String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE))), 2*(10 + 12), BLACK);
+						TextPrintBuffer->Fill_Rect (RESFACTOR * 210, RESFACTOR * 10, RESFACTOR * (210+String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE))), RESFACTOR * (10 + 12), BLACK);
 #endif	//(FRENCH)
 					}
 					break;
 
 				case 36:
 					if (house == HOUSE_GOOD){
-						TextPrintBuffer->Fill_Rect (0, 2*10, 2*String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE)), 2*(10 + 12), TBLACK);
+						TextPrintBuffer->Fill_Rect (0, RESFACTOR * 10, RESFACTOR * String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE)), RESFACTOR * (10 + 12), TBLACK);
 					}else{
 #if (FRENCH)
-						TextPrintBuffer->Fill_Rect (2*180, 2*10, 2*(180+String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE))), 2*(10 + 12), TBLACK);
+						TextPrintBuffer->Fill_Rect (RESFACTOR * 180, RESFACTOR * 10, RESFACTOR * (180+String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE))), RESFACTOR * (10 + 12), TBLACK);
 #else
-						TextPrintBuffer->Fill_Rect (2*210, 2*10, 2*(210+String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE))), 2*(10 + 12), TBLACK);
+						TextPrintBuffer->Fill_Rect (RESFACTOR * 210, RESFACTOR * 10, RESFACTOR * (210+String_Pixel_Width (Text_String (TXT_ENHANCING_IMAGE))), RESFACTOR * (10 + 12), TBLACK);
 #endif	//(FRENCH)
 					}
 					break;
 			}
 		}
+#endif
 
+#ifdef LORES
+		Animate_Frame(progress,HidPage,startframe + frame);
+#else
 		Animate_Frame(progress,*PseudoSeenBuff,startframe + frame);
+#endif
 		Call_Back_Delay(6);
 		/* Cause it to cycle on the flashing on the country for a little while */
 		if (!lastscenario && frame == 4 && q < 4) {
@@ -654,15 +771,22 @@ void Map_Selection(void)
 	if (!lastscenario) {
 #if (GERMAN | FRENCH)
 		SysMemPage.Fill_Rect( 0,160, 20*6,186, TBLACK);
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(0,160, 20*6,186, TBLACK);
-		TextPrintBuffer->Fill_Rect(0,2*160, 2*20*6,2*186, BLACK);
+#endif
+		TextPrintBuffer->Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 186, BLACK);
 #else
 		SysMemPage.Fill_Rect( 0,160, 20*6,176, TBLACK);
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(0,160, 20*6,176, TBLACK);
-		TextPrintBuffer->Fill_Rect(0,2*160, 2*20*6,2*176, BLACK);
+#endif
+		TextPrintBuffer->Fill_Rect(0,RESFACTOR * 160, RESFACTOR * 20*6,RESFACTOR * 176, BLACK);
 #endif
 	}
+
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff, NULL);
+#endif
 
 	/*
 	** Now the crosshairs are over the target countries - loop until a
@@ -696,7 +820,7 @@ void Map_Selection(void)
 		if (Keyboard::Check()) {
 			if ((Keyboard::Get() & 0x10FF) == KN_LMOUSE) {
 				for (selection = 0; selection < CountryArray[scenario].Choices[ScenDir]; selection++) {
-					color = SysMemPage.Get_Pixel(Get_Mouse_X()/2,Get_Mouse_Y()/2);
+					color = SysMemPage.Get_Pixel(Get_Mouse_X()/RESFACTOR,Get_Mouse_Y()/RESFACTOR);
 
 					/*
 					** Special hack for Egypt the second time through
@@ -729,27 +853,42 @@ void Map_Selection(void)
 
 		Hide_Mouse();
 		// erase "Select country to attack"
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(attackxcoord,160, attackxcoord+(17*6),178,BLACK);
-		TextPrintBuffer->Fill_Rect(2*attackxcoord,2*160, 2*(attackxcoord+(17*6)),2*178,BLACK);
+#endif
+		TextPrintBuffer->Fill_Rect(RESFACTOR * attackxcoord,RESFACTOR * 160, RESFACTOR * (attackxcoord+(17*6)),2*178,BLACK);
 #if (GERMAN | FRENCH)
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(attackxcoord+(17*6),160, attackxcoord+(21*6),178,BLACK);
-		TextPrintBuffer->Fill_Rect(2*attackxcoord+(17*6*2),2*160, 2*(attackxcoord+(21*6)),2*178,BLACK);
+#endif
+		TextPrintBuffer->Fill_Rect(RESFACTOR * attackxcoord+(17*6*2),RESFACTOR * 160, RESFACTOR * (attackxcoord+(21*6)),2*178,BLACK);
 #endif	//GERMAN
+
+#ifndef LORES
 		Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff ,NULL);
+#endif
 
 		/*
 		** Draw the country's shape in non-fading colors
 		*/
+#ifdef LORES
+		Set_Logic_Page(HidPage);
+		europe->Blit(HidPage);
+#else
 		Set_Logic_Page(SysMemPage);
 		europe->Blit(SysMemPage);
-
+#endif
 		int shape = CountryArray[scenario].CountryShape[ScenDir][selection];
 		int xyindex = shape + (house == HOUSE_GOOD ? 0 : 18);
 		CC_Draw_Shape(countryshape, shape,
 					 _countryx[xyindex],_countryy[xyindex],
 					 WINDOW_MAIN, SHAPE_WIN_REL | SHAPE_CENTER, 0,0);
+#ifdef LORES
+		HidPage.Blit(SeenBuff);
+#else
 		SysMemPage.Blit(*PseudoSeenBuff);
 		Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff ,NULL);
+#endif
 
 		/*
 		** Now clear the palette of all but the country's colors, and fade
@@ -757,11 +896,13 @@ void Map_Selection(void)
 		*/
 		CCFileClass("DARK_E.PAL").Read(localpalette, 768);
 //		Load_Data("DARK_E.PAL", localpalette, 768);
+#ifndef LORES
 		InterpolationPaletteChanged = TRUE;
 		InterpolationPalette = localpalette;
 		Increase_Palette_Luminance(localpalette , 30,30,30,63);
 		Read_Interpolation_Palette("MAP_LOC2.PAL");
 		Interpolate_2X_Scale(PseudoSeenBuff , &SeenBuff , "MAP_LOC2.PAL");
+#endif
 		Fade_Palette_To(localpalette, FADE_PALETTE_MEDIUM, Call_Back);
 
 		countryshape = 0;
@@ -769,27 +910,38 @@ void Map_Selection(void)
 		Print_Statistics(color & 0x7F, _countryx[xyindex], _countryy[xyindex]);
 	} else {
 		CCFileClass(house == HOUSE_GOOD ? "DARK_B.PAL" : "DARK_SA.PAL").Read(localpalette, 768);
+#ifndef LORES
 		InterpolationPaletteChanged = TRUE;
 		InterpolationPalette = localpalette;
 		Increase_Palette_Luminance(localpalette , 30,30,30,63);
 		Read_Interpolation_Palette("MAP_LOC3.PAL");
 		Interpolate_2X_Scale(PseudoSeenBuff , &SeenBuff , "MAP_LOC3.PAL");
+#endif
 		Set_Palette(localpalette);
 //		Load_Data(house == HOUSE_GOOD ? "DARK_B.PAL" : "DARK_SA.PAL", localpalette, 768);
 
 		Hide_Mouse();
 #if (GERMAN | FRENCH)
+#ifndef LORES
 		PseudoSeenBuff->Fill_Rect(attackxcoord, 160, 319, 178, BLACK);	// erase "Select country to attack"
-		TextPrintBuffer->Fill_Rect(2*attackxcoord, 2*160, 639, 2*178, BLACK);	// erase "Select country to attack"
-#else
-		PseudoSeenBuff->Fill_Rect(attackxcoord, 160, attackxcoord + (17*6), 199, BLACK);	// erase "Select country to attack"
-		TextPrintBuffer->Fill_Rect(2*attackxcoord, 2*160, 2*(attackxcoord + (17*6)), 2*199, BLACK);	// erase "Select country to attack"
 #endif
+		TextPrintBuffer->Fill_Rect(RESFACTOR * attackxcoord, RESFACTOR * 160, 639, RESFACTOR * 178, BLACK);	// erase "Select country to attack"
+#else
+#ifndef LORES
+		PseudoSeenBuff->Fill_Rect(attackxcoord, 160, attackxcoord + (17*6), 199, BLACK);	// erase "Select country to attack"
+#endif
+		TextPrintBuffer->Fill_Rect(RESFACTOR * attackxcoord, RESFACTOR * 160, RESFACTOR * (attackxcoord + (17*6)), RESFACTOR * 199, BLACK);	// erase "Select country to attack"
+#endif
+#ifndef LORES // FIXME?
 		Interpolate_2X_Scale(PseudoSeenBuff, &SeenBuff, NULL);
+
 		Animate_Frame(progress, *PseudoSeenBuff, Get_Animation_Frame_Count(progress)-1);
+#endif
 		Set_Palette(localpalette);
 		Close_Animation(progress);
+#ifndef LORES
 		PseudoSeenBuff->Blit(SysMemPage);
+#endif
 		Print_Statistics(20, 160, house == HOUSE_GOOD ? 0 : 160);
 	}
 

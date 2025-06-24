@@ -208,7 +208,7 @@ ScoreAnimClass *ScoreObjs[MAXSCOREOBJS];
 
 ScoreAnimClass::ScoreAnimClass(int x, int y, void const * data)
 {
-	BlitList.Add (x*2, y*2, x*2, y*2, 2* String_Pixel_Width ( (char*)data ) , 16);
+	BlitList.Add (x * RESFACTOR, y * RESFACTOR, x * RESFACTOR, y * RESFACTOR, RESFACTOR * String_Pixel_Width ( (char*)data ) , 8 * RESFACTOR);
 	XPos = x;
 	YPos = y;
 	Timer.Set(0);
@@ -232,7 +232,11 @@ void ScoreTimeClass::Update(void)
 		Timer.Set(TimerReset);
 		if (++Stage >= MaxStage) Stage = 0;
 		oldpage = LogicPage;
+#ifdef LORES
+		Set_Logic_Page(HidPage);
+#else
 		Set_Logic_Page(PseudoSeenBuff);
+#endif
 		CC_Draw_Shape(DataPtr, Stage, XPos, YPos, WINDOW_MAIN, SHAPE_WIN_REL, 0, 0);
 		Set_Logic_Page(oldpage);
 	}
@@ -256,7 +260,11 @@ void ScoreCredsClass::Update(void)
 		Timer.Set(TimerReset);
 		if (++Stage >= MaxStage) Stage = 0;
 		oldpage = LogicPage;
+#ifdef LORES
+		Set_Logic_Page(HidPage);
+#else
 		Set_Logic_Page(PseudoSeenBuff);
+#endif
 		if (Stage <22) {
 			Play_Sample(Clock1, 255, Options.Normalize_Sound(70));
 		} else {
@@ -299,7 +307,7 @@ void ScorePrintClass::Update(void)
 				ScoreObjs[i] = 0;
 			}
 		}
-		BlitList.Add (XPos*2, YPos*2, XPos*2, YPos*2,(Stage*6)+14, 8*2);
+		BlitList.Add (XPos*RESFACTOR, YPos*RESFACTOR, XPos*RESFACTOR, YPos*RESFACTOR,(Stage*6)+14, 8*RESFACTOR);
 		delete this;
 		return;
 	}
@@ -319,19 +327,19 @@ void ScorePrintClass::Update(void)
 			*/
 			static char const _blackpal[]={BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK};
 			Set_Font_Palette(_blackpal);
-			TextPrintBuffer->Print(localstr, 2*(pos-6),2*(YPos-1),   TBLACK, TBLACK);
-			TextPrintBuffer->Print(localstr, 2*(pos-6),2*(YPos+1),   TBLACK, TBLACK);
-			TextPrintBuffer->Print(localstr, 2*(pos-6+1),2*(YPos),   TBLACK, TBLACK);
+			TextPrintBuffer->Print(localstr, RESFACTOR*(pos-6),RESFACTOR*(YPos-1),   TBLACK, TBLACK);
+			TextPrintBuffer->Print(localstr, RESFACTOR*(pos-6),RESFACTOR*(YPos+1),   TBLACK, TBLACK);
+			TextPrintBuffer->Print(localstr, RESFACTOR*(pos-6+1),RESFACTOR*(YPos),   TBLACK, TBLACK);
 
 			Set_Font_Palette(PrimaryPalette);
-			TextPrintBuffer->Print(localstr, 2*(pos-6),2*YPos,   TBLACK, TBLACK);
+			TextPrintBuffer->Print(localstr, RESFACTOR*(pos-6),RESFACTOR*YPos,   TBLACK, TBLACK);
 		}
 		if (((char *)DataPtr)[Stage]) {
 			localstr[0]=((char *)DataPtr)[Stage];
 			Set_Font_Palette(_whitepal);
-			TextPrintBuffer->Print(localstr, pos*2,  2*(YPos-1), TBLACK, TBLACK);
-			TextPrintBuffer->Print(localstr, pos*2,  2*(YPos+1), TBLACK, TBLACK);
-			TextPrintBuffer->Print(localstr, (pos+1)*2,2*YPos  , TBLACK, TBLACK);
+			TextPrintBuffer->Print(localstr, pos*RESFACTOR,  RESFACTOR*(YPos-1), TBLACK, TBLACK);
+			TextPrintBuffer->Print(localstr, pos*RESFACTOR,  RESFACTOR*(YPos+1), TBLACK, TBLACK);
+			TextPrintBuffer->Print(localstr, (pos+1)*RESFACTOR,RESFACTOR*YPos  , TBLACK, TBLACK);
 		}
 		Stage++;
 	}
@@ -376,7 +384,7 @@ void MultiStagePrintClass::Update(void)
 				ScoreObjs[i] = 0;
 			}
 		}
-		BlitList.Add (XPos*2, YPos*2, XPos*2, YPos*2,(Stage*6)+14, 8*2);
+		BlitList.Add (XPos * RESFACTOR, YPos * RESFACTOR, XPos * RESFACTOR, YPos * RESFACTOR,(Stage*6)+14, 8 * RESFACTOR);
 		delete this;
 		return;
 	}
@@ -401,19 +409,19 @@ void MultiStagePrintClass::Update(void)
 				*/
 				static char const _blackpal[]={BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK,BLACK};
 				Set_Font_Palette(_blackpal);
-				TextPrintBuffer->Print(localstr, 2*(pos-6),2*(YPos-1),   TBLACK, TBLACK);
-				TextPrintBuffer->Print(localstr, 2*(pos-6),2*(YPos+1),   TBLACK, TBLACK);
-				TextPrintBuffer->Print(localstr, 2*(pos-6+1),2*(YPos),   TBLACK, TBLACK);
+				TextPrintBuffer->Print(localstr, RESFACTOR * (pos-6), RESFACTOR * (YPos-1),   TBLACK, TBLACK);
+				TextPrintBuffer->Print(localstr, RESFACTOR * (pos-6), RESFACTOR * (YPos+1),   TBLACK, TBLACK);
+				TextPrintBuffer->Print(localstr, RESFACTOR * (pos-6+1), RESFACTOR * (YPos),   TBLACK, TBLACK);
 
 				Set_Font_Palette(PrimaryPalette);
-				TextPrintBuffer->Print(localstr, 2*(pos-6),2*YPos,   TBLACK, TBLACK);
+				TextPrintBuffer->Print(localstr, RESFACTOR * (pos-6), RESFACTOR * YPos,   TBLACK, TBLACK);
 			}
 			if (((char *)DataPtr)[Stage]) {
 				localstr[0]=((char *)DataPtr)[Stage];
 				Set_Font_Palette(_whitepal);
-				TextPrintBuffer->Print(localstr, pos*2,  2*(YPos-1), TBLACK, TBLACK);
-				TextPrintBuffer->Print(localstr, pos*2,  2*(YPos+1), TBLACK, TBLACK);
-				TextPrintBuffer->Print(localstr, (pos+1)*2,2*YPos  , TBLACK, TBLACK);
+				TextPrintBuffer->Print(localstr, pos * RESFACTOR,  RESFACTOR * (YPos-1), TBLACK, TBLACK);
+				TextPrintBuffer->Print(localstr, pos * RESFACTOR,  RESFACTOR * (YPos+1), TBLACK, TBLACK);
+				TextPrintBuffer->Print(localstr, (pos+1) * RESFACTOR, RESFACTOR * YPos  , TBLACK, TBLACK);
 			}
 			Stage++;
 
@@ -446,14 +454,14 @@ void ScoreScaleClass::Update(void)
 	if (!Timer.Time()) {
 		Timer.Set(1);
 		if (Stage != 5) {
-			TextPrintBuffer->Blit(HidPage, _destx[Stage+1]*2, YPos*2, _destx[Stage+1]*2, YPos*2, _destw[Stage+1]*2, _destw[Stage+1]*2);
+			TextPrintBuffer->Blit(HidPage, _destx[Stage+1] * RESFACTOR, YPos * RESFACTOR, _destx[Stage+1] * RESFACTOR, YPos * RESFACTOR, _destw[Stage+1] * RESFACTOR, _destw[Stage+1] * RESFACTOR);
 			//SysMemPage.Blit(*PseudoSeenBuff, _destx[Stage+1], YPos, _destx[Stage+1], YPos, _destw[Stage+1], _destw[Stage+1]);
 		}
 		if (Stage) {
 			Set_Font_Palette(Palette);
-			TextPrintBuffer->Fill_Rect(0,0, 7*2,7*2, TBLACK);
+			TextPrintBuffer->Fill_Rect(0,0, 7 * RESFACTOR,7 * RESFACTOR, TBLACK);
 			TextPrintBuffer->Print((char *)DataPtr, 0,0,   TBLACK, TBLACK);
-			TextPrintBuffer->Scale(HidPage, 0,0, _destx[Stage]*2, YPos*2, 5*2,5*2, _destw[Stage]*2, _destw[Stage]*2, true);
+			TextPrintBuffer->Scale(HidPage, 0,0, _destx[Stage] * RESFACTOR, YPos * RESFACTOR, 5 * RESFACTOR,5 * RESFACTOR, _destw[Stage] * RESFACTOR, _destw[Stage] * RESFACTOR, true);
 
 			//SysMemPage.Fill_Rect(0,0, 7,7, TBLACK);
 			//SysMemPage.Print((char *)DataPtr, 0,0,   TBLACK, TBLACK);
@@ -464,8 +472,8 @@ void ScoreScaleClass::Update(void)
 			for (int i = 0; i < MAXSCOREOBJS; i++) {
 				if (ScoreObjs[i]==this) ScoreObjs[i] = 0;
 			}
-			TextPrintBuffer->Print((char *)DataPtr, XPos*2,YPos*2,   TBLACK, TBLACK);
-			//TextPrintBuffer->Blit(HidPage, XPos*2, YPos*2, XPos*2, YPos*2,2*6,2*6);
+			TextPrintBuffer->Print((char *)DataPtr, XPos * RESFACTOR,YPos * RESFACTOR,   TBLACK, TBLACK);
+			//TextPrintBuffer->Blit(HidPage, XPos * RESFACTOR, YPos * RESFACTOR, XPos * RESFACTOR, YPos * RESFACTOR,RESFACTOR * 6, RESFACTOR * 6);
 			//BlitList.Add (XPos, YPos, XPos, YPos, 6,6);
 
 			//SysMemPage.Print((char *)DataPtr, XPos,YPos,   TBLACK, TBLACK);
@@ -707,13 +715,19 @@ void ScoreClass::Presentation(void)
 
 /* --- Now display the background animation --- */
 	Hide_Mouse();
+#ifdef LORES
+	Animate_Frame(anim, HidPage, 1);
+	HidPage.Blit(SeenBuff);
+#else
 	Animate_Frame(anim, SysMemPage, 1);
 	SysMemPage.Blit(*PseudoSeenBuff);
 	Increase_Palette_Luminance (Palette , 30,30,30,63);
+
 	InterpolationPalette = Palette;
 	InterpolationPaletteChanged = TRUE;
 	Read_Interpolation_Palette(inter_pal);
 	Interpolate_2X_Scale( PseudoSeenBuff , &SeenBuff , inter_pal);
+#endif
 	Fade_Palette_To(Palette, FADE_PALETTE_FAST, Call_Back);
 
 	Play_Sample(country4, 255, Options.Normalize_Sound(90));
@@ -721,7 +735,11 @@ void ScoreClass::Presentation(void)
 	int frame = 1;
 	StreamLowImpact = true;
 	while (frame < Get_Animation_Frame_Count(anim)) {
+#ifdef LORES
+		Animate_Frame(anim, HidPage, frame++);
+#else
 		Animate_Frame(anim, *PseudoSeenBuff, frame++);
+#endif
 		////////////////Interpolate_2X_Scale( PseudoSeenBuff , &SeenBuff , NULL);
 		Call_Back_Delay(2);
 	}
@@ -741,8 +759,9 @@ void ScoreClass::Presentation(void)
 	ScoreObjs[2] = new ScoreTimeClass(8, 172, hiscore2shape, 10, 4);
 
 	/* Now display the stuff */
+#ifndef LORES
 	PseudoSeenBuff->Blit(SysMemPage);
-
+#endif
 
 	if (house == HOUSE_BAD) {
 
@@ -755,7 +774,11 @@ void ScoreClass::Presentation(void)
 		Bit_It_In_Scale(0,0, 128,104-16, &SysMemPage, PseudoSeenBuff, &SeenBuff , 1);
 	}
 
+#ifdef LORES
+	Set_Logic_Page(SeenBuff);
+#else
 	Set_Logic_Page(PseudoSeenBuff);
+#endif
 
 #ifdef FRENCH
 	Alloc_Object(new ScorePrintClass(TXT_SCORE_TIME, 200,  3,_greenpal));
@@ -772,10 +795,10 @@ void ScoreClass::Presentation(void)
 	int scorecounter = 0;
 	Keyboard::Clear();
 
-	BlitList.Add (264*2, 26*2, 264*2, 26*2, 4*12 , 12);
-	BlitList.Add (264*2, 38*2, 264*2, 38*2, 4*12 , 12);
-	BlitList.Add (264*2, 50*2, 264*2, 50*2, 4*12 , 12);
-	BlitList.Add (275*2, 9*2, 275*2, 9*2, 64, 12 );	//Minutes
+	BlitList.Add (264 * RESFACTOR, 26 * RESFACTOR, 264 * RESFACTOR, 26 * RESFACTOR, 4*12 , 12);
+	BlitList.Add (264 * RESFACTOR, 38 * RESFACTOR, 264 * RESFACTOR, 38 * RESFACTOR, 4*12 , 12);
+	BlitList.Add (264 * RESFACTOR, 50 * RESFACTOR, 264 * RESFACTOR, 50 * RESFACTOR, 4*12 , 12);
+	BlitList.Add (275 * RESFACTOR, 9 * RESFACTOR, 275 * RESFACTOR, 9 * RESFACTOR, 64, 12 );	//Minutes
 	for (i = 0; i <= 160; i++) {
 		Set_Font_Palette(_greenpal);
 		Count_Up_Print("%3d%%", i,    leadership,         264, 26);
@@ -823,7 +846,11 @@ void ScoreClass::Presentation(void)
 		Do_GDI_Graph(yellowptr, redptr, GKilled + CKilled, NKilled, 88);
 	}
 
+#ifdef LORES
+	Set_Logic_Page(SeenBuff);
+#else
 	Set_Logic_Page(*PseudoSeenBuff);
+#endif
 
 	/*
 	** Print out stats on buildings destroyed
@@ -916,7 +943,12 @@ void ScoreClass::Presentation(void)
 	/*
 	** Now display the hall of fame
 	*/
+#ifdef LORES
+	Set_Logic_Page(SeenBuff);
+#else
 	Set_Logic_Page(*PseudoSeenBuff);
+#endif
+
 	for (int i = 0; i < NUMFAMENAMES; i++) {
 		Alloc_Object(new ScorePrintClass(hallfame[i].name, HALLFAME_X, HALLFAME_Y + (i*8), _bluepal));
 		if (hallfame[i].score) {
@@ -1079,16 +1111,18 @@ void ScoreClass::Do_Nod_Buildings_Graph(void)
 	/*
 	** Print the # of buildings on the hidpage so we only need to do it once
 	*/
+#ifndef LORES
 	PseudoSeenBuff->Blit(SysMemPage);
+#endif
 	Set_Logic_Page(SysMemPage);
 	Call_Back_Delay(30);
-	BlitList.Add (2* (BUILDING_X + 8), 2* (BUILDING_Y), 2* (BUILDING_X+8), 2* (BUILDING_Y), 5*12 , 12);
-	BlitList.Add (2* (BUILDING_X + 8), 2* (BUILDING_Y + 12), 2* (BUILDING_X+8), 2* (BUILDING_Y + 12), 5*12 , 12);
-	BlitList.Add (2* (BUILDING_X + 8), 2* (BUILDING_Y + 24), 2* (BUILDING_X+8), 2* (BUILDING_Y + 24), 5*12 , 12);
+	BlitList.Add (RESFACTOR * (BUILDING_X + 8), RESFACTOR * (BUILDING_Y), RESFACTOR * (BUILDING_X+8), RESFACTOR * (BUILDING_Y), 5*12 , 12);
+	BlitList.Add (RESFACTOR * (BUILDING_X + 8), RESFACTOR * (BUILDING_Y + 12), RESFACTOR * (BUILDING_X+8), RESFACTOR * (BUILDING_Y + 12), 5*12 , 12);
+	BlitList.Add (RESFACTOR * (BUILDING_X + 8), RESFACTOR * (BUILDING_Y + 24), RESFACTOR * (BUILDING_X+8), RESFACTOR * (BUILDING_Y + 24), 5*12 , 12);
 
-	TextPrintBuffer->Print( 0, (BUILDING_X + 8)*2, BUILDING_Y*2,      TBLACK, TBLACK);
-	TextPrintBuffer->Print( 0, (BUILDING_X + 8)*2, (BUILDING_Y + 12)*2, TBLACK, TBLACK);
-	TextPrintBuffer->Print( 0, (BUILDING_X + 8)*2, (BUILDING_Y + 24)*2, TBLACK, TBLACK);
+	TextPrintBuffer->Print( 0, (BUILDING_X + 8) * RESFACTOR, BUILDING_Y * RESFACTOR,      TBLACK, TBLACK);
+	TextPrintBuffer->Print( 0, (BUILDING_X + 8) * RESFACTOR, (BUILDING_Y + 12) * RESFACTOR, TBLACK, TBLACK);
+	TextPrintBuffer->Print( 0, (BUILDING_X + 8) * RESFACTOR, (BUILDING_Y + 24) * RESFACTOR, TBLACK, TBLACK);
 
 	/*
 	** Here's the animation/draw loop for blowing up the factory
@@ -1143,12 +1177,18 @@ void ScoreClass::Do_Nod_Buildings_Graph(void)
 						  i+32, 40, WINDOW_MAIN,
 						  SHAPE_FADING|SHAPE_CENTER|SHAPE_WIN_REL,//|SHAPE_GHOST,
 						  ScoreRemapYellow,Map.UnitShadow);
+#ifdef LORES
+		SysMemPage.Blit(HidPage, 0, 0, BUILDING_X, BUILDING_Y, 320-BUILDING_X,48);
+#else
 		SysMemPage.Blit(*PseudoSeenBuff, 0, 0, BUILDING_X, BUILDING_Y, 320-BUILDING_X,48);
+#endif
 
 		/*
 		** Extra font related stuff. ST - 7/29/96 2:22PM
 		*/
+#ifndef LORES
 		Interpolate_2X_Scale(PseudoSeenBuff , &HidPage ,NULL);
+#endif
 		BlitList.Update();
 		WWMouse->Draw_Mouse(&HidPage);
 		HidPage.Blit(SeenBuff);
@@ -1210,15 +1250,23 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 	Set_Logic_Page(SysMemPage);
 	SysMemPage.Fill_Rect(0,0, 124,9, TBLACK);
 	CC_Draw_Shape(redptr, 120, 0,0, WINDOW_MAIN,SHAPE_WIN_REL, 0, 0);
+#ifdef LORES
+	Set_Logic_Page(HidPage);
+#else
 	Set_Logic_Page(PseudoSeenBuff);
+#endif
 
-	BlitList.Add (2* 297, 2* (ypos+2), 2* 297, 2* (ypos+2), 5*12 , 12);
+	BlitList.Add (RESFACTOR * 297, RESFACTOR * (ypos+2), RESFACTOR * 297, RESFACTOR * (ypos+2), 5*12 , 12);
 
 	for (i = 1; i <= gdikilled; i++) {
 		if (i != gdikilled) {
 			CC_Draw_Shape(yellowptr,i, 172, ypos, WINDOW_MAIN,SHAPE_WIN_REL, 0, 0);
 		} else {
+#ifdef LORES
+			SysMemPage.Blit(HidPage,0,0, 172, ypos, 3+gdikilled,9);
+#else
 			SysMemPage.Blit(*PseudoSeenBuff,0,0, 172, ypos, 3+gdikilled,9);
+#endif
 		}
 
 		Count_Up_Print("%d", (i*gkilled) / max, gkilled, 297, ypos+2);
@@ -1231,12 +1279,16 @@ void ScoreClass::Do_GDI_Graph(void const * yellowptr, void const * redptr, int g
 	Count_Up_Print("%d", gkilled, gkilled, 297, ypos+ 2);
 	if (!Check_Key()) Call_Back_Delay(40);
 
-	BlitList.Add (2* 297, 2* (ypos+14), 2* 297, 2* (ypos+14), 5*12 , 12);
+	BlitList.Add (RESFACTOR * 297, RESFACTOR * (ypos+14), RESFACTOR * 297, RESFACTOR * (ypos+14), 5*12 , 12);
 	for (i = 1; i <= nodkilled; i++) {
 		if (i != nodkilled) {
 			CC_Draw_Shape(redptr, i, 172, ypos+12, WINDOW_MAIN,SHAPE_WIN_REL, 0, 0);
 		} else {
+#ifdef LORES
+			SysMemPage.Blit(HidPage,0,0, 172, ypos+12, 3+nodkilled,9);
+#else
 			SysMemPage.Blit(*PseudoSeenBuff,0,0, 172,ypos+12, 3+nodkilled,9);
+#endif
 		}
 
 		Count_Up_Print("%d", (i*nkilled) / max, nkilled, 297, ypos+14);
@@ -1319,12 +1371,16 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 	** Draw the infantrymen and pause briefly before running the graph
 	*/
 	Draw_InfantryMen();
+#ifndef LORES
 	SysMemPage.Blit(*PseudoSeenBuff, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
 	//Interpolate_2X_Scale( PseudoSeenBuff , &SeenBuff, NULL);
+#endif
 	/*
 	** Extra font related stuff. ST - 7/29/96 2:22PM
 	*/
+#ifndef LORES
 	Interpolate_2X_Scale(PseudoSeenBuff , &HidPage ,NULL);
+#endif
 	BlitList.Update();
 	WWMouse->Draw_Mouse(&HidPage);
 	HidPage.Blit(SeenBuff);
@@ -1332,17 +1388,20 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 
 	Call_Back_Delay(40);
 
-	BlitList.Add (2* (SCORETEXT_X + 64), 2* (CASUALTY_Y + 2), 2* (SCORETEXT_X + 64), 2* (CASUALTY_Y + 2), 5*12 , 12);
-	BlitList.Add (2* (SCORETEXT_X + 64), 2* (CASUALTY_Y + 14), 2* (SCORETEXT_X + 64), 2* (CASUALTY_Y + 14), 5*12 , 12);
-	BlitList.Add (2* (SCORETEXT_X + 64), 2* (CASUALTY_Y + 26), 2* (SCORETEXT_X + 64), 2* (CASUALTY_Y + 26), 5*12 , 12);
+	BlitList.Add (RESFACTOR * (SCORETEXT_X + 64), RESFACTOR * (CASUALTY_Y + 2), RESFACTOR * (SCORETEXT_X + 64), RESFACTOR * (CASUALTY_Y + 2), 5*12 , 12);
+	BlitList.Add (RESFACTOR * (SCORETEXT_X + 64), RESFACTOR * (CASUALTY_Y + 14), RESFACTOR * (SCORETEXT_X + 64), RESFACTOR * (CASUALTY_Y + 14), 5*12 , 12);
+	BlitList.Add (RESFACTOR * (SCORETEXT_X + 64), RESFACTOR * (CASUALTY_Y + 26), RESFACTOR * (SCORETEXT_X + 64), RESFACTOR * (CASUALTY_Y + 26), 5*12 , 12);
 
 	for (i = 1; i <= max; i++) {
 		// Draw & update infantrymen 3 times for every tick on the graph (i)
 		for (int q = 0; q < 3; q++) {
 			Draw_InfantryMen();
 			Draw_Bar_Graphs(i, gdikilled, nodkilled, civkilled);
+#ifdef LORES
+			SysMemPage.Blit(HidPage, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
+#else
 			SysMemPage.Blit(*PseudoSeenBuff, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
-
+#endif
 			Count_Up_Print("%d", (i*GKilled) / max, GKilled, SCORETEXT_X+64, CASUALTY_Y +  2);
 			Count_Up_Print("%d", (i*NKilled) / max, NKilled, SCORETEXT_X+64, CASUALTY_Y + 14);
 			Count_Up_Print("%d", (i*CKilled) / max, CKilled, SCORETEXT_X+64, CASUALTY_Y + 26);
@@ -1367,7 +1426,11 @@ void ScoreClass::Do_Nod_Casualties_Graph(void)
 		for (i=k=0; i<NUMINFANTRYMEN; i++) if (InfantryMan[i].anim >= DO_GUN_DEATH) k=1;
 		if (k) Draw_InfantryMen();
 		Draw_Bar_Graphs(max, gdikilled, nodkilled, civkilled);
+#ifdef LORES
+		SysMemPage.Blit(HidPage, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
+#else
 		SysMemPage.Blit(*PseudoSeenBuff, 0, 0, BARGRAPH_X, CASUALTY_Y, 320-BARGRAPH_X, 34);
+#endif
 		Call_Back_Delay(1);
 	}
 }
@@ -1404,7 +1467,7 @@ void ScoreClass::Show_Credits(int house, unsigned char const pal[])
 	*/
 	i = -50;
 
-	BlitList.Add (2* (_credpx[house]), 2* (_credpy[house]), 2* (_credpx[house]), 2* (_credpy[house]), 5*12 , 12);
+	BlitList.Add (RESFACTOR * (_credpx[house]), RESFACTOR * (_credpy[house]), RESFACTOR * (_credpx[house]), RESFACTOR * (_credpy[house]), 5*12 , 12);
 
 	do {
 		add = 5;
@@ -1456,7 +1519,7 @@ void ScoreClass::Print_Minutes(int minutes)
 	} else {
 		sprintf(str,Text_String(TXT_SCORE_TIMEFORMAT2), minutes);
 	}
-	TextPrintBuffer->Print(str, 275*2, 9*2, TBLACK, TBLACK);
+	TextPrintBuffer->Print(str, 275 * RESFACTOR, 9 * RESFACTOR, TBLACK, TBLACK);
 }
 
 
@@ -1496,13 +1559,13 @@ void ScoreClass::Count_Up_Print(char *str, int percent, int max, int xpos, int y
 //	LogicPage->Print(	destbuf, 0, 0, WHITE, TBLACK);
 //	HidPage.Blit(SeenBuff, 0, 0, xpos, ypos, width, 8);
 
-	TextPrintBuffer->Fill_Rect (xpos*2, ypos*2, (xpos + width)*2, (ypos+7)*2, BLACK);
-	TextPrintBuffer->Print (destbuf, xpos*2, ypos*2, WHITE, TBLACK);
+	TextPrintBuffer->Fill_Rect (xpos * RESFACTOR, ypos * RESFACTOR, (xpos + width) * RESFACTOR, (ypos+7) * RESFACTOR, BLACK);
+	TextPrintBuffer->Print (destbuf, xpos * RESFACTOR, ypos * RESFACTOR, WHITE, TBLACK);
 
 
-	//TextPrintBuffer->Blit(*TextPrintBuffer, xpos*2, ypos*2, 0, 0, width*2, 8*2);
+	//TextPrintBuffer->Blit(*TextPrintBuffer, xpos * RESFACTOR, ypos * RESFACTOR, 0, 0, width * RESFACTOR, 8 * RESFACTOR);
 	//TextPrintBuffer->Print(destbuf, 0, 0, WHITE, TBLACK);
-	//TextPrintBuffer->Blit(SeenBuff, 0, 0, xpos*2, ypos*2, width*2, 8*2);
+	//TextPrintBuffer->Blit(SeenBuff, 0, 0, xpos * RESFACTOR, ypos * RESFACTOR, width * RESFACTOR, 8 * RESFACTOR);
 
 //	PseudoSeenBuff->Print(	destbuf, xpos, ypos, TBLACK, BLACK);
 //	Interpolate_2X_Scale( PseudoSeenBuff , &SeenBuff , NULL);
@@ -1545,7 +1608,9 @@ void ScoreClass::Input_Name(char str[], int xpos, int ypos, unsigned char const 
 		/*
 		** Extra font related stuff. ST - 7/29/96 2:22PM
 		*/
+#ifndef LORES
 		Interpolate_2X_Scale (PseudoSeenBuff , &HidPage ,NULL);
+#endif
 		BlitList.Update();
 		HidPage.Blit(SeenBuff);
 
@@ -1573,7 +1638,7 @@ void ScoreClass::Input_Name(char str[], int xpos, int ypos, unsigned char const 
 
 					PseudoSeenBuff->Fill_Rect(xposindex6,ypos,xposindex6+6,ypos+6,TBLACK);
 					SysMemPage.Fill_Rect(xposindex6,ypos,xposindex6+6,ypos+6,TBLACK);
-					TextPrintBuffer->Fill_Rect(xposindex6*2,ypos*2,(xposindex6+6)*2,(ypos+6)*2, BLACK);
+					TextPrintBuffer->Fill_Rect(xposindex6 * RESFACTOR,ypos * RESFACTOR,(xposindex6+6) * RESFACTOR,(ypos+6) * RESFACTOR, BLACK);
 				}
 
 			} else if (key!=KA_RETURN) {				//else if (key != KN_RETURN && key!=KN_KEYPAD_RETURN) {
@@ -1583,7 +1648,7 @@ void ScoreClass::Input_Name(char str[], int xpos, int ypos, unsigned char const 
 if ( (ascii >= '!' && ascii <= KA_TILDA) || ascii == ' ') {
 					PseudoSeenBuff->Fill_Rect(xpos + (index*6), ypos, xpos + (index*6)+6, ypos+5, TBLACK);
 					 SysMemPage.Fill_Rect(xpos + (index*6), ypos, xpos + (index*6)+6, ypos+5, TBLACK);
-					TextPrintBuffer->Fill_Rect(2*(xpos + (index*6)), ypos*2, 2*(xpos + (index*6)+6), 2*(ypos+6), BLACK);
+					TextPrintBuffer->Fill_Rect(RESFACTOR * (xpos + (index*6)), ypos * RESFACTOR, RESFACTOR * (xpos + (index*6)+6), RESFACTOR * (ypos+6), BLACK);
 					str[index] = ascii;
 					str[index+1] = 0;
 
@@ -1610,13 +1675,13 @@ void Animate_Cursor(int pos, int ypos)
 	// If they moved the cursor, erase old one and force state=0, to make green draw right away
 	if (pos != _lastpos) {
 		PseudoSeenBuff->Draw_Line(HALLFAME_X + (_lastpos*6),ypos, HALLFAME_X + (_lastpos*6) + 5, ypos, TBLACK);
-		TextPrintBuffer->Fill_Rect(2*(HALLFAME_X + (_lastpos*6)),2*ypos, 2*(HALLFAME_X + (_lastpos*6) + 5), 2*ypos+1, BLACK);
+		TextPrintBuffer->Fill_Rect(RESFACTOR * (HALLFAME_X + (_lastpos*6)),RESFACTOR * ypos, RESFACTOR * (HALLFAME_X + (_lastpos*6) + 5), RESFACTOR * ypos+1, BLACK);
 		_lastpos = pos;
 		_state = 0;
 	}
 
 	PseudoSeenBuff->Draw_Line(HALLFAME_X + (pos*6),ypos, HALLFAME_X + (pos*6)+5, ypos, _state ? LTBLUE : TBLACK);
-	TextPrintBuffer->Fill_Rect(2*(HALLFAME_X + (pos*6)),2*ypos, 2*(HALLFAME_X + (pos*6)+5), 2*ypos+1, _state ? LTBLUE : BLACK);
+	TextPrintBuffer->Fill_Rect(RESFACTOR * (HALLFAME_X + (pos*6)),RESFACTOR * ypos, RESFACTOR * (HALLFAME_X + (pos*6)+5), RESFACTOR * ypos+1, _state ? LTBLUE : BLACK);
 
 	/*
 	** Toggle the color of the cursor, green or black, if it's time to do so.
@@ -1849,7 +1914,9 @@ void Call_Back_Delay(int time)
 			//BlitList.Update();
 		//}else{
 			Animate_Score_Objs();
+#ifndef LORES
 			Interpolate_2X_Scale(PseudoSeenBuff , &HidPage ,NULL);
+#endif
 			BlitList.Update();
 			WWMouse->Draw_Mouse(&HidPage);
 			HidPage.Blit(SeenBuff);
@@ -1940,11 +2007,13 @@ void Multi_Score_Presentation(void)
 	** Display the background animation
 	*/
 	VisiblePage.Clear();
+#ifndef LORES
 	InterpolationPaletteChanged = TRUE;
 	InterpolationPalette = Palette;
 	Increase_Palette_Luminance (Palette , 30,30,30,63);
 	Animate_Frame(anim, *PseudoSeenBuff, 1);
 	Interpolate_2X_Scale( PseudoSeenBuff , &SeenBuff , "MULTSCOR.PAL");
+#endif
 	Fade_Palette_To(Palette, FADE_PALETTE_FAST, Call_Back);
 
 	int frame = 1;

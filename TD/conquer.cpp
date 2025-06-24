@@ -2332,7 +2332,9 @@ void Play_Movie(char const * name, ThemeType theme, bool clrscrn)
 		return;
 	}
 
+#ifndef LORES
 	memset (&PaletteInterpolationTable[0][0],0,65536);
+#endif
 
 	if (name) {
 		char fullname[_MAX_FNAME+_MAX_EXT];
@@ -2420,7 +2422,11 @@ void Play_Movie(char const * name, ThemeType theme, bool clrscrn)
 
 				Load_Interpolated_Palettes(palname);
 				//Set_Palette(BlackPalette);
+#ifdef LORES
+				HidPage.Clear();
+#else
 				SysMemPage.Clear();
+#endif
 				InMovie = TRUE;
 				VQA_Play(vqa, VQAMODE_RUN);
 				VQA_Close(vqa);
@@ -2986,7 +2992,12 @@ long VQ_Call_Back(unsigned char *, long )
 
 	Check_VQ_Palette_Set();
 
+#ifdef LORES
+	HidPage.Blit(SeenBuff);
+#else
 	Interpolate_2X_Scale(&SysMemPage,&SeenBuff,NULL);
+#endif
+
 	//Call_Back();
 	if ((BreakoutAllowed || Debug_Flag) && key == KN_ESC) {
 		Keyboard::Clear();

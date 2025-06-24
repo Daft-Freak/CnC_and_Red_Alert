@@ -489,6 +489,7 @@ int Scan_Place_Object(ObjectClass *obj, CELL cell);
 **	INIT.CPP
 */
 void Uninit_Game(void);
+void Load_Title_Page(bool visible=false);
 long Obfuscate(char const * string);
 void Anim_Init(void);
 bool Init_Game(int argc, char *argv[]);
@@ -502,6 +503,7 @@ void Load_Recording_Values(void);
 /*
 ** JSHELL.CPP
 */
+int Load_Picture(char const *filename, BufferClass& scratchbuf, BufferClass& destbuf, unsigned char *palette, PicturePlaneType format);
 void * Small_Icon(void const * iconptr, int iconnum);
 void Set_Window(int window, int x, int y, int w, int h);
 void * Load_Alloc_Data(FileClass &file);
@@ -662,7 +664,9 @@ void Bit_It_In_Scale(int x, int y, int w, int h, GraphicBufferClass *src, Graphi
 void Bit_It_In(int x, int y, int w, int h, GraphicBufferClass *src, GraphicBufferClass *dest, int delay=0, int dagger=0);
 void Call_Back_Delay(int time);
 int Alloc_Object(ScoreAnimClass *obj);
+#ifndef LORES
 extern GraphicBufferClass *PseudoSeenBuff;
+#endif
 
 #ifndef PORTABLE
 void Window_Dialog_Box(HANDLE  hinst, LPCTSTR  lpszTemplate, HWND  hwndOwner, DLGPROC  dlgprc);

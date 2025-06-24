@@ -190,6 +190,12 @@ bool Init_Game(int , char *[])
 #else
 	int temp = RequiredCD;
 	RequiredCD = -2;
+
+#ifdef LORES
+	// has less fonts, but includes the title image
+	new MixFileClass("LOCAL.MIX");			// Cached.
+	MixFileClass::Cache("LOCAL.MIX");
+#else
 	new MixFileClass("CCLOCAL.MIX");			// Cached.
 	MixFileClass::Cache("CCLOCAL.MIX");
 	CCDebugString ("C&C95 - About to register UPDATE.MIX\n");
@@ -197,6 +203,8 @@ bool Init_Game(int , char *[])
 	CCDebugString ("C&C95 - About to register UPDATEC.MIX\n");
 	new MixFileClass("UPDATEC.MIX");			// Cached.
 	MixFileClass::Cache("UPDATEC.MIX");
+#endif
+
 #ifdef JAPANESE
 	CCDebugString ("C&C95 - About to register LANGUAGE.MIX\n");
 	new MixFileClass("LANGUAGE.MIX");
@@ -220,7 +228,12 @@ bool Init_Game(int , char *[])
 	f.Open("6POINT.FNT");
    	 Font6Ptr = Load_Alloc_Data(f);
 	//ScoreFontPtr = MixFileClass::Retrieve("12GRNGRD.FNT");	//GRAD12FN");	//("SCOREFNT.FNT");
+#ifdef LORES
+	// 12GRNGRD is in UPDATE.MIX
+	f.Open("SCOREFNT.FNT");
+#else
 	f.Open("12GRNGRD.FNT");
+#endif
 	ScoreFontPtr = Load_Alloc_Data(f);
 	FontLEDPtr = MixFileClass::Retrieve("LED.FNT");
 	VCRFontPtr = MixFileClass::Retrieve("VCR.FNT");
@@ -540,8 +553,7 @@ bool Init_Game(int , char *[])
 	memset(CurrentPalette, 0x01, 768);
 
 	if (!Special.IsFromInstall) {
-		Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
-		HidPage.Blit(SeenBuff);
+		Load_Title_Page(true);
 	}
 
 	Hide_Mouse();
@@ -917,9 +929,8 @@ bool Select_Game(bool fade)
 				**	Display the title page; fade it in if this is the first time
 				**	through the loop, and the 'fade' flag is true
 				*/
-				Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
+				Load_Title_Page(true);
 				memcpy (GamePalette, Palette, 768);
-				HidPage.Blit(SeenBuff);
 
 				if (fade) {
 					Fade_Palette_To(Palette, FADE_PALETTE_SLOW, Call_Back);
@@ -1931,7 +1942,11 @@ void Anim_Init(void)
 	AnimControl.ImageWidth = 320;
 	AnimControl.ImageHeight = 200;
 	AnimControl.Vmode = 0;
+#ifdef LORES
+	AnimControl.ImageBuf = (unsigned char *)HidPage.Get_Offset();
+#else
 	AnimControl.ImageBuf = (unsigned char *)SysMemPage.Get_Offset();
+#endif
 	//AnimControl.VBIBit = VertBlank;
 	//AnimControl.DrawFlags |= VQACFGF_TOPLEFT;
 	AnimControl.OptionFlags |= VQAOPTF_CAPTIONS|VQAOPTF_EVA;
@@ -3015,4 +3030,33 @@ long Obfuscate(char const * string)
 	**	Return the final code value.
 	*/
 	return((uint32_t)code);
+}
+
+/***********************************************************************************************
+ * Load_Title_Page -- Load the background art for the title page.                              *
+ *                                                                                             *
+ *    This routine will load the background art in a machine independent format. There is      *
+ *    different art required for the hi-res and lo-res versions of the game.                   *
+ *                                                                                             *
+ * INPUT:   visible  -- Should the title page art be copied to the visible page by this        *
+ *                      routine?                                                               *
+ *                                                                                             *
+ * OUTPUT:  none                                                                               *
+ *                                                                                             *
+ * WARNINGS:   Be sure the mouse is hidden if the image is to be copied to the visible page.   *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   06/03/1996 JLB : Created.                                                                 *
+ *=============================================================================================*/
+void Load_Title_Page(bool visible)
+{
+#if RESFACTOR == 2
+	Load_Title_Screen("HTITLE.PCX", &HidPage, Palette);
+#else
+	Load_Picture("TITLE.CPS", *HidPage.Get_Graphic_Buffer(), *HidPage.Get_Graphic_Buffer(), Palette, BM_DEFAULT);
+#endif
+
+	if (visible) {
+		HidPage.Blit(SeenBuff);
+	}
 }
