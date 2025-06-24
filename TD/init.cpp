@@ -1919,6 +1919,9 @@ static void Play_Intro(bool for_real)
 extern LPDIRECTSOUND			SoundObject;
 extern	LPDIRECTSOUNDBUFFER  PrimaryBufferPtr;
 #endif
+#ifdef PICO_BUILD
+[[gnu::section(".psram_data")]] static uint8_t AudioBuf[32768];
+#endif
 void Anim_Init(void)
 {
 	/* Configure player with INI file */
@@ -1963,7 +1966,11 @@ void Anim_Init(void)
 	//AnimControl.Volume = 0x00FF;
 	//AnimControl.AudioRate = 22050;
 //	if (NewConfig.Speed) AnimControl.AudioRate = 11025;
-#ifdef PORTABLE
+#if defined(PICO_BUILD)
+	AnimControl.AudioBufSize = sizeof(AudioBuf);
+	AnimControl.AudioBuf = AudioBuf;
+	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
+#elif defined(PORTABLE)
 	AnimControl.AudioDeviceID = Get_Audio_Device();
 	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
 	AnimControl.AudioSpec = Get_Audio_Spec();
