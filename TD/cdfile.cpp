@@ -44,7 +44,7 @@
 //#include	"cdfile.h"
 
 #ifndef PATH_MAX
-#define PATH_MAX MAX_PATH
+#define PATH_MAX _MAX_PATH
 #endif
 
 /*
