@@ -47,39 +47,39 @@
 #include	"function.h"
 
 
-static char const _slope00000001[] = {7,-1};
-static char const _slope000000101[] = {6,8,-1};
-static char const _slope00000011[] = {6,7,-1};
-static char const _slope0000001[] = {6,-1};
-static char const _slope000001001[] = {5,8,-1};
-static char const _slope000001[] = {5,-1};
-static char const _slope000101[] = {3,5,-1};
-static char const _slope00011010000100000001000011[] = {3,4,6,11,19,25,25,-1};
-static char const _slope00011010010100100001000011[] = {3,4,6,9,11,14,19,24,25,-1};
-static char const _slope0001[] = {3,-1};
-static char const _slope001001001[] = {2,5,8,-1};
-static char const _slope00110000000011[] = {2,3,12,13,-1};
-static char const _slope00110010010011[] = {2,3,6,9,12,13,-1};
-static char const _slope001111001[] = {2,3,4,5,8,-1};
-static char const _slope0011[] = {2,3,-1};
-static char const _slope001[] = {2,-1};
-static char const _slope01000000000000000000001[] = {1,22,-1};
-static char const _slope01000000100000010000001[] = {1,8,15,22,-1};
-static char const _slope0111[] = {1,2,3,-1};
-static char const _slope01[] = {1,-1};
-static char const _slope1001001[] = {0,3,6,-1};
-static char const _slope1001[] = {0,3,-1};
-static char const _slope1100000000000000001100011[] = {0,1,18,19,23,24,-1};
-static char const _slope1100001000001000001100011[] = {0,1,6,12,18,19,23,24,-1};
-static char const _slope1101101[] = {0,1,3,4,6,-1};
-static char const _slope1101[] = {0,1,3,-1};
-static char const _slope111[] = {0,1,2,-1};
-static char const _slope111010011[] = {0,1,2,4,7,8,-1};
-static char const _slope11101[] = {0,1,2,4,-1};
-static char const _slope111111011[] = {0,1,2,3,4,5,7,8,-1};
-static char const _slope11111111[] = {0,1,2,3,4,5,6,7,-1};
-static char const _slope111111[] = {0,1,2,3,4,5,-1};
-static char const _slope1[] = {0,-1};
+static signed char const _slope00000001[] = {7,-1};
+static signed char const _slope000000101[] = {6,8,-1};
+static signed char const _slope00000011[] = {6,7,-1};
+static signed char const _slope0000001[] = {6,-1};
+static signed char const _slope000001001[] = {5,8,-1};
+static signed char const _slope000001[] = {5,-1};
+static signed char const _slope000101[] = {3,5,-1};
+static signed char const _slope00011010000100000001000011[] = {3,4,6,11,19,25,25,-1};
+static signed char const _slope00011010010100100001000011[] = {3,4,6,9,11,14,19,24,25,-1};
+static signed char const _slope0001[] = {3,-1};
+static signed char const _slope001001001[] = {2,5,8,-1};
+static signed char const _slope00110000000011[] = {2,3,12,13,-1};
+static signed char const _slope00110010010011[] = {2,3,6,9,12,13,-1};
+static signed char const _slope001111001[] = {2,3,4,5,8,-1};
+static signed char const _slope0011[] = {2,3,-1};
+static signed char const _slope001[] = {2,-1};
+static signed char const _slope01000000000000000000001[] = {1,22,-1};
+static signed char const _slope01000000100000010000001[] = {1,8,15,22,-1};
+static signed char const _slope0111[] = {1,2,3,-1};
+static signed char const _slope01[] = {1,-1};
+static signed char const _slope1001001[] = {0,3,6,-1};
+static signed char const _slope1001[] = {0,3,-1};
+static signed char const _slope1100000000000000001100011[] = {0,1,18,19,23,24,-1};
+static signed char const _slope1100001000001000001100011[] = {0,1,6,12,18,19,23,24,-1};
+static signed char const _slope1101101[] = {0,1,3,4,6,-1};
+static signed char const _slope1101[] = {0,1,3,-1};
+static signed char const _slope111[] = {0,1,2,-1};
+static signed char const _slope111010011[] = {0,1,2,4,7,8,-1};
+static signed char const _slope11101[] = {0,1,2,4,-1};
+static signed char const _slope111111011[] = {0,1,2,3,4,5,7,8,-1};
+static signed char const _slope11111111[] = {0,1,2,3,4,5,6,7,-1};
+static signed char const _slope111111[] = {0,1,2,3,4,5,-1};
+static signed char const _slope1[] = {0,-1};
 
 static TemplateTypeClass const Empty(
 	TEMPLATE_CLEAR1,
