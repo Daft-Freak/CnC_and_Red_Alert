@@ -119,6 +119,11 @@ UnitTypeClass      │   BuildingTypeClass      │
 #include <windows.h>
 #endif
 
+#ifdef PICO_BUILD
+#include "picolib.h"
+#endif
+
+
 /**********************************************************************
 **	If the following define is enabled, then the memory checking code
 **	will be disabled.

@@ -176,6 +176,10 @@ int main(int argc, char * argv[])
 
 	DDSCAPS	surface_capabilities;
 #endif
+
+#ifdef PICO_BUILD
+	Pico_Init("CnC");
+#else
 	if (Ram_Free(MEM_NORMAL) < 5000000) {
 #ifdef GERMAN
 		printf("Zuwenig Hauptspeicher verfügbar.\n");
@@ -188,7 +192,7 @@ int main(int argc, char * argv[])
 #endif
 		return(EXIT_FAILURE);
 	}
-
+#endif
 
 	//void *test_buffer = Alloc(20,MEM_NORMAL);
 
