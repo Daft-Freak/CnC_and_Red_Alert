@@ -52,6 +52,21 @@ enum QwSTPadIO
     QWSTPAD_X_IO      = 15,
 };
 
+enum SD32PadIO
+{
+    SD28PAD_Y_IO      = 10,
+    SD28PAD_X_IO      = 12,
+    SD28PAD_B_IO      = 9,
+    SD28PAD_A_IO      = 8,
+
+    SD28PAD_RIGHT_IO  = 2,
+    SD28PAD_DOWN_IO   = 4,
+    SD28PAD_UP_IO     = 1,
+    SD28PAD_LEFT_IO   = 0,
+
+    SD28PAD_START_IO  = 15,
+};
+
 static int16_t mouse_x = 0, mouse_y = 0;
 static uint8_t mouse_buttons = 0;
 extern WWKeyboardClass *TheKeyboard;
@@ -138,6 +153,13 @@ void Pico_Input_Init()
     // setup for read
     uint8_t port = 0;
     i2c_write_blocking(QWSTPAD_I2C, QWSTPAD_ADDR, &port, 1, true);
+#endif
+
+// okay, this is a bad name, but it doesn't really have one
+#ifdef SD28PAD_I2C
+    i2c_init(SD28PAD_I2C, 400000);
+    gpio_set_function(SD28PAD_SDA_PIN, GPIO_FUNC_I2C);
+    gpio_set_function(SD28PAD_SCL_PIN, GPIO_FUNC_I2C);
 #endif
 }
 
@@ -250,5 +272,115 @@ void Pico_Input_Update()
     // start -> esc
     if(changed & (1 << QWSTPAD_START_IO))
         TheKeyboard->Put_Key_Message(VK_ESCAPE, gpio & (1 << QWSTPAD_START_IO));
+#endif
+
+#ifdef SD28PAD_I2C
+    static uint16_t last_buttons = 0xFFFF;
+    static absolute_time_t last_button_time = 0;
+    static bool last_stick_moved = false;
+    static float mouse_x_frac = 0.0f, mouse_y_frac = 0.0f;
+
+    // assume the dual layout
+    uint8_t data[4];
+    i2c_read_blocking(SD28PAD_I2C, 0x55, data, 4, false);
+
+    uint16_t raw_adc[4];
+    raw_adc[0] = data[0] | (data[1] & 0xF) << 8;
+    raw_adc[1] = data[2] | (data[3] & 0xF) << 8;
+    uint16_t raw_buttons = data[1] >> 4 | (data[3] & 0xF0);
+
+    i2c_read_blocking(SD28PAD_I2C, 0x57, data, 4, false);
+    raw_adc[2] = data[0] | (data[1] & 0xF) << 8;
+    raw_adc[3] = data[2] | (data[3] & 0xF) << 8;
+    raw_buttons |= (data[1] & 0xF0) << 4 | (data[3] & 0xF0) << 8;
+
+    raw_buttons = ~raw_buttons;
+
+    // get time delta
+    //FIXME: duplication
+    auto gpio_time = get_absolute_time();
+    auto gpio_dt = absolute_time_diff_us(last_button_time, gpio_time) / 10000; // 100ths of a second
+    last_button_time = delayed_by_ms(last_button_time, gpio_dt * 10);
+
+    auto changed = raw_buttons ^ last_buttons;
+    last_buttons = raw_buttons;
+
+    // process raw data
+    static const int joystick_range = 2048; // full
+    static const int joystick_deadzone = 192;
+    auto scale_joystick = [](uint16_t raw) {
+        int val = raw - 0x800;
+
+        if(val > joystick_deadzone)
+            val -= joystick_deadzone;
+        else if(val < -joystick_deadzone)
+            val += joystick_deadzone;
+        else
+            val = 0;
+
+        return float(val) / (joystick_range - joystick_deadzone);
+    };
+
+    float stick_x, stick_y;
+
+    stick_x = scale_joystick(raw_adc[0]);
+    stick_y = scale_joystick(raw_adc[1]);
+
+    // stick -> mouse
+    float new_mouse_x = mouse_x + mouse_x_frac + stick_x * gpio_dt * 2.0f;
+    float new_mouse_y = mouse_y + mouse_y_frac + stick_y * gpio_dt * 2.0f;
+    mouse_x = new_mouse_x;
+    mouse_y = new_mouse_y;
+    mouse_x_frac = new_mouse_x - mouse_x;
+    mouse_y_frac = new_mouse_y - mouse_y;
+
+    if(stick_x != 0.0f || stick_y != 0.0f)
+    {
+        // clamp
+        if(mouse_x < 0)
+            mouse_x = 0;
+        else if(mouse_x >= 320)
+            mouse_x = 319;
+
+        if(mouse_y < 0)
+            mouse_y = 0;
+        else if(mouse_y >= 200)
+            mouse_y = 199;
+        
+        Update_Mouse_Pos(mouse_x, mouse_y);
+        last_stick_moved = true;
+    }
+    else if(last_stick_moved)
+    {
+        // move the mouse slightly so we stop scrolling
+        if(mouse_x == 0)
+            mouse_x = 1;
+        else if(mouse_x == 319)
+            mouse_x--;
+
+        if(mouse_y == 0)
+            mouse_y = 1;
+        else if(mouse_y == 199)
+            mouse_y--;
+
+        Update_Mouse_Pos(mouse_x, mouse_y);
+
+        last_stick_moved = false;
+    }
+
+    // A/B -> mouse buttons
+    if(changed & (1 << SD28PAD_A_IO))
+        Put_Mouse_Message(VK_LBUTTON, raw_buttons & (1 << SD28PAD_A_IO));
+    if(changed & (1 << SD28PAD_B_IO))
+        Put_Mouse_Message(VK_RBUTTON, raw_buttons & (1 << SD28PAD_B_IO));
+
+    // start -> esc
+    if(changed & (1 << SD28PAD_START_IO))
+        TheKeyboard->Put_Key_Message(VK_ESCAPE, raw_buttons & (1 << SD28PAD_START_IO));
+
+    // dpad -> arrows?
+
+    // ???
+
 #endif
 }
