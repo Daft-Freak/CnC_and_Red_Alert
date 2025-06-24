@@ -167,7 +167,15 @@ void MapClass::Alloc_Cells(void)
 	Vector = 0;
 	VectorMax = 0;
 	IsAllocated = 0;
+
+#ifdef PICO_BUILD
+	static CellClass *cellbuf = NULL;
+	if(!cellbuf)
+		cellbuf = new(MEM_FIXED_HEAP) CellClass[MAP_CELL_TOTAL];
+	Resize(Size, cellbuf);
+#else
 	Resize(Size);
+#endif
 }
 
 
