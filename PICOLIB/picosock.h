@@ -54,6 +54,7 @@ hostent *gethostbyname(const char *name);
 
 int socket(int domain, int type, int protocol);
 int bind(int fd, sockaddr *addr, socklen_t len);
+int accept(int fd, sockaddr *addr, socklen_t *len);
 int closesocket(int fd);
 
 ssize_t recvfrom(int fd, void *buf, size_t n, int flags, sockaddr *addr, socklen_t *addr_len);
@@ -67,6 +68,10 @@ ssize_t sendto(int fd, const void *buf, size_t n, int flags, const sockaddr *add
 #define SO_SNDBUF    7
 #define SO_RCVBUF    8
 #define SO_LINGER   13
+
+#define IPPROTO_TCP 6
+
+#define TCP_NODELAY 1
 
 struct linger
 {

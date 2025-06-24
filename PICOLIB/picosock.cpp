@@ -86,6 +86,11 @@ int bind(int fd, sockaddr *addr, socklen_t len)
     return -1;
 }
 
+int accept(int fd, sockaddr *addr, socklen_t *len)
+{
+    return -1;
+}
+
 int closesocket(int fd)
 {
     if(udp && fd == socket_fd)
@@ -231,6 +236,11 @@ int socket(int domain, int type, int protocol)
 }
 
 int bind(int fd, sockaddr *addr, socklen_t len)
+{
+    return -1;
+}
+
+int accept(int fd, sockaddr *addr, socklen_t *len)
 {
     return -1;
 }
