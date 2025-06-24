@@ -635,7 +635,11 @@ bool Init_Game(int , char *[])
 	**	into a custom holding tank only as large as the largest speech file to
 	**	be played.
 	*/
+#ifdef PICO_BUILD
+	SpeechBuffer = new(MEM_FIXED_HEAP) char [SPEECH_BUFFER_SIZE];
+#else
 	SpeechBuffer = new char [SPEECH_BUFFER_SIZE];
+#endif
 	Call_Back();
 
 	/*
