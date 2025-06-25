@@ -98,7 +98,6 @@ unsigned char DisplayClass::FadingYellow[256];
 unsigned char DisplayClass::FadingRed[256];
 unsigned char DisplayClass::TranslucentTable[(MAGIC_COL_COUNT+1)*256];
 unsigned char DisplayClass::WhiteTranslucentTable[(1+1)*256];
-unsigned char DisplayClass::MouseTranslucentTable[(4+1)*256];
 void const * DisplayClass::TransIconset;
 unsigned char DisplayClass::UnitShadow[(USHADOW_COL_COUNT+1)*256];
 unsigned char DisplayClass::SpecialGhost[2*256];
@@ -448,17 +447,6 @@ void DisplayClass::Init_Theater(TheaterType theater)
 	CCFileClass(Fading_Table_Name("RED", theater)).Write(FadingRed, sizeof(FadingRed));
 #endif
 
-#ifdef _RETRIEVE
-	CCFileClass(Fading_Table_Name("MOUSE", theater)).Read(MouseTranslucentTable, sizeof(MouseTranslucentTable));
-#else
-	Build_Translucent_Table(GamePalette, &MouseCols[0], 4, MouseTranslucentTable);
-	CCFileClass(Fading_Table_Name("MOUSE", theater)).Write(MouseTranslucentTable, sizeof(MouseTranslucentTable));
-#endif
-
-//	MouseDrawPtr = MouseTranslucentTable;
-//	MouseDrawPtr2 = Add_Long_To_Pointer(MouseTranslucentTable, 256L);
-//	MouseDrawVal = 1;
-//	MouseDrawFlags = (int)SHAPE_GHOST;
 
 #ifdef _RETRIEVE
 	CCFileClass(Fading_Table_Name("TRANS", theater)).Read(TranslucentTable, sizeof(TranslucentTable));
