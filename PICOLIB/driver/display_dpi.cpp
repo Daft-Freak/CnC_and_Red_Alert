@@ -174,6 +174,9 @@ static inline void convert_paletted(const uint8_t *in, uint16_t *out, int count)
 static inline void convert_paletted_cursor(const uint8_t *in, uint16_t *out, int count, int scanline) {
   auto cursor_in = cursor_data + (scanline - cursor_y) * cursor_w;
 
+  if(cursor_x < 0)
+    cursor_in -= cursor_x;
+
   int i = 0;
   for(; i < cursor_x; i++)
     *out++ = screen_palette565[*in++];
@@ -254,6 +257,10 @@ static inline void convert_paletted_cursor_1_5x(const uint8_t *in, uint16_t *out
     cursor_end = count;
 
   auto cursor_in = cursor_data + (scanline - cursor_y) * cursor_w;
+
+  if(cursor_x < 0)
+    cursor_in -= cursor_x;
+
   auto cursor_in2 = cursor_in + cursor_w;
 
   for(;i < cursor_end; i+=2) {

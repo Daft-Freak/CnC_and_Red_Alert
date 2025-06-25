@@ -39,7 +39,7 @@ static uint8_t frame_buffer[320 * 200];
 
 // cursor overlay
 static uint8_t cursor_data[30 * 24];
-static uint16_t cursor_x = 0, cursor_y = 200;
+static int16_t cursor_x = 0, cursor_y = 200;
 static uint8_t cursor_w = 0, cursor_h = 0;
 
 // For now no back buffer - maybe we can put it in PSRAM?
@@ -78,6 +78,9 @@ static inline void convert_paletted(const uint8_t *in, uint32_t *out, int count)
 
 static inline void convert_paletted_cursor(const uint8_t *in, uint32_t *out, int count, int scanline) {
   auto cursor_in = cursor_data + (scanline - cursor_y) * cursor_w;
+
+  if(cursor_x < 0)
+    cursor_in -= cursor_x;
 
   int i = 0;
   for(; i < cursor_x; i++)
