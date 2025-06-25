@@ -89,7 +89,7 @@ void Choose_Side(void)
 	void *anim;
 	VQAHandle *gdibrief=0, *nodbrief=0;
 	void const *staticaud, *oldfont;
-	void const *speechg, *speechn, *speech;
+	void const *speechg = NULL, *speechn = NULL, *speech;
 	int statichandle, speechhandle, speechplaying = 0;
 	int oldfontxspacing = FontXSpacing;
 	int setpalette = 0;
@@ -121,10 +121,14 @@ void Choose_Side(void)
 
 	CCFileClass f("STRUGGLE.AUD");
 	staticaud = Load_Alloc_Data(f);
+
+	// delay load on pico, these are 30/27k
+#ifndef PICO_BUILD
 	f.Open("GDI_SLCT.AUD");
 	speechg = Load_Alloc_Data(f);
 	f.Open("NOD_SLCT.AUD");
 	speechn = Load_Alloc_Data(f);
+#endif
 
 //	staticaud = MixFileClass::Retrieve("STRUGGLE.AUD");
 //	speechg = MixFileClass::Retrieve("GDI_SLCT.AUD");
@@ -152,6 +156,8 @@ void Choose_Side(void)
 	Read_Interpolation_Palette("SIDES.PAL");
 #endif
 
+// also delay loading the briefings
+#ifndef PICO_BUILD
 	nodbrief = Open_Movie("NOD1PRE.VQA");
 #ifndef LORES
 	gdi_start_palette = Load_Interpolated_Palettes("NOD1PRE.VQP");
@@ -160,6 +166,7 @@ void Choose_Side(void)
 	gdibrief = Open_Movie("GDI1.VQA");
 #ifndef LORES
 	Load_Interpolated_Palettes("GDI1.VQP" , TRUE);
+#endif
 #endif
 
 	WWMouse->Erase_Mouse(&HidPage, TRUE);
@@ -242,6 +249,10 @@ void Choose_Side(void)
 						Whom = HOUSE_GOOD;
 						ScenPlayer = SCEN_PLAYER_GDI;
 						endframe = 0;
+#ifdef PICO_BUILD
+						f.Open("GDI_SLCT.AUD");
+						speechg = Load_Alloc_Data(f);
+#endif
 						speechhandle = Play_Sample(speechg);
 						speechplaying = true;
 						speech = speechg;
@@ -252,6 +263,10 @@ void Choose_Side(void)
 						endframe = 14;
 						Whom = HOUSE_BAD;
 						ScenPlayer = SCEN_PLAYER_NOD;
+#ifdef PICO_BUILD
+						f.Open("NOD_SLCT.AUD");
+						speechn = Load_Alloc_Data(f);
+#endif
 						speechhandle = Play_Sample(speechn);
 						speechplaying = true;
 						speech = speechn;
@@ -277,6 +292,7 @@ void Choose_Side(void)
 
 	Keyboard::Clear();
 
+#ifndef PICO_BUILD
 	/*
 	** Skip the briefings if we're in special mode.
 	*/
@@ -292,6 +308,7 @@ void Choose_Side(void)
 			gdibrief = NULL;
 		}
 	}
+#endif
 
 	/* play the scenario 1 briefing movie */
 	if (Whom == HOUSE_GOOD) {
@@ -299,6 +316,9 @@ void Choose_Side(void)
 			VQA_Close(nodbrief);
 			VQA_Free(nodbrief);
 		}
+#ifdef PICO_BUILD
+		gdibrief = Open_Movie("GDI1.VQA");
+#endif
 		if (gdibrief) {
 			PaletteCounter = gdi_start_palette;
 			VQA_Play(gdibrief, VQAMODE_RUN);
@@ -310,6 +330,9 @@ void Choose_Side(void)
 			VQA_Close(gdibrief);
 			VQA_Free(gdibrief);
 		}
+#ifdef PICO_BUILD
+		nodbrief = Open_Movie("NOD1PRE.VQA");
+#endif
 		if (nodbrief) {
 			VQA_Play(nodbrief, VQAMODE_RUN);
 			VQA_Close(nodbrief);
