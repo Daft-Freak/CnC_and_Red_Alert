@@ -507,7 +507,7 @@ void CellClass::Recalc_Attributes(void)
 		**	find out if the current icon is one of them. If so, apply the exception
 		**	ground type to the cell.
 		*/
-		char const *ptr = ttype->AltIcons;
+		int8_t const *ptr = ttype->AltIcons;
 		if (ptr) {
 			int icon = TIcon;
 
