@@ -388,6 +388,8 @@ void DisplayClass::Init_Theater(TheaterType theater)
 	}
 
 #endif
+
+#ifndef LORES
 	/*
 	** Register the hi-res icons mix file now since it is theater specific
 	*/
@@ -401,7 +403,7 @@ void DisplayClass::Init_Theater(TheaterType theater)
 		TheaterIcons = new MixFileClass(iconname);
 		TheaterIcons->Cache();
 	}
-
+#endif
 
 
 	/*
