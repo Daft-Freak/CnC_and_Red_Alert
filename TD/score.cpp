@@ -89,7 +89,9 @@ int  ScorePass;
 void const * Beepy6;
 int ControlQ;	// cheat key to skip past score/mapsel screens
 bool StillUpdating;
-
+#ifdef PICO_BUILD
+[[gnu::section(".psram_data")]] uint8_t TextPrintData[320*200];
+#endif
 GraphicBufferClass *PseudoSeenBuff;
 GraphicBufferClass *TextPrintBuffer;
 
@@ -620,7 +622,11 @@ void ScoreClass::Presentation(void)
 	if (Special.IsJurassic && AreThingiesEnabled) return;
 
 	PseudoSeenBuff = new GraphicBufferClass(320,200,(void*)NULL);
+#ifdef PICO_BUILD
+	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), TextPrintData);
+#else
 	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), (void*)NULL);
+#endif
 	TextPrintBuffer->Clear();
 	BlitList.Clear();
 	Disable_Uncompressed_Shapes ();

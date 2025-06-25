@@ -47,7 +47,9 @@ class TextBlitClass {
 
 };
 
-
+#ifdef PICO_BUILD
+extern uint8_t TextPrintData[320*200];
+#endif
 extern GraphicBufferClass *TextPrintBuffer;
 extern TextBlitClass BlitList;
 

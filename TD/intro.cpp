@@ -101,7 +101,11 @@ void Choose_Side(void)
 	GlobalMemoryStatus(&mem_info);
 #endif
 
+#ifdef PICO_BUILD
+	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), TextPrintData);
+#else
 	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), (void*)NULL);
+#endif
 	TextPrintBuffer->Clear();
 	BlitList.Clear();
 #ifndef LORES

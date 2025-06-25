@@ -279,7 +279,11 @@ void Map_Selection(void)
 	/*
 	** Extra graphic buffer to draw text into
 	*/
+#ifdef PICO_BUILD
+	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), TextPrintData);
+#else
 	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), (void*)NULL);
+#endif
 	TextPrintBuffer->Clear();
 	BlitList.Clear();
 
