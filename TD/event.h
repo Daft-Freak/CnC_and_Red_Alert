@@ -157,6 +157,9 @@ class EventClass
 			} Specific;
 			struct {
 				RTTIType		Type;
+#ifdef PICO_BUILD // RTTIType ends up small and breaks alignement with ID in Specific
+				short			Pad;
+#endif
 				CELL			Cell;
 			} Place;
 			struct {
