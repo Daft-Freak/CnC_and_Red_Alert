@@ -933,7 +933,12 @@ GraphicBufferClass		HiddenPage;
 GraphicViewPortClass	SeenBuff(&VisiblePage, 0,0,640,480);
 GraphicBufferClass		ModeXBuff;
 GraphicViewPortClass	HidPage(&HiddenPage, 0,0,640,480);
+#ifdef PICO_BUILD
+[[gnu::section(".psram_data")]] static uint8_t SysMemData[320*200];
+GraphicBufferClass		SysMemPage(DEFAULT_SCREEN_WIDTH, 200, SysMemData);
+#else
 GraphicBufferClass		SysMemPage(DEFAULT_SCREEN_WIDTH, 200, (void*)NULL);
+#endif
 int 						SoundOn;
 CountDownTimerClass	FrameTimer(BT_SYSTEM, 0L);
 CountDownTimerClass	DebugTimer(BT_SYSTEM, 0L);
