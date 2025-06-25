@@ -1460,7 +1460,7 @@ class TemplateTypeClass: public ObjectTypeClass
 		unsigned char Width,Height;
 
 		LandType AltLand;
-		char const *AltIcons;
+		int8_t const *AltIcons;
 
 		//----------------------------------------------------------
 		TemplateTypeClass(
@@ -1472,7 +1472,7 @@ class TemplateTypeClass: public ObjectTypeClass
 			int width,
 			int height,
 			LandType altland,
-			char const *alticons);
+			int8_t const *alticons);
 		virtual RTTIType  What_Am_I(void) const {return RTTI_TEMPLATETYPE;};
 
 		static TemplateType  From_Name(char const *name);

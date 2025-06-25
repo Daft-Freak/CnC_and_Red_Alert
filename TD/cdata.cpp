@@ -559,7 +559,7 @@ static TemplateTypeClass const Shore1(
 	LAND_WATER,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope111111
+	(int8_t const *)_slope111111
 );
 static TemplateTypeClass const Shore2(
 	TEMPLATE_SHORE2,
@@ -569,7 +569,7 @@ static TemplateTypeClass const Shore2(
 	LAND_ROCK,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope111
+	(int8_t const *)_slope111
 );
 static TemplateTypeClass const Shore3(
 	TEMPLATE_SHORE3,
@@ -599,7 +599,7 @@ static TemplateTypeClass const Shore5(
 	LAND_WATER,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope111111
+	(int8_t const *)_slope111111
 );
 static TemplateTypeClass const Shore6(
 	TEMPLATE_SHORE6,
@@ -609,7 +609,7 @@ static TemplateTypeClass const Shore6(
 	LAND_WATER,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope111111
+	(int8_t const *)_slope111111
 );
 static TemplateTypeClass const Shore7(
 	TEMPLATE_SHORE7,
@@ -619,7 +619,7 @@ static TemplateTypeClass const Shore7(
 	LAND_WATER,
 	2,2,
 	LAND_BEACH,
-	(char const *)_slope1
+	(int8_t const *)_slope1
 );
 static TemplateTypeClass const Shore8(
 	TEMPLATE_SHORE8,
@@ -629,7 +629,7 @@ static TemplateTypeClass const Shore8(
 	LAND_WATER,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope11111111
+	(int8_t const *)_slope11111111
 );
 static TemplateTypeClass const Shore9(
 	TEMPLATE_SHORE9,
@@ -639,7 +639,7 @@ static TemplateTypeClass const Shore9(
 	LAND_WATER,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope111111011
+	(int8_t const *)_slope111111011
 );
 static TemplateTypeClass const Shore10(
 	TEMPLATE_SHORE10,
@@ -649,7 +649,7 @@ static TemplateTypeClass const Shore10(
 	LAND_WATER,
 	2,2,
 	LAND_BEACH,
-	(char const *)_slope01
+	(int8_t const *)_slope01
 );
 static TemplateTypeClass const Shore11(
 	TEMPLATE_SHORE11,
@@ -659,7 +659,7 @@ static TemplateTypeClass const Shore11(
 	LAND_WATER,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope1001
+	(int8_t const *)_slope1001
 );
 static TemplateTypeClass const Shore12(
 	TEMPLATE_SHORE12,
@@ -669,7 +669,7 @@ static TemplateTypeClass const Shore12(
 	LAND_WATER,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope000001001
+	(int8_t const *)_slope000001001
 );
 static TemplateTypeClass const Shore13(
 	TEMPLATE_SHORE13,
@@ -679,7 +679,7 @@ static TemplateTypeClass const Shore13(
 	LAND_WATER,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope0000001
+	(int8_t const *)_slope0000001
 );
 static TemplateTypeClass const Shore14(
 	TEMPLATE_SHORE14,
@@ -689,7 +689,7 @@ static TemplateTypeClass const Shore14(
 	LAND_ROCK,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope00000011
+	(int8_t const *)_slope00000011
 );
 static TemplateTypeClass const Shore15(
 	TEMPLATE_SHORE15,
@@ -699,7 +699,7 @@ static TemplateTypeClass const Shore15(
 	LAND_ROCK,
 	3,3,
 	LAND_BEACH,
-	(char const *)_slope000000101
+	(int8_t const *)_slope000000101
 );
 static TemplateTypeClass const Shore16(
 	TEMPLATE_SHORE16,
@@ -779,7 +779,7 @@ static TemplateTypeClass const Shore23(
 	LAND_ROCK,
 	2,2,
 	LAND_CLEAR,
-	(char const *)_slope01
+	(int8_t const *)_slope01
 );
 static TemplateTypeClass const Shore24(
 	TEMPLATE_SHORE24,
@@ -789,7 +789,7 @@ static TemplateTypeClass const Shore24(
 	LAND_ROCK,
 	3,3,
 	LAND_CLEAR,
-	(char const *)_slope000001
+	(int8_t const *)_slope000001
 );
 static TemplateTypeClass const Shore25(
 	TEMPLATE_SHORE25,
@@ -799,7 +799,7 @@ static TemplateTypeClass const Shore25(
 	LAND_ROCK,
 	3,2,
 	LAND_CLEAR,
-	(char const *)_slope0001
+	(int8_t const *)_slope0001
 );
 static TemplateTypeClass const Shore26(
 	TEMPLATE_SHORE26,
@@ -839,7 +839,7 @@ static TemplateTypeClass const Shore29(
 	LAND_ROCK,
 	6,2,
 	LAND_CLEAR,
-	(char const *)_slope00000001
+	(int8_t const *)_slope00000001
 );
 static TemplateTypeClass const Shore30(
 	TEMPLATE_SHORE30,
@@ -869,7 +869,7 @@ static TemplateTypeClass const Shore32(
 	LAND_CLEAR,
 	3,3,
 	LAND_WATER,
-	(char const *)_slope1
+	(int8_t const *)_slope1
 );
 static TemplateTypeClass const Shore33(
 	TEMPLATE_SHORE33,
@@ -879,7 +879,7 @@ static TemplateTypeClass const Shore33(
 	LAND_CLEAR,
 	3,3,
 	LAND_WATER,
-	(char const *)_slope001
+	(int8_t const *)_slope001
 );
 static TemplateTypeClass const Shore34(
 	TEMPLATE_SHORE34,
@@ -889,7 +889,7 @@ static TemplateTypeClass const Shore34(
 	LAND_CLEAR,
 	3,3,
 	LAND_WATER,
-	(char const *)_slope001001001
+	(int8_t const *)_slope001001001
 );
 static TemplateTypeClass const Shore35(
 	TEMPLATE_SHORE35,
@@ -899,7 +899,7 @@ static TemplateTypeClass const Shore35(
 	LAND_CLEAR,
 	3,3,
 	LAND_WATER,
-	(char const *)_slope1001001
+	(int8_t const *)_slope1001001
 );
 static TemplateTypeClass const Shore36(
 	TEMPLATE_SHORE36,
@@ -949,7 +949,7 @@ static TemplateTypeClass const Shore40(
 	LAND_WATER,
 	3,3,
 	LAND_CLEAR,
-	(char const *)_slope1
+	(int8_t const *)_slope1
 );
 static TemplateTypeClass const Shore41(
 	TEMPLATE_SHORE41,
@@ -959,7 +959,7 @@ static TemplateTypeClass const Shore41(
 	LAND_CLEAR,
 	3,3,
 	LAND_WATER,
-	(char const *)_slope1101101
+	(int8_t const *)_slope1101101
 );
 static TemplateTypeClass const Shore42(
 	TEMPLATE_SHORE42,
@@ -1009,7 +1009,7 @@ static TemplateTypeClass const Shore46(
 	LAND_WATER,
 	3,3,
 	LAND_CLEAR,
-	(char const *)_slope1101
+	(int8_t const *)_slope1101
 );
 static TemplateTypeClass const Shore47(
 	TEMPLATE_SHORE47,
@@ -1049,7 +1049,7 @@ static TemplateTypeClass const Shore50(
 	LAND_WATER,
 	4,3,
 	LAND_CLEAR,
-	(char const *)_slope00000001
+	(int8_t const *)_slope00000001
 );
 static TemplateTypeClass const Shore51(
 	TEMPLATE_SHORE51,
@@ -1079,7 +1079,7 @@ static TemplateTypeClass const Shore53(
 	LAND_WATER,
 	4,3,
 	LAND_CLEAR,
-	(char const *)_slope11101
+	(int8_t const *)_slope11101
 );
 static TemplateTypeClass const Shore54(
 	TEMPLATE_SHORE54,
@@ -1089,7 +1089,7 @@ static TemplateTypeClass const Shore54(
 	LAND_WATER,
 	3,2,
 	LAND_CLEAR,
-	(char const *)_slope1
+	(int8_t const *)_slope1
 );
 static TemplateTypeClass const Shore55(
 	TEMPLATE_SHORE55,
@@ -1099,7 +1099,7 @@ static TemplateTypeClass const Shore55(
 	LAND_WATER,
 	3,2,
 	LAND_CLEAR,
-	(char const *)_slope001
+	(int8_t const *)_slope001
 );
 static TemplateTypeClass const Shore56(
 	TEMPLATE_SHORE56,
@@ -1139,7 +1139,7 @@ static TemplateTypeClass const Shore59(
 	LAND_WATER,
 	2,3,
 	LAND_CLEAR,
-	(char const *)_slope1
+	(int8_t const *)_slope1
 );
 static TemplateTypeClass const Shore60(
 	TEMPLATE_SHORE60,
@@ -1149,7 +1149,7 @@ static TemplateTypeClass const Shore60(
 	LAND_WATER,
 	2,3,
 	LAND_CLEAR,
-	(char const *)_slope000101
+	(int8_t const *)_slope000101
 );
 static TemplateTypeClass const Shore61(
 	TEMPLATE_SHORE61,
@@ -1159,7 +1159,7 @@ static TemplateTypeClass const Shore61(
 	LAND_WATER,
 	2,3,
 	LAND_CLEAR,
-	(char const *)_slope01
+	(int8_t const *)_slope01
 );
 static TemplateTypeClass const Shore62(
 	TEMPLATE_SHORE62,
@@ -1249,7 +1249,7 @@ static TemplateTypeClass const Slope1(
 	LAND_ROCK,
 	2,2,
 	LAND_CLEAR,
-	(char const *)_slope001
+	(int8_t const *)_slope001
 );
 static TemplateTypeClass const Slope2(
 	TEMPLATE_SLOPE2,
@@ -1259,7 +1259,7 @@ static TemplateTypeClass const Slope2(
 	LAND_ROCK,
 	2,3,
 	LAND_CLEAR,
-	(char const *)_slope01
+	(int8_t const *)_slope01
 );
 static TemplateTypeClass const Slope3(
 	TEMPLATE_SLOPE3,
@@ -1299,7 +1299,7 @@ static TemplateTypeClass const Slope6(
 	LAND_ROCK,
 	2,3,
 	LAND_CLEAR,
-	(char const *)_slope1
+	(int8_t const *)_slope1
 );
 static TemplateTypeClass const Slope7(
 	TEMPLATE_SLOPE7,
@@ -1319,7 +1319,7 @@ static TemplateTypeClass const Slope8(
 	LAND_ROCK,
 	2,2,
 	LAND_CLEAR,
-	(char const *)_slope01
+	(int8_t const *)_slope01
 );
 static TemplateTypeClass const Slope9(
 	TEMPLATE_SLOPE9,
@@ -1329,7 +1329,7 @@ static TemplateTypeClass const Slope9(
 	LAND_ROCK,
 	3,2,
 	LAND_CLEAR,
-	(char const *)_slope0001
+	(int8_t const *)_slope0001
 );
 static TemplateTypeClass const Slope10(
 	TEMPLATE_SLOPE10,
@@ -1369,7 +1369,7 @@ static TemplateTypeClass const Slope13(
 	LAND_ROCK,
 	3,2,
 	LAND_CLEAR,
-	(char const *)_slope000001
+	(int8_t const *)_slope000001
 );
 static TemplateTypeClass const Slope14(
 	TEMPLATE_SLOPE14,
@@ -1379,7 +1379,7 @@ static TemplateTypeClass const Slope14(
 	LAND_ROCK,
 	2,2,
 	LAND_CLEAR,
-	(char const *)_slope0111
+	(int8_t const *)_slope0111
 );
 static TemplateTypeClass const Slope15(
 	TEMPLATE_SLOPE15,
@@ -1389,7 +1389,7 @@ static TemplateTypeClass const Slope15(
 	LAND_ROCK,
 	2,2,
 	LAND_CLEAR,
-	(char const *)_slope01
+	(int8_t const *)_slope01
 );
 static TemplateTypeClass const Slope16(
 	TEMPLATE_SLOPE16,
@@ -1439,7 +1439,7 @@ static TemplateTypeClass const Slope20(
 	LAND_ROCK,
 	2,3,
 	LAND_CLEAR,
-	(char const *)_slope000001
+	(int8_t const *)_slope000001
 );
 static TemplateTypeClass const Slope21(
 	TEMPLATE_SLOPE21,
@@ -1469,7 +1469,7 @@ static TemplateTypeClass const Slope23(
 	LAND_ROCK,
 	3,2,
 	LAND_CLEAR,
-	(char const *)_slope000001
+	(int8_t const *)_slope000001
 );
 static TemplateTypeClass const Slope24(
 	TEMPLATE_SLOPE24,
@@ -1509,7 +1509,7 @@ static TemplateTypeClass const Slope27(
 	LAND_ROCK,
 	3,2,
 	LAND_CLEAR,
-	(char const *)_slope0011
+	(int8_t const *)_slope0011
 );
 static TemplateTypeClass const Slope28(
 	TEMPLATE_SLOPE28,
@@ -1909,7 +1909,7 @@ static TemplateTypeClass const River3(
 	LAND_WATER,
 	4,4,
 	LAND_CLEAR,
-	(char const *)_slope00000001
+	(int8_t const *)_slope00000001
 );
 static TemplateTypeClass const River4(
 	TEMPLATE_RIVER4,
@@ -2139,7 +2139,7 @@ static TemplateTypeClass const Ford1(
 	LAND_WATER,
 	3,3,
 	LAND_CLEAR,
-	(char const *)_slope001111001
+	(int8_t const *)_slope001111001
 );
 static TemplateTypeClass const Ford2(
 	TEMPLATE_FORD2,
@@ -2149,7 +2149,7 @@ static TemplateTypeClass const Ford2(
 	LAND_WATER,
 	3,3,
 	LAND_CLEAR,
-	(char const *)_slope111010011
+	(int8_t const *)_slope111010011
 );
 static TemplateTypeClass const Falls1(
 	TEMPLATE_FALLS1,
@@ -2159,7 +2159,7 @@ static TemplateTypeClass const Falls1(
 	LAND_WATER,
 	3,3,
 	LAND_CLEAR,
-	(char const *)_slope1
+	(int8_t const *)_slope1
 );
 static TemplateTypeClass const Falls2(
 	TEMPLATE_FALLS2,
@@ -2179,7 +2179,7 @@ static TemplateTypeClass const Bridge1(
 	LAND_WATER,
 	4,4,
 	LAND_CLEAR,
-	(char const *)_slope00110010010011
+	(int8_t const *)_slope00110010010011
 );
 static TemplateTypeClass const Bridge1d(
 	TEMPLATE_BRIDGE1D,
@@ -2189,7 +2189,7 @@ static TemplateTypeClass const Bridge1d(
 	LAND_WATER,
 	4,4,
 	LAND_CLEAR,
-	(char const *)_slope00110000000011
+	(int8_t const *)_slope00110000000011
 );
 static TemplateTypeClass const Bridge2(
 	TEMPLATE_BRIDGE2,
@@ -2199,7 +2199,7 @@ static TemplateTypeClass const Bridge2(
 	LAND_WATER,
 	5,5,
 	LAND_CLEAR,
-	(char const *)_slope1100001000001000001100011
+	(int8_t const *)_slope1100001000001000001100011
 );
 static TemplateTypeClass const Bridge2d(
 	TEMPLATE_BRIDGE2D,
@@ -2209,7 +2209,7 @@ static TemplateTypeClass const Bridge2d(
 	LAND_WATER,
 	5,5,
 	LAND_CLEAR,
-	(char const *)_slope1100000000000000001100011
+	(int8_t const *)_slope1100000000000000001100011
 );
 static TemplateTypeClass const Bridge3(
 	TEMPLATE_BRIDGE3,
@@ -2219,7 +2219,7 @@ static TemplateTypeClass const Bridge3(
 	LAND_WATER,
 	6,5,
 	LAND_CLEAR,
-	(char const *)_slope00011010010100100001000011
+	(int8_t const *)_slope00011010010100100001000011
 );
 static TemplateTypeClass const Bridge3d(
 	TEMPLATE_BRIDGE3D,
@@ -2229,7 +2229,7 @@ static TemplateTypeClass const Bridge3d(
 	LAND_WATER,
 	6,5,
 	LAND_CLEAR,
-	(char const *)_slope00011010000100000001000011
+	(int8_t const *)_slope00011010000100000001000011
 );
 static TemplateTypeClass const Bridge4(
 	TEMPLATE_BRIDGE4,
@@ -2239,7 +2239,7 @@ static TemplateTypeClass const Bridge4(
 	LAND_WATER,
 	6,4,
 	LAND_CLEAR,
-	(char const *)_slope01000000100000010000001
+	(int8_t const *)_slope01000000100000010000001
 );
 static TemplateTypeClass const Bridge4d(
 	TEMPLATE_BRIDGE4D,
@@ -2249,7 +2249,7 @@ static TemplateTypeClass const Bridge4d(
 	LAND_WATER,
 	6,4,
 	LAND_CLEAR,
-	(char const *)_slope01000000000000000000001
+	(int8_t const *)_slope01000000000000000000001
 );
 
 TemplateTypeClass const * const TemplateTypeClass::Pointers[TEMPLATE_COUNT] = {
@@ -2495,7 +2495,7 @@ TemplateTypeClass const * const TemplateTypeClass::Pointers[TEMPLATE_COUNT] = {
  *=============================================================================================*/
 TemplateTypeClass::TemplateTypeClass(TemplateType iconset, int theater,
 	char const *ininame, int fullname, LandType land,
-	int width, int height, LandType altland, char const *alticons ) :
+	int width, int height, LandType altland, int8_t const *alticons ) :
 		ObjectTypeClass(false, false, false, true, false, false, true, true, fullname, ininame, ARMOR_NONE, 0)
 {
 	Theater = theater;
