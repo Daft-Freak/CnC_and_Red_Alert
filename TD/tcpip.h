@@ -68,9 +68,16 @@ extern bool Server;
 #define WINSOCK_MAJOR_VER		1
 #define PORTNUM						0x1000
 #define UDP_PORT					0x1001
+
+#ifdef PICO_BUILD // none of this works anyway, so waste less memory
+#define WS_INTERNET_BUFFER_LEN  512
+#define WS_NUM_TX_BUFFERS		4		//Must be a power of 2
+#define WS_NUM_RX_BUFFERS		4		//MUst be a power of 2
+#else
 #define WS_INTERNET_BUFFER_LEN  1024
 #define WS_NUM_TX_BUFFERS		16		//Must be a power of 2
 #define WS_NUM_RX_BUFFERS		16		//MUst be a power of 2
+#endif
 #define WS_RECEIVE_BUFFER_LEN	1024
 //#define WS_IN_BUFFER_LEN			8192
 //#define WS_OUT_BUFFER_LEN		8192
