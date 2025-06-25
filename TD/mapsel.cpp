@@ -290,9 +290,13 @@ void Map_Selection(void)
 	/*
 	** Now start the process where we fade the gray earth in.
 	*/
+#ifdef PICO_BUILD // force from disk to reduce mem usage
+	greyearth  = Open_Animation("GREYERTH.WSA", NULL, 0, (WSAOpenType)(WSA_OPEN_FROM_DISK | WSA_OPEN_TO_PAGE), localpalette);
+	greyearth2 = Open_Animation("E-BWTOCL.WSA", NULL, 0, (WSAOpenType)(WSA_OPEN_FROM_DISK | WSA_OPEN_TO_PAGE), grey2palette);
+#else
 	greyearth  = Open_Animation("GREYERTH.WSA", NULL, 0, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), localpalette);
 	greyearth2 = Open_Animation("E-BWTOCL.WSA", NULL, 0, (WSAOpenType)(WSA_OPEN_FROM_MEM | WSA_OPEN_TO_PAGE), grey2palette);
-
+#endif
 	/*
 	** Load the spinning-globe anim
 	*/
@@ -546,7 +550,12 @@ void Map_Selection(void)
 	Read_Interpolation_Palette("MAP_PROG.PAL");
 #endif
 
+#ifdef PICO_BUILD // FIXME: really need to get the number of buffers down
+	[[gnu::section(".psram_data")]] static uint8_t europe_data[320*200];
+	GraphicBufferClass *europe = new GraphicBufferClass(SysMemPage.Get_Width(),SysMemPage.Get_Height(), europe_data);
+#else
 	GraphicBufferClass *europe = new GraphicBufferClass(SysMemPage.Get_Width(),SysMemPage.Get_Height());
+#endif
 	SysMemPage.Blit(*europe);
 
 	/*
