@@ -366,6 +366,8 @@ void Choose_Side(void)
 	Free(speechg);
 	Free(speechn);
 
+	f.Close();
+
 	Set_Font(oldfont);
 	FontXSpacing = oldfontxspacing;
 
