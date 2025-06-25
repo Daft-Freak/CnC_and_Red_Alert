@@ -545,7 +545,7 @@ int main(int argc, char * argv[])
 			** See if we should run the intro
 			*/
 			CCDebugString ("C&C95 - Reading CONQUER.INI.\n");
-			char *buffer = (char*)Alloc(64000 , MEM_NORMAL);		//(char *)HidPage.Get_Buffer();
+			char *buffer = (char*)Alloc(cfile.Size() + 100, MEM_NORMAL);		//(char *)HidPage.Get_Buffer();
 			cfile.Read(buffer, cfile.Size());
 			buffer[cfile.Size()] = '\0';
 
