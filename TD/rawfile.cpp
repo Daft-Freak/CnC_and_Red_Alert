@@ -550,6 +550,7 @@ int RawFileClass::Is_Available(int forced)
 	for (;;) {
 #ifdef PORTABLE
 		file = IO_Open_File(Filename, READ);
+#ifndef PICO_BUILD
 		if (!file) {
 			// retry with lowercase name for case-sensitive fs
 			char *lower_name = strlwr(strdup(Filename));
@@ -564,7 +565,7 @@ int RawFileClass::Is_Available(int forced)
 			} else
 				free(lower_name);
 		}
-
+#endif
 		if(!file)
 			return false;
 #else
