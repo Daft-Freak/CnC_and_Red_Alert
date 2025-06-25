@@ -620,8 +620,9 @@ void ScoreClass::Presentation(void)
 
 
 	if (Special.IsJurassic && AreThingiesEnabled) return;
-
+#ifndef LORES
 	PseudoSeenBuff = new GraphicBufferClass(320,200,(void*)NULL);
+#endif
 #ifdef PICO_BUILD
 	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), TextPrintData);
 #else
@@ -637,7 +638,9 @@ void ScoreClass::Presentation(void)
 	Theme.Queue_Song(THEME_WIN1);
 
 	VisiblePage.Clear();
+#ifndef LORES
 	PseudoSeenBuff->Clear();
+#endif
 	SysMemPage.Clear();
 	WWMouse->Erase_Mouse(&HidPage, TRUE);
 	HiddenPage.Clear();
@@ -832,7 +835,11 @@ void ScoreClass::Presentation(void)
 	/*
 	** Show stats on # of units killed
 	*/
+#ifdef LORES
+	Set_Logic_Page(SeenBuff);
+#else
 	Set_Logic_Page(*PseudoSeenBuff);
+#endif
 	Play_Sample(sfx4, 255, Options.Normalize_Sound(90));
 	Alloc_Object(new ScorePrintClass(TXT_SCORE_CASU, _casuax[house], _casuay[house],_redpal));
 	Call_Back_Delay(9);
@@ -1029,7 +1036,9 @@ void ScoreClass::Presentation(void)
 
 	Set_Logic_Page (SeenBuff);
 
+#ifdef LORES
 	delete PseudoSeenBuff;
+#endif
 	delete TextPrintBuffer;
 	TextPrintBuffer = NULL;
 	BlitList.Clear();
@@ -1605,7 +1614,9 @@ void ScoreClass::Input_Name(char str[], int xpos, int ypos, unsigned char const 
 	/*
 	** Ready the hidpage so it can restore background under zoomed letters
 	*/
+#ifndef LORES
 	PseudoSeenBuff->Blit(SysMemPage);
+#endif
 
 	do {
 		Call_Back();
@@ -1641,8 +1652,9 @@ void ScoreClass::Input_Name(char str[], int xpos, int ypos, unsigned char const 
 					str[--index] = 0;
 
 					int xposindex6 = xpos+(index*6);
-
+#ifndef LORES
 					PseudoSeenBuff->Fill_Rect(xposindex6,ypos,xposindex6+6,ypos+6,TBLACK);
+#endif
 					SysMemPage.Fill_Rect(xposindex6,ypos,xposindex6+6,ypos+6,TBLACK);
 					TextPrintBuffer->Fill_Rect(xposindex6 * RESFACTOR,ypos * RESFACTOR,(xposindex6+6) * RESFACTOR,(ypos+6) * RESFACTOR, BLACK);
 				}
@@ -1652,7 +1664,9 @@ void ScoreClass::Input_Name(char str[], int xpos, int ypos, unsigned char const 
 				if (ascii >= 'a' && ascii <= 'z') ascii -= ('a' - 'A');
 //if (ascii >='A' && ascii<='Z' || ascii == ' ') {
 if ( (ascii >= '!' && ascii <= KA_TILDA) || ascii == ' ') {
+#ifndef LORES
 					PseudoSeenBuff->Fill_Rect(xpos + (index*6), ypos, xpos + (index*6)+6, ypos+5, TBLACK);
+#endif
 					 SysMemPage.Fill_Rect(xpos + (index*6), ypos, xpos + (index*6)+6, ypos+5, TBLACK);
 					TextPrintBuffer->Fill_Rect(RESFACTOR * (xpos + (index*6)), ypos * RESFACTOR, RESFACTOR * (xpos + (index*6)+6), RESFACTOR * (ypos+6), BLACK);
 					str[index] = ascii;
@@ -1680,13 +1694,17 @@ void Animate_Cursor(int pos, int ypos)
 
 	// If they moved the cursor, erase old one and force state=0, to make green draw right away
 	if (pos != _lastpos) {
+#ifndef LORES
 		PseudoSeenBuff->Draw_Line(HALLFAME_X + (_lastpos*6),ypos, HALLFAME_X + (_lastpos*6) + 5, ypos, TBLACK);
+#endif
 		TextPrintBuffer->Fill_Rect(RESFACTOR * (HALLFAME_X + (_lastpos*6)),RESFACTOR * ypos, RESFACTOR * (HALLFAME_X + (_lastpos*6) + 5), RESFACTOR * ypos+1, BLACK);
 		_lastpos = pos;
 		_state = 0;
 	}
 
+#ifndef LORES
 	PseudoSeenBuff->Draw_Line(HALLFAME_X + (pos*6),ypos, HALLFAME_X + (pos*6)+5, ypos, _state ? LTBLUE : TBLACK);
+#endif
 	TextPrintBuffer->Fill_Rect(RESFACTOR * (HALLFAME_X + (pos*6)),RESFACTOR * ypos, RESFACTOR * (HALLFAME_X + (pos*6)+5), RESFACTOR * ypos+1, _state ? LTBLUE : BLACK);
 
 	/*
