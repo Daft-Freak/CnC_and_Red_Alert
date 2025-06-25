@@ -109,7 +109,7 @@ void GScreenClass::One_Time(void)
 	**	actual screen memory. It contains a duplicate of what the SEENPAGE is.
 	*/
 	Buttons = 0;
-	ShadowPage = new GraphicBufferClass(320,200);
+	//ShadowPage = new GraphicBufferClass(320,200);
 	if (ShadowPage) {
 		ShadowPage->Clear();
 		HiddenPage.Clear();
