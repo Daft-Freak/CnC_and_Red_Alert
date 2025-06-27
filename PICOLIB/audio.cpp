@@ -411,9 +411,14 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
     int channels = header->Flags & AUD_FLAG_STEREO ? 2 : 1;
     int bits = header->Flags & AUD_FLAG_16BIT ? 16 : 8;
 
-    if(header->Compression != SCOMP_SOS || channels != 1 || bits != 16 || header->Rate != 22050)
+    // hack for a few weird samples in TD
+    int rate = header->Rate;
+    if(rate == 22222)
+        rate = 22050;
+
+    if(header->Compression != SCOMP_SOS || channels != 1 || bits != 16 || rate != 22050)
     {
-        printf("\trate %i size %i/%i channels %i bits %i comp %i\n", header->Rate, header->Size, header->UncompSize, channels, bits, header->Compression);
+        printf("\trate %i size %i/%i channels %i bits %i comp %i\n", rate, header->Size, header->UncompSize, channels, bits, header->Compression);
         return -1;
     }
 
