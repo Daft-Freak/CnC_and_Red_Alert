@@ -1427,7 +1427,9 @@ bool Select_Game(bool fade)
 					Theme.Stop();
 					Call_Back();
 
+#ifndef PORTABLE
 					Force_CD_Available(-1);
+#endif
 					Play_Intro(false);
 					Hide_Mouse();
 
