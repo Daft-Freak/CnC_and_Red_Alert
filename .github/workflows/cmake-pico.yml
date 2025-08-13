@@ -35,14 +35,6 @@ jobs:
         repository: raspberrypi/pico-sdk
         path: pico-sdk
         submodules: true
-  
-    # CMake 4.0 removed support for <3.5
-    # and mbedtls hits this
-    # https://github.com/raspberrypi/pico-sdk/issues/2391
-    - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2
-      with:
-        cmake-version: '3.31.6'
 
     - name: Install toolchain
       run: sudo apt update && sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
