@@ -287,7 +287,9 @@ if(PICO_SDK_PATH)
 		DESTINATION bin
 	)
 elseif(ESP_TARGET)
-	# todo
+	target_link_libraries(jshell esplib)
+	target_link_libraries(tech esplib)
+
 	add_executable(esp-ra ${RA_SOURCES} picostub.cpp)
 
 	target_compile_definitions(esp-ra PRIVATE
@@ -295,7 +297,7 @@ elseif(ESP_TARGET)
 		PORTABLE=1 # to indicate not windows or dos sometimes
 		LORES=1
 	)
-	target_link_libraries(esp-ra PRIVATE tech jshell port vqa32 idf::newlib)
+	target_link_libraries(esp-ra PRIVATE tech jshell port esplib vqa32)
 
 	idf_build_executable(esp-ra)
 else()

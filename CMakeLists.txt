@@ -50,7 +50,7 @@ add_subdirectory(port)
 if(PICO_SDK_PATH)
     add_subdirectory(PICOLIB)
 elseif(ESP_TARGET)
-    # todo
+    add_subdirectory(ESPLIB)
 else()
     add_subdirectory(SDLLIB)
 endif()
