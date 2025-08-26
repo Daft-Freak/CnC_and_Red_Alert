@@ -52,7 +52,7 @@
 ** Define host to network to host functions for DOS
 */
 #ifdef WIN32
-#ifdef PICO_BUILD
+#if defined(PICO_BUILD) || defined(ESP_BUILD)
 #include "picosock.h"
 #elif defined(_WIN32)
 #include <winsock.h>

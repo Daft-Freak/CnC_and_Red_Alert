@@ -20,7 +20,7 @@ char *strupr(char *str);
 char *strlwr(char *str);
 char *strrev(char *str);
 
-#ifdef PICO_BUILD
+#if defined(PICO_BUILD) || defined(ESP_BUILD)
 inline char *strdup(const char *str)
 {
     char *ret = (char *)malloc(strlen(str) + 1);

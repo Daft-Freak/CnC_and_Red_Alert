@@ -45,7 +45,7 @@
 */
 #include	<wsipx.h>
 #else
-#ifdef PICO_BUILD
+#if defined(PICO_BUILD) || defined(ESP_BUILD)
 #include "picosock.h"
 #else
 #include <sys/socket.h>

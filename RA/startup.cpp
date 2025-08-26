@@ -154,7 +154,7 @@ int main(int argc, char * argv[])
 
 #endif
 
-#ifdef PICO_BUILD
+#if defined(PICO_BUILD) || defined(ESP_BUILD)
 	Pico_Init("CnCRA");
 #else
 
@@ -262,7 +262,7 @@ int main(int argc, char * argv[])
 
 #endif	//WIN32
 
-#ifndef PICO_BUILD
+#if !defined(PICO_BUILD) && !defined(ESP_BUILD)
 	/*
 	**	Change directory to the where the executable is located. Handle the
 	**	case where there is no path attached to argv[0].

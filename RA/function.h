@@ -135,7 +135,7 @@ UnitTypeClass      │   BuildingTypeClass      │  VesselTypeClass
 #define RAWFILE_H
 #define MONOC_H
 
-#ifdef PICO_BUILD
+#if defined(PICO_BUILD) || defined(ESP_BUILD)
 #include "picolib.h"
 #endif
 

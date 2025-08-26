@@ -1667,6 +1667,9 @@ GraphicBufferClass VQ640(640, 400, (void *)NULL);
 #ifdef PICO_BUILD
 [[gnu::section(".psram_data")]] static uint8_t AudioBuf[32768];
 #endif
+#ifdef ESP_BUILD
+static uint8_t AudioBuf[32768]; // todo
+#endif
 void Anim_Init(void)
 {
 
@@ -1703,7 +1706,7 @@ void Anim_Init(void)
 	if (SlowPalette) {
 		AnimControl.OptionFlags |= VQAOPTF_SLOWPAL;
 	}
-#if defined(PICO_BUILD)
+#if defined(PICO_BUILD) || defined(ESP_BUILD)
 	AnimControl.AudioBufSize = sizeof(AudioBuf);
 	AnimControl.AudioBuf = AudioBuf;
 	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
