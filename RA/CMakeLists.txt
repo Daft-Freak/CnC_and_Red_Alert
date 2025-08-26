@@ -286,6 +286,18 @@ if(PICO_SDK_PATH)
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/raspberry-alert.uf2
 		DESTINATION bin
 	)
+elseif(ESP_TARGET)
+	# todo
+	add_executable(esp-ra ${RA_SOURCES} picostub.cpp)
+
+	target_compile_definitions(esp-ra PRIVATE
+		ENGLISH=1
+		PORTABLE=1 # to indicate not windows or dos sometimes
+		LORES=1
+	)
+	target_link_libraries(esp-ra PRIVATE tech jshell port vqa32 idf::newlib)
+
+	idf_build_executable(esp-ra)
 else()
 	target_link_libraries(jshell sdllib)
 	target_link_libraries(tech sdllib)

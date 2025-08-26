@@ -188,6 +188,9 @@ if(PICO_SDK_PATH)
 	install(FILES ${CMAKE_CURRENT_BINARY_DIR}/raspberrian-dawn.uf2
 		DESTINATION bin
 	)
+elseif(ESP_TARGET)
+	# todo
+	# also, esp-idf doesn't handle multiple targets well
 else()
 	add_executable(tdsdl WIN32 ${TD_SOURCES} sdlstub.cpp)
 
