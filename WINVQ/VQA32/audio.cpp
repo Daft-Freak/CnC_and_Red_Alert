@@ -98,7 +98,9 @@
 #undef WIN32
 #include "SDL.h"
 #elif VQAPICO_SOUND
-#include "pico/stdlib.h"
+#ifdef PICO_BUILD
+#include "pico/stdlib.h" // "DOS" timer fallback
+#endif
 #elif(VQADIRECT_SOUND)
 void CALLBACK TimerCallback ( UINT event_id, UINT res1 , DWORD user, DWORD  res2, DWORD  res3 );
 BOOL Move_HMI_Audio_Block_To_Direct_Sound_Buffer (void);

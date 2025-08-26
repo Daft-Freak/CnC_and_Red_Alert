@@ -24,6 +24,7 @@ if(PICO_SDK_PATH)
     target_link_libraries(vqa32 PRIVATE pico_stdlib)
 elseif(ESP_TARGET)
     # todo
+    target_compile_definitions(vqa32 PRIVATE ESP_BUILD=1)
 else()
     find_package(SDL2 REQUIRED)
     target_link_libraries(vqa32 PRIVATE SDL2::SDL2)
