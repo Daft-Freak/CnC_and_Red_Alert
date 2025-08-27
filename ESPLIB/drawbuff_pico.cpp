@@ -1,3 +1,5 @@
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
 
 #include "gbuffer.h"
 #include "timer.h"
@@ -42,6 +44,8 @@ void GraphicBufferClass::Update_Window_Surface(bool end_frame)
     {
         //while(!display_render_needed()) __wfe();
         update_display(Get_Time_Ms());
+        
+        vTaskDelay(1); // let idle task run
     }
 }
 
