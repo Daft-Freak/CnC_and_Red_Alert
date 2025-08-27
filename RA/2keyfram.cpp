@@ -101,7 +101,7 @@ static int Length;
 
 void *Get_Shape_Header_Data(void *ptr)
 {
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	if (UseBigShapeBuffer) {
 
 		ShapeHeaderType *header = (ShapeHeaderType*) ptr;
@@ -122,7 +122,7 @@ int Get_Last_Frame_Length(void)
 
 void Reset_Theater_Shapes (void)
 {
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	/*
 	** Delete any previously allocated slots
 	*/
@@ -139,7 +139,7 @@ void Reset_Theater_Shapes (void)
 
 void Reallocate_Big_Shape_Buffer(void)
 {
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	if (ReallocShapeBufferFlag) {
 		BigShapeBufferLength += 2000000;							//Extra 2 Mb of uncompressed shape space
 		BigShapeBufferPtr -= (uintptr_t)BigShapeBufferStart;
@@ -263,7 +263,7 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 		return(0);
 	}
 
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	if (UseBigShapeBuffer) {
 		/*
 		** If we havnt yet allocated memory for uncompressed shapes then do so now.
@@ -422,7 +422,7 @@ void *Build_Frame(void const *dataptr, unsigned short framenumber, void *buffptr
 		}
 	}
 
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	if (UseBigShapeBuffer) {
 		/*
 		** Save the uncompressed shape data so we dont have to uncompress it

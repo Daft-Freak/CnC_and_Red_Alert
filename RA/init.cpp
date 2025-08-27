@@ -1706,7 +1706,7 @@ void Anim_Init(void)
 	if (SlowPalette) {
 		AnimControl.OptionFlags |= VQAOPTF_SLOWPAL;
 	}
-#if defined(PICO_BUILD) || defined(ESP_BUILD)
+#if defined(TINY_BUILD)
 	AnimControl.AudioBufSize = sizeof(AudioBuf);
 	AnimControl.AudioBuf = AudioBuf;
 	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
@@ -1722,7 +1722,7 @@ void Anim_Init(void)
 		AnimControl.OptionFlags |= VQAOPTF_MONO;
 	}
 
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 	AnimControl.NumCBBufs = 2; // 1 blows up in LCW
 	AnimControl.NumFrameBufs = 1;
 #endif
@@ -2741,7 +2741,7 @@ static void Init_Heaps(void)
 	**	be played.
 	*/
 	for (int index = 0; index < ARRAY_SIZE(SpeechBuffer); index++) {
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 		SpeechBuffer[index] = new(MEM_FIXED_HEAP) char [SPEECH_BUFFER_SIZE];
 #else
 		SpeechBuffer[index] = new char [SPEECH_BUFFER_SIZE];
@@ -2753,7 +2753,7 @@ static void Init_Heaps(void)
 	/*
 	**	Allocate the theater buffer block.
 	*/
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 	TheaterBuffer = new Buffer(new(MEM_FIXED_HEAP) char[THEATER_BUFFER_SIZE], THEATER_BUFFER_SIZE);
 #else
 	TheaterBuffer = new Buffer(THEATER_BUFFER_SIZE);

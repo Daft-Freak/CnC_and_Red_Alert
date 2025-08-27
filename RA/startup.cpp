@@ -1047,7 +1047,7 @@ void Read_Setup_Options( RawFileClass *config_file )
 		ScreenHeight = ini.Get_Bool("Options", "Resolution", false) ? 480 : 400;
 #endif
 
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 		char ssid[128], pw[128];
 		if(ini.Get_String("Wifi", "SSID", NULL, ssid, sizeof(ssid)) && ini.Get_String("Wifi", "Pass", NULL, pw, sizeof(pw)))
 			Pico_Wifi_Init(ssid, pw);

@@ -4242,7 +4242,7 @@ void TechnoClass::Techno_Draw_Object(void const * shapefile, int shapenum, int x
 		TechnoTypeClass * ttype = Techno_Type_Class();
 		if (shapefile == ttype->Get_Image_Data() && shapenum < Get_Build_Frame_Count(shapefile)-1) {
 			if (ttype->DimensionData == NULL) {
-#ifndef PICO_BUILD // we can render without this, if perf is a problem this could maybe move to PSRAM instead
+#ifndef TINY_BUILD // we can render without this, if perf is a problem this could maybe move to PSRAM instead
 				ttype->DimensionData = new Rect [Get_Build_Frame_Count(shapefile)];
 #endif
 			}

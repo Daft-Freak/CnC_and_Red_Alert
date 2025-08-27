@@ -173,7 +173,7 @@ void MapClass::Alloc_Cells(void)
 	*/
 	new (&Array) VectorClass<CellClass>;
 
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 	static CellClass *cellbuf = NULL;
 	if(!cellbuf)
 		cellbuf = new(MEM_FIXED_HEAP) CellClass[MAP_CELL_TOTAL];

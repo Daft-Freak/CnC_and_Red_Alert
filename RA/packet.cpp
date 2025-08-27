@@ -42,7 +42,7 @@
 #include "packet.h"
 
 // htons/ntohs
-#ifdef PICO_BUILD
+#if defined(PICO_BUILD) || defined(ESP_BUILD)
 #include "picosock.h"
 #elif defined(_WIN32)
 #define NOMINMAX

@@ -570,7 +570,7 @@ PaletteClass ScorePalette;
 **	that need to be executed when the correct frame has been reached.
 */
 QueueClass<EventClass, MAX_EVENTS> OutList;
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 // this thing is huge
 QueueClass<EventClass, (MAX_EVENTS * 8)> DoList;
 #else
@@ -669,7 +669,7 @@ NullModemClass NullModem (
 IPXManagerClass Ipx (
 	MAX (sizeof (GlobalPacketType), sizeof(RemoteFileTransferType)),		// size of Global Channel packets
 	((546 - sizeof(CommHeaderType)) / sizeof(EventClass) ) * sizeof(EventClass),
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 	16, 													// # entries in Global Queue
 	8,  													// # entries in Private Queues
 #else

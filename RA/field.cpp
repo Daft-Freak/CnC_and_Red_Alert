@@ -36,7 +36,7 @@
 #include "field.h"
 
 // htons/htonl
-#ifdef PICO_BUILD
+#if defined(PICO_BUILD) || defined(ESP_BUILD)
 #include "picosock.h"
 #elif defined(_WIN32)
 #include <winsock.h>

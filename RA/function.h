@@ -137,6 +137,7 @@ UnitTypeClass      │   BuildingTypeClass      │  VesselTypeClass
 
 #if defined(PICO_BUILD) || defined(ESP_BUILD)
 #include "picolib.h"
+#define TINY_BUILD
 #endif
 
 #define	_MAX_NAME	_MAX_FNAME
