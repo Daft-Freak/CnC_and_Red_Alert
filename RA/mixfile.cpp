@@ -375,7 +375,7 @@ bool MixFileClass<T>::Cache(Buffer const * buffer)
 	*/
 	if (Data != NULL) return(true);
 
-#ifdef TINY_BUILD
+#ifdef PICO_BUILD
 	if(!buffer) {
 		// we need to adjust for bias if this is a nested mixfile
 		// which requires attempting to open it
