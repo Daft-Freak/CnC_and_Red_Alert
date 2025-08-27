@@ -100,6 +100,8 @@
 #elif VQAPICO_SOUND
 #ifdef PICO_BUILD
 #include "pico/stdlib.h" // "DOS" timer fallback
+#elif defined(ESP_BUILD)
+#include "esp_timer.h"
 #endif
 #elif(VQADIRECT_SOUND)
 void CALLBACK TimerCallback ( UINT event_id, UINT res1 , DWORD user, DWORD  res2, DWORD  res3 );
@@ -3125,6 +3127,8 @@ unsigned long VQA_GetTime(VQAHandleP *vqap)
 			{
 #ifdef PICO_BUILD
 			ticks = to_ms_since_boot(get_absolute_time());
+#elif defined(ESP_BUILD)
+			ticks = esp_timer_get_time() / 1000;
 #else
 			struct timeb mytime;
 			ftime(&mytime);
