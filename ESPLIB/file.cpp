@@ -6,6 +6,9 @@
 
 #include "file.h"
 
+// doesn't seem to be a working "chdir" anywhere
+char path_prefix[10]{0};
+
 void *IO_Open_File(const char *filename, int mode)
 {
     const char *mode_str;
@@ -19,7 +22,11 @@ void *IO_Open_File(const char *filename, int mode)
     else
         return NULL;
 
-    return fopen(filename, mode_str);
+    
+    char prefixed_path[300];
+    snprintf(prefixed_path, sizeof(prefixed_path), "%s%s", path_prefix, filename);
+
+    return fopen(prefixed_path, mode_str);
 }
 
 void IO_Close_File(void *handle)

@@ -190,9 +190,8 @@ void Pico_Init(const char *basedir)
 
     Init_SD();
 
-    /*char buf[10];
-    snprintf(buf, sizeof(buf), "/%s/", basedir);
-    f_chdir(buf);*/
+    extern char path_prefix[10];
+    snprintf(path_prefix, sizeof(path_prefix), "/%s/", basedir);
 
     Pico_Flash_Cache_Init();
 
