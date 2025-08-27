@@ -114,3 +114,12 @@ void Pico_Wifi_Init(const char *ssid, const char *pass)
 {
 
 }
+
+// app_main -> main wrapper
+int main(int argc, char * argv[]);
+
+extern "C" void app_main()
+{
+    char *argv[]{"ra"};
+    main(1, argv);
+}
