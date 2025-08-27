@@ -2,6 +2,8 @@
 #include "iff.h"
 #include "shape.h"
 
+#include "display.h"
+
 extern void *MainWindow;
 
 static WWMouseClass *_Mouse = NULL;
@@ -85,11 +87,10 @@ void *WWMouseClass::Set_Cursor(int xhotspot, int yhotspot, void *cursor)
     MouseXHot = xhotspot;
     MouseYHot = yhotspot;
 
-    /*display_set_cursor(MouseCursor, CursorWidth, CursorHeight);
+    display_set_cursor(MouseCursor, CursorWidth, CursorHeight);
 
     if(State == 0)
         display_set_cursor_pos(LastX - MouseXHot, LastY - MouseYHot);
-    */
 
     return old_cursor;
 }
@@ -99,7 +100,7 @@ void WWMouseClass::Hide_Mouse(void)
     if(!State++)
     {
         // move off screen
-        //display_set_cursor_pos(0, 200);
+        display_set_cursor_pos(0, 200);
     }
 }
 
@@ -110,7 +111,7 @@ void WWMouseClass::Show_Mouse(void)
     if(--State == 0)
     {
         // move back onto screen
-        //display_set_cursor_pos(LastX - MouseXHot, LastY - MouseYHot);
+        display_set_cursor_pos(LastX - MouseXHot, LastY - MouseYHot);
     }
 }
 
@@ -174,7 +175,7 @@ void WWMouseClass::Update_Pos(int x, int y)
     LastX = x;
     LastY = y;
 
-    //display_set_cursor_pos(LastX - MouseXHot, LastY - MouseYHot);
+    display_set_cursor_pos(LastX - MouseXHot, LastY - MouseYHot);
 }
 
 void Hide_Mouse(void)

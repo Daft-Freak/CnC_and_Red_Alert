@@ -2,6 +2,8 @@
 #include "gbuffer.h"
 #include "timer.h"
 
+#include "display.h"
+
 bool GraphicBufferClass::Lock(void)
 {
     if(!LockCount)
@@ -39,13 +41,13 @@ void GraphicBufferClass::Update_Window_Surface(bool end_frame)
     if(end_frame)
     {
         //while(!display_render_needed()) __wfe();
-        //update_display(Get_Time_Ms());
+        update_display(Get_Time_Ms());
     }
 }
 
 void GraphicBufferClass::Update_Palette(uint8_t *palette)
 {
-    //set_screen_palette(palette, 256);
+    set_screen_palette(palette, 256);
     Update_Window_Surface(false);
 }
 
@@ -56,5 +58,5 @@ const void *GraphicBufferClass::Get_Palette() const
 
 void GraphicBufferClass::Init_Display_Surface()
 {
-    //Offset = get_framebuffer();
+    Offset = get_framebuffer();
 }

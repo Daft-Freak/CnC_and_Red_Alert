@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "driver/audio.h"
+#include "display.h"
 #include "mem.h"
+#include "timer.h"
 
 #include "picolib.h"
 
@@ -22,7 +25,7 @@ static void Draw_Basic_Text(const char * str)
     const int char_size = char_w * height_bytes;
 
     // framebuffer
-    auto framebuffer = (uint8_t *)nullptr;//get_framebuffer();
+    auto framebuffer = get_framebuffer();
 
     // find start point
     int cursor_x = 0, cursor_y = 100 - char_h;
@@ -72,7 +75,7 @@ static void Draw_Basic_Text(const char * str)
 
 static void Display_Loading_Message()
 {
-    /*memset(get_framebuffer(), 0, 320 * 200);
+    memset(get_framebuffer(), 0, 320 * 200);
 
     // minimal palette
     uint8_t col[]{0, 0, 0, 63, 63, 63};
@@ -81,17 +84,15 @@ static void Display_Loading_Message()
     Draw_Basic_Text("Please Stand By...");
 
     // display it
-    update_display(to_ms_since_boot(get_absolute_time()));
+    update_display(Get_Time_Ms());
 
     // wait for DBI's late backlight enabling
-    while(!display_render_needed()) __wfe();
-    update_display(to_ms_since_boot(get_absolute_time()));*/
+    //while(!display_render_needed()) __wfe();
+    update_display(Get_Time_Ms());
 }
 
 void Pico_Init(const char *basedir)
 {
-    //pre_init_display();
-
     PSRAM_Alloc_Init();
 
     /*f_mount(&fs, "", 0);
@@ -104,8 +105,8 @@ void Pico_Init(const char *basedir)
 
     Pico_Input_Init();
 
-    //init_display();
-    //init_audio();
+    init_display();
+    init_audio();
 
     Display_Loading_Message();
 }

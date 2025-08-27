@@ -27,6 +27,9 @@ add_library(esplib STATIC
     ../SDLLIB/playcd.cpp
     ../SDLLIB/shape.cpp
     ../SDLLIB/wsa.cpp
+
+    driver/audio.cpp
+    driver/display.cpp
 )
 
 target_include_directories(esplib PUBLIC ../SDLLIB/include) # hax

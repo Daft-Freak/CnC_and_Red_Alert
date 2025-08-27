@@ -5,6 +5,8 @@
 #include "audio.h"
 #include "file.h"
 
+#include "driver/audio.h"
+
 // original code has 5 for windows, 4 for dos
 // effectively one less as one is used to track streaming from disk
 #define	MAX_SFX	4
@@ -466,7 +468,7 @@ void Sound_Callback(void)
 
 bool Audio_Init(void * window, int bits_per_sample, bool stereo, int rate, int reverse_channels)
 {
-    //if(!audio_available())
+    if(!audio_available())
         return false;
 
     int16_t *stream_mem = psram_sample_buffers;
@@ -661,7 +663,7 @@ int Get_Free_Sample_Handle(int priority)
 int Get_Digi_Handle(void)
 {
     // used to check if audio is initialised
-    return /*audio_available() ? 1 :*/ -1;
+    return audio_available() ? 1 : -1;
 }
 
 bool Start_Primary_Sound_Buffer(bool forced)
