@@ -41,4 +41,5 @@ target_compile_definitions(esplib PUBLIC ESP_BUILD)
 target_link_libraries(esplib PUBLIC
     idf::newlib
     idf::fatfs
+    idf::esp_timer
 )

@@ -1,9 +1,17 @@
 #include <stdio.h>
 
+#include "esp_timer.h"
+
 #include "timer.h"
 
 bool TimerSystemOn = false;
 
+static esp_timer_handle_t ESPTimerHandle;
+
+static void TimerCallback(void *arg)
+{
+    ((WinTimerClass *)arg)->Update_Tick_Count();
+}
 
 // TimerClass/CountDownTimerClass are mostly used by TD
 // (RA has it's own impl)
@@ -79,12 +87,18 @@ long CountDownTimerClass::Time(void)
 
 WinTimerClass::WinTimerClass(unsigned freq, bool partial) : SysTicks(0), UserTicks(0)
 {
-	TimerSystemOn = false;//add_repeating_timer_ms(1000 / freq, TimerCallback, this, &PicoTimer);
+	esp_timer_create_args_t timer_args = {};
+	timer_args.callback = TimerCallback;
+	timer_args.arg = this;
+	ESP_ERROR_CHECK(esp_timer_create(&timer_args, &ESPTimerHandle));
+
+	TimerSystemOn = esp_timer_start_periodic(ESPTimerHandle, 10000000 / freq) == ESP_OK;
 }
 
 WinTimerClass::~WinTimerClass()
 {
-	//cancel_repeating_timer(&PicoTimer);
+	esp_timer_stop(ESPTimerHandle);
+	esp_timer_delete(ESPTimerHandle);
 	TimerSystemOn = false;
 }
 
@@ -101,5 +115,5 @@ unsigned WinTimerClass::Get_System_Tick_Count(void)
 
 uint32_t Get_Time_Ms()
 {
-    return 0; //
+    return esp_timer_get_time() / 1000;
 }
