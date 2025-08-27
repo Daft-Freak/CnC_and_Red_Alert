@@ -1,6 +1,8 @@
 #include "display.h"
 #include "config.h"
 
+static uint8_t framebuffer[320 * 200];
+
 void init_display()
 {
 
@@ -22,7 +24,7 @@ bool display_render_needed()
 
 uint8_t *get_framebuffer()
 {
-    return nullptr;
+    return framebuffer;
 }
 
 void display_set_cursor(uint8_t *data, int w, int h)
