@@ -42,4 +42,5 @@ target_link_libraries(esplib PUBLIC
     idf::newlib
     idf::fatfs
     idf::esp_timer
+    idf::esp_lcd
 )
