@@ -139,6 +139,8 @@ MPHType FormMaxSpeed;
 
 #ifdef PICO_BUILD
 [[gnu::section(".psram_data")]] char _staging_buffer[STAGING_BUFFER_SIZE];
+#elif defined(ESP_BUILD)
+[[gnu::section(".est_ram.bss")]] char _staging_buffer[STAGING_BUFFER_SIZE];
 #else
 char _staging_buffer[STAGING_BUFFER_SIZE];
 #endif

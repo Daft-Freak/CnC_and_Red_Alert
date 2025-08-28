@@ -1668,7 +1668,7 @@ GraphicBufferClass VQ640(640, 400, (void *)NULL);
 [[gnu::section(".psram_data")]] static uint8_t AudioBuf[32768];
 #endif
 #ifdef ESP_BUILD
-static uint8_t AudioBuf[32768]; // todo
+[[gnu::section(".ext_ram.bss")]] static uint8_t AudioBuf[32768];
 #endif
 void Anim_Init(void)
 {
