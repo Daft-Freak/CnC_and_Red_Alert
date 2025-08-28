@@ -2,6 +2,8 @@
 #include <cassert>
 #include <cstring>
 
+#include "esp_heap_caps.h"
+
 #include "audio.h"
 #include "file.h"
 
@@ -48,7 +50,7 @@ int StreamLowImpact;
 
 static int ScoreVolume = 255;
 
-[[gnu::section(".psram_data")]] static int16_t psram_sample_buffers[MAX_SFX * STREAM_SAMPLES];
+EXT_RAM_BSS_ATTR static int16_t psram_sample_buffers[MAX_SFX * STREAM_SAMPLES];
 
 static AudioCallback ExtraCallback = NULL;
 
