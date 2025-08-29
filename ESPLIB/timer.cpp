@@ -92,7 +92,7 @@ WinTimerClass::WinTimerClass(unsigned freq, bool partial) : SysTicks(0), UserTic
 	timer_args.arg = this;
 	ESP_ERROR_CHECK(esp_timer_create(&timer_args, &ESPTimerHandle));
 
-	TimerSystemOn = esp_timer_start_periodic(ESPTimerHandle, 10000000 / freq) == ESP_OK;
+	TimerSystemOn = esp_timer_start_periodic(ESPTimerHandle, 1000000 / freq) == ESP_OK;
 }
 
 WinTimerClass::~WinTimerClass()
