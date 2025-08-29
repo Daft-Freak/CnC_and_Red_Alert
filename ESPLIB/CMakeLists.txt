@@ -30,6 +30,7 @@ add_library(esplib STATIC
 
     driver/audio.cpp
     driver/display.cpp
+    driver/ppa_clut.c
 )
 
 target_include_directories(esplib PUBLIC ../SDLLIB/include) # hax
@@ -43,4 +44,5 @@ target_link_libraries(esplib PUBLIC
     idf::fatfs
     idf::esp_timer
     idf::esp_lcd
+    idf::esp_driver_ppa
 )

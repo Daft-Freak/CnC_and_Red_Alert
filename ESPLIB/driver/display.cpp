@@ -1,6 +1,7 @@
 #include <cstring>
 
 #include "driver/gpio.h"
+#include "driver/ppa.h"
 
 #include "esp_lcd_panel_io.h"
 #include "esp_lcd_panel_vendor.h"
@@ -9,10 +10,25 @@
 #include "display.h"
 #include "config.h"
 
+// the CLUT isn't supported by current ESP-IDF
+// if the commented out parts related to PPA_BLEND_COLOR_MODE_L8 are removed from
+// components/hal/esp32p4/include/hal/ppa_types.h and 
+// ppa_ll_blend_set_rx_bg_color_mode/ppa_ll_blend_set_rx_fg_color_mode in ppa_ll.h
+// this can be removed...
+#undef SOC_PPA_SUPPORTED
+
 static esp_lcd_panel_io_handle_t io_handle = nullptr;
 static esp_lcd_panel_handle_t panel_handle = nullptr;
 
+#if SOC_PPA_SUPPORTED
+static ppa_client_handle_t ppa_client = nullptr;
+static int ppa_blend_state = 0; // 0 = doing palette conv, 1 = doing cursor
+
+extern "C" void ppa_set_clut(ppa_client_handle_t ppa_client, const uint8_t *colours, int num_cols);
+#else
 static uint16_t palette565[256];
+#endif
+
 static uint8_t *back_buffer; // paletted
 static uint16_t *front_buffer; // rgb565
 
@@ -48,6 +64,72 @@ static bool on_color_trans_done(esp_lcd_panel_io_handle_t panel_io, esp_lcd_pane
 
     return false;
 }
+
+#if SOC_PPA_SUPPORTED
+
+static void draw_ppa_cursor()
+{
+    int start_x = cursor_x < 0 ? 0 : cursor_x;
+    int end_x = cursor_x + cursor_w;
+    if(end_x > 320)
+        end_x = 320;
+
+    int start_y = cursor_y < 0 ? 0 : cursor_y;
+    int end_y = cursor_y + cursor_h;
+    if(end_y > 200)
+        end_y = 200;
+
+    ppa_blend_oper_config_t blend_config = {};
+
+    // existing front buffer
+    blend_config.in_bg.buffer = front_buffer;
+    blend_config.in_bg.pic_w = 320;
+    blend_config.in_bg.pic_h = 200;
+    blend_config.in_bg.blend_cm = PPA_BLEND_COLOR_MODE_RGB565;
+
+    // cursor image
+    blend_config.in_fg.buffer = cursor_data;
+    blend_config.in_fg.pic_w = cursor_w;
+    blend_config.in_fg.pic_h = cursor_h;
+    blend_config.in_fg.block_offset_x = start_x - cursor_x;
+    blend_config.in_fg.block_offset_y = start_y - cursor_y;
+    blend_config.in_fg.blend_cm = PPA_BLEND_COLOR_MODE_L8;
+
+    // output back to front buffer
+    blend_config.out.buffer = front_buffer;
+    blend_config.out.buffer_size = 320 * 200 * 2;
+    blend_config.out.pic_w = 320;
+    blend_config.out.pic_h = 200;
+    blend_config.out.blend_cm = PPA_BLEND_COLOR_MODE_RGB565;
+
+    // (clipped) cursor size
+    blend_config.in_bg.block_w = blend_config.in_fg.block_w = end_x - start_x;
+    blend_config.in_bg.block_h = blend_config.in_fg.block_h = end_y - start_y;
+
+    // cursor pos
+    blend_config.in_bg.block_offset_x = blend_config.out.block_offset_x = start_x;
+    blend_config.in_bg.block_offset_y = blend_config.out.block_offset_y = start_y;
+
+    blend_config.mode = PPA_TRANS_MODE_NON_BLOCKING;
+
+    ppa_do_blend(ppa_client, &blend_config);
+}
+
+static bool on_ppa_trans_done(ppa_client_handle_t ppa_client, ppa_event_data_t *event_data, void *user_data)
+{
+    if(ppa_blend_state == 0 && cursor_y < 200)
+        draw_ppa_cursor();
+    else
+    {
+        // display
+        int y_margin = (DISPLAY_HEIGHT - 200) / 2;
+        esp_lcd_panel_draw_bitmap(panel_handle, 0, y_margin, 320, y_margin + 200, front_buffer);
+    }
+    ppa_blend_state++;
+
+    return false;
+}
+#endif
 
 void init_display()
 {
@@ -183,6 +265,19 @@ void init_display()
     int y_margin = (DISPLAY_HEIGHT - 200) / 2;
     esp_lcd_panel_draw_bitmap(panel_handle, 0, 0, 320, y_margin, front_buffer);
     esp_lcd_panel_draw_bitmap(panel_handle, 0, y_margin + 200, 320, DISPLAY_HEIGHT, front_buffer);
+
+    // pixel-processing accelerator
+#if SOC_PPA_SUPPORTED
+    ppa_client_config_t ppa_config = {};
+    ppa_config.oper_type = PPA_OPERATION_BLEND;
+    ppa_config.max_pending_trans_num = 1;
+    ppa_config.data_burst_length = PPA_DATA_BURST_LENGTH_128;
+    ESP_ERROR_CHECK(ppa_register_client(&ppa_config, &ppa_client));
+
+    ppa_event_callbacks_t ppa_callbacks = {};
+    ppa_callbacks.on_trans_done = on_ppa_trans_done;
+    ESP_ERROR_CHECK(ppa_client_register_event_callbacks(ppa_client, &ppa_callbacks));
+#endif
 }
 
 void update_display(uint32_t time)
@@ -191,6 +286,27 @@ void update_display(uint32_t time)
         return;
 
     // pal -> 565
+#if SOC_PPA_SUPPORTED
+    ppa_blend_oper_config_t blend_config = {};
+    blend_config.in_bg.buffer = back_buffer;
+    blend_config.in_bg.pic_w = blend_config.in_bg.block_w = 320;
+    blend_config.in_bg.pic_h = blend_config.in_bg.block_h = 200;
+    blend_config.in_bg.blend_cm = PPA_BLEND_COLOR_MODE_L8;
+
+    blend_config.in_fg = blend_config.in_bg; // FIXME: setting bypass not supported...
+
+    blend_config.out.buffer = front_buffer;
+    blend_config.out.buffer_size = 320 * 200 * 2;
+    blend_config.out.pic_w = 320;
+    blend_config.out.pic_h = 200;
+    blend_config.out.blend_cm = PPA_BLEND_COLOR_MODE_RGB565;
+
+    blend_config.mode = PPA_TRANS_MODE_NON_BLOCKING;
+
+    ppa_blend_state = 0;
+    ppa_do_blend(ppa_client, &blend_config);
+
+#else
     auto in = back_buffer;
     auto out = front_buffer;
     for(int i = 0; i < 320 * 200; i++)
@@ -223,11 +339,16 @@ void update_display(uint32_t time)
 
     int y_margin = (DISPLAY_HEIGHT - 200) / 2;
     esp_lcd_panel_draw_bitmap(panel_handle, 0, y_margin, 320, y_margin + 200, front_buffer);
+#endif
+
     render_needed = false;
 }
 
 void set_screen_palette(const uint8_t *colours, int num_cols)
 {
+#if SOC_PPA_SUPPORTED
+    ppa_set_clut(ppa_client, colours, num_cols);
+#else
     for(int i = 0; i < num_cols; i++)
     {
         int r = colours[i * 3 + 0] << 2;
@@ -235,6 +356,7 @@ void set_screen_palette(const uint8_t *colours, int num_cols)
         int b = colours[i * 3 + 2] << 2;
         palette565[i] = (r >> 3) | ((g >> 2) << 5) | ((b >> 3) << 11);
     }
+#endif
 }
 
 bool display_render_needed()
