@@ -1,3 +1,5 @@
+#include <cstring>
+
 #include "driver/gpio.h"
 
 #include "esp_lcd_panel_io.h"
@@ -13,6 +15,11 @@ static esp_lcd_panel_handle_t panel_handle = nullptr;
 static uint16_t palette565[256];
 static uint8_t *back_buffer; // paletted
 static uint16_t *front_buffer; // rgb565
+
+// cursor overlay
+static uint8_t cursor_data[30 * 24];
+static int16_t cursor_x = 0, cursor_y = 200;
+static uint8_t cursor_w = 0, cursor_h = 0;
 
 static bool backlight_enabled = false;
 static bool render_needed = true;
@@ -188,7 +195,31 @@ void update_display(uint32_t time)
     auto out = front_buffer;
     for(int i = 0; i < 320 * 200; i++)
         *out++ = palette565[*in++];
-    // TODO: cursor
+
+    // cursor
+    if(cursor_y < 200)
+    {
+        int start_x = cursor_x < 0 ? 0 : cursor_x;
+        int end_x = cursor_x + cursor_w;
+        if(end_x > 320)
+            end_x = 320;
+
+        int start_y = cursor_y < 0 ? 0 : cursor_y;
+        int end_y = cursor_y + cursor_h;
+        if(end_y > 200)
+            end_y = 200;
+
+        for(int y = start_y; y < end_y; y++)
+        {
+            for(int x = start_x; x < end_x; x++)
+            {
+                auto px = cursor_data[(x - cursor_x) + (y - cursor_y) * cursor_w];
+
+                if(px)
+                    front_buffer[x + y * 320] = palette565[px];
+            }
+        }
+    }
 
     int y_margin = (DISPLAY_HEIGHT - 200) / 2;
     esp_lcd_panel_draw_bitmap(panel_handle, 0, y_margin, 320, y_margin + 200, front_buffer);
@@ -218,10 +249,13 @@ uint8_t *get_framebuffer()
 
 void display_set_cursor(uint8_t *data, int w, int h)
 {
-
+    memcpy(cursor_data, data, w * h);
+    cursor_w = w;
+    cursor_h = h;
 }
 
 void display_set_cursor_pos(int x, int y)
 {
-
+    cursor_x = x;
+    cursor_y = y;
 }
