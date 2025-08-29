@@ -52,7 +52,8 @@ bool IO_Write_File(void *handle, const void *buffer, size_t count, size_t &actua
 size_t IO_Seek_File(void *handle, size_t offset, int origin)
 {
     auto file = (FILE *)handle;
-    fseek(file, offset, origin);
+    if(offset != 0 || origin != SEEK_CUR) // skip seeking to current pos
+        fseek(file, offset, origin);
     return ftell(file);
 }
 
