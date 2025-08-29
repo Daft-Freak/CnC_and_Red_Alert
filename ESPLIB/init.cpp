@@ -188,6 +188,9 @@ void Pico_Init(const char *basedir)
 {
     PSRAM_Alloc_Init();
 
+    init_display();
+    init_audio();
+
     Init_SD();
 
     extern char path_prefix[10];
@@ -196,9 +199,6 @@ void Pico_Init(const char *basedir)
     Pico_Flash_Cache_Init();
 
     Pico_Input_Init();
-
-    init_display();
-    init_audio();
 
     Display_Loading_Message();
 }
