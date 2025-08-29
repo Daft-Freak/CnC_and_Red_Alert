@@ -42,10 +42,16 @@ void GraphicBufferClass::Update_Window_Surface(bool end_frame)
 {
     if(end_frame)
     {
-        //while(!display_render_needed()) __wfe();
+        bool waited = false;
+        while(!display_render_needed())
+        {
+            vTaskDelay(1);
+            waited = true;
+        }
         update_display(Get_Time_Ms());
         
-        vTaskDelay(1); // let idle task run
+        if(!waited)
+            vTaskDelay(1); // let idle task run
     }
 }
 
