@@ -71,7 +71,7 @@ extern void Debug_Printf( char *format_string, ... );
 #if PORTABLE
 #define	VQAMONO_ON    0
 #define VQADIRECT_SOUND 0
-#ifdef PICO_BUILD
+#if defined (PICO_BUILD) || defined(ESP_BUILD)
 #define VQAPICO_SOUND 1
 #else
 #define VQASDL_SOUND 1
