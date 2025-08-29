@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
 
@@ -11,62 +11,75 @@ char path_prefix[10]{0};
 
 void *IO_Open_File(const char *filename, int mode)
 {
-    const char *mode_str;
-
+    int p_mode;
     if(mode == READ)
-        mode_str = "rb";
+        p_mode = O_RDONLY;
     else if(mode == WRITE)
-        mode_str = "wb";
+        p_mode = O_WRONLY | O_CREAT | O_TRUNC;
     else if(mode == (READ | WRITE))
-        mode_str = "w+b";
+        p_mode = O_RDWR | O_CREAT | O_TRUNC;
     else
-        return NULL;
+        return nullptr;
 
-    
     char prefixed_path[300];
     snprintf(prefixed_path, sizeof(prefixed_path), "%s%s", path_prefix, filename);
 
-    return fopen(prefixed_path, mode_str);
+    int fd = open(prefixed_path, p_mode, 0);
+
+    if(fd < 0)
+        return nullptr;
+
+    return (void *)fd;
 }
 
 void IO_Close_File(void *handle)
 {
-    auto file = (FILE *)handle;
-    fclose(file);
+    auto fd = (int)handle;
+    close(fd);
 }
 
 bool IO_Read_File(void *handle, void *buffer, size_t count, size_t &actual_read)
 {
-    auto file = (FILE *)handle;
-    actual_read = fread(buffer, 1, count, file);
-    return ferror(file) == 0;
+    auto fd = (int)handle;
+    auto res = read(fd, buffer, count);
+
+    if(res < 0)
+    {
+        actual_read = 0;
+        return false;
+    }
+
+    actual_read = res;
+    return true;
 }
 
 bool IO_Write_File(void *handle, const void *buffer, size_t count, size_t &actual_written)
 {
-    auto file = (FILE *)handle;
-    actual_written = fwrite(buffer, 1, count, file);
-    return ferror(file) == 0;
+    auto fd = (int)handle;
+    auto res = write(fd, buffer, count);
+
+    if(res < 0)
+    {
+        actual_written = 0;
+        return false;
+    }
+
+    actual_written = res;
+    return true;
 }
 
 size_t IO_Seek_File(void *handle, size_t offset, int origin)
 {
-    auto file = (FILE *)handle;
-    if(offset != 0 || origin != SEEK_CUR) // skip seeking to current pos
-        fseek(file, offset, origin);
-    return ftell(file);
+    auto fd = (int)handle;
+    return lseek(fd, offset, origin);
 }
 
 size_t IO_Get_File_Size(void *handle)
 {
-    auto file = (FILE *)handle;
-    long pos = ftell(file);
+    auto fd = (int)handle;
+    off_t length = lseek(fd, 0, SEEK_END);
 
-    fseek(file, 0, SEEK_END);
-
-    long length = ftell(file);
-
-    fseek(file, pos, SEEK_SET);
+    lseek(fd, 0, SEEK_SET);
 
     return length;
 }
