@@ -57,14 +57,14 @@ bool WWKeyboardClass::Put_Key_Message(unsigned vk_key, bool release)
 	//
 	if (vk_key != VK_LBUTTON && vk_key != VK_MBUTTON && vk_key != VK_RBUTTON)
     {
-		/*if(KeyState[HID_KEY_SHIFT_LEFT] || KeyState[HID_KEY_SHIFT_RIGHT] || KeyState[HID_KEY_CAPS_LOCK])
+		if(KeyState[0xE1/*HID_KEY_SHIFT_LEFT*/] || KeyState[0xE5/*HID_KEY_SHIFT_RIGHT*/] || KeyState[0x39/*HID_KEY_CAPS_LOCK*/])
 			vk_key |= WWKEY_SHIFT_BIT;
 
-        if(KeyState[HID_KEY_CONTROL_LEFT] || KeyState[HID_KEY_CONTROL_RIGHT])
+        if(KeyState[0xE0/*HID_KEY_CONTROL_LEFT*/] || KeyState[0xE4/*HID_KEY_CONTROL_RIGHT*/])
 			vk_key |= WWKEY_CTRL_BIT;
 
-		if(KeyState[HID_KEY_ALT_LEFT] || KeyState[HID_KEY_ALT_RIGHT])
-			vk_key |= WWKEY_ALT_BIT;*/
+		if(KeyState[0xE2/*HID_KEY_ALT_LEFT*/] || KeyState[0xE6/*HID_KEY_ALT_RIGHT*/])
+			vk_key |= WWKEY_ALT_BIT;
 	}
 	if (release)
         vk_key |= WWKEY_RLS_BIT;
@@ -98,8 +98,8 @@ int WWKeyboardClass::To_ASCII(int num)
 	if(num < sizeof(ascii_table) && ascii_table[num])
 		return ascii_table[num];
 
-	//if(num == HID_KEY_EUROPE_2)
-	//	return '\\';
+	if(num == 0x64 /*HID_KEY_EUROPE_2*/)
+		return '\\';
 
     return 0;
 }
