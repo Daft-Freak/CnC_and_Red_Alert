@@ -47,7 +47,6 @@ void init_audio()
     mute_gpio_config.pin_bit_mask = 1ULL << AUDIO_I2S_MUTE_PIN;
 
     ESP_ERROR_CHECK(gpio_config(&mute_gpio_config));
-    gpio_set_level(gpio_num_t(AUDIO_I2S_MUTE_PIN), 1);
 #endif
 
     // init channel
@@ -69,6 +68,10 @@ void init_audio()
 
     // enable
     ESP_ERROR_CHECK(i2s_channel_enable(i2s_handle));
+
+#ifdef AUDIO_I2S_MUTE_PIN
+    gpio_set_level(gpio_num_t(AUDIO_I2S_MUTE_PIN), 1);
+#endif
 
     // create task
     xTaskCreate(audio_task, "i2s", 2048, nullptr, 5, nullptr);
