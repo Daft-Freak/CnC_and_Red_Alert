@@ -1,5 +1,11 @@
 #pragma once
 
+#define AUDIO_I2S
+#define AUDIO_I2S_MUTE_PIN  38
+#define AUDIO_I2S_DATA_PIN   8
+#define AUDIO_I2S_BCLK_PIN   6
+#define AUDIO_I2S_LRCLK_PIN  7
+
 #define DISPLAY_WIDTH 320
 #define DISPLAY_HEIGHT 240
 
