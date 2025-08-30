@@ -16,6 +16,7 @@
 #include "display.h"
 #include "mem.h"
 #include "timer.h"
+#include "usb.h"
 
 #include "picolib.h"
 
@@ -197,6 +198,8 @@ void Pico_Init(const char *basedir)
     snprintf(path_prefix, sizeof(path_prefix), "/%s/", basedir);
 
     Pico_Flash_Cache_Init();
+
+    init_usb();
 
     Pico_Input_Init();
 
