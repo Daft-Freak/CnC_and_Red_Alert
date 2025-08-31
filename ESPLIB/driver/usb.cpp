@@ -169,7 +169,7 @@ static void hid_host_device_callback(hid_host_device_handle_t hid_device_handle,
 void init_usb()
 {
 #ifdef USB_HOST
-    xTaskCreatePinnedToCore(usb_host_task, "usb_host", 1024, xTaskGetCurrentTaskHandle(), 2, nullptr, 0);
+    xTaskCreatePinnedToCore(usb_host_task, "usb_host", 3072, xTaskGetCurrentTaskHandle(), 2, nullptr, 0);
 
     // wait for task
     ulTaskNotifyTake(false, portMAX_DELAY);
