@@ -550,7 +550,8 @@ ThemeType ThemeClass::From_Name(char const * name) const
 		**	yield a match, but is not guaranteed to be unique.
 		*/
 		for (ThemeType theme = THEME_FIRST; theme < THEME_COUNT; theme++) {
-			if (strstr(Text_String(_themes[theme].Fullname), name) != NULL) {
+			const char *fullname = Text_String(_themes[theme].Fullname);
+			if (fullname && strstr(fullname, name) != NULL) {
 				return(theme);
 			}
 		}
