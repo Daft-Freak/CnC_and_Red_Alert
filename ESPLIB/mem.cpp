@@ -2,6 +2,9 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+
+#include "esp_heap_caps.h"
+
 #include "memflag.h"
 
 void (*Memory_Error)(void) = NULL;
@@ -66,6 +69,5 @@ void *Resize_Alloc(void *original_ptr, unsigned long new_size_in_bytes)
 long Ram_Free(MemoryFlagType flag)
 {
     // used by WSA to decide allocation size
-
-    return 0; // fixme
+    return heap_caps_get_largest_free_block(MALLOC_CAP_DEFAULT);
 }
