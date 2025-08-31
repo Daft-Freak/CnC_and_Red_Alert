@@ -1,3 +1,4 @@
+#include <dirent.h>
 #include <fcntl.h>
 #include <string.h>
 #include <unistd.h>
@@ -89,20 +90,105 @@ bool IO_Delete_File(const char *filename)
     return unlink(filename) == 0;
 }
 
+// need to keep ref to orig path
+struct DirState
+{
+    DIR *dir;
+    char *name_glob;
+};
+
+static bool Update_Find_Result(FindFileState &state)
+{
+    auto state_data = (DirState *)state.data;
+
+    dirent *ent;
+    struct stat stat_buf;
+
+    auto glob = strchr(state_data->name_glob, '*');
+    int pre_len = glob - state_data->name_glob;
+    auto post_str = glob + 1;
+    int post_len = strlen(post_str);
+    
+    while((ent = readdir(state_data->dir)))
+    {
+        // check prefix
+        if(strncmp(ent->d_name, state_data->name_glob, pre_len) != 0)
+            continue;
+
+        // check suffix
+        if(strncmp(ent->d_name + strlen(ent->d_name) - post_len, post_str, post_len) != 0)
+            continue;
+
+        char prefixed_path[300];
+        snprintf(prefixed_path, sizeof(prefixed_path), "%s%s", path_prefix, ent->d_name);
+
+        // check if dir (or stat fails)
+        if(stat(prefixed_path, &stat_buf) != 0 || S_ISDIR(stat_buf.st_mode))
+            continue;
+
+        state.name = ent->d_name;
+        state.mod_time = stat_buf.st_mtim.tv_sec;
+        return true;
+    }
+
+    return false;
+}
 
 bool Find_First_File(const char *path_glob, FindFileState &state)
 {
-    return false;
+    // the only uses in the game are simple file globs (*.x, x.*, x*.y)
+    if(strchr(path_glob, '/') || strchr(path_glob, '\\'))
+        return false;
+
+    if(!strchr(path_glob, '*') || strchr(path_glob, '*') != strrchr(path_glob, '*'))
+        return false;
+
+    // open
+    DIR *dir = opendir(path_prefix);
+
+    if(!dir)
+        return false;
+
+    // need to store two pointers, yay
+    auto state_data = new DirState;
+    state_data->dir = dir;
+    state_data->name_glob = new char[strlen(path_glob) + 1];
+    strcpy(state_data->name_glob, path_glob);
+
+    state.data = state_data;
+    state.name = nullptr;
+
+    if(!Update_Find_Result(state))
+    {
+        closedir(dir);
+        delete state_data->name_glob;
+        delete state_data;
+        return false;
+    }
+
+    return true;
 }
 
 bool Find_Next_File(FindFileState &state)
 {
-    return false;
+    if(!Update_Find_Result(state))
+    {
+        End_Find_File(state);
+        return false;
+    }
+    return true;
 }
 
 void End_Find_File(FindFileState &state)
 {
-
+    if(state.data)
+    {
+        auto state_data = (DirState *)state.data;
+        closedir(state_data->dir);
+        delete state_data->name_glob;
+        delete state_data;
+        state.data = nullptr;
+    }
 }
 
 uint64_t Disk_Space_Available()
