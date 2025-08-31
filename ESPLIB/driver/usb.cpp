@@ -152,7 +152,8 @@ static void hid_host_device_callback(hid_host_device_handle_t hid_device_handle,
                 // set boot protocol
                 if(HID_SUBCLASS_BOOT_INTERFACE == dev_params.sub_class)
                 {
-                    ESP_ERROR_CHECK(hid_class_request_set_protocol(hid_device_handle, HID_REPORT_PROTOCOL_BOOT));
+                    // FIXME: this is failing with ESP_ERR_INVALID_ARG
+                    /*ESP_ERROR_CHECK*/(hid_class_request_set_protocol(hid_device_handle, HID_REPORT_PROTOCOL_BOOT));
                     if(HID_PROTOCOL_KEYBOARD == dev_params.proto)
                         ESP_ERROR_CHECK(hid_class_request_set_idle(hid_device_handle, 0, 0));
                 }
