@@ -1,5 +1,8 @@
 #include <cstring>
 
+#include "freertos/FreeRTOS.h"
+#include "freertos/task.h"
+
 #include "driver/gpio.h"
 #include "driver/ppa.h"
 
@@ -22,7 +25,7 @@ static esp_lcd_panel_handle_t panel_handle = nullptr;
 
 #if SOC_PPA_SUPPORTED
 static ppa_client_handle_t ppa_client = nullptr;
-static int ppa_blend_state = 0; // 0 = doing palette conv, 1 = doing cursor
+static volatile int ppa_blend_state = 0; // 0 = doing palette conv, 1 = doing cursor
 
 extern "C" void ppa_set_clut(ppa_client_handle_t ppa_client, const uint8_t *colours, int num_cols);
 #else
@@ -367,6 +370,17 @@ bool display_render_needed()
 uint8_t *get_framebuffer()
 {
     return back_buffer;
+}
+
+void display_lock_framebuffer()
+{
+#if SOC_PPA_SUPPORTED
+    //
+    // TODO: should probably be smarter about this
+    while(ppa_blend_state == 0) vTaskDelay(1);
+#else
+    // we did the copy in update (because this path is not very optimised...)
+#endif
 }
 
 void display_set_cursor(uint8_t *data, int w, int h)

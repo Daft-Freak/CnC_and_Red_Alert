@@ -10,13 +10,8 @@ bool GraphicBufferClass::Lock(void)
 {
     if(!LockCount)
     {
-        /*if(Offset == get_framebuffer())
-        {
-            // this is possibly a bit specific to the DBI driver but
-            // "render needed" means that the last frame transfer has finished
-            // so if render is NOT needed it means we're still reading the framebuffer
-            while(!display_render_needed()) __wfe();
-        }*/
+        if(Offset == get_framebuffer())
+            display_lock_framebuffer();
     }
 
     LockCount++;
