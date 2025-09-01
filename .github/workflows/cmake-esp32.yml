@@ -28,6 +28,9 @@ jobs:
         echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
         echo "build-install-dir=${{ github.workspace }}/build/install" >> "$GITHUB_OUTPUT"
         echo "artifact-name=${{github.event.repository.name}}-${{github.sha}}-${{matrix.target}}" >> "$GITHUB_OUTPUT"
+        echo "???"
+        echo $GITHUB_WORKSPACE
+        echo ${{ github.workspace }}
 
     - name: Configure CMake
       shell: bash
