@@ -31,3 +31,5 @@
 #define SD_SDMMC_1BIT
 #define SD_HIGH_SPEED
 #define SD_LDO_ID 4
+
+#define USB_HOST
