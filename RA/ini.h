@@ -48,7 +48,7 @@
 #include	"crc.h"
 #include	"search.h"
 
-#if defined(PICO_BUILD) || defined(ESP_BUILD)
+#ifdef TINY_BUILD
 // big RAM usage
 #define INI_NO_INDEX
 #endif

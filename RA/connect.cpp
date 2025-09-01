@@ -787,7 +787,7 @@ unsigned long ConnectionClass::Time (void)
 	Otherwise, use the DOS timer
 	------------------------------------------------------------------------*/
 	else {
-#if defined(PICO_BUILD) || defined(ESP_BUILD)
+#ifdef TINY_BUILD
 		return 0;
 #else
 		ftime(&mytime);

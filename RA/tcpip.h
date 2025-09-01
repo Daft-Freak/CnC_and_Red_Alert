@@ -50,7 +50,7 @@
 #include <winsock.h>
 #else
 #include "compat.h"
-#if defined(PICO_BUILD) || defined(ESP_BUILD)
+#ifdef TINY_BUILD
 #include "picosock.h"
 #else
 #include <netinet/in.h>

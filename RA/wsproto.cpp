@@ -63,7 +63,7 @@
 #ifdef _WIN32
 typedef int socklen_t;
 #else
-#if defined(PICO_BUILD) || defined(ESP_BUILD)
+#ifdef TINY_BUILD
 #include "picosock.h"
 #else
 #include <fcntl.h>
