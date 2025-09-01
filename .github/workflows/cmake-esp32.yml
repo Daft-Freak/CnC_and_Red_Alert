@@ -1,3 +1,5 @@
+# this uses $GITHUB_WORKPACE everywhere instead of ${{github.workspace}}
+# because https://github.com/actions/runner/issues/2058
 name: CMake on ESP32
 
 on:
@@ -25,12 +27,9 @@ jobs:
       id: strings
       shell: bash
       run: |
-        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
-        echo "build-install-dir=${{ github.workspace }}/build/install" >> "$GITHUB_OUTPUT"
+        echo "build-output-dir=$GITHUB_WORKSPACE/build" >> "$GITHUB_OUTPUT"
+        echo "build-install-dir=$GITHUB_WORKSPACE/build/install" >> "$GITHUB_OUTPUT"
         echo "artifact-name=${{github.event.repository.name}}-${{github.sha}}-${{matrix.target}}" >> "$GITHUB_OUTPUT"
-        echo "???"
-        echo $GITHUB_WORKSPACE
-        echo ${{ github.workspace }}
 
     - name: Configure CMake
       shell: bash
@@ -41,7 +40,7 @@ jobs:
         -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
         -DCMAKE_TOOLCHAIN_FILE=$IDF_PATH/tools/cmake/toolchain-${{ matrix.target }}.cmake \
         -DESP_TARGET=${{ matrix.target }} \
-        -S ${{ github.workspace }}
+        -S $GITHUB_WORKSPACE
 
     - name: Build
       shell: bash
