@@ -1,0 +1,59 @@
+name: CMake on ESP32
+
+on:
+  push:
+#    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    container: espressif/idf:release-v5.4
+
+    strategy:
+      matrix:
+        include:
+          - build_type: Release
+            target: esp32p4
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set reusable strings
+      # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+      id: strings
+      shell: bash
+      run: |
+        echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+        echo "build-install-dir=${{ github.workspace }}/build/install" >> "$GITHUB_OUTPUT"
+        echo "artifact-name=${{github.event.repository.name}}-${{github.sha}}-${{matrix.target}}" >> "$GITHUB_OUTPUT"
+
+    - name: Configure CMake
+      shell: bash
+      run: |
+        source $IDF_PATH/export.sh
+        cmake -B ${{ steps.strings.outputs.build-output-dir }} \
+        -DCMAKE_INSTALL_PREFIX=${{ steps.strings.outputs.build-install-dir }} \
+        -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} \
+        -DCMAKE_TOOLCHAIN_FILE=$IDF_PATH/tools/cmake/toolchain-${{ matrix.target }}.cmake \
+        -DESP_TARGET=${{ matrix.target }} \
+        -S ${{ github.workspace }}
+
+    - name: Build
+      shell: bash
+      run: |
+        source $IDF_PATH/export.sh
+        cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }}
+
+    - name: Prepare Artifact
+      shell: bash
+      run: |
+        source $IDF_PATH/export.sh
+        cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target install
+ 
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ steps.strings.outputs.artifact-name }}
+        path: ${{ steps.strings.outputs.build-install-dir }}
