@@ -101,6 +101,7 @@ target_link_libraries(picolib PUBLIC
 )
 
 target_compile_definitions(picolib PUBLIC
+    TINY_BUILD
     PICO_CORE1_STACK_SIZE=0x200
 )
 

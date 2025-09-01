@@ -38,7 +38,7 @@ target_include_directories(esplib PUBLIC ../SDLLIB/include) # hax
 target_include_directories(esplib PUBLIC ${CMAKE_CURRENT_LIST_DIR})
 target_include_directories(esplib PRIVATE ${CMAKE_CURRENT_LIST_DIR}/driver)
 
-target_compile_definitions(esplib PUBLIC ESP_BUILD)
+target_compile_definitions(esplib PUBLIC TINY_BUILD ESP_BUILD)
 
 target_link_libraries(esplib PUBLIC
     idf::newlib
