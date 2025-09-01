@@ -14,7 +14,6 @@
 #include "config.h"
 #include "driver/audio.h"
 #include "display.h"
-#include "mem.h"
 #include "timer.h"
 #include "usb.h"
 
@@ -187,8 +186,6 @@ void Init_SD()
 
 void Pico_Init(const char *basedir)
 {
-    PSRAM_Alloc_Init();
-
     init_display();
     init_audio();
 

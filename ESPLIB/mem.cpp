@@ -10,18 +10,6 @@
 void (*Memory_Error)(void) = NULL;
 void (*Memory_Error_Exit)(char *string) = NULL;
 
-extern uint8_t __PsramHeapStart;
-extern uint8_t __PsramHeapEnd;
-
-void PSRAM_Alloc_Init()
-{
-}
-
-void *PSRAM_Alloc(size_t size)
-{
-    return NULL;
-}
-
 void Force_VM_Page_In(void *buffer, int length)
 {
 }
@@ -30,10 +18,7 @@ void *Alloc(unsigned long bytes_to_alloc, MemoryFlagType flags)
 {
 	void *ptr;
     
-    //if(flags & MEM_FIXED_HEAP)
-    //    ptr = PSRAM_Alloc(bytes_to_alloc);
-    //else
-        ptr = new char[bytes_to_alloc];
+    ptr = new char[bytes_to_alloc];
 
 	if(!ptr && Memory_Error)
 		Memory_Error();
