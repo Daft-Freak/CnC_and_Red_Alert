@@ -302,7 +302,7 @@ elseif(ESP_TARGET)
 	idf_build_executable(esp-ra)
 
 	# install... something
-	install(FILES esp-ra.bin
+	install(FILES ${CMAKE_BINARY_DIR}/esp-ra.bin
 		DESTINATION bin
 	)
 

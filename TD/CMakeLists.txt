@@ -204,7 +204,7 @@ elseif(ESP_TARGET)
 	idf_build_executable(esp-td)
 
 	# install... something
-	install(FILES esp-td.bin
+	install(FILES ${CMAKE_BINARY_DIR}/esp-td.bin
 		DESTINATION bin
 	)
 	]]
