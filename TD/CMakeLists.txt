@@ -189,6 +189,8 @@ if(PICO_SDK_PATH)
 		DESTINATION bin
 	)
 elseif(ESP_TARGET)
+	# FIXME: adding this breaks the RA target because esp-idf only allows one executable...
+	#[[
 	add_executable(esp-td ${TD_SOURCES} picostub.cpp)
 
 	target_compile_definitions(esp-td PRIVATE
@@ -199,8 +201,6 @@ elseif(ESP_TARGET)
 	target_include_directories(esp-td PRIVATE ../RA) # should probably structure this better
 	target_link_libraries(esp-td PRIVATE port esplib vqa32)
 
-	# FIXME: adding this breaks the RA target because esp-idf only allows one executable...
-	#[[
 	idf_build_executable(esp-td)
 
 	# install... something
