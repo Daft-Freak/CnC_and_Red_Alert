@@ -177,7 +177,7 @@ int main(int argc, char * argv[])
 	DDSCAPS	surface_capabilities;
 #endif
 
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 	Pico_Init("CnC");
 #else
 	if (Ram_Free(MEM_NORMAL) < 5000000) {
@@ -254,7 +254,7 @@ int main(int argc, char * argv[])
 	} while ( command_char != 0 && command_char != 13 && argc<20 );
 #endif
 
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	/*
 	**	Change directory to the where the executable is located. Handle the
 	**	case where there is no path attached to argv[0].

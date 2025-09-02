@@ -62,7 +62,7 @@
 #ifdef _WIN32
 typedef int socklen_t;
 #else
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 #include "picosock.h"
 #else
 #include <arpa/inet.h>

@@ -1948,6 +1948,9 @@ extern	LPDIRECTSOUNDBUFFER  PrimaryBufferPtr;
 #ifdef PICO_BUILD
 [[gnu::section(".psram_data")]] static uint8_t AudioBuf[32768];
 #endif
+#ifdef ESP_BUILD
+[[gnu::section(".ext_ram.bss")]] static uint8_t AudioBuf[32768];
+#endif
 void Anim_Init(void)
 {
 	/* Configure player with INI file */
@@ -1992,7 +1995,7 @@ void Anim_Init(void)
 	//AnimControl.Volume = 0x00FF;
 	//AnimControl.AudioRate = 22050;
 //	if (NewConfig.Speed) AnimControl.AudioRate = 11025;
-#if defined(PICO_BUILD)
+#if defined(TINY_BUILD)
 	AnimControl.AudioBufSize = sizeof(AudioBuf);
 	AnimControl.AudioBuf = AudioBuf;
 	AnimControl.AudioCallback = Get_Audio_Callback_Ptr();
@@ -2012,7 +2015,7 @@ void Anim_Init(void)
 		AnimControl.OptionFlags |= VQAOPTF_MONO;
 	}
 
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 	AnimControl.NumCBBufs = 2; // 1 blows up in LCW
 	AnimControl.NumFrameBufs = 1;
 #endif

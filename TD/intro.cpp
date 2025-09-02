@@ -123,7 +123,7 @@ void Choose_Side(void)
 	staticaud = Load_Alloc_Data(f);
 
 	// delay load on pico, these are 30/27k
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	f.Open("GDI_SLCT.AUD");
 	speechg = Load_Alloc_Data(f);
 	f.Open("NOD_SLCT.AUD");
@@ -157,7 +157,7 @@ void Choose_Side(void)
 #endif
 
 // also delay loading the briefings
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	nodbrief = Open_Movie("NOD1PRE.VQA");
 #ifndef LORES
 	gdi_start_palette = Load_Interpolated_Palettes("NOD1PRE.VQP");
@@ -249,7 +249,7 @@ void Choose_Side(void)
 						Whom = HOUSE_GOOD;
 						ScenPlayer = SCEN_PLAYER_GDI;
 						endframe = 0;
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 						f.Open("GDI_SLCT.AUD");
 						speechg = Load_Alloc_Data(f);
 #endif
@@ -263,7 +263,7 @@ void Choose_Side(void)
 						endframe = 14;
 						Whom = HOUSE_BAD;
 						ScenPlayer = SCEN_PLAYER_NOD;
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 						f.Open("NOD_SLCT.AUD");
 						speechn = Load_Alloc_Data(f);
 #endif
@@ -292,7 +292,7 @@ void Choose_Side(void)
 
 	Keyboard::Clear();
 
-#ifndef PICO_BUILD
+#ifndef TINY_BUILD
 	/*
 	** Skip the briefings if we're in special mode.
 	*/
@@ -316,7 +316,7 @@ void Choose_Side(void)
 			VQA_Close(nodbrief);
 			VQA_Free(nodbrief);
 		}
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 		gdibrief = Open_Movie("GDI1.VQA");
 #endif
 		if (gdibrief) {
@@ -330,7 +330,7 @@ void Choose_Side(void)
 			VQA_Close(gdibrief);
 			VQA_Free(gdibrief);
 		}
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 		nodbrief = Open_Movie("NOD1PRE.VQA");
 #endif
 		if (nodbrief) {

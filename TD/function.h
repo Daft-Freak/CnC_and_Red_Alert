@@ -119,7 +119,7 @@ UnitTypeClass      │   BuildingTypeClass      │
 #include <windows.h>
 #endif
 
-#ifdef PICO_BUILD
+#ifdef TINY_BUILD
 #include "picolib.h"
 #endif
 
