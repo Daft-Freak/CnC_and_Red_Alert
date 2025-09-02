@@ -155,7 +155,7 @@ static void hid_host_device_callback(hid_host_device_handle_t hid_device_handle,
                     // FIXME: this is failing with ESP_ERR_INVALID_ARG
                     /*ESP_ERROR_CHECK*/(hid_class_request_set_protocol(hid_device_handle, HID_REPORT_PROTOCOL_BOOT));
                     if(HID_PROTOCOL_KEYBOARD == dev_params.proto)
-                        ESP_ERROR_CHECK(hid_class_request_set_idle(hid_device_handle, 0, 0));
+                        /*ESP_ERROR_CHECK*/(hid_class_request_set_idle(hid_device_handle, 0, 0));
                 }
 
                 ESP_ERROR_CHECK(hid_host_device_start(hid_device_handle));
