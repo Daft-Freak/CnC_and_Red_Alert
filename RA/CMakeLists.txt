@@ -300,6 +300,12 @@ elseif(ESP_TARGET)
 	target_link_libraries(esp-ra PRIVATE tech jshell port esplib vqa32)
 
 	idf_build_executable(esp-ra)
+
+	# install... something
+	install(FILES esp-ra.bin
+		DESTINATION bin
+	)
+
 else()
 	target_link_libraries(jshell sdllib)
 	target_link_libraries(tech sdllib)
