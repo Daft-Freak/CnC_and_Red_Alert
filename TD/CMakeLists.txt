@@ -189,8 +189,25 @@ if(PICO_SDK_PATH)
 		DESTINATION bin
 	)
 elseif(ESP_TARGET)
-	# todo
-	# also, esp-idf doesn't handle multiple targets well
+	add_executable(esp-td ${TD_SOURCES} picostub.cpp)
+
+	target_compile_definitions(esp-td PRIVATE
+		PORTABLE=1 # to indicate not windows or dos sometimes
+		TD=1
+		LORES=1
+	)
+	target_include_directories(esp-td PRIVATE ../RA) # should probably structure this better
+	target_link_libraries(esp-td PRIVATE port esplib vqa32)
+
+	# FIXME: adding this breaks the RA target because esp-idf only allows one executable...
+	#[[
+	idf_build_executable(esp-td)
+
+	# install... something
+	install(FILES esp-td.bin
+		DESTINATION bin
+	)
+	]]
 else()
 	add_executable(tdsdl WIN32 ${TD_SOURCES} sdlstub.cpp)
 
