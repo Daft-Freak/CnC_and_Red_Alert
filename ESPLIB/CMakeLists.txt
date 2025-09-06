@@ -46,6 +46,12 @@ target_link_libraries(esplib PUBLIC
     idf::esp_timer
     idf::esp_lcd
     idf::esp_driver_ppa
+    idf::esp_wifi
     idf::usb
     idf::usb_host_hid
 )
+
+if(ESP_TARGET STREQUAL "esp32p4")
+    target_link_libraries(esplib PUBLIC idf::esp_hosted)
+    target_compile_definitions(esplib PRIVATE ESP_HOSTED)
+endif()
