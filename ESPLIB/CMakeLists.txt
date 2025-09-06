@@ -9,8 +9,6 @@ add_library(esplib STATIC
     keyboard.cpp
     mem.cpp
     mouse.cpp
-    net_select.cpp
-    picosock.cpp
     timer.cpp
     wincomm.cpp
     window.cpp
@@ -23,6 +21,7 @@ add_library(esplib STATIC
     ../SDLLIB/iconcach.cpp
     ../SDLLIB/iff.cpp
     ../SDLLIB/misc.cpp
+    ../SDLLIB/net_select.cpp
     ../SDLLIB/palette.cpp
     ../SDLLIB/playcd.cpp
     ../SDLLIB/shape.cpp
@@ -33,6 +32,9 @@ add_library(esplib STATIC
     driver/ppa_clut.c
     driver/usb.cpp
 )
+
+# needed so select doesn't explode
+set_target_properties(esplib PROPERTIES CXX_EXTENSIONS ON)
 
 target_include_directories(esplib PUBLIC ../SDLLIB/include) # hax
 target_include_directories(esplib PUBLIC ${CMAKE_CURRENT_LIST_DIR})
