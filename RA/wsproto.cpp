@@ -615,6 +615,7 @@ bool WinsockInterfaceClass::Set_Socket_Options ( void )
 	static int		socket_transmit_buffer_size = SOCKET_BUFFER_SIZE;
 	static int		socket_receive_buffer_size = SOCKET_BUFFER_SIZE;
 
+#ifndef TINY_BUILD
 	/*
 	** Specify the size of the receive buffer.
 	*/
@@ -636,6 +637,7 @@ bool WinsockInterfaceClass::Set_Socket_Options ( void )
 		OutputDebugString (out);
 		assert ( err != INVALID_SOCKET );
 	}
+#endif
 
 #ifdef PORTABLE
 	// setup for non-blocking io
