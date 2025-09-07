@@ -1576,8 +1576,9 @@ int MapClass::Zone_Span(CELL cell, int zone, MZoneType check)
 	**	Find the full extent of the current span by first scanning leftward
 	**	until a boundary is reached.
 	*/
+	int tempcell = XY_Cell(xbegin, y);
 	for (; xbegin >= MapCellX; xbegin--) {
-		CellClass * cellptr = &(*this)[XY_Cell(xbegin, y)];
+		CellClass * cellptr = &(*this)[(CELL)tempcell--];
 		if (cellptr->Zones[check] != 0 || (!cellptr->Is_Clear_To_Move(check == MZONE_WATER ? SPEED_FLOAT : SPEED_TRACK, true, true, -1, check))) {
 
 			/*
@@ -1586,7 +1587,7 @@ int MapClass::Zone_Span(CELL cell, int zone, MZoneType check)
 			**	zone marking. This eliminates redundant processing and allows this
 			**	routine to be called for illegal cells without causing an error.
 			*/
-			if (xbegin == Cell_X(cell)) return(0);
+			if (xbegin == xend) return(0);
 
 			/*
 			**	Otherwise break out of the left scan since a boundary was discovered.
@@ -1601,8 +1602,9 @@ int MapClass::Zone_Span(CELL cell, int zone, MZoneType check)
 	**	Scan rightward until a boundary is reached. This will then define the
 	**	extent of the current span.
 	*/
+	tempcell = XY_Cell(xend, y);
 	for (; xend < MapCellX+MapCellWidth; xend++) {
-		CellClass * cellptr = &(*this)[XY_Cell(xend, y)];
+		CellClass * cellptr = &(*this)[(CELL)tempcell++];
 		if (cellptr->Zones[check] != 0 || (!cellptr->Is_Clear_To_Move(check == MZONE_WATER ? SPEED_FLOAT : SPEED_TRACK, true, true, -1, check))) {
 			xend--;
 			break;
@@ -1614,8 +1616,9 @@ int MapClass::Zone_Span(CELL cell, int zone, MZoneType check)
 	**	At this point we know the bounds of the current span. Fill in the zone values
 	**	for the entire span.
 	*/
+	tempcell = XY_Cell(xbegin, y);
 	for (int x = xbegin; x <= xend; x++) {
-		(*this)[XY_Cell(x, y)].Zones[check] = zone;
+		(*this)[(CELL)tempcell++].Zones[check] = zone;
 		filled++;
 	}
 
@@ -1626,9 +1629,11 @@ int MapClass::Zone_Span(CELL cell, int zone, MZoneType check)
 	**	end of the scan. This is necessary because diagonals are considered
 	**	adjacent.
 	*/
+	int cell0 = XY_Cell(xbegin - 1, y - 1);
+	int cell1 = XY_Cell(xbegin - 1, y + 1);
 	for (int x = xbegin-1; x <= xend; x++) {
-		filled += Zone_Span(XY_Cell(x, y-1), zone, check);
-		filled += Zone_Span(XY_Cell(x, y+1), zone, check);
+		filled += Zone_Span(cell0++, zone, check);
+		filled += Zone_Span(cell1++, zone, check);
 	}
 	return(filled);
 }
