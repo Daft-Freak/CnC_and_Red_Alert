@@ -2778,7 +2778,7 @@ typedef enum BenchType {
 /**********************************************************************
 **	These are the control flags for Fancy_Text_Print function.
 */
-typedef enum TextPrintType {
+typedef enum TextPrintType : uint16_t {
 	TPF_LASTPOINT		=0x0000,		// Use previous font point value.
 	TPF_6POINT			=0x0001,		// Use 6 point font.
 	TPF_8POINT			=0x0002,		// Use 8 point font.
