@@ -127,7 +127,12 @@ static void ft6236_int_handler(uint gpio, uint32_t events)
 
 void Pico_Input_Init()
 {
-    tusb_init();
+    tusb_rhport_init_t hostInit = {
+        .role = TUSB_ROLE_HOST,
+        .speed = TUSB_SPEED_AUTO
+    };
+
+    tusb_init(BOARD_TUH_RHPORT, &hostInit);
 
 #ifdef FT6236_I2C
     // presto touch (FT6236)
