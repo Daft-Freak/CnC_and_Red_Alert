@@ -41,7 +41,11 @@ add_library(picolib STATIC
 
 # "extra" board config (the thing the pico is plugged into)
 if(NOT EXTRA_BOARD)
-    if(PICO_BOARD STREQUAL "solderparty_rp2350_stamp_xl")
+    # no extra board needed
+    if(PICO_BOARD STREQUAL adafruit_fruit_jam)
+        set(EXTRA_BOARD "none")
+    # assume stamp is in the carrier
+    elseif(PICO_BOARD STREQUAL "solderparty_rp2350_stamp_xl")
         set(EXTRA_BOARD stamp_carrier)
     else()
         set(EXTRA_BOARD display_pack)
@@ -63,7 +67,7 @@ if(EXTRA_BOARD STREQUAL "presto")
     set(DISPLAY_DRIVER "dpi")
 endif()
 
-if(EXTRA_BOARD STREQUAL "stamp_carrier")
+if(EXTRA_BOARD STREQUAL "stamp_carrier" OR PICO_BOARD STREQUAL adafruit_fruit_jam)
     set(DISPLAY_DRIVER "hstx")
 endif()
 

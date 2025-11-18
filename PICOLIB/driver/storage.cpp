@@ -295,6 +295,13 @@ bool storage_init() {
 
     gpio_pull_up(SD_MISO);
 
+#ifdef SD_DAT1
+    gpio_init(SD_DAT1);
+    gpio_init(SD_DAT2);
+    gpio_pull_up(SD_DAT1);
+    gpio_pull_up(SD_DAT2);
+#endif
+
     // SPI is synchronous, so bypass input synchroniser to reduce input delay.
     hw_set_bits(&sd_pio->input_sync_bypass, 1u << (SD_MISO - base));
 

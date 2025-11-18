@@ -19,7 +19,9 @@ static FATFS fs;
 
 extern const uint8_t asset_tall_font[];
 
-#ifdef PIMORONI_PICO_PLUS2_RP2350
+#if defined(ADAFRUIT_FRUIT_JAM)
+#define PSRAM_CS_PIN 47
+#elif defined(PIMORONI_PICO_PLUS2_RP2350)
 #define PSRAM_CS_PIN PIMORONI_PICO_PLUS2_PSRAM_CS_PIN
 #elif defined(PIMORONI_PICO_PLUS2_W_RP2350)
 #define PSRAM_CS_PIN PIMORONI_PICO_PLUS2_W_PSRAM_CS_PIN
