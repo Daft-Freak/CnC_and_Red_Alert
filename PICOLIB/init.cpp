@@ -128,6 +128,15 @@ void Pico_Init(const char *basedir)
     printf("detected %i bytes PSRAM\n", psramSize);
     PSRAM_Alloc_Init();
 
+    // reset fruit jam peripherals
+#ifdef ADAFRUIT_FRUIT_JAM
+    gpio_set_dir(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, GPIO_OUT);
+    gpio_put(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, 0);
+    gpio_set_function(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, GPIO_FUNC_SIO);
+    sleep_ms(1);
+    gpio_put(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, 1);
+#endif
+
     f_mount(&fs, "", 0);
 
     char buf[10];
