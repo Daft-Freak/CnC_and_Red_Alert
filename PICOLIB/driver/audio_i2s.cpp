@@ -1,14 +1,14 @@
 #include <cmath>
 
-#include "audio.h"
-#include "config.h"
-
 #include "hardware/clocks.h"
 #include "hardware/dma.h"
 #include "hardware/pio.h"
 #include "hardware/sync.h"
 #include "hardware/timer.h"
 #include "pico/time.h"
+
+#include "audio.h"
+#include "config.h"
 
 #include "i2s.pio.h"
 
