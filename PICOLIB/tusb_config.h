@@ -30,6 +30,12 @@
  extern "C" {
 #endif
 
+// use PIO-USB for host port if requested
+#ifdef PIO_USB_HOST
+#define CFG_TUH_RPI_PIO_USB   1
+#define BOARD_TUH_RHPORT      1
+#endif
+
 // not defining BOARD_TUD_RHPORT by default
 
 // RHPort max operational speed

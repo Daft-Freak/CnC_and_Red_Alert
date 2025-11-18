@@ -1,5 +1,6 @@
 #include "tusb.h"
 
+#include "hardware/dma.h"
 #include "hardware/gpio.h"
 #include "hardware/i2c.h"
 
@@ -8,6 +9,11 @@
 #include "mouse.h"
 
 #include "config.h"
+
+// need to include this after config.h
+#ifdef PIO_USB_HOST
+#include "pio_usb_configuration.h"
+#endif
 
 enum FT6236Reg
 {
@@ -127,6 +133,23 @@ static void ft6236_int_handler(uint gpio, uint32_t events)
 
 void Pico_Input_Init()
 {
+
+#ifdef PIO_USB_HOST
+    // configure PIO USB host
+#ifdef PICO_DEFAULT_PIO_USB_VBUSEN_PIN
+    gpio_init(PICO_DEFAULT_PIO_USB_VBUSEN_PIN);
+    gpio_set_dir(PICO_DEFAULT_PIO_USB_VBUSEN_PIN, GPIO_OUT);
+    gpio_put(PICO_DEFAULT_PIO_USB_VBUSEN_PIN, PICO_DEFAULT_PIO_USB_VBUSEN_STATE);
+#endif
+
+    pio_usb_configuration_t pioHostConfig = PIO_USB_DEFAULT_CONFIG;
+    // find an unused channel, then unclaim it again so PIO USB can claim it...
+    pioHostConfig.tx_ch = dma_claim_unused_channel(true);
+    dma_channel_unclaim(pioHostConfig.tx_ch);
+
+    tuh_configure(BOARD_TUH_RHPORT, TUH_CFGID_RPI_PIO_USB_CONFIGURATION, &pioHostConfig);
+#endif
+
     tusb_rhport_init_t hostInit = {
         .role = TUSB_ROLE_HOST,
         .speed = TUSB_SPEED_AUTO

@@ -104,6 +104,13 @@ target_link_libraries(picolib PUBLIC
     tinyusb_host
 )
 
+# additionally link to pio usb if needed by board
+if(PICO_BOARD STREQUAL "adafruit_fruit_jam")
+    message("Using PIO USB host!")
+    target_link_libraries(picolib PUBLIC tinyusb_pico_pio_usb)
+    target_compile_definitions(picolib PUBLIC PIO_USB_HOST)
+endif()
+
 target_compile_definitions(picolib PUBLIC
     PICO_CORE1_STACK_SIZE=0x200
 )
