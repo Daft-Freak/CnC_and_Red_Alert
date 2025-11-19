@@ -11,7 +11,7 @@
 // effectively one less as one is used to track streaming from disk
 #define	MAX_SFX	4
 
-#define STREAM_SAMPLES 0x2000
+#define STREAM_SAMPLES 0x1000
 
 enum SCompressType : uint8_t
 {
@@ -556,6 +556,8 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
         rate = 22050;
 
     bool valid_comp = (header->Compression == SCOMP_SOS && bits == 16) || (header->Compression == SCOMP_WESTWOOD && bits == 8);
+
+    printf("sample %p chan %i rate %i size %i/%i channels %i bits %i comp %i\n", sample, id, rate, header->Size, header->UncompSize, channels, bits, header->Compression);
 
     if(!valid_comp || rate != 22050)
     {
