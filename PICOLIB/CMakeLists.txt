@@ -67,7 +67,7 @@ if(EXTRA_BOARD STREQUAL "presto")
     set(DISPLAY_DRIVER "dpi")
 endif()
 
-if(EXTRA_BOARD STREQUAL "stamp_carrier" OR PICO_BOARD STREQUAL adafruit_fruit_jam)
+if(EXTRA_BOARD STREQUAL "stamp_carrier")
     set(DISPLAY_DRIVER "hstx")
 endif()
 
@@ -80,6 +80,11 @@ endif()
 if(EXTRA_BOARD STREQUAL "vgaboard")
     set(DISPLAY_DRIVER "dpi")
     set(AUDIO_DRIVER "i2s")
+endif()
+
+if(PICO_BOARD STREQUAL adafruit_fruit_jam)
+    set(AUDIO_DRIVER "i2s")
+    set(DISPLAY_DRIVER "hstx")
 endif()
 
 target_sources(picolib PRIVATE
