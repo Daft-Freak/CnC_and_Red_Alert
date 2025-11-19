@@ -113,6 +113,8 @@ const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32
     uint32_t remaining = size - read;
     uint32_t flash_offset = scan_offset + FLASH_PAGE_SIZE;
 
+    int pages = 1;
+
     while(remaining)
     {
         read = 0;
@@ -129,7 +131,8 @@ const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32
         else
             remaining -= read;
 
-        printf("%u/%u\r", size - remaining, size);
+        if(++pages % 256 == 0)
+            printf("%u/%u\r", size - remaining, size);
     }
 
     printf("\n");
