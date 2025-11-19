@@ -2,6 +2,7 @@
 
 #include "hardware/clocks.h"
 #include "hardware/dma.h"
+#include "hardware/i2c.h"
 #include "hardware/pio.h"
 #include "hardware/sync.h"
 #include "hardware/timer.h"
@@ -57,6 +58,64 @@ void init_audio() {
   gpio_set_dir(AUDIO_I2S_MUTE_PIN, GPIO_OUT);
   gpio_put(AUDIO_I2S_MUTE_PIN, 1);
   gpio_set_function(AUDIO_I2S_MUTE_PIN, GPIO_FUNC_SIO);
+#endif
+
+#ifdef TLV320DAC3100_ADDR
+  // TLV320DAC3100 DAC init
+
+  // TODO: i2c init may conflict with input devices
+  i2c_init(i2c_default, 100000);
+  gpio_set_function(PICO_DEFAULT_I2C_SDA_PIN, GPIO_FUNC_I2C);
+  gpio_set_function(PICO_DEFAULT_I2C_SCL_PIN, GPIO_FUNC_I2C);
+
+  auto writeReg = [](uint8_t reg, uint8_t value) {
+    uint8_t buf[] {reg, value};
+    i2c_write_blocking(i2c_default, TLV320DAC3100_ADDR, buf, 2, false);
+  };
+
+  // reset
+  writeReg(0x01, 1);
+  sleep_ms(10);
+
+  // clocks
+  writeReg(0x04, 1 << 2 | 3 << 0); // PLL_CLKIN = BCLK, CODEC_CLKIN = PLL_CLK
+
+  // BCLK * (R * J.D) / P
+  uint8_t pllPR = 1 << 4 | 2 << 0;
+  writeReg(0x05, pllPR); // PLL R = 2, P = 1
+  writeReg(0x06, 32); // PLL J = 32
+  writeReg(0x07, 0); // PLL D = 0
+  writeReg(0x08, 0); // ...
+
+  writeReg(0x0B, 1 << 7 | 8); // NDAC = 8
+  writeReg(0x0C, 1 << 7 | 2); // MDAC = 2
+
+  // DOSR default is 128
+
+  writeReg(0x05, pllPR | 1 << 7); // power up PLL
+
+  // DAC
+  writeReg(0x3F, 3 << 6 | 1 << 4 | 1 << 2); // power up left/right DAC, left = left, right = right
+  writeReg(0x40, 0); // unmute, independent volume control
+  writeReg(0x41, 20); // left vol = 10dB
+  writeReg(0x42, 20); // right vol = 10dB
+
+  writeReg(0x00, 1); // page 1
+
+  // output routing
+  writeReg(0x23, 1 << 6 | 1 << 2); // route DAC_L to left mixer, DAC_R to right mixer
+
+  // headphone amp
+  writeReg(0x1F, 3 << 6 | 1 << 2); // power up headphone amp L/R
+  writeReg(0x24, 10); // headphone vol L
+  writeReg(0x25, 10); // headphone vol R
+  writeReg(0x28, 1 << 2 | 1 << 1); // headphone L not muted
+  writeReg(0x29, 1 << 2 | 1 << 1); // headphone R not muted
+
+  // speaker amp
+  writeReg(0x20, 1 << 7 | 6); // power up speaker amp
+  writeReg(0x26, 10); // speaker vol
+  writeReg(0x2A, 1 << 3 | 1 << 2); // driver gain = 12dB, not muted
 #endif
 
   // setup PIO
