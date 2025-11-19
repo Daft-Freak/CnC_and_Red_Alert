@@ -25,6 +25,9 @@ jobs:
           - os: ubuntu-latest
             build_type: Release
             board: solderparty_rp2350_stamp_xl
+          - os: ubuntu-latest
+            build_type: Release
+            board: adafruit_fruit_jam
 
     steps:
     - uses: actions/checkout@v4
@@ -35,6 +38,14 @@ jobs:
         repository: raspberrypi/pico-sdk
         path: pico-sdk
         submodules: true
+
+    # need to install Pico-PIO-USB for fruit jam
+    - name: Get TinyUSB deps
+      working-directory: pico-sdk
+      run: |
+        lib/tinyusb/tools/get_deps.py rp2040
+        cd lib/tinyusb/hw/mcu/raspberry_pi/Pico-PIO-USB
+        git fetch && git checkout d15f0c62ac22348a8708e1626525fdba9466e1ee
 
     - name: Install toolchain
       run: sudo apt update && sudo apt install gcc-arm-none-eabi libnewlib-arm-none-eabi libstdc++-arm-none-eabi-newlib
