@@ -163,11 +163,11 @@ extern bool Is_Mission_Counterstrike (char *file_name);
 static void Load_Prolog_Page(void)
 {
 	Hide_Mouse();
-#ifdef WIN32
+#if RESFACTOR == 2
 	Load_Title_Screen("PROLOG.PCX", &HidPage, CCPalette);
 	HidPage.Blit(SeenPage);
 #else
-	Load_Picture("PROLOG.CPS", HidPage, HidPage, CCPalette, BM_DEFAULT);
+	Load_Picture("PROLOG.CPS", *HidPage.Get_Graphic_Buffer(), *HidPage.Get_Graphic_Buffer(), CCPalette, BM_DEFAULT);
 	HidPage.Blit(SeenPage);
 #endif
 	CCPalette.Set();
