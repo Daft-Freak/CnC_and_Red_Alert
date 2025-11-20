@@ -52,7 +52,7 @@ static uint8_t cursor_w = 0, cursor_h = 0;
 static uint32_t vblank_line_vsync_off[6];
 static uint32_t vblank_line_vsync_on[6];
 
-static const struct dvi_timing* timing_mode;
+static struct dvi_timing timing_mode;
 static int v_inactive_total;
 static int v_total_active_lines;
 static const int v_repeat_shift = 1;
@@ -108,7 +108,7 @@ static void __no_inline_not_in_flash_func(palette_dma_irq_handler)() {
     dma_hw->intr = 1u << ch_num;
     if (++ch_num == NUM_CHANS) ch_num = 0;
 
-    if (v_scanline >= timing_mode->v_front_porch && v_scanline < (timing_mode->v_front_porch + timing_mode->v_sync_width)) {
+    if (v_scanline >= timing_mode.v_front_porch && v_scanline < (timing_mode.v_front_porch + timing_mode.v_sync_width)) {
           ch->read_addr = (uintptr_t)vblank_line_vsync_on;
           ch->transfer_count = count_of(vblank_line_vsync_on);
     } else if (v_scanline < v_inactive_total) {
@@ -239,18 +239,18 @@ void pre_init_display() {
 }
 
 static void display_setup_clock() {
-    const uint32_t dvi_clock_khz = timing_mode->bit_clk_khz >> 1;
+    const uint32_t dvi_clock_khz = timing_mode.bit_clk_khz >> 1;
     uint vco_freq, post_div1, post_div2;
     if (!check_sys_clock_khz(dvi_clock_khz, &vco_freq, &post_div1, &post_div2))
         panic("System clock of %u kHz cannot be exactly achieved", dvi_clock_khz);
     const uint32_t freq = vco_freq / (post_div1 * post_div2);
 
-    if (timing_mode->bit_clk_khz > 600000) {
+    if (timing_mode.bit_clk_khz > 600000) {
         vreg_set_voltage(VREG_VOLTAGE_1_25);
     } 
-    if (timing_mode->bit_clk_khz > 800000) {
+    if (timing_mode.bit_clk_khz > 800000) {
         vreg_set_voltage(VREG_VOLTAGE_1_30);
-        if (timing_mode->bit_clk_khz > 1000000) {
+        if (timing_mode.bit_clk_khz > 1000000) {
             // YOLO mode
             hw_set_bits(&powman_hw->vreg_ctrl, POWMAN_PASSWORD_BITS | POWMAN_VREG_CTRL_DISABLE_VOLTAGE_LIMIT_BITS);
             vreg_set_voltage(VREG_VOLTAGE_1_40);
@@ -276,7 +276,8 @@ void init_display_core1() {
     line_num = -1;
     v_scanline = 2;
 
-    timing_mode = &dvi_timing_720x400p_60hz;
+    memcpy(&timing_mode, &dvi_timing_720x400p_60hz, sizeof(timing_mode));
+
     if (get_core_num() == 1) {
         hw_set_bits(&bus_ctrl_hw->priority, (BUSCTRL_BUS_PRIORITY_PROC1_BITS | BUSCTRL_BUS_PRIORITY_DMA_R_BITS | BUSCTRL_BUS_PRIORITY_DMA_W_BITS));
     }
@@ -286,41 +287,41 @@ void init_display_core1() {
 
     printf("Clock setup done\n");
 
-    v_inactive_total = timing_mode->v_front_porch + timing_mode->v_sync_width + timing_mode->v_back_porch;
-    v_total_active_lines = v_inactive_total + timing_mode->v_active_lines;
+    v_inactive_total = timing_mode.v_front_porch + timing_mode.v_sync_width + timing_mode.v_back_porch;
+    v_total_active_lines = v_inactive_total + timing_mode.v_active_lines;
 
-    uint32_t sync_v0_h0 = timing_mode->h_sync_polarity ? (timing_mode->v_sync_polarity ? SYNC_V0_H0 : SYNC_V1_H0) :
-                                                         (timing_mode->v_sync_polarity ? SYNC_V0_H1 : SYNC_V1_H1);
-    uint32_t sync_v0_h1 = timing_mode->h_sync_polarity ? (timing_mode->v_sync_polarity ? SYNC_V0_H1 : SYNC_V1_H1) :
-                                                         (timing_mode->v_sync_polarity ? SYNC_V0_H0 : SYNC_V1_H0);
-    uint32_t sync_v1_h0 = timing_mode->h_sync_polarity ? (timing_mode->v_sync_polarity ? SYNC_V1_H0 : SYNC_V0_H0) :
-                                                         (timing_mode->v_sync_polarity ? SYNC_V1_H1 : SYNC_V0_H1);
-    uint32_t sync_v1_h1 = timing_mode->h_sync_polarity ? (timing_mode->v_sync_polarity ? SYNC_V1_H1 : SYNC_V0_H1) :
-                                                         (timing_mode->v_sync_polarity ? SYNC_V1_H0 : SYNC_V0_H0);
+    uint32_t sync_v0_h0 = timing_mode.h_sync_polarity ? (timing_mode.v_sync_polarity ? SYNC_V0_H0 : SYNC_V1_H0) :
+                                                        (timing_mode.v_sync_polarity ? SYNC_V0_H1 : SYNC_V1_H1);
+    uint32_t sync_v0_h1 = timing_mode.h_sync_polarity ? (timing_mode.v_sync_polarity ? SYNC_V0_H1 : SYNC_V1_H1) :
+                                                        (timing_mode.v_sync_polarity ? SYNC_V0_H0 : SYNC_V1_H0);
+    uint32_t sync_v1_h0 = timing_mode.h_sync_polarity ? (timing_mode.v_sync_polarity ? SYNC_V1_H0 : SYNC_V0_H0) :
+                                                        (timing_mode.v_sync_polarity ? SYNC_V1_H1 : SYNC_V0_H1);
+    uint32_t sync_v1_h1 = timing_mode.h_sync_polarity ? (timing_mode.v_sync_polarity ? SYNC_V1_H1 : SYNC_V0_H1) :
+                                                        (timing_mode.v_sync_polarity ? SYNC_V1_H0 : SYNC_V0_H0);
 
-    vblank_line_vsync_off[0] = HSTX_CMD_RAW_REPEAT | timing_mode->h_front_porch;
+    vblank_line_vsync_off[0] = HSTX_CMD_RAW_REPEAT | timing_mode.h_front_porch;
     vblank_line_vsync_off[1] = sync_v0_h0;
-    vblank_line_vsync_off[2] = HSTX_CMD_RAW_REPEAT | timing_mode->h_sync_width;
+    vblank_line_vsync_off[2] = HSTX_CMD_RAW_REPEAT | timing_mode.h_sync_width;
     vblank_line_vsync_off[3] = sync_v0_h1;
-    vblank_line_vsync_off[4] = HSTX_CMD_RAW_REPEAT | (timing_mode->h_back_porch + timing_mode->h_active_pixels);
+    vblank_line_vsync_off[4] = HSTX_CMD_RAW_REPEAT | (timing_mode.h_back_porch + timing_mode.h_active_pixels);
     vblank_line_vsync_off[5] = sync_v0_h0;
 
-    vblank_line_vsync_on[0] = HSTX_CMD_RAW_REPEAT | timing_mode->h_front_porch;
+    vblank_line_vsync_on[0] = HSTX_CMD_RAW_REPEAT | timing_mode.h_front_porch;
     vblank_line_vsync_on[1] = sync_v1_h0;
-    vblank_line_vsync_on[2] = HSTX_CMD_RAW_REPEAT | timing_mode->h_sync_width;
+    vblank_line_vsync_on[2] = HSTX_CMD_RAW_REPEAT | timing_mode.h_sync_width;
     vblank_line_vsync_on[3] = sync_v1_h1;
-    vblank_line_vsync_on[4] = HSTX_CMD_RAW_REPEAT | (timing_mode->h_back_porch + timing_mode->h_active_pixels);
+    vblank_line_vsync_on[4] = HSTX_CMD_RAW_REPEAT | (timing_mode.h_back_porch + timing_mode.h_active_pixels);
     vblank_line_vsync_on[5] = sync_v1_h0;
 
     for (int i = 0; i < 2; ++i) {
       uint32_t* line_header = &line_buffers[i * (7 + DISPLAY_WIDTH)];
-      line_header[0] = HSTX_CMD_RAW_REPEAT | timing_mode->h_front_porch;
+      line_header[0] = HSTX_CMD_RAW_REPEAT | timing_mode.h_front_porch;
       line_header[1] = sync_v0_h0;
-      line_header[2] = HSTX_CMD_RAW_REPEAT | timing_mode->h_sync_width;
+      line_header[2] = HSTX_CMD_RAW_REPEAT | timing_mode.h_sync_width;
       line_header[3] = sync_v0_h1;
-      line_header[4] = HSTX_CMD_RAW_REPEAT | timing_mode->h_back_porch;
+      line_header[4] = HSTX_CMD_RAW_REPEAT | timing_mode.h_back_porch;
       line_header[5] = sync_v0_h0;
-      line_header[6] = HSTX_CMD_TMDS | timing_mode->h_active_pixels;
+      line_header[6] = HSTX_CMD_TMDS | timing_mode.h_active_pixels;
     }
 
     printf("Frame buffers inited\n");
@@ -386,7 +387,7 @@ void init_display_core1() {
     for (int i = 12; i <= 19; ++i) {
         gpio_set_function(i, GPIO_FUNC_HSTX);
         gpio_set_drive_strength(i, GPIO_DRIVE_STRENGTH_4MA);
-        if (timing_mode->bit_clk_khz > 1000000) {
+        if (timing_mode.bit_clk_khz > 1000000) {
             gpio_set_slew_rate(i, GPIO_SLEW_RATE_FAST);
         }
     }
