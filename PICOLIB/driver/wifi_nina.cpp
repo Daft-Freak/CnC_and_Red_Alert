@@ -269,4 +269,19 @@ bool nina_connect_timeout(const char *ssid, const char *pass, uint32_t timeout_m
 
     return false;
 }
+
+bool nina_get_ip_address(uint32_t &addr, uint32_t &mask, uint32_t &gateway)
+{
+    nina_command(GET_IPADDR);
+    uint8_t buf[15];
+    int response_count;
+    if(nina_response(GET_IPADDR, response_count, buf, 15) != 15 || response_count != 3)
+        return false;
+
+    addr = *reinterpret_cast<uint32_t *>(buf + 1);
+    mask = *reinterpret_cast<uint32_t *>(buf + 6);
+    gateway = *reinterpret_cast<uint32_t *>(buf + 11);
+
+    return true;
+}
 #endif
