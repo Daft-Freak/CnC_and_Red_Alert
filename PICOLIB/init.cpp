@@ -7,10 +7,12 @@
 #include "pico/cyw43_arch.h"
 #endif
 
+#include "config.h"
 #include "driver/audio.h"
 #include "display.h"
 #include "psram.h"
 #include "mem.h"
+#include "wifi_nina.h"
 #include "fatfs/ff.h"
 
 #include "picolib.h"
@@ -130,10 +132,15 @@ void Pico_Init(const char *basedir)
 
     // reset fruit jam peripherals
 #ifdef ADAFRUIT_FRUIT_JAM
+    // wifi cs
+    gpio_set_dir(ADAFRUIT_FRUIT_JAM_WIFI_CS_PIN, GPIO_OUT);
+    gpio_put(ADAFRUIT_FRUIT_JAM_WIFI_CS_PIN, true);
+    gpio_set_function(ADAFRUIT_FRUIT_JAM_WIFI_CS_PIN, GPIO_FUNC_SIO);
+
     gpio_set_dir(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, GPIO_OUT);
     gpio_put(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, 0);
     gpio_set_function(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, GPIO_FUNC_SIO);
-    sleep_ms(1);
+    sleep_ms(10);
     gpio_put(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, 1);
 #endif
 
@@ -168,6 +175,17 @@ void Pico_Wifi_Init(const char *ssid, const char *pass)
     cyw43_arch_enable_sta_mode();
 
     if(cyw43_arch_wifi_connect_timeout_ms(ssid, pass, CYW43_AUTH_WPA2_AES_PSK, 10000))
+    {
+        printf("failed to connect\n");
+        return;
+    }
+
+    printf("wifi connected.\n");
+#elif defined(WIFI_ESP32_NINA)
+
+    nina_spi_init();
+
+    if(!nina_connect_timeout(ssid, pass, 10000))
     {
         printf("failed to connect\n");
         return;

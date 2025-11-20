@@ -34,6 +34,7 @@ add_library(picolib STATIC
     driver/psram.c
     driver/storage.cpp
     driver/usb_hid.cpp
+    driver/wifi_nina.cpp
 
     driver/fatfs/ff.c
     driver/fatfs/ffunicode.c
