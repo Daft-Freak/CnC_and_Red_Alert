@@ -72,6 +72,24 @@ enum NINACommand
     SET_ANALOG_WRITE     = 0x52,
     SET_DIGITAL_READ     = 0x53,
     SET_ANALOG_READ      = 0x54,
+
+    // turns out we can get the raw socket API through these
+    SOCKET_SOCKET        = 0x70,
+    SOCKET_CLOSE         = 0x71,
+    SOCKET_ERRNO         = 0x72,
+    SOCKET_BIND          = 0x73,
+    SOCKET_LISTEN        = 0x74,
+    SOCKET_ACCEPT        = 0x75,
+    SOCKET_CONNECT       = 0x76,
+    SOCKET_SEND          = 0x77,
+    SOCKET_RECV          = 0x78,
+    SOCKET_SENDTO        = 0x79,
+    SOCKET_RECVFROM      = 0x7A,
+    SOCKET_IOCTL         = 0x7B,
+    SOCKET_POLL          = 0x7C,
+    SOCKET_SETSOCKOPT    = 0x7D,
+    SOCKET_GETSOCKOPT    = 0x7E,
+    SOCKET_GETPEERNAME   = 0x7F,
 };
 
 enum NINAConnStatus
@@ -137,7 +155,32 @@ static void nina_command(NINACommand command, int num_params = 0, const uint8_t 
     nina_deselect();
 }
 
-static int nina_response(NINACommand command, int &num_responses, uint8_t *response_buf, unsigned response_len)
+// 16-bit param lengths
+static void nina_command(NINACommand command, int num_params, const uint16_t *param_lengths, const uint8_t **param_data)
+{
+    nina_select();
+
+    // header
+    uint8_t buf[]{0xE0, uint8_t(command), uint8_t(num_params)};
+    spi_write_blocking(wifi_spi, buf, sizeof(buf));
+
+    // params
+    for(int i = 0; i < num_params; i++)
+    {
+        buf[0] = param_lengths[i] >> 8;
+        buf[1] = param_lengths[i] & 0xFF;
+        spi_write_blocking(wifi_spi, buf, 2);
+        spi_write_blocking(wifi_spi, param_data[i], param_lengths[i]);
+    }
+
+    // end
+    buf[0] = 0xEE;
+    spi_write_blocking(wifi_spi, buf, 1);
+
+    nina_deselect();
+}
+
+static int nina_response(NINACommand command, int &num_responses, uint8_t *response_buf, unsigned response_buf_len, bool response_len16 = false, uint8_t *response_buf2 = nullptr, unsigned response_buf2_len = 0)
 {
     nina_select();
 
@@ -162,14 +205,30 @@ static int nina_response(NINACommand command, int &num_responses, uint8_t *respo
     num_responses = spi_get_byte();
 
     auto out = response_buf;
-    auto out_end = out + response_len;
+    auto out_end = out + response_buf_len;
 
     for(int i = 0; i < num_responses; i++)
     {
         int response_len = spi_get_byte();
 
+        // get the other length byte if 16bit (and store the first one)
+        if(response_len16)
+        {
+            if(out < out_end)
+                *out++ = response_len;
+
+            response_len = response_len << 8 | spi_get_byte();
+        }
+
         if(out < out_end)
             *out++ = response_len;
+
+        // handle split response buffer (for recv)
+        if(out == out_end && response_buf2)
+        {
+            out = response_buf2;
+            out_end = out + response_buf2_len;
+        }
 
         // clamp read len to remaining buffer
         auto read_len = std::min(response_len, out_end - out);
@@ -284,4 +343,114 @@ bool nina_get_ip_address(uint32_t &addr, uint32_t &mask, uint32_t &gateway)
 
     return true;
 }
+
+int nina_socket(int domain, int type, int protocol)
+{
+    if(domain != 2/*AF_INET*/)
+        return -1;
+
+    uint8_t type8 = type;
+    uint8_t protocol8 = protocol;
+
+    uint8_t len[]{1, 1};
+    const uint8_t *data[]{&type8, &protocol8};
+
+    nina_command(SOCKET_SOCKET, 2, len, data);
+
+    uint8_t res[2];
+    if(nina_response(SOCKET_SOCKET, res, 2) != 2 || res[0] != 1)
+        return -1;
+
+    return res[1] == 0xFF ? -1 : res[1];
+}
+
+int nina_bind(int fd, uint16_t port)
+{
+    uint8_t fd8 = fd;
+    uint8_t len[]{1, 2};
+    const uint8_t *data[]{&fd8, reinterpret_cast<uint8_t *>(&port)};
+
+    nina_command(SOCKET_BIND, 2, len, data);
+
+    uint8_t res[2];
+    if(nina_response(SOCKET_BIND, res, 2) != 2 || res[0] != 1)
+        return -1;
+
+    return res[1] == 0 ? -1 : 0;
+}
+
+int nina_close(int fd)
+{
+    uint8_t fd8 = fd;
+    uint8_t len[]{1};
+    const uint8_t *data[]{&fd8};
+
+    nina_command(SOCKET_CLOSE, 1, len, data);
+
+    uint8_t res[2];
+    if(nina_response(SOCKET_CLOSE, res, 2) != 2 || res[0] != 1)
+        return -1;
+
+    return res[1] == 0 ? -1 : 0;
+}
+
+int32_t nina_sendto(int fd, const void *buf, uint16_t n, const nina_sockaddr *addr)
+{
+    uint8_t fd8 = fd;
+
+    uint16_t len[]{1, 4, 2, n};
+    const uint8_t *data[]{
+        &fd8,
+        reinterpret_cast<const uint8_t *>(&addr->addr),
+        reinterpret_cast<const uint8_t *>(&addr->port),
+        reinterpret_cast<const uint8_t *>(buf)
+    };
+
+    nina_command(SOCKET_SENDTO, 4, len, data);
+
+    uint8_t res[3];
+    if(nina_response(SOCKET_SENDTO, res, 3) != 3 || res[0] != 2)
+        return -1;
+
+    return res[1] << 8 | res[2];
+}
+
+int32_t nina_recvfrom(int fd, void *buf, uint16_t n, nina_sockaddr *addr)
+{
+    uint8_t fd8 = fd;
+    uint8_t len[]{1, 2};
+    const uint8_t *data[]{
+        &fd8,
+        reinterpret_cast<const uint8_t *>(&n)
+    };
+
+    nina_command(SOCKET_RECVFROM, 2, len, data);
+
+    // addr+port and received len
+    uint8_t res[2 + 4 + 2 + 2 + 2];
+    int num_responses;
+    if(nina_response(SOCKET_RECVFROM, num_responses, res, sizeof(res), true, reinterpret_cast<uint8_t *>(buf), n) < sizeof(res) || num_responses != 3)
+        return -1;
+
+    addr->addr = *reinterpret_cast<uint32_t *>(res + 2);
+    addr->port = *reinterpret_cast<uint32_t *>(res + 8);
+
+    return res[10] << 8 | res[11];
+}
+
+int nina_poll(int fd)
+{
+    uint8_t fd8 = fd;
+    uint8_t len[]{1};
+    const uint8_t *data[]{&fd8};
+
+    nina_command(SOCKET_POLL, 1, len, data);
+
+    uint8_t res[2];
+    if(nina_response(SOCKET_POLL, res, 2) != 2 || res[0] != 1)
+        return -1;
+
+    return res[1];
+}
+
 #endif
