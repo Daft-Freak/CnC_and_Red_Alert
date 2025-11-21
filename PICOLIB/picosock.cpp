@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+#include <pico.h>
+
+#include "config.h"
+
 #ifdef WIFI_ENABLED
 #include "pico/cyw43_arch.h"
 #include "lwip/pbuf.h"
@@ -213,6 +217,128 @@ void socket_setup_recv(int fd, bool enable)
     cyw43_arch_lwip_begin();
     udp_recv(udp, enable ? recv_callback : NULL, NULL);
     cyw43_arch_lwip_end();
+}
+
+#elif defined(WIFI_ESP32_NINA)
+#include "picosock.h"
+
+#include "wifi_nina.h"
+
+uint32_t inet_addr(const char *str)
+{
+    // extremely basic impl
+    int a, b, c, d;
+    sscanf(str, "%i.%i.%i.%i", &a, &b, &c, &d);
+
+    return a | b << 8 | c << 16 | d << 24;
+}
+
+hostent *gethostbyname(const char *name)
+{
+    static uint32_t *addr_list[2]{NULL, NULL};
+    static uint32_t addr_data = 0;
+    static hostent he;
+    he.h_addr_list = (char **)addr_list;
+
+    if(!name[0])
+    {
+        // get self
+        uint32_t addr, mask, gateway;
+        nina_get_ip_address(addr, mask, gateway);
+        addr_data = addr;
+        addr_list[0] = &addr_data;
+    }
+    else
+        addr_list[0] = NULL;
+
+    return &he;
+}
+
+int socket(int domain, int type, int protocol)
+{
+    return nina_socket(domain, type, protocol);
+}
+
+int bind(int fd, sockaddr *addr, socklen_t len)
+{
+    if(!addr || len < sizeof(sockaddr_in))
+        return -1;
+
+    if(addr->sa_family != AF_INET)
+        return -1;
+
+    auto sin_addr = (sockaddr_in *)addr;
+    uint16_t port = sin_addr->sin_port;
+
+    // throwing away address...
+    if(sin_addr->sin_addr.s_addr)
+        printf("bind %x\n", sin_addr->sin_addr.s_addr);
+
+    return nina_bind(fd, port);
+}
+
+int accept(int fd, sockaddr *addr, socklen_t *len)
+{
+    return -1;
+}
+
+int closesocket(int fd)
+{
+    return nina_close(fd);
+}
+
+ssize_t recvfrom(int fd, void *buf, size_t n, int flags, sockaddr *addr, socklen_t *addr_len)
+{
+    nina_sockaddr nina_addr;
+    auto ret = nina_recvfrom(fd, buf, n, &nina_addr);
+
+    if(addr)
+    {
+        auto sin_addr = (sockaddr_in *)addr;
+        sin_addr->sin_family = AF_INET;
+        sin_addr->sin_addr.s_addr = nina_addr.addr;
+        sin_addr->sin_port = nina_addr.port;
+    }
+
+    return ret;
+}
+
+ssize_t sendto(int fd, const void *buf, size_t n, int flags, const sockaddr *addr, socklen_t addr_len)
+{
+    // address
+    auto sin_addr = (sockaddr_in *)addr;
+    nina_sockaddr nina_addr;
+    nina_addr.addr = sin_addr->sin_addr.s_addr;
+    nina_addr.port = sin_addr->sin_port;
+
+    return nina_sendto(fd, buf, n, &nina_addr);
+}
+
+int getsockopt(int fd, int level, int optname, void *optval, socklen_t *optlen)
+{
+    return -1;
+}
+
+int setsockopt(int fd, int level, int optname, const void *optval, socklen_t optlen)
+{
+    printf("%s(%i, %i, %i, %p, %i)\n", __func__, fd, level, optname, optval, optlen);
+    if(optval && optlen == 4)
+        printf("\t(%i)\n", *(int *)optval);
+    return 0;
+}
+
+int fcntl(int fd, int cmd, int data)
+{
+    return -1;
+}
+
+bool socket_can_recv(int fd)
+{
+    return nina_poll(fd) & 1;
+}
+
+void socket_setup_recv(int fd, bool enable)
+{
 }
 
 #else
