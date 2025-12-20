@@ -1327,7 +1327,7 @@ bool BGMessageBox(char const * msg, int btn1, int btn2)
 	bool pressed;
 	int curbutton;
 	TextButtonClass * buttons[3];
-	bool display;									// display level
+	bool display = true;									// display level
 	int  realval[5];
 	int  morebutton = 3;						// which button says "more": 2 or 3?
 
