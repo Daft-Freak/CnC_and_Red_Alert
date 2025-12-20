@@ -449,7 +449,6 @@ PathType * FootClass::Find_Path(CELL dest, FacingType * final_moves, int maxlen,
 	int					cost;										// Cost to enter the square
 	FacingType			moves_left[MAX_MLIST_SIZE+2], 	// Counterclockwise move list.
 							moves_right[MAX_MLIST_SIZE+2];	// Clockwise move list.
-	const int 			moves_len = sizeof(moves_left)/sizeof(moves_left[0]) - 2;
 	PathType				pleft,pright;							// Path control structures.
 	PathType *			which;									// Which path to actually use.
 	int					threat;
@@ -629,7 +628,7 @@ top_of_list:
 				pleft.Overlap 	= LeftOverlap;
 				Mem_Copy(path.Command, pleft.Command, path.Length);
 				Mem_Copy(path.Overlap, pleft.Overlap, sizeof(LeftOverlap));
-				left = Follow_Edge(startcell, next, &pleft, COUNTERCLOCK, direction, threat, threat_stage, moves_len, threshhold);
+				left = Follow_Edge(startcell, next, &pleft, COUNTERCLOCK, direction, threat, threat_stage, MAX_MLIST_SIZE, threshhold);
 //				left = Follow_Edge(startcell, next, &pleft, COUNTERCLOCK, direction, threat, threat_stage, follow_len, threshhold);
 
 				if (left) {
@@ -641,7 +640,7 @@ top_of_list:
 				pright.Overlap = RightOverlap;
 				Mem_Copy(path.Command, pright.Command, path.Length);
 				Mem_Copy(path.Overlap, pright.Overlap, sizeof(RightOverlap));
-				right = Follow_Edge(startcell, next, &pright, CLOCK, direction, threat, threat_stage, moves_len, threshhold);
+				right = Follow_Edge(startcell, next, &pright, CLOCK, direction, threat, threat_stage, MAX_MLIST_SIZE, threshhold);
 //				right = Follow_Edge(startcell, next, &pright, CLOCK, direction, threat, threat_stage, follow_len, threshhold);
 
 				/*
