@@ -507,13 +507,13 @@ bool Init_Game(int , char *[])
 	*/
 	CCDebugString ("C&C95 - About to register SCORES.MIX\n");
 	ScoresPresent = false;
-//	if (CCFileClass("SCORES.MIX").Is_Available()) {
+	if (CCFileClass("SCORES.MIX").Is_Available()) {
 		ScoresPresent = true;
 		if (!ScoreMix) {
 			ScoreMix = new MixFileClass("SCORES.MIX");
 			ThemeClass::Scan();
 		}
-//	}
+	}
 #endif
 
 	/*
