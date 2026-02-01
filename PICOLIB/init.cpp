@@ -28,6 +28,8 @@ extern const uint8_t asset_tall_font[];
 #define PSRAM_CS_PIN PIMORONI_PICO_PLUS2_PSRAM_CS_PIN
 #elif defined(PIMORONI_PICO_PLUS2_W_RP2350)
 #define PSRAM_CS_PIN PIMORONI_PICO_PLUS2_W_PSRAM_CS_PIN
+#elif defined(PIMORONI_TUFTY2350)
+#define PSRAM_CS_PIN BW_PSRAM_CS
 #elif defined(SOLDERPARTY_RP2350_STAMP_XL)
 #define PSRAM_CS_PIN 8
 #else
@@ -143,6 +145,14 @@ void Pico_Init(const char *basedir)
     gpio_set_function(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, GPIO_FUNC_SIO);
     sleep_ms(10);
     gpio_put(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, 1);
+#endif
+
+#ifdef PIMORONI_TUFTY2350
+    // comments say this is related to the RTC
+    // but the display doesn't work without setting it...
+    gpio_put(BW_SW_POWER_EN, true);
+    gpio_set_dir(BW_SW_POWER_EN, true);
+    gpio_set_function(BW_SW_POWER_EN, GPIO_FUNC_SIO);
 #endif
 
 #ifdef NO_SD_CARD

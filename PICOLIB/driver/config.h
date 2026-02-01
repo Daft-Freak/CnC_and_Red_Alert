@@ -125,7 +125,7 @@
 #define SD_MISO 19
 #define SD_CS   22
 
-// so far the only self-contained board
+// self-contained boards
 #elif defined(ADAFRUIT_FRUIT_JAM)
 #define AUDIO_I2S_PIO 1 // 0 is used for USB
 #define AUDIO_I2S_CLOCK_PIN_BASE ADAFRUIT_FRUIT_JAM_I2S_BCLK_PIN
@@ -162,6 +162,29 @@
 #define WIFI_ESP32_NINA_MISO ADAFRUIT_FRUIT_JAM_WIFI_MISO_PIN
 #define WIFI_ESP32_NINA_CS   ADAFRUIT_FRUIT_JAM_WIFI_CS_PIN
 #define WIFI_ESP32_NINA_BUSY ADAFRUIT_FRUIT_JAM_WIFI_ACK_PIN // busy on the schematic
+
+#elif defined(PIMORONI_TUFTY2350)
+#define DISPLAY_WIDTH  320
+#define DISPLAY_HEIGHT 240
+
+#define DBI_8BIT
+#define LCD_CS_PIN 27
+#define LCD_DC_PIN 28
+#define LCD_SCK_PIN 30 // WR
+#define LCD_RD_PIN 31
+#define LCD_MOSI_PIN 32 // DB0
+#define LCD_BACKLIGHT_PIN 26
+//#define LCD_VSYNC_PIN 21 // need to transpose to avoid diag tear
+
+#define LCD_MAX_CLOCK 15000000
+#define LCD_ROTATION 270
+
+
+#define QWSTPAD_I2C i2c0
+#define QWSTPAD_SDA_PIN PICO_DEFAULT_I2C_SDA_PIN
+#define QWSTPAD_SCL_PIN PICO_DEFAULT_I2C_SCL_PIN
+#define QWSTPAD_ADDR 0x21
+
 #endif
 
 

@@ -43,7 +43,7 @@ add_library(picolib STATIC
 # "extra" board config (the thing the pico is plugged into)
 if(NOT EXTRA_BOARD)
     # no extra board needed
-    if(PICO_BOARD STREQUAL adafruit_fruit_jam)
+    if(PICO_BOARD STREQUAL adafruit_fruit_jam OR PICO_BOARD STREQUAL pimoroni_tufty2350)
         set(EXTRA_BOARD "none")
     # assume stamp is in the carrier
     elseif(PICO_BOARD STREQUAL "solderparty_rp2350_stamp_xl")
@@ -58,7 +58,7 @@ string(TOUPPER ${EXTRA_BOARD} EXTRA_BOARD_UPPER)
 target_compile_definitions(picolib PRIVATE EXTRA_BOARD_${EXTRA_BOARD_UPPER}=1)
 set(AUDIO_DRIVER "none")
 
-if(EXTRA_BOARD STREQUAL "display_pack")
+if(EXTRA_BOARD STREQUAL "display_pack" OR PICO_BOARD STREQUAL pimoroni_tufty2350)
     set(DISPLAY_DRIVER "dbi")
 endif()
 
