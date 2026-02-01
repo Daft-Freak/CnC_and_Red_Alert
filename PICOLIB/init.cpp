@@ -169,7 +169,6 @@ void Pico_Init(const char *basedir)
 
         res = f_mount(&fs, "", 1);
     }
-    printf("fs res %i\n", res);
 #else
     f_mount(&fs, "", 0);
 #endif
