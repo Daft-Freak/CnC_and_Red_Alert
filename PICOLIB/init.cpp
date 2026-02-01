@@ -11,6 +11,7 @@
 #include "driver/audio.h"
 #include "display.h"
 #include "psram.h"
+#include "storage.h"
 #include "mem.h"
 #include "wifi_nina.h"
 #include "fatfs/ff.h"
@@ -144,7 +145,34 @@ void Pico_Init(const char *basedir)
     gpio_put(ADAFRUIT_FRUIT_JAM_PERIPH_RESET_PIN, 1);
 #endif
 
+#ifdef NO_SD_CARD
+    // init RAM filesystem if no SD card
+    const int fsSize = 1024 * 1024;
+    auto fsBuf = (uint8_t *)PSRAM_Alloc(fsSize);
+    ram_storage_init(fsBuf, fsSize);
+
+    auto res = f_mount(&fs, "", 1);
+
+    if(res == FR_NO_FILESYSTEM)
+    {
+        printf("No filesystem found, formatting...\n");
+
+        MKFS_PARM opts{};
+        opts.fmt = FM_ANY | FM_SFD;
+        auto res = f_mkfs("", &opts, fs.win, FF_MAX_SS);
+
+        if(res != FR_OK)
+        {
+            printf("...failed! (%i)\n", res);
+            return;
+        }
+
+        res = f_mount(&fs, "", 1);
+    }
+    printf("fs res %i\n", res);
+#else
     f_mount(&fs, "", 0);
+#endif
 
     char buf[10];
     snprintf(buf, sizeof(buf), "/%s/", basedir);

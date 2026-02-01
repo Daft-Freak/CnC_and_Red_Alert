@@ -1,6 +1,8 @@
 #pragma once
 #include <cstdint>
 
+void ram_storage_init(uint8_t *ptr, uint32_t size);
+
 bool storage_init();
 
 void get_storage_size(uint16_t &block_size, uint32_t &num_blocks);
