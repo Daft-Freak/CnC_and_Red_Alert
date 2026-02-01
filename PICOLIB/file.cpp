@@ -7,6 +7,65 @@
 
 #include "fatfs/ff.h"
 
+const uint8_t *IO_Get_Appended_File(const char *name, uint32_t &size)
+{
+    // find end of binary
+    extern char __flash_binary_end;
+    auto appFilesPtr = &__flash_binary_end;
+    appFilesPtr = (char *)(((uintptr_t)appFilesPtr) + 0xFFF & ~0xFFF); // round up to 4k boundary
+
+    // check for appended files
+    if(memcmp(appFilesPtr, "APPFILES", 8) != 0)
+        return nullptr;
+
+    // loop through files
+    uint32_t numFiles = *reinterpret_cast<uint32_t *>(appFilesPtr + 8);
+
+    const int headerSize = 12, fileHeaderSize = 8;
+
+    auto dataPtr = appFilesPtr + headerSize + fileHeaderSize * numFiles;
+
+    for(auto i = 0u; i < numFiles; i++)
+    {
+        auto filenameLength = *reinterpret_cast<uint16_t *>(appFilesPtr + headerSize + i * fileHeaderSize);
+        auto fileLength = *reinterpret_cast<uint32_t *>(appFilesPtr + headerSize + i * fileHeaderSize + 4);
+
+        // check for name match
+        if(strncmp(name, dataPtr, filenameLength) == 0)
+        {
+            size = fileLength;
+            return reinterpret_cast<const uint8_t *>(dataPtr + filenameLength);
+        }
+
+        dataPtr += filenameLength + fileLength;
+    }
+
+    return nullptr;
+}
+
+static bool IO_Open_Appended_File(const char *filename, FIL *fp)
+{
+    uint32_t size;
+    auto ptr = IO_Get_Appended_File(filename, size);
+
+    if(!ptr)
+        return false;
+
+    // store relevant data into file pointer
+    fp->obj.fs = nullptr;
+    fp->obj.id = 0xAAAA;
+    fp->obj.objsize = size;
+    fp->fptr = 0;
+    fp->sect = (uint32_t)ptr;
+
+    return true;
+}
+
+static bool IO_Is_App_File_Ptr(FIL *fp)
+{
+    return fp && fp->obj.fs == nullptr && fp->obj.id == 0xAAAA;
+}
+
 void *IO_Open_File(const char *filename, int mode)
 {
     int ff_mode;
@@ -24,6 +83,10 @@ void *IO_Open_File(const char *filename, int mode)
 
     if(f_open(fp, filename, ff_mode) != FR_OK)
     {
+        // try flash appended files
+        if(mode == READ && IO_Open_Appended_File(filename, fp))
+            return fp;
+
         delete fp;
         return NULL;
     }
@@ -34,24 +97,51 @@ void *IO_Open_File(const char *filename, int mode)
 void IO_Close_File(void *handle)
 {
     auto fp = (FIL *)handle;
-    f_close(fp);
+    if(!IO_Is_App_File_Ptr(fp))
+        f_close(fp);
     delete fp;
 }
 
 bool IO_Read_File(void *handle, void *buffer, size_t count, size_t &actual_read)
 {
     auto fp = (FIL *)handle;
-    UINT read;
-    if(f_read(fp, buffer, count, &read) != FR_OK)
-        return false;
+    if(IO_Is_App_File_Ptr(fp))
+    {
+        // copy data from flash
+        auto ptr = (const uint8_t *)fp->sect;
+        auto offset = fp->fptr;
+        auto size = fp->obj.objsize;
 
-    actual_read = read;
+        if(offset + count > size)
+            count = size - offset;
+
+        memcpy(buffer, ptr + offset, count);
+
+        fp->fptr += count;
+
+        actual_read = count;
+    }
+    else
+    {
+        // real file
+        UINT read;
+        if(f_read(fp, buffer, count, &read) != FR_OK)
+            return false;
+
+        actual_read = read;
+    }
+
     return true;
 }
 
 bool IO_Write_File(void *handle, const void *buffer, size_t count, size_t &actual_written)
 {
     auto fp = (FIL *)handle;
+
+    // not writable
+    if(IO_Is_App_File_Ptr(fp))
+        return false;
+
     UINT written;
     if(f_write(fp, buffer, count, &written) != FR_OK)
         return false;
@@ -63,12 +153,22 @@ bool IO_Write_File(void *handle, const void *buffer, size_t count, size_t &actua
 size_t IO_Seek_File(void *handle, size_t offset, int origin)
 {
     auto fp = (FIL *)handle;
-    if(origin == SEEK_SET)
-        f_lseek(fp, offset);
-    else if(origin == SEEK_CUR)
-        f_lseek(fp, f_tell(fp) + offset);
+
+    if(origin == SEEK_CUR)
+        offset = f_tell(fp) + offset;
     else if(origin == SEEK_END)
-        f_lseek(fp, f_size(fp) + offset);
+        offset = f_size(fp) + offset;
+
+    if(IO_Is_App_File_Ptr(fp))
+    {
+        // manual clamp
+        if(offset > f_size(fp))
+            offset = f_size(fp);
+
+        fp->fptr = offset;
+    }
+    else
+        f_lseek(fp, offset);
        
     return f_tell(fp);
 }
