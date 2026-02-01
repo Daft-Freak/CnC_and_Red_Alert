@@ -11,12 +11,15 @@
 
 #include "file.h"
 
+#include "config.h"
+
 #define FLASH_CACHE_SIZE (10 * 1024 * 1024)
 #define FLASH_CACHE_START (PICO_FLASH_SIZE_BYTES - FLASH_CACHE_SIZE)
 static_assert(FLASH_CACHE_START > 0);
 
 void Pico_Flash_Cache_Init()
 {
+#ifndef NO_SD_CARD // if there's no SD card, we don't have anything to cache
     bi_decl(bi_block_device(
         BINARY_INFO_MAKE_TAG('D', 'F'),
         "MIX Cache",
@@ -56,12 +59,14 @@ void Pico_Flash_Cache_Init()
     restore_interrupts(status);
 
     printf("\nDone!\n");
+#endif
 }
 
 const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32_t size)
 {
     printf("cache %s off %u size %u\n", filename, start_offset, size);
 
+#ifndef NO_SD_CARD
     // look for existing
     uint32_t scan_offset = FLASH_CACHE_START + FLASH_PAGE_SIZE;
     while(scan_offset < FLASH_CACHE_START + FLASH_CACHE_SIZE)
@@ -140,4 +145,7 @@ const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32
     Close_File(file);
 
     return (const void *)(XIP_NOCACHE_NOALLOC_BASE + scan_offset + 16);
+#else
+    return nullptr;
+#endif
 }
