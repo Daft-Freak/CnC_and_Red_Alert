@@ -545,6 +545,9 @@ int Play_Sample_Handle(void const *sample, int priority, int volume, signed shor
     if(id == -1 || !sample)
         return -1;
 
+    if(!audio_available())
+        return -1;
+
     // play it
     auto header = (AUDHeaderType *)sample;
     int channels = header->Flags & AUD_FLAG_STEREO ? 2 : 1;
