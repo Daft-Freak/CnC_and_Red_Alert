@@ -17,6 +17,8 @@
 #define FLASH_CACHE_START (PICO_FLASH_SIZE_BYTES - FLASH_CACHE_SIZE)
 static_assert(FLASH_CACHE_START > 0);
 
+const uint8_t *IO_Get_Appended_File(const char *name, uint32_t &size);
+
 void Pico_Flash_Cache_Init()
 {
 #ifndef NO_SD_CARD // if there's no SD card, we don't have anything to cache
@@ -65,6 +67,13 @@ void Pico_Flash_Cache_Init()
 const void *Pico_Flash_Cache(const char *filename, uint32_t start_offset, uint32_t size)
 {
     printf("cache %s off %u size %u\n", filename, start_offset, size);
+
+    // shortcut files that are already in flash
+    uint32_t app_ptr_size;
+    auto app_ptr = IO_Get_Appended_File(filename, app_ptr_size);
+
+    if(app_ptr && app_ptr_size >= start_offset + size)
+        return app_ptr + start_offset;
 
 #ifndef NO_SD_CARD
     // look for existing
