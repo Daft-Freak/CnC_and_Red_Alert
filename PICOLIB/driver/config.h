@@ -163,3 +163,9 @@
 #define WIFI_ESP32_NINA_CS   ADAFRUIT_FRUIT_JAM_WIFI_CS_PIN
 #define WIFI_ESP32_NINA_BUSY ADAFRUIT_FRUIT_JAM_WIFI_ACK_PIN // busy on the schematic
 #endif
+
+
+// disable SD code if IOs not defined
+#ifndef SD_CS
+#define NO_SD_CARD
+#endif

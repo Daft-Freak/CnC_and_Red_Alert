@@ -17,6 +17,8 @@
 
 #define SD_TIMEOUT 10
 
+#ifndef NO_SD_CARD
+
 static PIO sd_pio = pio1;
 static int sd_sm = 0;
 static bool sd_io_initialised = false;
@@ -261,7 +263,10 @@ static uint8_t sd_command_write_block(uint8_t cmd, uint32_t addr, const uint8_t 
   return res;
 }
 
+#endif
+
 bool storage_init() {
+#ifndef NO_SD_CARD
   bi_decl_if_func_used(bi_4pins_with_names(SD_MISO, "SD RX", SD_MOSI, "SD TX", SD_SCK, "SD SCK", SD_CS, "SD CS"));
 
   // this will be called again it it fails
@@ -428,16 +433,21 @@ bool storage_init() {
 
   pio_sm_set_clkdiv(sd_pio, sd_sm, clkdiv);
   pio_sm_restart(sd_pio, sd_sm);
-
+#endif
   return true;
 }
 
 void get_storage_size(uint16_t &block_size, uint32_t &num_blocks) {
   block_size = 512;
+#ifdef NO_SD_CARD
+  num_blocks = 0;
+#else
   num_blocks = card_size_blocks;
+#endif
 }
 
 int32_t storage_read(uint32_t sector, uint32_t offset, void *buffer, uint32_t size_bytes) {
+#ifndef NO_SD_CARD
   // offset should be 0 (block size == msc buffer size)
 
   if(!is_hcs)
@@ -455,11 +465,14 @@ int32_t storage_read(uint32_t sector, uint32_t offset, void *buffer, uint32_t si
     sd_command_read_block_multiple(18, sector, (uint8_t *)buffer, blocks, read);
     return read;
   }
-
+#endif
   return size_bytes;
 }
 
 int32_t storage_write(uint32_t sector, uint32_t offset, const uint8_t *buffer, uint32_t size_bytes) {
+#ifdef NO_SD_CARD
+  return 0;
+#else
   // offset should be 0
 
   if(!is_hcs)
@@ -482,4 +495,5 @@ int32_t storage_write(uint32_t sector, uint32_t offset, const uint8_t *buffer, u
   }
 
   return written;
+#endif
 }
