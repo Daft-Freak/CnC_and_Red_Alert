@@ -9,6 +9,7 @@
 #include "hardware/dma.h"
 #include "hardware/irq.h"
 #include "hardware/pwm.h"
+#include "hardware/sync.h"
 #include "pico/binary_info.h"
 #include "pico/time.h"
 
@@ -132,8 +133,10 @@ static void __not_in_flash_func(palette_dma_irq_handler)() {
   if(dma_channel_get_irq0_status(dma_channel)) {
     dma_channel_acknowledge_irq0(dma_channel);
 
-    if(cur_scanline >= win_h)
+    if(cur_scanline >= win_h) {
+      __sev();
       return;
+    }
 
     // start from buffer 1
     int palette_buf_idx = cur_scanline & 1;
