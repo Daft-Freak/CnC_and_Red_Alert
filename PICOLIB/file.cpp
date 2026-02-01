@@ -3,6 +3,8 @@
 
 #include "file.h"
 
+#include "config.h"
+
 #include "fatfs/ff.h"
 
 void *IO_Open_File(const char *filename, int mode)
@@ -161,10 +163,15 @@ void End_Find_File(FindFileState &state)
 
 uint64_t Disk_Space_Available()
 {
+#ifdef NO_SD_CARD
+    // fake enough to start the game
+    return 4096 * 1024;
+#else
     DWORD free_clusters = 0;
     FATFS *fs;
     if(f_getfree("", &free_clusters, &fs) != FR_OK)
         return 0;
 
     return uint64_t(free_clusters) * fs->csize * 512;
+#endif
 }
