@@ -592,7 +592,7 @@ bool WWWritePrivateProfileString(char const *section, char const *entry, char co
 		/*
 		**	Remove the section
 		*/
-		strcpy(offset,next);
+		memmove(offset, next, strlen(next));
 
 		return(true);
 	}
