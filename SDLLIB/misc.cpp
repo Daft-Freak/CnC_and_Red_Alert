@@ -1,3 +1,4 @@
+#include <random>
 #include <stddef.h>
 #include <stdio.h>
 #include <stdint.h>
@@ -168,6 +169,8 @@ int Confine_Rect(int *x, int *y, int dw, int dh, int width, int height)
 }
 
 // these are used by TD
+static std::minstd_rand IRandomEngine; // use something simple like rand()
+
 static int Get_Random_Mask(unsigned int maxval)
 {
     // original asm did something using bsr but I can't be bothered
@@ -192,8 +195,13 @@ int IRandom(int minval, int maxval)
 
 	mask = Get_Random_Mask(maxval - minval);
 
-	while( (num = (rand() & mask) + minval) > maxval ) ;
+	while( (num = (IRandomEngine() & mask) + minval) > maxval ) ;
 	return(num);
+}
+
+void IRandom_Seed(int seed)
+{
+    IRandomEngine.seed(seed);
 }
 
 uint8_t Random()

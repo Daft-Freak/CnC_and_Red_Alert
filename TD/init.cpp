@@ -1625,6 +1625,7 @@ bool Select_Game(bool fade)
 	//Seed = 1;
 
 	srand(Seed);
+	IRandom_Seed(Seed);
 	RandNumb = Seed;
 	SimRandIndex = 0;
 #if (0)

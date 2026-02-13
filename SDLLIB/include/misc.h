@@ -80,6 +80,7 @@ void Delay(int duration);
 #ifdef TD
 inline void randomize(){srand(time(NULL));}
 int IRandom(int minval, int maxval);
+void IRandom_Seed(int seed);
 uint8_t Random();
 
 void Shake_Screen(int shakes);
