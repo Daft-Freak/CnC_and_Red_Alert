@@ -5,9 +5,13 @@
 #include <winsock.h>
 typedef int socklen_t;
 #else
+#ifdef PICO_BUILD
+#include "picosock.h"
+#else
 #include <unistd.h>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#endif
 #endif
 
 #include "ipx95.h"
@@ -179,7 +183,7 @@ void __stdcall IPX_Close_Socket95(int socket)
     if(SocketFd != -1) {
         Socket_Unregister_Select(SocketFd);
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(PICO_BUILD)
         closesocket(SocketFd);
 #else
         close(SocketFd);
