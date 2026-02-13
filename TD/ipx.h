@@ -61,7 +61,9 @@ typedef struct IPXHEADER {
 	unsigned short DestNetworkSocket;		// APP: destination Socket Number
 	unsigned char SourceNetworkNumber[4];	// IPX: source Network Number
 	unsigned char SourceNetworkNode[6];		// IPX: source Node Address
+#ifndef PICO_BUILD // avoid an alignment fault by removing an unused field...
 	unsigned short SourceNetworkSocket;		// IPX: source Socket Number
+#endif
 } IPXHeaderType;
 
 /*---------------------------------------------------------------------------
