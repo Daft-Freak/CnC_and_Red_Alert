@@ -1026,6 +1026,10 @@ bool Select_Game(bool fade)
 						GameToPlay = GAME_INTERNET;
 						selection = SEL_MULTIPLAYER_GAME;
 					}
+#else
+					// do nothing
+					display = true;
+					selection = SEL_NONE;
 #endif
 					break;
 
