@@ -3368,7 +3368,7 @@ static void Compute_Game_CRC(void)
 	//------------------------------------------------------------------------
 	//	A random #
 	//------------------------------------------------------------------------
-	Add_CRC(&GameCRC, rand());
+	Add_CRC(&GameCRC, IRandom(0, INT_MAX));
 
 }	/* end of Compute_Game_CRC */
 
