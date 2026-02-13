@@ -51,7 +51,7 @@ class EventClass
 		/*
 		**	All external events are identified by these labels.
 		*/
-		typedef enum EventType {
+		typedef enum EventType : uint8_t {
 			EMPTY,
 
 			ALLY,					// Make allie of specified house.
@@ -172,7 +172,7 @@ class EventClass
 			** Delay: sender's propogation delay value for this frame
 			*/
 			struct {
-				unsigned long CRC;
+				uint32_t CRC;
 				unsigned short CommandCount;	// # commands sent so far
 				unsigned char Delay;				// propogation delay used this frame
 														// (Frame - Delay = sender's current frame #)
