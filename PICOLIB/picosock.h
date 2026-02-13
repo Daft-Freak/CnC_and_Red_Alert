@@ -12,6 +12,7 @@ typedef uint8_t sa_family_t;
 
 // addresses
 #define INADDR_ANY 0
+#define INADDR_BROADCAST 0xFFFFFFFF
 
 #pragma pack(push, 1)
 struct in_addr
