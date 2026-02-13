@@ -2574,7 +2574,7 @@ typedef enum ModemGameType {
 /****************************************************************************
 **	These are the various commands sent over the network's Global Channel.
 */
-typedef enum NetCommandType {
+typedef enum NetCommandType : uint16_t {
 	NET_QUERY_GAME,			// Hey, what games are out there?
 	NET_ANSWER_GAME,			// Yo, Here's my game's name!
 	NET_QUERY_PLAYER,			// Hey, what players are in this game?
@@ -2604,15 +2604,15 @@ typedef struct {
 		struct {
 			HousesType House;						// player's House
 			unsigned int Color;					// player's color
-			unsigned long NameCRC;				// CRC of player's game's name
+			uint32_t NameCRC;				// CRC of player's game's name
 		} PlayerInfo;
 		struct {
 			unsigned char Scenario;				// Scenario #
 			unsigned int Credits;				// player's credits
-			unsigned int IsBases		: 1;		// 1 = bases are allowed
-			unsigned int IsTiberium	: 1;		// 1 = tiberium is allowed
-			unsigned int IsGoodies	: 1;		// 1 = goodies are allowed
-			unsigned int IsGhosties	: 1;		// 1 = ghosts are allowed
+			uint8_t IsBases		: 1;			// 1 = bases are allowed
+			uint8_t IsTiberium	: 1;			// 1 = tiberium is allowed
+			uint8_t IsGoodies	: 1;			// 1 = goodies are allowed
+			uint8_t IsGhosties	: 1;			// 1 = ghosts are allowed
 			unsigned char BuildLevel;			// buildable level
 			unsigned char UnitCount;			// max # units
 			int Seed;								// random number seed
@@ -2622,7 +2622,7 @@ typedef struct {
 		struct {
 			char Buf[COMPAT_MESSAGE_LENGTH];		// inter-user message
 			unsigned char ID;						// ID of sender of message
-			unsigned long NameCRC;				// CRC of sender's Game Name
+			uint32_t NameCRC;				// CRC of sender's Game Name
 		} Message;
 		struct {
 			int OneWay;								// one-way response time

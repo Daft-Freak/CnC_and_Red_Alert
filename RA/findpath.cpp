@@ -628,7 +628,7 @@ top_of_list:
 				pleft.Overlap 	= LeftOverlap;
 				Mem_Copy(path.Command, pleft.Command, path.Length);
 				Mem_Copy(path.Overlap, pleft.Overlap, sizeof(LeftOverlap));
-				left = Follow_Edge(startcell, next, &pleft, COUNTERCLOCK, direction, threat, threat_stage, sizeof(moves_left)/sizeof(moves_left[0]), threshhold);
+				left = Follow_Edge(startcell, next, &pleft, COUNTERCLOCK, direction, threat, threat_stage, MAX_MLIST_SIZE, threshhold);
 //				left = Follow_Edge(startcell, next, &pleft, COUNTERCLOCK, direction, threat, threat_stage, follow_len, threshhold);
 
 				if (left) {
@@ -640,7 +640,7 @@ top_of_list:
 				pright.Overlap = RightOverlap;
 				Mem_Copy(path.Command, pright.Command, path.Length);
 				Mem_Copy(path.Overlap, pright.Overlap, sizeof(RightOverlap));
-				right = Follow_Edge(startcell, next, &pright, CLOCK, direction, threat, threat_stage, sizeof(moves_right)/sizeof(moves_right[0]), threshhold);
+				right = Follow_Edge(startcell, next, &pright, CLOCK, direction, threat, threat_stage, MAX_MLIST_SIZE, threshhold);
 //				right = Follow_Edge(startcell, next, &pright, CLOCK, direction, threat, threat_stage, follow_len, threshhold);
 
 				/*

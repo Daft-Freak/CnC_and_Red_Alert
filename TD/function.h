@@ -613,7 +613,7 @@ bool Queue_Mission(TARGET whom, MissionType mission, TARGET target, TARGET desti
 bool Queue_Options(void);
 bool Queue_Exit(void);
 void Queue_AI(void);
-void Add_CRC(unsigned long *crc, unsigned long val);
+void Add_CRC(uint32_t *crc, uint32_t val);
 
 /*
 **	RAND.CPP

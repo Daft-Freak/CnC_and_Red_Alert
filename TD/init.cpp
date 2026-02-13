@@ -1030,6 +1030,10 @@ bool Select_Game(bool fade)
 						GameToPlay = GAME_INTERNET;
 						selection = SEL_MULTIPLAYER_GAME;
 					}
+#else
+					// do nothing
+					display = true;
+					selection = SEL_NONE;
 #endif
 					break;
 
@@ -1647,6 +1651,7 @@ bool Select_Game(bool fade)
 	//Seed = 1;
 
 	srand(Seed);
+	IRandom_Seed(Seed);
 	RandNumb = Seed;
 	SimRandIndex = 0;
 #if (0)

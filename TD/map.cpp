@@ -634,7 +634,7 @@ long MapClass::Overpass(void)
 #ifdef DEMO
 bool MapClass::Read_Binary(char const * root, unsigned long *)
 #else
-bool MapClass::Read_Binary(char const * root, unsigned long *crc)
+bool MapClass::Read_Binary(char const * root, uint32_t *crc)
 #endif
 {
 	CCFileClass file;

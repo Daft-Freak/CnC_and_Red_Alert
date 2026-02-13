@@ -215,7 +215,7 @@ PacketID:		This is a unique numerical ID for this packet.  The Connection
 typedef struct {
 	unsigned short MagicNumber;
 	unsigned char Code;
-	unsigned long PacketID;
+	uint32_t PacketID;
 } CommHeaderType;
 
 

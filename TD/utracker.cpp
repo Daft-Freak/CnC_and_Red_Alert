@@ -106,7 +106,7 @@ UnitTrackerClass::UnitTrackerClass (int unit_count)
  *=============================================================================================*/
 UnitTrackerClass::~UnitTrackerClass (void)
 {
-	delete UnitTotals;
+	delete[] UnitTotals;
 }
 
 

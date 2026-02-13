@@ -2173,7 +2173,7 @@ long MixFileHandler(VQAHandle *vqa, long action, void *buffer, long nbytes)
 				error = file->Open((char *)buffer, READ);
 
 				if (error != -1) {
-					vqa->VQAio = (unsigned long)file;
+					vqa->VQAio = (uintptr_t)file;
 					error = 0;
 					//file->Set_Buffer_Size(8*1024); // missing?
 				} else {

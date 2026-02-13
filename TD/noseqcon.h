@@ -115,13 +115,13 @@ class NonSequencedConnClass : public ConnectionClass
 		than this, we know is a resend.  Anything newer than this MUST be lying 
 		around in the Queue for us to detect it as a resend.
 		.....................................................................*/
-		unsigned long LastSeqID;
+		uint32_t LastSeqID;
 
 		/*.....................................................................
 		This is the ID of the PACKET_DATA_ACK packet we read last; it ensures
 		that the application reads that type of packet in order.
 		.....................................................................*/
-		unsigned long LastReadID;
+		uint32_t LastReadID;
 };
 
 #endif
