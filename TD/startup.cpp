@@ -799,6 +799,12 @@ void Read_Setup_Options( RawFileClass *config_file )
 #endif
 		IsV107 = WWGetPrivateProfileInt ("Options", "Compatibility", 0, buffer);
 
+#ifdef PICO_BUILD
+		char ssid[128], pw[128];
+		if(WWGetPrivateProfileString("Wifi", "SSID", NULL, ssid, sizeof(ssid), buffer) && WWGetPrivateProfileString("Wifi", "Pass", NULL, pw, sizeof(pw), buffer))
+			Pico_Wifi_Init(ssid, pw);
+#endif
+
 		/*
 		** See if an alternative socket number has been specified
 		*/
