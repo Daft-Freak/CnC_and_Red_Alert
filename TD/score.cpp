@@ -2013,12 +2013,16 @@ void Multi_Score_Presentation(void)
 	Map.Override_Mouse_Shape(MOUSE_NORMAL);
 	Theme.Queue_Song(THEME_WIN1);
 
+#ifndef LORES
 	PseudoSeenBuff = new GraphicBufferClass(320,200,(void*)NULL);
+#endif
 	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height() ,(void*)NULL);
 	BlitList.Clear();
 
    	SysMemPage.Clear();
+#ifndef LORES
 	PseudoSeenBuff->Clear();
+#endif
 	HiddenPage.Clear();
 	TextPrintBuffer->Clear();
 
@@ -2042,7 +2046,11 @@ void Multi_Score_Presentation(void)
 
 	int frame = 1;
 	while (frame < Get_Animation_Frame_Count(anim)) {
+#ifdef LORES
+		Animate_Frame(anim, HidPage, frame++);
+#else
 		Animate_Frame(anim, *PseudoSeenBuff, frame++);
+#endif
 		Call_Back_Delay(2);
 	}
 	Close_Animation(anim);
@@ -2051,7 +2059,9 @@ void Multi_Score_Presentation(void)
 	oldfont = Set_Font(ScoreFontPtr);
 	Call_Back();
 
+#ifndef LORES
 	Set_Logic_Page(*PseudoSeenBuff);
+#endif
 
 	/*
 	** Move all the scores over a notch if there's more games than can be
@@ -2107,7 +2117,9 @@ void Multi_Score_Presentation(void)
 
 	Set_Logic_Page (SeenBuff);
 
+#ifndef LORES
 	delete PseudoSeenBuff;
+#endif
 	delete TextPrintBuffer;
 	BlitList.Clear();
 
