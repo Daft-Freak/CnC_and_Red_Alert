@@ -2016,7 +2016,11 @@ void Multi_Score_Presentation(void)
 #ifndef LORES
 	PseudoSeenBuff = new GraphicBufferClass(320,200,(void*)NULL);
 #endif
-	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height() ,(void*)NULL);
+#ifdef PICO_BUILD
+	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), TextPrintData);
+#else
+	TextPrintBuffer = new GraphicBufferClass(SeenBuff.Get_Width(), SeenBuff.Get_Height(), (void*)NULL);
+#endif
 	BlitList.Clear();
 
    	SysMemPage.Clear();
