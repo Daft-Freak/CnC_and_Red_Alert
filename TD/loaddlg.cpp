@@ -478,7 +478,11 @@ int LoadOptionsClass::Process(void)
 				game_num = Files[game_idx]->Num;
 				if (CCMessageBox().Process(TXT_DELETE_FILE_QUERY,TXT_YES,TXT_NO)==0) {
 					sprintf(fname,"SAVEGAME.%03d",game_num);
+#ifdef PORTABLE
+					IO_Delete_File(fname);
+#else
 					unlink(fname);
+#endif
 					Clear_List(&listbtn);
 					Fill_List(&listbtn);
 					if (listbtn.Count() == 0) {
