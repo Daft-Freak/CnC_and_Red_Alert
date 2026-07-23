@@ -284,10 +284,10 @@ void SHAEngine::Process_Block(void const * source, SHADigest & acc) const
 	**	Expand the source data into a large 80 * 32bit buffer. This is the working
 	**	data that will be transformed by the secure hash algorithm.
 	*/
-	uint32_t const * data = (uint32_t const *)source;
+	uint8_t const * data = (uint8_t const *)source;
 	int index;
 	for (index = 0; index < SRC_BLOCK_SIZE/sizeof(uint32_t); index++) {
-		block[index] = Reverse_LONG(data[index]);
+		block[index] = data[index * 4 + 0] << 24 | data[index * 4 + 1] << 16 | data[index * 4 + 2] << 8 | data[index * 4 + 3];
 	}
 
 	for (index = SRC_BLOCK_SIZE/sizeof(uint32_t); index < PROC_BLOCK_SIZE/sizeof(uint32_t); index++) {
