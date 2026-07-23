@@ -185,7 +185,7 @@ void * TemplateClass::operator new(size_t ) throw()
 {
 	void * ptr = Templates.Allocate();
 	if (ptr) {
-		((TemplateClass *)ptr)->IsActive = true;
+		((volatile TemplateClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -209,7 +209,7 @@ void * TemplateClass::operator new(size_t ) throw()
 void TemplateClass::operator delete(void * ptr)
 {
 	if (ptr) {
-		((TemplateClass *)ptr)->IsActive = false;
+		((volatile TemplateClass *)ptr)->IsActive = false;
 	}
 	Templates.Free((TemplateClass *)ptr);
 }

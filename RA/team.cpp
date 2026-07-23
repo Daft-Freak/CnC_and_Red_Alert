@@ -244,7 +244,7 @@ void * TeamClass::operator new(size_t) throw()
 {
 	void * ptr = Teams.Allocate();
 	if (ptr != NULL) {
-		((TeamClass *)ptr)->IsActive = true;
+		((volatile TeamClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -267,7 +267,7 @@ void * TeamClass::operator new(size_t) throw()
 void TeamClass::operator delete(void * ptr)
 {
 	if (ptr != NULL) {
-		((TeamClass *)ptr)->IsActive = false;
+		((volatile TeamClass *)ptr)->IsActive = false;
 	}
 	Teams.Free((TeamClass *)ptr);
 }

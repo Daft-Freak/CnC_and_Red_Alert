@@ -464,7 +464,7 @@ void * HouseClass::operator new(size_t) throw()
 {
 	void * ptr = Houses.Allocate();
 	if (ptr) {
-		((HouseClass *)ptr)->IsActive = true;
+		((volatile HouseClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -488,7 +488,7 @@ void * HouseClass::operator new(size_t) throw()
 void HouseClass::operator delete(void * ptr)
 {
 	if (ptr) {
-		((HouseClass *)ptr)->IsActive = false;
+		((volatile HouseClass *)ptr)->IsActive = false;
 	}
 	Houses.Free((HouseClass *)ptr);
 }

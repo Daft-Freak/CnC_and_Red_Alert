@@ -263,7 +263,7 @@ void * InfantryClass::operator new(size_t) throw()
 {
 	void * ptr = Infantry.Allocate();
 	if (ptr != NULL) {
-		((InfantryClass *)ptr)->IsActive = true;
+		((volatile InfantryClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -286,7 +286,7 @@ void * InfantryClass::operator new(size_t) throw()
 void InfantryClass::operator delete(void * ptr)
 {
 	if (ptr != NULL) {
-		((InfantryClass *)ptr)->IsActive = false;
+		((volatile InfantryClass *)ptr)->IsActive = false;
 	}
 	Infantry.Free((InfantryClass *)ptr);
 }

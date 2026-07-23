@@ -1031,7 +1031,7 @@ void * UnitClass::operator new(size_t) throw()
 {
 	void * ptr = (UnitClass *)Units.Allocate();
 	if (ptr) {
-		((UnitClass *)ptr)->IsActive = true;
+		((volatile UnitClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -1056,7 +1056,7 @@ void * UnitClass::operator new(size_t) throw()
 void UnitClass::operator delete(void *ptr)
 {
 	if (ptr) {
-		((UnitClass *)ptr)->IsActive = false;
+		((volatile UnitClass *)ptr)->IsActive = false;
 	}
 	Units.Free((UnitClass *)ptr);
 }

@@ -179,7 +179,7 @@ void * AircraftClass::operator new(size_t) throw()
 {
 	void * ptr = Aircraft.Allocate();
 	if (ptr) {
-		((AircraftClass *)ptr)->IsActive = true;
+		((volatile AircraftClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -202,7 +202,7 @@ void * AircraftClass::operator new(size_t) throw()
 void AircraftClass::operator delete(void * ptr)
 {
 	if (ptr) {
-		((AircraftClass *)ptr)->IsActive = false;
+		((volatile AircraftClass *)ptr)->IsActive = false;
 	}
 	Aircraft.Free((AircraftClass *)ptr);
 }

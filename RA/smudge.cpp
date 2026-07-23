@@ -70,7 +70,7 @@ void * SmudgeClass::operator new(size_t ) throw()
 {
 	void * ptr = Smudges.Allocate();
 	if (ptr != NULL) {
-		((SmudgeClass *)ptr)->IsActive = true;
+		((volatile SmudgeClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -93,7 +93,7 @@ void * SmudgeClass::operator new(size_t ) throw()
 void SmudgeClass::operator delete(void * ptr)
 {
 	if (ptr != NULL) {
-		((SmudgeClass *)ptr)->IsActive = false;
+		((volatile SmudgeClass *)ptr)->IsActive = false;
 	}
 	Smudges.Free((SmudgeClass *)ptr);
 }

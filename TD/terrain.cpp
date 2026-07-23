@@ -234,7 +234,7 @@ void * TerrainClass::operator new(size_t) throw()
 {
 	void * ptr = Terrains.Allocate();
 	if (ptr) {
-		((TerrainClass *)ptr)->IsActive = true;
+		((volatile TerrainClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -258,7 +258,7 @@ void * TerrainClass::operator new(size_t) throw()
 void TerrainClass::operator delete(void *ptr)
 {
 	if (ptr) {
-		((TerrainClass *)ptr)->IsActive = false;
+		((volatile TerrainClass *)ptr)->IsActive = false;
 	}
 	Terrains.Free((TerrainClass *)ptr);
 }

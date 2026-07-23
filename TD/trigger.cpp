@@ -1289,7 +1289,7 @@ void * TriggerClass::operator new(size_t ) throw()
 {
 	void * ptr = Triggers.Allocate();
 	if (ptr) {
-		((TriggerClass *)ptr)->IsActive = true;
+		((volatile TriggerClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -1313,7 +1313,7 @@ void * TriggerClass::operator new(size_t ) throw()
 void TriggerClass::operator delete(void *ptr)
 {
 	if (ptr) {
-		((TriggerClass *)ptr)->IsActive = false;
+		((volatile TriggerClass *)ptr)->IsActive = false;
 	}
 	Triggers.Free((TriggerClass *)ptr);
 }

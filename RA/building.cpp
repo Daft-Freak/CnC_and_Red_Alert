@@ -1509,7 +1509,7 @@ void * BuildingClass::operator new(size_t ) throw()
 {
 	void * ptr = Buildings.Allocate();
 	if (ptr) {
-		((BuildingClass *)ptr)->IsActive = true;
+		((volatile BuildingClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -1534,7 +1534,7 @@ void * BuildingClass::operator new(size_t ) throw()
 void BuildingClass::operator delete(void *ptr)
 {
 	if (ptr) {
-		((BuildingClass *)ptr)->IsActive = false;
+		((volatile BuildingClass *)ptr)->IsActive = false;
 	}
 	Buildings.Free((BuildingClass *)ptr);
 }

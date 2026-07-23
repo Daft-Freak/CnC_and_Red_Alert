@@ -150,7 +150,7 @@ void * FactoryClass::operator new(size_t) throw()
 {
 	void * ptr = Factories.Allocate();
 	if (ptr) {
-		((FactoryClass *)ptr)->IsActive = true;
+		((volatile FactoryClass *)ptr)->IsActive = true;
 	}
 	return(ptr);
 }
@@ -174,7 +174,7 @@ void * FactoryClass::operator new(size_t) throw()
 void FactoryClass::operator delete(void * ptr)
 {
 	if (ptr) {
-		((FactoryClass *)ptr)->IsActive = false;
+		((volatile FactoryClass *)ptr)->IsActive = false;
 	}
 	Factories.Free((FactoryClass *)ptr);
 }
