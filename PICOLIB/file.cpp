@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <string.h>
 
+#include "pico.h" // for board config
+
 #include "file.h"
 
 #include "config.h"
