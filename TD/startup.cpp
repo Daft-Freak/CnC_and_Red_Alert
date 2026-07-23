@@ -179,6 +179,7 @@ int main(int argc, char * argv[])
 
 #ifdef PICO_BUILD
 	Pico_Init("CnC");
+	argc = 0;
 #else
 	if (Ram_Free(MEM_NORMAL) < 5000000) {
 #ifdef GERMAN

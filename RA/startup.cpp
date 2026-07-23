@@ -156,6 +156,7 @@ int main(int argc, char * argv[])
 
 #ifdef PICO_BUILD
 	Pico_Init("CnCRA");
+	argc = 0;
 #else
 
 //printf("in program.\n");getch();
