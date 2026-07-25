@@ -30,10 +30,10 @@ jobs:
             board: adafruit_fruit_jam
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v7
 
     - name: Checkout Pico SDK
-      uses: actions/checkout@v4
+      uses: actions/checkout@v7
       with:
         repository: raspberrypi/pico-sdk
         ref: 2.2.0
@@ -77,7 +77,7 @@ jobs:
       run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config ${{ matrix.build_type }} --target install
  
     - name: Upload Artifact
-      uses: actions/upload-artifact@v4
+      uses: actions/upload-artifact@v7
       with:
         name: ${{ steps.strings.outputs.artifact-name }}
         path: ${{ steps.strings.outputs.build-install-dir }}
