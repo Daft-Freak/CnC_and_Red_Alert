@@ -24,9 +24,13 @@ All this fork needs to compile is:
 
 Both games compile on Linux/macOS/Windows and run at least to the menus. I have lightly tested a few campain missions, RA is more stable than TD.
 
-There's some support for network multiplayer in RA. (I've successfully tested one game between Linux/Windows.)
+There's some support for network multiplayer in both games. (I've tried a few games between different platforms, there's still the occasional desync.)
 
-Code only used by later missions is likely still broken, or possibly missing entirely if it's part of something I had to translate from assembly.
+Code only used by later RA missions is possibly still broken, or possibly missing entirely if it's part of something I had to translate from assembly. (I've played through most of the TD GDI campaign while fixing crashes, but only a few scenarios into RA.
+
+## "Pico" build
+
+The possibly more interesting thing in this repo is the port to various RP2350-based boards in the `tiny-rebase` branch.
 
 ## Original README
 
