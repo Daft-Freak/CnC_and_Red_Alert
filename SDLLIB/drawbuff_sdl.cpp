@@ -59,17 +59,26 @@ void GraphicBufferClass::Update_Window_Surface(bool end_frame)
         return;
     }
 
+    bool update_tex = false;
+
     if(RedrawTimer)
     {
         SDL_RemoveTimer(RedrawTimer);
         RedrawTimer = 0;
+
+        // if a timer was set, the surface was locked at some point
+        // so probably modified
+        update_tex = true;
     }
 
-    // blit from paletted surface
-    SDL_Surface *tmp_surf;
-    SDL_LockTextureToSurface(window_tex, NULL, &tmp_surf);
-    SDL_BlitSurface((SDL_Surface *)PaletteSurface, NULL, tmp_surf, NULL);
-    SDL_UnlockTexture(window_tex);
+    // blit from paletted surface if needed
+    if(update_tex)
+    {
+        SDL_Surface *tmp_surf;
+        SDL_LockTextureToSurface(window_tex, NULL, &tmp_surf);
+        SDL_BlitSurface((SDL_Surface *)PaletteSurface, NULL, tmp_surf, NULL);
+        SDL_UnlockTexture(window_tex);
+    }
 
     // copy to screen
     SDL_RenderClear(SDLRenderer);
