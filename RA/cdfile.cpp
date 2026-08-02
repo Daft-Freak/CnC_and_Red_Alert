@@ -410,6 +410,7 @@ int CDFileClass::Set_Search_Drives(char * pathlist)
 			switch (path[strlen(path)-1]) {
 				case ':':
 				case '\\':
+				case '/':
 					break;
 
 				default:
