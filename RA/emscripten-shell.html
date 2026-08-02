@@ -78,6 +78,23 @@
         FS.syncfs(true, function(err) {
           Module['removeRunDependency']("SYNC_DATA");
         });
+
+        // add a final dependency to check if needed files are present
+        Module['addRunDependency']("CHECK_MIX");
+      }
+
+      // run when there is only one dependency left
+      function checkMIXFilesPresent() {
+        const exists = name => FS.analyzePath(name).exists || FS.analyzePath(name.toLowerCase()).exists;
+
+        if(exists("REDALERT.MIX") && exists("MAIN.MIX")) {
+          // preloaded
+          Module['removeRunDependency']("CHECK_MIX");
+        } else if(exists("/persist/REDALERT.MIX") && exists("/persist/MAIN.MIX")) {
+          // loaded into persistent data
+          Module['removeRunDependency']("CHECK_MIX");
+        } else 
+          Module.setStatus("Data files missing!")
       }
 
       var Module = {
@@ -132,6 +149,10 @@
         },
         totalDependencies: 0,
         monitorRunDependencies: function(left) {
+          // check files when everything else is done
+          if(left == 1 && this.totalDependencies > 1)
+            checkMIXFilesPresent();
+
           this.totalDependencies = Math.max(this.totalDependencies, left);
           Module.setStatus(left ? 'Preparing... (' + (this.totalDependencies-left) + '/' + this.totalDependencies + ')' : 'All downloads complete.');
         }
