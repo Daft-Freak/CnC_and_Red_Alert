@@ -283,9 +283,10 @@ target_link_libraries(rasdl PRIVATE tech jshell port sdllib vqa32) # mpgdll wwip
 install(TARGETS rasdl)
 
 if(EMSCRIPTEN)
+	set(SHELL_FILE ${CMAKE_CURRENT_LIST_DIR}/emscripten-shell.html)
 	set_target_properties(rasdl PROPERTIES
 		SUFFIX ".html"
-		LINK_FLAGS "-sENVIRONMENT=web -sASYNCIFY -sASYNCIFY_STACK_SIZE=8192 -sFORCE_FILESYSTEM -sINITIAL_MEMORY=32mb"
+		LINK_FLAGS "-sENVIRONMENT=web -sASYNCIFY -sASYNCIFY_STACK_SIZE=8192 -sFORCE_FILESYSTEM -sINITIAL_MEMORY=32mb --shell-file ${SHELL_FILE}"
 	)
 	# this does not include the files, that would require something like
 	# file_packager files.data --js-output=files.js --preload *.mix REDALERT.INI
