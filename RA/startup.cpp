@@ -262,6 +262,12 @@ int main(int argc, char * argv[])
 	char drive[_MAX_DRIVE];
 	char path[_MAX_PATH];
 	unsigned drivecount;
+
+#ifdef __EMSCRIPTEN__
+	// use a subdirectory as the root so we can persisst config/saves
+	// (argv[0] would be "./this.program")
+	strcpy(path, "/persist");
+#else
 	_splitpath(argv[0], drive, path, NULL, NULL);
 
 #ifndef PORTABLE
@@ -271,6 +277,8 @@ int main(int argc, char * argv[])
 		drive[0] = ('A' + olddrive)-1;
 	}
 	_dos_setdrive(toupper((drive[0])-'A')+1, &drivecount);
+#endif
+
 #endif
 
 	if (!path[0]) {

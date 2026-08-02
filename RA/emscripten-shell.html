@@ -68,8 +68,22 @@
       var progressElement = document.getElementById('progress');
       var spinnerElement = document.getElementById('spinner');
 
+      function mountIDBFS() {
+        // mount a persistent filesystem
+        FS.mkdir("/persist");
+        FS.mount(IDBFS, {autoPersist: true}, '/persist');
+
+        // sync before starting
+        Module['addRunDependency']("SYNC_DATA");
+        FS.syncfs(true, function(err) {
+          Module['removeRunDependency']("SYNC_DATA");
+        });
+      }
+
       var Module = {
-        preRun: [],
+        // make the game also search for data outside the persistent dir
+        arguments: ["-CD/;/persist/"],
+        preRun: [mountIDBFS],
         postRun: [],
         print: (function() {
           return function(text) {

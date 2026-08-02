@@ -288,6 +288,8 @@ if(EMSCRIPTEN)
 		SUFFIX ".html"
 		LINK_FLAGS "-sENVIRONMENT=web -sASYNCIFY -sASYNCIFY_STACK_SIZE=8192 -sFORCE_FILESYSTEM -sINITIAL_MEMORY=32mb --shell-file ${SHELL_FILE}"
 	)
+	target_link_libraries(rasdl PRIVATE idbfs.js)
+
 	# this does not include the files, that would require something like
 	# file_packager files.data --js-output=files.js --preload *.mix REDALERT.INI
 	# (which is huge if you include the movies)
