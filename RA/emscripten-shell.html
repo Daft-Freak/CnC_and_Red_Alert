@@ -32,7 +32,7 @@
         border-left: 10px solid #000;
         border-right: 10px solid #000;
         border-bottom: 10px solid #000;
-        border-top: 10px solid #0f0;
+        border-top: 10px solid #f00;
         border-radius: 100%;
       }
       @keyframes rotation {
@@ -109,7 +109,10 @@
             progressElement.value = null;
             progressElement.max = null;
             progressElement.hidden = true;
-            if (!text) spinnerElement.hidden = true;
+            if (!text) {
+              spinnerElement.hidden = true;
+              spinnerElement.parentElement.hidden = true;
+            }
           }
           statusElement.innerHTML = text;
         },
