@@ -84,8 +84,13 @@
       }
 
       // run when there is only one dependency left
+      let filesMissing = false;
+
       function checkMIXFilesPresent() {
         const exists = name => FS.analyzePath(name).exists || FS.analyzePath(name.toLowerCase()).exists;
+
+        // TODO: MAIN1-4 from steam also acceptable
+        filesMissing = false;
 
         if(exists("REDALERT.MIX") && exists("MAIN.MIX")) {
           // preloaded
@@ -93,8 +98,10 @@
         } else if(exists("/persist/REDALERT.MIX") && exists("/persist/MAIN.MIX")) {
           // loaded into persistent data
           Module['removeRunDependency']("CHECK_MIX");
-        } else 
-          Module.setStatus("Data files missing!")
+        } else {
+          Module.setStatus("Data files missing! Try dropping MAIN.MIX or REDALERT.MIX here.");
+          filesMissing = true;
+        }
       }
 
       var Module = {
@@ -165,6 +172,34 @@
           if (text) Module.printErr('[post-exception status] ' + text);
         };
       };
+
+      // setup for file dropping
+      const overlayEl = document.getElementById("status-overlay");
+      const canvasEl = document.getElementById('canvas');
+
+      function handleDrop(e) {
+        e.preventDefault();
+
+        for(const file of e.dataTransfer.files) {
+          const lowerName = file.name.toLowerCase();
+  
+          // upload any MIX files directly
+          if(lowerName.endsWith(".mix")) {
+            file.arrayBuffer().then(buf => {
+              FS.writeFile("/persist/" + file.name, new Uint8Array(buf));
+
+              if(filesMissing)
+                checkMIXFilesPresent();
+            });
+          }
+        }
+      }
+
+      overlayEl.addEventListener("drop", handleDrop);
+      canvasEl.addEventListener("drop", handleDrop);
+
+      overlayEl.addEventListener("dragover", e => e.preventDefault());
+      canvasEl.addEventListener("dragover", e => e.preventDefault());
     </script>
     <!--<script type="text/javascript" src="files.js"></script>-->
     {{{ SCRIPT }}}
