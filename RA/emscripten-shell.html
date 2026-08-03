@@ -89,15 +89,16 @@
       function checkMIXFilesPresent() {
         const exists = name => FS.analyzePath(name).exists || FS.analyzePath(name.toLowerCase()).exists;
 
-        // TODO: MAIN1-4 from steam also acceptable
-        filesMissing = false;
+        let mainExists = exists("MAIN.MIX") || exists("/persist/MAIN.MIX");
+        const redAlertExists = exists("REDALERT.MIX") || exists("/persist/REDALERT.MIX");
 
-        if(exists("REDALERT.MIX") && exists("MAIN.MIX")) {
-          // preloaded
+        //  MAIN1-4 from steam also acceptable
+        if(!mainExists && exists("/persist/MAIN1.MIX") && exists("/persist/MAIN2.MIX") && exists("/persist/MAIN3.MIX") && exists("/persist/MAIN4.MIX"))
+          mainExists = true;
+
+        if(mainExists && redAlertExists) {
           Module['removeRunDependency']("CHECK_MIX");
-        } else if(exists("/persist/REDALERT.MIX") && exists("/persist/MAIN.MIX")) {
-          // loaded into persistent data
-          Module['removeRunDependency']("CHECK_MIX");
+          filesMissing = false;
         } else {
           Module.setStatus("Data files missing! Try dropping MAIN.MIX or REDALERT.MIX here.");
           filesMissing = true;
